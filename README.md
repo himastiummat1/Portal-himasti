@@ -1,50 +1,25 @@
-# Portal HIMASTI
+# HIMASTI Web Portal
 
-Selamat datang di repositori web Portal HIMASTI (Himpunan Mahasiswa Sistem & Teknologi Informasi). Proyek ini dibangun menggunakan framework Laravel.
+Portal digital resmi HIMASTI (Himpunan Mahasiswa Sistem dan Teknologi Informasi).
 
-## Persyaratan Sistem
+## Features
 
-Pastikan sistem Anda memenuhi persyaratan berikut:
-- PHP >= 8.1
-- Composer
-- Node.js & NPM
-- MySQL / MariaDB
+- Public information portal
+- Member/Kader dashboard
+- Letter management
+- Event management
+- Role & permission system
+- Audit log
+- Super Admin panel
 
-## Instalasi
+## Tech Stack
 
-Ikuti langkah-langkah di bawah ini untuk menjalankan proyek secara lokal:
+- Laravel
+- PHP
+- MySQL/PostgreSQL
+- Blade
+- Tailwind CSS
 
-1. Salin file environment:
-   ```bash
-   cp .env.example .env
-   ```
-2. Sesuaikan konfigurasi database Anda di dalam file `.env`.
-3. Install dependensi PHP:
-   ```bash
-   composer install
-   ```
-4. Install dependensi frontend (Node.js):
-   ```bash
-   npm install
-   ```
-5. Generate application key Laravel:
-   ```bash
-   php artisan key:generate
-   ```
-6. Jalankan migrasi database:
-   ```bash
-   php artisan migrate
-   ```
-7. Compile aset frontend:
-   ```bash
-   npm run dev
-   ```
-8. Jalankan local development server:
-   ```bash
-   php artisan serve
-   ```
+## Maintainer
 
-Aplikasi sekarang dapat diakses melalui `http://localhost:8000`.
-
-## Lisensi
-Hak Cipta &copy; HIMASTI.
+Bidang Teknologi Informasi HIMASTI
