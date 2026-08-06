@@ -1,6 +1,6 @@
 # Portal HIMASTI
 
-Selamat datang di repositori web Portal HIMASTI (Himpunan Mahasiswa Sistem Informasi). Proyek ini dibangun menggunakan framework Laravel.
+Selamat datang di repositori web Portal HIMASTI (Himpunan Mahasiswa Sistem & Teknologi Informasi). Proyek ini dibangun menggunakan framework Laravel.
 
 ## Persyaratan Sistem
 
