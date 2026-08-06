@@ -27,7 +27,7 @@
     <nav class="glass fixed w-full top-0 z-50">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
-                <img src="{{ asset('images/logo-himasti.png') }}" alt="Logo HIMASTI" class="h-10 w-auto object-contain bg-white rounded-full p-1">
+                <img src="{{ asset('images/logo_himasti.jpg') }}" alt="Logo HIMASTI" class="h-10 w-auto object-contain bg-white rounded-full p-1">
                 <span class="font-heading font-bold text-xl tracking-wider text-white">HIMASTI</span>
             </div>
             <div class="flex items-center gap-6">
@@ -48,7 +48,7 @@
             
             <div class="text-center mb-16 space-y-6">
                 <div class="inline-flex justify-center items-center p-4 rounded-full bg-blue-500/10 border border-blue-500/20 mb-4">
-                    <img src="{{ asset('images/logo-himasti.png') }}" alt="Logo HIMASTI Besar" class="h-32 w-auto object-contain drop-shadow-2xl mix-blend-screen rounded-3xl bg-white p-2">
+                    <img src="{{ asset('images/logo_himasti.jpg') }}" alt="Logo HIMASTI Besar" class="h-32 w-auto object-contain drop-shadow-2xl mix-blend-screen rounded-3xl bg-white p-2">
                 </div>
                 <h1 class="text-4xl md:text-6xl font-heading font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-400">
                     Mengenal HIMASTI

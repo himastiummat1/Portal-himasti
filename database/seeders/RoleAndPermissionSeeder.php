@@ -32,6 +32,8 @@ class RoleAndPermissionSeeder extends Seeder
         $kabidKewirausahaan = Role::firstOrCreate(['name' => 'kabid_kewirausahaan']);
         $kabidMikat = Role::firstOrCreate(['name' => 'kabid_mikat']);
         
+        $ketuaPanitiaSementara = Role::firstOrCreate(['name' => 'ketua_panitia_sementara']);
+        
         $kader = Role::firstOrCreate(['name' => 'kader']);
 
         // Create default Super Admin (Kabid Teknologi)

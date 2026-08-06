@@ -11,7 +11,7 @@
     <link href="https://fonts.bunny.net/css?family=inter:400,500,600,700|outfit:500,600,700" rel="stylesheet" />
     <script src="https://unpkg.com/lucide@latest"></script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-
+    <x-dark-mode-init />
     <style>
         body { font-family: 'Inter', sans-serif; }
         h1, h2, h3, h4, h5, h6, .font-heading { font-family: 'Outfit', sans-serif; }
@@ -23,15 +23,15 @@
         }
     </style>
 </head>
-<body class="font-sans antialiased bg-slate-50 text-slate-800">
+<body class="font-sans antialiased bg-slate-50 dark:bg-gray-900 text-slate-800 dark:text-gray-100">
     <div class="flex h-screen overflow-hidden">
         
         <!-- Sidebar -->
         <aside class="w-64 bg-slate-900 text-slate-300 flex flex-col hidden md:flex shadow-2xl relative z-20">
             <div class="p-6 border-b border-slate-800">
                 <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-500 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-blue-500/30">
-                        <i data-lucide="cpu" class="w-6 h-6"></i>
+                    <div class="w-10 h-10 rounded-xl flex items-center justify-center bg-white p-0.5 overflow-hidden shadow-lg shadow-blue-500/10 border border-slate-700">
+                        <img src="{{ asset('images/logo_himasti.jpg') }}" alt="Logo HIMASTI" class="w-full h-full object-cover rounded-lg">
                     </div>
                     <div>
                         <h2 class="text-xl font-heading font-bold text-white tracking-wide">HIMASTI</h2>
@@ -81,6 +81,13 @@
                 <a href="{{ route('kader.surat.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('kader.surat.index') ? 'bg-blue-500/10 text-blue-400' : 'hover:bg-slate-800 hover:text-white' }} transition-colors">
                     <i data-lucide="file-text" class="w-5 h-5"></i>
                     <span class="font-medium">Pengajuan Surat</span>
+                </a>
+                @endif
+
+                @if(Auth::user()->hasAnyRole(['super_admin', 'ketua_himpunan', 'wakil_ketua_himpunan', 'admin_sekretariat', 'bendahara', 'kabid_kemuhammadiyahan', 'kabid_keorganisasian', 'kabid_metkom', 'kabid_litbang', 'kabid_kewirausahaan', 'kabid_mikat', 'ketua_panitia_sementara']))
+                <a href="{{ route('admin.meetings.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.meetings.*') ? 'bg-blue-500/10 text-blue-400' : 'hover:bg-slate-800 hover:text-white' }} transition-colors">
+                    <i data-lucide="bell-ring" class="w-5 h-5"></i>
+                    <span class="font-medium">Undangan Rapat</span>
                 </a>
                 @endif
 
@@ -183,13 +190,14 @@
         </aside>
 
         <!-- Main Content -->
-        <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-50/50">
+        <main class="flex-1 flex flex-col relative overflow-hidden bg-slate-50/50 dark:bg-gray-900/50">
             <div class="absolute top-0 right-0 -mr-32 -mt-32 w-96 h-96 rounded-full bg-blue-400/10 blur-3xl pointer-events-none"></div>
             
-            <header class="h-16 flex items-center justify-between px-8 glass-panel border-b border-slate-200 z-10 sticky top-0">
-                <h1 class="text-xl font-heading font-semibold text-slate-800">@yield('title')</h1>
+            <header class="h-16 flex items-center justify-between px-8 glass-panel dark:bg-gray-800/80 border-b border-slate-200 dark:border-gray-700 z-10 sticky top-0">
+                <h1 class="text-xl font-heading font-semibold text-slate-800 dark:text-gray-100">@yield('title')</h1>
                 <div class="flex items-center gap-4">
-                    <a href="{{ route('tentang') }}" target="_blank" class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-500 bg-white border border-slate-200 rounded-lg hover:text-blue-600 hover:border-blue-300 hover:bg-blue-50 transition-all">
+                    <x-dark-mode-toggle />
+                    <a href="{{ route('tentang') }}" target="_blank" class="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-500 dark:text-slate-400 bg-white dark:bg-gray-800 border border-slate-200 dark:border-gray-600 rounded-lg hover:text-blue-600 dark:hover:text-blue-400 hover:border-blue-300 dark:hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-all">
                         <i data-lucide="info" class="w-4 h-4"></i> Tentang HIMASTI
                     </a>
                 </div>

@@ -42,6 +42,9 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
+        // Berikan role kader secara default untuk semua akun baru
+        $user->assignRole('kader');
+
         event(new Registered($user));
 
         Auth::login($user);

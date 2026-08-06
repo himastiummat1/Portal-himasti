@@ -19,8 +19,15 @@ Route::get('/dashboard', function () {
     $merchandises = \App\Models\Merchandise::where('stok', '>', 0)->latest()->take(3)->get();
     $klubs = \App\Models\Klub::latest()->take(3)->get();
     $galeri_kaderisasi = \App\Models\GaleriKaderisasi::latest()->take(6)->get();
+    
+    // Get upcoming meetings/messages (hilang otomatis 1 hari setelah event_date berlalu)
+    $meetings = \App\Models\Meeting::with('creator')
+        ->where('event_date', '>=', now()->subDay())
+        ->orderBy('created_at', 'desc')
+        ->take(5)
+        ->get();
 
-    return view('dashboard', compact('kajians', 'artikels', 'surveys', 'merchandises', 'klubs', 'galeri_kaderisasi'));
+    return view('dashboard', compact('kajians', 'artikels', 'surveys', 'merchandises', 'klubs', 'galeri_kaderisasi', 'meetings'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/tentang', function () {
@@ -108,10 +115,14 @@ Route::middleware(['auth'])->group(function () {
     // New Modules Roles
     Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_kemuhammadiyahan|wakil_kemuhammadiyahan|anggota_kemuhammadiyahan'])->resource('kajian', \App\Http\Controllers\Admin\KajianController::class)->names('admin.kajian')->only(['index', 'store', 'destroy']);
     Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_keorganisasian|wakil_keorganisasian|anggota_keorganisasian'])->resource('notulensi', \App\Http\Controllers\Admin\NotulensiController::class)->names('admin.notulensi')->only(['index', 'store', 'destroy']);
-    Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_metkom|wakil_metkom|anggota_metkom'])->resource('artikel', \App\Http\Controllers\Admin\ArtikelController::class)->names('admin.artikel')->only(['index', 'store', 'destroy']);
+    Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_metkom|wakil_metkom|anggota_metkom'])->resource('artikel', \App\Http\Controllers\Admin\ArtikelController::class)->names('admin.artikel')->only(['index', 'store', 'update', 'destroy']);
     Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_litbang|wakil_litbang|anggota_litbang'])->resource('survey', \App\Http\Controllers\Admin\SurveyController::class)->names('admin.survey')->only(['index', 'store', 'destroy']);
     Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_kewirausahaan|wakil_kewirausahaan|anggota_kewirausahaan'])->resource('merchandise', \App\Http\Controllers\Admin\MerchandiseController::class)->names('admin.merchandise')->only(['index', 'store', 'destroy']);
     Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|kabid_mikat|wakil_mikat|anggota_mikat'])->resource('klub', \App\Http\Controllers\Admin\KlubController::class)->names('admin.klub')->only(['index', 'store', 'destroy']);
+    
+    // Undangan Rapat / Pesan Sementara
+    Route::post('meetings/{meeting}/resend', [\App\Http\Controllers\MeetingController::class, 'resend'])->name('admin.meetings.resend');
+    Route::middleware(['role:super_admin|ketua_himpunan|wakil_ketua_himpunan|admin_sekretariat|bendahara|kabid_kemuhammadiyahan|kabid_keorganisasian|kabid_metkom|kabid_litbang|kabid_kewirausahaan|kabid_mikat|ketua_panitia_sementara'])->resource('meetings', \App\Http\Controllers\MeetingController::class)->names('admin.meetings')->only(['index', 'store', 'destroy']);
 
     // Rute cerdas untuk mengarahkan pengurus kembali ke panel mereka
     Route::get('/admin', function () {
@@ -128,6 +139,7 @@ Route::middleware(['auth'])->group(function () {
         if ($user->hasRole(['kabid_mikat', 'wakil_mikat', 'anggota_mikat'])) return redirect()->route('admin.klub.index');
         if ($user->hasRole(['admin_kaderisasi', 'wakil_kaderisasi', 'anggota_kaderisasi'])) return redirect()->route('admin.kaderisasi.index');
         if ($user->hasRole(['admin_sekretariat'])) return redirect()->route('admin.sekretariat.surat.index');
+        if ($user->hasRole(['ketua_panitia_sementara'])) return redirect()->route('admin.meetings.index');
         
         return redirect()->route('dashboard');
     })->name('admin.redirect');

@@ -47,6 +47,24 @@
             @endif
         </div>
 
+        <div>
+            <x-input-label for="nim" value="NIM" />
+            <x-text-input id="nim" name="nim" type="text" class="mt-1 block w-full" :value="old('nim', $user->dataKader->nim ?? '')" />
+            <x-input-error class="mt-2" :messages="$errors->get('nim')" />
+        </div>
+
+        <div>
+            <x-input-label for="angkatan" value="Angkatan (Contoh: 2022)" />
+            <x-text-input id="angkatan" name="angkatan" type="text" class="mt-1 block w-full" :value="old('angkatan', $user->dataKader->angkatan ?? '')" />
+            <x-input-error class="mt-2" :messages="$errors->get('angkatan')" />
+        </div>
+
+        <div>
+            <x-input-label for="no_hp" value="Nomor WhatsApp" />
+            <x-text-input id="no_hp" name="no_hp" type="text" class="mt-1 block w-full" :value="old('no_hp', $user->dataKader->no_hp ?? '')" />
+            <x-input-error class="mt-2" :messages="$errors->get('no_hp')" />
+        </div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 

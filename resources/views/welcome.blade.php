@@ -4,56 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HIMASTI - Himpunan Mahasiswa Sistem & Teknologi Informasi</title>
-    <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            text-align: center;
-        }
-        .container {
-            background-color: #fff;
-            padding: 40px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-            max-width: 600px;
-        }
-        h1 {
-            color: #2c3e50;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #7f8c8d;
-            line-height: 1.6;
-        }
-        .btn {
-            display: inline-block;
-            margin-top: 20px;
-            padding: 10px 25px;
-            background-color: #3498db;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-            transition: background 0.3s ease;
-        }
-        .btn:hover {
-            background-color: #2980b9;
-        }
-    </style>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <x-dark-mode-init />
 </head>
-<body>
-    <div class="container">
-        <h1>Selamat Datang di Portal Internal HIMASTI</h1>
-        <p>Himpunan Mahasiswa Sistem & Teknologi Informasi</p>
-        <p>Sistem ini dirancang untuk mengelola data kaderisasi dan persuratan internal organisasi dengan sistem role-based access.</p>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-100 antialiased min-h-screen flex flex-col justify-center items-center relative">
+    
+    <div class="absolute top-4 right-4">
+        <x-dark-mode-toggle />
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 p-10 rounded-xl shadow-lg max-w-xl text-center border border-gray-200 dark:border-gray-700">
+        <div class="flex justify-center mb-6">
+            <img src="{{ asset('images/logo_himasti.jpg') }}" alt="Logo HIMASTI" class="w-24 h-24 rounded-full object-cover shadow-sm border border-gray-100 dark:border-gray-600">
+        </div>
+        <h1 class="text-3xl font-bold text-slate-800 dark:text-white mb-4">Selamat Datang di Portal Internal HIMASTI</h1>
+        <p class="text-gray-600 dark:text-gray-300 font-medium mb-2">Himpunan Mahasiswa Sistem & Teknologi Informasi</p>
+        <p class="text-gray-500 dark:text-gray-400 text-sm leading-relaxed mb-8">
+            Sistem ini dirancang untuk mengelola data kaderisasi dan persuratan internal organisasi dengan sistem role-based access.
+        </p>
         
-        <a href="/login" class="btn">Login ke Dashboard</a>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="{{ route('login') }}" class="w-full sm:w-auto px-6 py-2.5 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors">
+                Login
+            </a>
+            <a href="{{ route('register') }}" class="w-full sm:w-auto px-6 py-2.5 bg-slate-800 hover:bg-slate-700 dark:bg-slate-700 dark:hover:bg-slate-600 text-white font-medium rounded-lg transition-colors">
+                Daftar Akun
+            </a>
+        </div>
     </div>
 </body>
 </html>

@@ -27,26 +27,42 @@ class SuperAdminController extends Controller
     /**
      * Manajemen akun pengurus & role
      */
-    public function users()
+    public function users(Request $request)
     {
-        $users = User::with('roles')->get();
+        $query = User::with(['roles', 'dataKader']);
+        
+        if ($request->has('search') && !empty($request->search)) {
+            $search = $request->search;
+            $query->where('name', 'like', "%{$search}%")
+                  ->orWhere('email', 'like', "%{$search}%");
+        }
+        
+        $users = $query->paginate(30)->withQueryString();
         $roles = Role::all();
         
         return view('superadmin.users.index', compact('users', 'roles'));
     }
 
     /**
-     * Assign Role ke User
+     * Assign Role dan Status Kaderisasi
      */
     public function assignRole(Request $request, User $user)
     {
         $request->validate([
-            'role' => 'required|exists:roles,name'
+            'role' => 'required|exists:roles,name',
+            'status_kaderisasi' => 'nullable|string'
         ]);
 
         $user->syncRoles([$request->role]);
 
-        return redirect()->back()->with('success', 'Role berhasil diupdate');
+        if ($request->has('status_kaderisasi')) {
+            $user->dataKader()->updateOrCreate(
+                ['user_id' => $user->id],
+                ['status_kaderisasi' => $request->status_kaderisasi]
+            );
+        }
+
+        return redirect()->back()->with('success', 'Role & Status berhasil diupdate');
     }
 
     /**
