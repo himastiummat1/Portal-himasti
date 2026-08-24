@@ -1,8 +1,8 @@
 'use server'
 
 import { cookies } from 'next/headers'
-import { SignJWT } from 'jose'
 import bcrypt from 'bcryptjs'
+import { SignJWT } from 'jose'
 import { prisma } from '@/lib/prisma'
 
 const SECRET_KEY = process.env.JWT_SECRET || 'himasti-super-secret-key-2026'
@@ -14,6 +14,11 @@ export async function loginAction(prevState: any, formData: FormData) {
 
   if (!email || !password) {
     return { error: 'Email dan password wajib diisi!' }
+  }
+
+  // FORCE CHECK:
+  if (!process.env.DATABASE_URL && !process.env.DIRECT_URL) {
+    return { error: '⚠️ BOS! KAMU BELUM MENAMBAHKAN "DATABASE_URL" DI VERCEL SETTINGS! (Menu Settings -> Environment Variables). TAMBAHIN DULU BARU BISA JALAN!' }
   }
 
   try {
