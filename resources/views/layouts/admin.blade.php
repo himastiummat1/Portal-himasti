@@ -59,6 +59,20 @@
                 </a>
                 @endif
 
+                @if(Auth::user()->hasRole('super_admin'))
+                <p class="px-3 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-4">Pusat Inovasi IT</p>
+                
+                <a href="{{ route('admin.modules.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.modules.*') ? 'bg-blue-500/10 text-blue-400' : 'hover:bg-slate-800 hover:text-white' }} transition-colors">
+                    <i data-lucide="book-open" class="w-5 h-5 text-indigo-400"></i>
+                    <span class="font-medium">Bank Modul & Snippet</span>
+                </a>
+                
+                <a href="{{ route('admin.projects.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.projects.*') ? 'bg-blue-500/10 text-blue-400' : 'hover:bg-slate-800 hover:text-white' }} transition-colors">
+                    <i data-lucide="code" class="w-5 h-5 text-teal-400"></i>
+                    <span class="font-medium">Katalog Karya</span>
+                </a>
+                @endif
+
                 @if(Auth::user()->hasRole('super_admin') || Auth::user()->hasRole('ketua_himpunan') || Auth::user()->hasRole('wakil_ketua_himpunan') || Auth::user()->hasRole('admin_kaderisasi') || Auth::user()->hasRole('wakil_kaderisasi') || Auth::user()->hasRole('anggota_kaderisasi'))
                 <a href="{{ route('admin.kaderisasi.index') }}" class="flex items-center gap-3 px-3 py-2.5 rounded-lg {{ request()->routeIs('admin.kaderisasi.index') ? 'bg-blue-500/10 text-blue-400' : 'hover:bg-slate-800 hover:text-white' }} transition-colors">
                     <i data-lucide="users" class="w-5 h-5"></i>

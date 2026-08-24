@@ -106,6 +106,50 @@
                 </div>
             </div>
 
+            @if(isset($competitions) && count($competitions) > 0)
+            <div class="mb-8">
+                <div class="flex items-center justify-between mb-4 px-1">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-6 h-6 text-yellow-500 animate-pulse" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+                        <h3 class="text-xl font-bold text-gray-800 dark:text-gray-100">Hot Info: Lomba & Hackathon IT</h3>
+                    </div>
+                    <a href="{{ route('competitions.index') }}" class="text-sm text-blue-600 hover:text-blue-800 dark:text-blue-400 font-semibold">Lihat Semua &rarr;</a>
+                </div>
+                
+                <div id="lomba-carousel" class="flex overflow-x-auto pb-4 gap-4 snap-x" style="scrollbar-width: none; scroll-behavior: smooth;">
+                    @foreach($competitions as $lomba)
+                    <a href="{{ $lomba->link }}" target="_blank" class="min-w-[300px] md:min-w-[400px] shrink-0 bg-gradient-to-br from-slate-900 to-indigo-950 rounded-2xl p-5 shadow-lg relative overflow-hidden group snap-center border border-gray-700/50 hover:border-yellow-500/50 transition-all">
+                        <div class="absolute inset-0 z-0 bg-black/60">
+                            <img src="{{ $lomba->poster ? (Str::startsWith($lomba->poster, 'http') ? $lomba->poster : asset('storage/'.$lomba->poster)) : 'https://picsum.photos/seed/lomba-'.$lomba->id.'/600/400' }}" class="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-500" alt="Poster">
+                        </div>
+                        <div class="absolute -right-10 -top-10 w-32 h-32 bg-yellow-500/10 rounded-full blur-2xl group-hover:bg-yellow-500/20 transition-all z-0"></div>
+                        <div class="relative z-10 flex flex-col h-full justify-between">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="px-2 py-0.5 text-[10px] font-bold uppercase rounded-full {{ $lomba->type == 'Hackathon' ? 'bg-purple-500/40 text-purple-200' : 'bg-blue-500/40 text-blue-200' }} border border-white/20 backdrop-blur-sm">
+                                        {{ $lomba->type }}
+                                    </span>
+                                    <span class="text-gray-200 text-xs font-semibold drop-shadow-md">
+                                        {{ Str::limit($lomba->organizer, 25) }}
+                                    </span>
+                                </div>
+                                <h4 class="text-white font-bold text-lg leading-tight mb-2 line-clamp-2 group-hover:text-yellow-400 transition-colors drop-shadow-md">{{ $lomba->title }}</h4>
+                            </div>
+                            <div class="mt-4 flex items-center justify-between">
+                                <div class="text-xs text-gray-300 bg-white/10 px-3 py-1.5 rounded-lg border border-white/5">
+                                    ⏳ DL: {{ \Carbon\Carbon::parse($lomba->deadline)->format('d M Y') }}
+                                </div>
+                                <span class="w-8 h-8 rounded-full bg-yellow-500 text-gray-900 flex items-center justify-center group-hover:scale-110 transition-transform">
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"></path></svg>
+                                </span>
+                            </div>
+                        </div>
+                    </a>
+                    @endforeach
+                </div>
+            </div>
+            @endif
+
             @if(isset($meetings) && count($meetings) > 0)
             <div class="mb-8">
                 <div class="flex items-center gap-2 mb-4 px-1">
@@ -355,4 +399,32 @@
             </div>
         </div>
     </div>
+    @if(isset($competitions) && count($competitions) > 0)
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const carousel = document.getElementById('lomba-carousel');
+            if(carousel) {
+                let scrollAmount = 0;
+                let step = 320; // Estimasi lebar 1 item
+                let scrollInterval = setInterval(autoScroll, 3000); // Tiap 3 detik
+
+                function autoScroll() {
+                    if (carousel.scrollLeft >= (carousel.scrollWidth - carousel.clientWidth - 10)) {
+                        carousel.scrollLeft = 0; // Balik ke awal
+                    } else {
+                        carousel.scrollBy({ left: step, behavior: 'smooth' });
+                    }
+                }
+
+                // Berhenti otomatis saat kursor diarahkan (hover)
+                carousel.addEventListener('mouseenter', () => clearInterval(scrollInterval));
+                
+                // Lanjut otomatis saat kursor pergi
+                carousel.addEventListener('mouseleave', () => {
+                    scrollInterval = setInterval(autoScroll, 3000);
+                });
+            }
+        });
+    </script>
+    @endif
 </x-app-layout>

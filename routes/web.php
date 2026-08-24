@@ -19,6 +19,7 @@ Route::get('/dashboard', function () {
     $merchandises = \App\Models\Merchandise::where('stok', '>', 0)->latest()->take(3)->get();
     $klubs = \App\Models\Klub::latest()->take(3)->get();
     $galeri_kaderisasi = \App\Models\GaleriKaderisasi::latest()->take(6)->get();
+    $competitions = \App\Models\CompetitionInfo::where('deadline', '>=', now())->latest()->take(5)->get();
     
     // Get upcoming meetings/messages (hilang otomatis 1 hari setelah event_date berlalu)
     $meetings = \App\Models\Meeting::with('creator')
@@ -27,7 +28,7 @@ Route::get('/dashboard', function () {
         ->take(5)
         ->get();
 
-    return view('dashboard', compact('kajians', 'artikels', 'surveys', 'merchandises', 'klubs', 'galeri_kaderisasi', 'meetings'));
+    return view('dashboard', compact('kajians', 'artikels', 'surveys', 'merchandises', 'klubs', 'galeri_kaderisasi', 'meetings', 'competitions'));
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::get('/tentang', function () {
@@ -99,6 +100,12 @@ Route::middleware(['auth'])->group(function () {
 
     // Fitur Tambahan (Admin & Super Admin)
     Route::prefix('admin')->name('admin.')->group(function() {
+        // Fitur Baru: Bank Modul & Katalog Karya (khusus Super Admin)
+        Route::middleware(['role:super_admin'])->group(function () {
+            Route::resource('modules', \App\Http\Controllers\Admin\ItModuleAdminController::class)->only(['index', 'store', 'update', 'destroy']);
+            Route::resource('projects', \App\Http\Controllers\Admin\StudentProjectAdminController::class)->only(['index', 'store', 'update', 'destroy']);
+        });
+
         Route::get('/events', [\App\Http\Controllers\EventController::class, 'index'])->name('events.index');
         Route::post('/events', [\App\Http\Controllers\EventController::class, 'store'])->name('events.store');
 
@@ -145,5 +152,23 @@ Route::middleware(['auth'])->group(function () {
     })->name('admin.redirect');
 
 });
+// Fitur Baru HIMASTI
+Route::get('/bank-modul', [\App\Http\Controllers\ItModuleController::class, 'index'])->name('modules.index');
+Route::get('/bank-modul/kategori/{category}', [\App\Http\Controllers\ItModuleController::class, 'showCategory'])->name('modules.show');
+Route::get('/bank-modul/download/{module}', [\App\Http\Controllers\ItModuleController::class, 'download'])->name('modules.download');
+
+Route::prefix('devtools')->name('devtools.')->group(function () {
+    Route::get('/', [\App\Http\Controllers\DevToolsController::class, 'index'])->name('index');
+    Route::get('/json', [\App\Http\Controllers\DevToolsController::class, 'json'])->name('json');
+    Route::get('/regex', [\App\Http\Controllers\DevToolsController::class, 'regex'])->name('regex');
+    Route::get('/subnet', [\App\Http\Controllers\DevToolsController::class, 'subnet'])->name('subnet');
+    Route::get('/markdown', [\App\Http\Controllers\DevToolsController::class, 'markdown'])->name('markdown');
+});
+
+Route::get('/karya', [\App\Http\Controllers\StudentProjectController::class, 'index'])->name('projects.index');
+Route::get('/karya/{project}', [\App\Http\Controllers\StudentProjectController::class, 'show'])->name('projects.show');
+
+Route::get('/info-lomba', [\App\Http\Controllers\CompetitionInfoController::class, 'index'])->name('competitions.index');
+Route::get('/info-lomba/{competition}', [\App\Http\Controllers\CompetitionInfoController::class, 'show'])->name('competitions.show');
 
 require __DIR__.'/auth.php';

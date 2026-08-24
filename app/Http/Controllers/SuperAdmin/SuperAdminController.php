@@ -53,6 +53,15 @@ class SuperAdminController extends Controller
             'status_kaderisasi' => 'nullable|string'
         ]);
 
+        // Proteksi: Pastikan hanya ada maksimal 1 Super Admin di sistem
+        if ($request->role === 'super_admin' && !$user->hasRole('super_admin')) {
+            $existingSuperAdminCount = User::role('super_admin')->count();
+            if ($existingSuperAdminCount >= 1) {
+                $existing = User::role('super_admin')->first();
+                return redirect()->back()->with('error', "Gagal! Role Super Admin hanya boleh dimiliki oleh maksimal 1 akun. Saat ini sudah dimiliki oleh {$existing->name}. Anda harus mencabut role-nya terlebih dahulu sebelum memindahkannya ke orang lain.");
+            }
+        }
+
         $user->syncRoles([$request->role]);
 
         if ($request->has('status_kaderisasi')) {

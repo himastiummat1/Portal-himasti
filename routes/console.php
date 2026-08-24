@@ -49,3 +49,4 @@ Artisan::command('fix:tables', function () {
 
     $this->info('Tables recreated successfully!');
 });
+Schedule::command('scrape:lomba')->daily();

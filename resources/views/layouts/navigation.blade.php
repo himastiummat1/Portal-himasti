@@ -10,13 +10,28 @@
                     </a>
                 </div>
 
-                <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                         {{ __('Portal Informasi') }}
                     </x-nav-link>
+
+                    <x-nav-link :href="route('modules.index')" :active="request()->routeIs('modules.*')">
+                        Bank Modul
+                    </x-nav-link>
                     
-                    @if(auth()->user()->roles->where('name', '!=', 'kader')->count() > 0)
+                    <x-nav-link :href="route('devtools.index')" :active="request()->routeIs('devtools.*')">
+                        DevTools
+                    </x-nav-link>
+                    
+                    <x-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+                        Katalog Karya
+                    </x-nav-link>
+
+                    <x-nav-link :href="route('competitions.index')" :active="request()->routeIs('competitions.*')">
+                        Info Lomba
+                    </x-nav-link>
+                    
+                    @if(auth()->user() && auth()->user()->roles->where('name', '!=', 'kader')->count() > 0)
                     <x-nav-link :href="route('admin.redirect')" class="text-blue-600 dark:text-blue-400 font-bold">
                         {{ __('Kembali ke Panel Pengurus') }}
                     </x-nav-link>
@@ -77,6 +92,18 @@
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('modules.index')" :active="request()->routeIs('modules.*')">
+                Bank Modul
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('devtools.index')" :active="request()->routeIs('devtools.*')">
+                DevTools
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('projects.index')" :active="request()->routeIs('projects.*')">
+                Katalog Karya
+            </x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('competitions.index')" :active="request()->routeIs('competitions.*')">
+                Info Lomba
             </x-responsive-nav-link>
         </div>
 
