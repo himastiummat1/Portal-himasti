@@ -51,6 +51,6 @@ export async function loginAction(prevState: any, formData: FormData) {
     return { success: true, message: 'Login berhasil!' }
   } catch (error) {
     console.error('Login error:', error)
-    return { error: 'Terjadi kesalahan sistem.' }
+    return { error: `Terjadi kesalahan sistem: ${error instanceof Error ? error.message : String(error)}` }
   }
 }
