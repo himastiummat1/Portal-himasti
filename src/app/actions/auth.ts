@@ -17,7 +17,7 @@ export async function loginAction(prevState: any, formData: FormData) {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.users.findUnique({
       where: { email: email }
     })
 
@@ -32,7 +32,7 @@ export async function loginAction(prevState: any, formData: FormData) {
     }
 
     const token = await new SignJWT({ 
-      id: user.id, 
+      id: user.id.toString(), 
       email: user.email,
       name: user.name
     })
