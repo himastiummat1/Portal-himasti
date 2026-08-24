@@ -23,3 +23,8 @@ Homestead.json
 Homestead.yaml
 Thumbs.db
 database/seeders/UserSuperAdminSeeder.php
+
+# Custom Ignores
+*.sqlite
+*.zip
+seed_more_modules.php

@@ -239,5 +239,6 @@
         </main>
     </div>
     <script>lucide.createIcons();</script>
+    <x-chatbot />
 </body>
 </html>

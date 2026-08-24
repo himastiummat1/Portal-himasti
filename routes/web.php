@@ -171,4 +171,7 @@ Route::get('/karya/{project}', [\App\Http\Controllers\StudentProjectController::
 Route::get('/info-lomba', [\App\Http\Controllers\CompetitionInfoController::class, 'index'])->name('competitions.index');
 Route::get('/info-lomba/{competition}', [\App\Http\Controllers\CompetitionInfoController::class, 'show'])->name('competitions.show');
 
+// AI Chatbot Route
+Route::post('/chat/ask', [\App\Http\Controllers\GroqChatController::class, 'ask'])->name('chat.ask')->middleware('auth');
+
 require __DIR__.'/auth.php';
