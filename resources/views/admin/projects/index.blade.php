@@ -37,7 +37,7 @@
                                 <tr class="hover:bg-gray-50 border-b">
                                     <td class="p-3">
                                         @if($project->thumbnail)
-                                            <img src="{{ asset('storage/'.$project->thumbnail) }}" class="w-16 h-16 object-cover rounded">
+                                            <img src="{{ Storage::disk(env('FILESYSTEM_DISK', 's3'))->url($project->thumbnail) }}" class="w-16 h-16 object-cover rounded">
                                         @else
                                             <div class="w-16 h-16 bg-gray-200 rounded flex items-center justify-center text-xs text-gray-500">No Img</div>
                                         @endif

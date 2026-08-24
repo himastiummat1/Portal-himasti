@@ -172,6 +172,6 @@ Route::get('/info-lomba', [\App\Http\Controllers\CompetitionInfoController::clas
 Route::get('/info-lomba/{competition}', [\App\Http\Controllers\CompetitionInfoController::class, 'show'])->name('competitions.show');
 
 // AI Chatbot Route
-Route::post('/chat/ask', [\App\Http\Controllers\GroqChatController::class, 'ask'])->name('chat.ask')->middleware('auth');
+Route::post('/chat/ask', [\App\Http\Controllers\GroqChatController::class, 'ask'])->name('chat.ask')->middleware(['auth', 'throttle:15,1']);
 
 require __DIR__.'/auth.php';

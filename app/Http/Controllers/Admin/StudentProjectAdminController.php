@@ -31,7 +31,7 @@ class StudentProjectAdminController extends Controller
         $data = $request->except('thumbnail');
 
         if ($request->hasFile('thumbnail')) {
-            $data['thumbnail'] = $request->file('thumbnail')->store('projects', 'public');
+            $data['thumbnail'] = $request->file('thumbnail')->store('projects', env('FILESYSTEM_DISK', 's3'));
         }
 
         StudentProject::create($data);
@@ -55,10 +55,10 @@ class StudentProjectAdminController extends Controller
         $data = $request->except('thumbnail');
 
         if ($request->hasFile('thumbnail')) {
-            if ($project->thumbnail && Storage::disk('public')->exists($project->thumbnail)) {
-                Storage::disk('public')->delete($project->thumbnail);
+            if ($project->thumbnail && Storage::disk(env('FILESYSTEM_DISK', 's3'))->exists($project->thumbnail)) {
+                Storage::disk(env('FILESYSTEM_DISK', 's3'))->delete($project->thumbnail);
             }
-            $data['thumbnail'] = $request->file('thumbnail')->store('projects', 'public');
+            $data['thumbnail'] = $request->file('thumbnail')->store('projects', env('FILESYSTEM_DISK', 's3'));
         }
 
         $project->update($data);
@@ -68,8 +68,8 @@ class StudentProjectAdminController extends Controller
 
     public function destroy(StudentProject $project)
     {
-        if ($project->thumbnail && Storage::disk('public')->exists($project->thumbnail)) {
-            Storage::disk('public')->delete($project->thumbnail);
+        if ($project->thumbnail && Storage::disk(env('FILESYSTEM_DISK', 's3'))->exists($project->thumbnail)) {
+            Storage::disk(env('FILESYSTEM_DISK', 's3'))->delete($project->thumbnail);
         }
         $project->delete();
         return redirect()->route('admin.projects.index')->with('success', 'Karya berhasil dihapus!');

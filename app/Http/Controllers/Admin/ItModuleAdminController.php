@@ -28,7 +28,7 @@ class ItModuleAdminController extends Controller
         $data = $request->except('file_path');
 
         if ($request->hasFile('file_path')) {
-            $data['file_path'] = $request->file('file_path')->store('modules', 'public');
+            $data['file_path'] = $request->file('file_path')->store('modules', env('FILESYSTEM_DISK', 's3'));
         }
 
         ItModule::create($data);
@@ -49,10 +49,10 @@ class ItModuleAdminController extends Controller
         $data = $request->except('file_path');
 
         if ($request->hasFile('file_path')) {
-            if ($module->file_path && Storage::disk('public')->exists($module->file_path)) {
-                Storage::disk('public')->delete($module->file_path);
+            if ($module->file_path && Storage::disk(env('FILESYSTEM_DISK', 's3'))->exists($module->file_path)) {
+                Storage::disk(env('FILESYSTEM_DISK', 's3'))->delete($module->file_path);
             }
-            $data['file_path'] = $request->file('file_path')->store('modules', 'public');
+            $data['file_path'] = $request->file('file_path')->store('modules', env('FILESYSTEM_DISK', 's3'));
         }
 
         $module->update($data);
@@ -62,8 +62,8 @@ class ItModuleAdminController extends Controller
 
     public function destroy(ItModule $module)
     {
-        if ($module->file_path && Storage::disk('public')->exists($module->file_path)) {
-            Storage::disk('public')->delete($module->file_path);
+        if ($module->file_path && Storage::disk(env('FILESYSTEM_DISK', 's3'))->exists($module->file_path)) {
+            Storage::disk(env('FILESYSTEM_DISK', 's3'))->delete($module->file_path);
         }
         $module->delete();
         return redirect()->route('admin.modules.index')->with('success', 'Modul berhasil dihapus!');
