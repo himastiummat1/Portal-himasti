@@ -7,4 +7,4 @@ if [ -n "$PHP_FILE" ]; then
 fi
 composer install --no-dev --optimize-autoloader
 npm install
-npm run build
+npx vite build
