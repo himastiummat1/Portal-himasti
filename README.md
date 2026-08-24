@@ -1,90 +1,36 @@
-<div align="center">
+This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-<!-- ANIMASI PACMAN -->
-<img src="https://media.tenor.com/tHqgU6R_K6gAAAAi/pac-man-pacman.gif" width="200" alt="Pacman Animation"/>
+## Getting Started
 
-<br/>
+First, run the development server:
 
-# 🌟 Portal HIMASTI 🌟
-**Sistem Informasi Himpunan Mahasiswa Terintegrasi**
+```bash
+npm run dev
+# or
+yarn dev
+# or
+pnpm dev
+# or
+bun dev
+```
 
-[![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)](https://laravel.com)
-[![PHP](https://img.shields.io/badge/PHP-777BB4?style=for-the-badge&logo=php&logoColor=white)](https://php.net)
-[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com)
-[![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)](https://www.mysql.com/)
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-*Mewujudkan Digitalisasi dan Efisiensi Organisasi Mahasiswa*
+You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-<hr/>
-</div>
+This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## 📖 Tentang Proyek
+## Learn More
 
-**Portal HIMASTI** adalah platform modern yang dirancang khusus untuk memfasilitasi kebutuhan administrasi, komunikasi, dan pengelolaan kegiatan di **Himpunan Mahasiswa Sistem Informasi (HIMASTI)**. Dibangun dengan framework Laravel, proyek ini menawarkan keamanan tingkat tinggi, performa kilat, dan antarmuka pengguna yang sangat responsif.
+To learn more about Next.js, take a look at the following resources:
 
-## ✨ Fitur Utama
+- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
+- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-| Fitur | Deskripsi | Status |
-|:---:|---|:---:|
-| 👥 | **Manajemen Anggota** — Pendataan terpusat seluruh anggota aktif dan alumni | ✔️ |
-| 📅 | **Event & Kegiatan** — Publikasi kegiatan dan pendaftaran acara mahasiswa | ✔️ |
-| 💼 | **Administrasi** — Sistem persuratan dan pengarsipan dokumen digital | ✔️ |
-| 🔐 | **Role & Permission** — Hak akses sistem yang komprehensif untuk setiap divisi | ✔️ |
+You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
 
-## 🚀 Prasyarat Sistem
+## Deploy on Vercel
 
-Sebelum menjalankan aplikasi ini, pastikan komputer/server Anda memenuhi persyaratan berikut:
-- **PHP** `>= 8.1`
-- **Composer** (Dependency Manager untuk PHP)
-- **Node.js & NPM** (Untuk kompilasi aset *frontend*)
-- **Database Server** (MySQL atau MariaDB)
+The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-## 🛠️ Instalasi & Setup Lokal
-
-Ikuti langkah-langkah di bawah ini untuk mengatur dan menjalankan Portal HIMASTI secara lokal:
-
-1. **Persiapkan Konfigurasi Environment**
-   Salin konfigurasi environment bawaan dan sesuaikan kredensial database Anda.
-   ```bash
-   cp .env.example .env
-   ```
-
-2. **Install Dependensi Backend**
-   ```bash
-   composer install
-   ```
-
-3. **Install Dependensi Frontend**
-   ```bash
-   npm install
-   ```
-
-4. **Generate Application Key**
-   ```bash
-   php artisan key:generate
-   ```
-
-5. **Migrasi Database & Seeding**
-   Jalankan migrasi untuk membuat tabel database dan mengisi data *dummy* awal (seperti akun *Super Admin*).
-   ```bash
-   php artisan migrate --seed
-   ```
-
-6. **Kompilasi Aset Frontend**
-   ```bash
-   npm run dev
-   ```
-
-7. **Jalankan Development Server**
-   ```bash
-   php artisan serve
-   ```
-   
-> 🌐 **Voila!** Aplikasi Anda sekarang dapat diakses melalui browser di alamat: [http://localhost:8000](http://localhost:8000)
-
----
-
-<div align="center">
-  <h3>Dibuat dengan ❤️ oleh Tim Teknologi HIMASTI</h3>
-  <p>&copy; 2026 Himpunan Mahasiswa Sistem Informasi. All rights reserved.</p>
-</div>
+Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
