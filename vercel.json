@@ -4,7 +4,7 @@
     "builds": [
         {
             "src": "api/index.php",
-            "use": "@beyondcode/vercel-php-82"
+            "use": "vercel-runtime-playground"
         },
         {
             "src": "public/**",
