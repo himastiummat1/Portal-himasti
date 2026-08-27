@@ -99,21 +99,6 @@ export default function LearningHubClient({ userName }: { userName: string }) {
       title: "Basic Tailwind Card",
       lang: "html",
       code: `<div class="bg-white/90 backdrop-blur shadow-sm border border-slate-200 rounded-2xl p-6 hover:shadow-md transition-all">\n  <h3 class="font-bold text-slate-800">Hello World</h3>\n</div>`
-    },
-    {
-      id: "systems",
-      title: "Systems & Compiler Engineer",
-      icon: <Terminal className="w-8 h-8 text-rose-500" />,
-      desc: "Jalur 'Dewa' (Expert): Bangun bahasa pemrograman, OS, dan infrastruktur tingkat rendah.",
-      steps: [
-        "1. Low-Level: C, C++, Rust, atau Zig",
-        "2. Arsitektur Komputer & OS Internals",
-        "3. Teori Kompilator: Lexer, Parser, AST",
-        "4. Code Generation: LLVM & GCC Internals",
-        "5. Sistem Memori & Garbage Collection",
-        "6. High-Performance Computing (HPC)",
-        "7. Sistem Terdistribusi Skala Masif"
-      ]
     }
   ];
 
