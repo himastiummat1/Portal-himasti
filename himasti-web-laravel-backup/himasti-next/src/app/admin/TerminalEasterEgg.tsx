@@ -21,7 +21,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
     if (!input.trim()) return;
 
     const cmd = input.trim();
-    const newHistory = [...history, { type: "input", text: \`[\${userName}@himasti ~]$ \${cmd}\` } as const];
+    const newHistory = [...history, { type: "input", text: `[${userName}@himasti ~]$ ${cmd}` } as const];
 
     let output = "";
     switch (cmd.toLowerCase()) {
@@ -29,7 +29,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
         output = "Perintah tersedia: whoami, ls, clear, vidyax, sudo rm -rf /";
         break;
       case "whoami":
-        output = \`\${userName} - Pengguna sah Portal HIMASTI\`;
+        output = `${userName} - Pengguna sah Portal HIMASTI`;
         break;
       case "ls":
         output = "karya/  modul/  dev-tools/  surat-menyurat/  rahasia_negara/";
@@ -50,7 +50,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
         setInput("");
         return;
       default:
-        output = \`bash: \${cmd}: command not found\`;
+        output = `bash: ${cmd}: command not found`;
     }
 
     setHistory([...newHistory, { type: "output", text: output }]);
