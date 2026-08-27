@@ -13,7 +13,7 @@ type KeuanganRecord = {
   keterangan: string | null;
 };
 
-export default function KeuanganClient({ records }: { records: KeuanganRecord[] }) {
+export default function KeuanganClient({ records, isExecutive }: { records: KeuanganRecord[], isExecutive: boolean }) {
   const [filterType, setFilterType] = useState<string>("all");
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);

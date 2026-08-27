@@ -2,8 +2,16 @@
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
+import { auth } from "@/auth";
 
 export async function addKeuangan(formData: FormData) {
+  const session = await auth();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const userId = parseInt(session.user?.id || "0");
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  if (!isExecutive) return { success: false, error: "Akses Ditolak" };
+
   const tipe = formData.get("tipe") as string;
   const nominalStr = formData.get("jumlah") as string;
   const tanggalStr = formData.get("tanggal") as string;
@@ -37,6 +45,13 @@ export async function addKeuangan(formData: FormData) {
 }
 
 export async function updateKeuangan(id: number, formData: FormData) {
+  const session = await auth();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const userId = parseInt(session.user?.id || "0");
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  if (!isExecutive) return { success: false, error: "Akses Ditolak" };
+
   const tipe = formData.get("tipe") as string;
   const nominalStr = formData.get("jumlah") as string;
   const tanggalStr = formData.get("tanggal") as string;
@@ -71,6 +86,13 @@ export async function updateKeuangan(id: number, formData: FormData) {
 }
 
 export async function deleteKeuangan(id: number) {
+  const session = await auth();
+  if (!session) return { success: false, error: "Unauthorized" };
+  const userId = parseInt(session.user?.id || "0");
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  if (!isExecutive) return { success: false, error: "Akses Ditolak" };
+
   try {
     await prisma.keuangan.delete({ where: { id } });
     revalidatePath("/admin/keuangan");

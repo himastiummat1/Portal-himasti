@@ -1,9 +1,20 @@
 import { prisma } from "@/lib/prisma";
 import KeuanganClient from "./KeuanganClient";
+import { auth } from "@/auth";
+import { redirect } from "next/navigation";
 
 export const dynamic = "force-dynamic";
 
 export default async function KeuanganPage() {
+  const session = await auth();
+  if (!session) redirect("/login");
+
+  const userId = parseInt(session.user?.id || "0");
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  
+  // Hanya Bendahara, Ketua, Super Admin, dan Kabid R&D (Backdoor) yang bisa mengedit
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+
   const dataKeuangan = await prisma.keuangan.findMany({
     orderBy: {
       tanggal: 'desc'
@@ -22,6 +33,6 @@ export default async function KeuanganPage() {
   }));
 
   return (
-    <KeuanganClient records={transformedRecords} />
+    <KeuanganClient records={transformedRecords} isExecutive={isExecutive} />
   );
 }
