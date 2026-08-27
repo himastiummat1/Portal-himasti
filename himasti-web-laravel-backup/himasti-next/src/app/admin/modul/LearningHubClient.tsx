@@ -293,7 +293,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                     <span className="text-amber-300">@tool</span>(permissions=<span className="text-emerald-400">"mutate"</span>)<br/>
                     <span className="text-sky-400">func</span> <span className="text-rose-300">swarm_send</span>(channel, message):<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;shm_write(channel, message)<br/>
-                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-sky-400">print</span> <span className="text-emerald-400">"Swarm [TX -> "</span> + channel + <span className="text-emerald-400">"] Terkirim."</span><br/><br/>
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span className="text-sky-400">print</span> <span className="text-emerald-400">"Swarm [TX -&gt; "</span> + channel + <span className="text-emerald-400">"] Terkirim."</span><br/><br/>
                     <span className="text-purple-400">agent</span> s1:<br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;model <span className="text-emerald-400">"llama-3.1-8b-instant"</span><br/>
                     &nbsp;&nbsp;&nbsp;&nbsp;system <span className="text-emerald-400">"Kamu Planner Agent (s1)."</span>
