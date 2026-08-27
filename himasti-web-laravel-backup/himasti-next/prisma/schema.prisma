@@ -90,6 +90,7 @@ model Meeting {
   type              String    @default("rapat_pengurus") // 'rapat_pengurus', 'rapat_panitia'
   event_date        DateTime
   location          String
+  notulensi_path    String?
   created_by        Int
   creator           User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
   created_at        DateTime? @default(now())

@@ -16,7 +16,8 @@ export default async function RapatPage() {
     type: record.type,
     event_date: record.event_date.toISOString(),
     location: record.location,
-    creator: record.creator?.name || "Admin"
+    creator: record.creator?.name || "Admin",
+    notulensi_path: record.notulensi_path
   }));
 
   return <RapatClient records={records} />;
