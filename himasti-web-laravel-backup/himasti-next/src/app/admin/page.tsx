@@ -92,10 +92,10 @@ export default async function AdminDashboard() {
                 <Database className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-sky-500 transition-colors" />
                 <span className="text-xs font-semibold text-slate-700">Bank Modul</span>
               </Link>
-              <button onClick={() => alert("Segera Hadir")} className="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 hover:border-sky-200 transition-colors group text-center">
+              <Link href="#" className="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 hover:border-sky-200 transition-colors group text-center">
                 <FileText className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-sky-500 transition-colors" />
-                <span className="text-xs font-semibold text-slate-700">Katalog Karya</span>
-              </button>
+                <span className="text-xs font-semibold text-slate-700">Katalog Karya (Coming Soon)</span>
+              </Link>
             </div>
           </div>
 
