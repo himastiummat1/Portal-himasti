@@ -44,8 +44,15 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   };
 
   return (
-    <div className="min-h-screen bg-white text-gray-900 font-sans antialiased overflow-x-hidden selection:bg-gray-200">
+    <div className="min-h-screen bg-white relative text-gray-900 font-sans antialiased overflow-x-hidden selection:bg-gray-200">
       
+      {/* Subtle Future Tech Grid Background */}
+      <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:24px_24px]"></div>
+        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-blue-100/40 rounded-full blur-[100px] -z-10 mix-blend-multiply"></div>
+        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-purple-100/40 rounded-full blur-[100px] -z-10 mix-blend-multiply"></div>
+      </div>
+
       {/* Top Navbar */}
       <header className="w-full bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto flex h-20 items-center justify-between px-6">
@@ -77,14 +84,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         </Link>
         
         {/* Interactive Groq Terminal */}
-        <div className="w-full max-w-4xl mx-auto bg-gradient-to-b from-gray-50 to-white rounded-t-[40px] border-x border-t border-gray-100 p-4 sm:p-8 pb-0 shadow-[0_-10px_40px_rgba(0,0,0,0.03)]">
+        <div className="w-full max-w-4xl mx-auto bg-gradient-to-b from-gray-50 to-white rounded-t-[40px] border-x border-t border-gray-100 p-4 sm:p-8 pb-0 shadow-[0_-10px_50px_rgba(59,130,246,0.1)] border-blue-100">
           <div className="w-full bg-white rounded-t-2xl border border-gray-200 shadow-sm flex flex-col overflow-hidden relative" style={{ height: '400px' }}>
              {/* Terminal Header */}
              <div className="w-full h-12 bg-gray-50 border-b border-gray-200 flex items-center px-4 gap-2 shrink-0">
                 <div className="w-3 h-3 rounded-full bg-red-400"></div>
                 <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
                 <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                <div className="ml-4 text-xs font-mono text-gray-500 flex items-center gap-2"><Terminal className="w-3 h-3"/> HIMASTI_AI_TERMINAL (Powered by Groq)</div>
+                <div className="ml-4 text-xs font-mono text-gray-500 flex items-center gap-2"><Terminal className="w-3 h-3"/> HIMASTI_AI_CORE_v2.0 (Powered by Groq)</div>
              </div>
              
              {/* Chat Window */}
@@ -99,7 +106,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-sm flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-gray-400" />
+                      <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
                       <span className="text-xs text-gray-500">AI is thinking...</span>
                     </div>
                   </div>
