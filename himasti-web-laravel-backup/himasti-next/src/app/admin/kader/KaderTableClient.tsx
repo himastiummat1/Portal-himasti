@@ -1,7 +1,8 @@
 "use client";
 import { useState, useTransition } from "react";
 import { Search, FileSpreadsheet, Eye, X, Download, Edit2, Trash2, CheckCircle2 } from "lucide-react";
-import { updateKader, deleteKader } from "./actions";
+import { updateKader, deleteKader, impersonateUser } from "./actions";
+import { LogIn } from "lucide-react";
 
 export default function KaderTableClient({ kaders }: { kaders: any[] }) {
   const [search, setSearch] = useState("");
@@ -50,6 +51,18 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
       if (res.success) {
         alert("Data berhasil disimpan! Email login & role telah disinkronkan.");
         window.location.reload();
+      } else {
+        alert(res.error);
+      }
+    });
+  };
+
+  const handleImpersonate = async (userId: number) => {
+    if (!confirm("Login sebagai kader ini? (Anda akan mendapatkan akses sesuai jabatan mereka untuk sementara waktu)")) return;
+    startTransition(async () => {
+      const res = await impersonateUser(userId);
+      if (res.success) {
+        window.location.href = "/admin"; // Redirect to dashboard to reload session
       } else {
         alert(res.error);
       }
@@ -142,6 +155,9 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
                 <p className="text-xs text-gray-500 font-mono mt-0.5">ID: {selectedKader.id.toString().padStart(8, '0')}</p>
               </div>
               <div className="flex items-center gap-2">
+                <button onClick={() => handleImpersonate(selectedKader.user_id)} className="p-2 text-emerald-600 hover:bg-emerald-50 rounded-lg transition-colors" title="Login Sebagai Akun Ini">
+                  <LogIn className="w-5 h-5" />
+                </button>
                 <button onClick={() => setIsEditing(!isEditing)} className={`p-2 rounded-lg transition-colors ${isEditing ? 'bg-purple-100 text-purple-700' : 'text-gray-400 hover:text-gray-900 hover:bg-gray-100'}`}>
                   <Edit2 className="w-5 h-5" />
                 </button>

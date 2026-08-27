@@ -44,6 +44,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     groupAkademik.links.push({ href: "/admin/modul", label: "Bank Modul" });
     groupAkademik.links.push({ href: "/admin/devtools", label: "DevTools" });
     groupAkademik.links.push({ href: "/admin/karya", label: "Katalog Karya" });
+    groupAkademik.links.push({ href: "/admin/adart", label: "AD/ART & Konstitusi" });
     groupAkademik.links.push({ href: "/admin/lomba", label: "Info Lomba" });
   }
   if (groupAkademik.links.length > 0) groups.push(groupAkademik);
@@ -64,6 +65,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         groups={groups} 
         userStr={session.user.name || "User"} 
         roleStr={isSuperAdmin ? "Super Admin" : userRoles[0] || "Pengurus"} 
+        isImpersonating={(session.user as any).isImpersonating}
       />
 
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">

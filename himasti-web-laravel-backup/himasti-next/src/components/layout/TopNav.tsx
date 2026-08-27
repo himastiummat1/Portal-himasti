@@ -14,7 +14,8 @@ export default function TopNav({
 }: { 
   groups: MenuGroup[], 
   userStr: string, 
-  roleStr: string 
+  roleStr: string,
+  isImpersonating?: boolean
 }) {
   const pathname = usePathname();
   const [openGroup, setOpenGroup] = useState<string | null>(null);

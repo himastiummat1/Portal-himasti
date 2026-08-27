@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { cookies } from "next/headers";
 
 async function isAuthorized() {
   const session = await auth();
@@ -67,4 +68,26 @@ export async function deleteKader(userId: number) {
   } catch (err: any) {
     return { success: false, error: "Gagal menghapus akun: " + err.message };
   }
+}
+
+
+
+export async function impersonateUser(targetUserId: number) {
+  if (!(await isAuthorized())) return { success: false, error: "Akses Ditolak." };
+  
+  const cookieStore = await cookies();
+  cookieStore.set("impersonated_user_id", targetUserId.toString(), {
+    path: "/",
+    httpOnly: true,
+    sameSite: "lax",
+    maxAge: 60 * 60 // 1 hour
+  });
+  
+  return { success: true };
+}
+
+export async function stopImpersonating() {
+  const cookieStore = await cookies();
+  cookieStore.delete("impersonated_user_id");
+  return { success: true };
 }
