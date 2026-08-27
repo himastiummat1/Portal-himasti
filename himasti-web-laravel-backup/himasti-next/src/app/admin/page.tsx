@@ -8,7 +8,6 @@ import {
 } from "lucide-react";
 import TerminalEasterEgg from "./TerminalEasterEgg";
 import HackerMode from "./HackerMode";
-import SystemTicker from "./SystemTicker";
 import { katalogKarya } from "@/lib/karyaData";
 
 export default async function AdminDashboard() {
@@ -211,7 +210,6 @@ export default async function AdminDashboard() {
         </div>
 
         <HackerMode />
-      <SystemTicker />
       <TerminalEasterEgg userName={session?.user?.name || "Kader"} />
       </div>
     );
@@ -410,7 +408,6 @@ export default async function AdminDashboard() {
 
       </div>
       <HackerMode />
-      <SystemTicker />
       <TerminalEasterEgg userName={session?.user?.name || "Kader"} />
     </div>
   );

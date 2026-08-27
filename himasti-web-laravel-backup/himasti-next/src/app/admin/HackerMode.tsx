@@ -103,7 +103,7 @@ export default function HackerMode() {
       )}
 
       {/* Toggle Button */}
-      <div className="fixed top-24 right-6 z-50">
+      <div className="fixed bottom-[10.5rem] right-6 z-50 flex flex-col items-end gap-1 group/konami">
         <label className="flex items-center gap-2 cursor-pointer bg-slate-900/50 backdrop-blur border border-slate-700 px-3 py-1.5 rounded-full hover:bg-slate-800 transition-colors">
           <input 
             type="checkbox" 
@@ -118,6 +118,9 @@ export default function HackerMode() {
             {isActive ? '> DEV MODE' : 'DEV MODE'}
           </span>
         </label>
+        <div className="text-[9px] font-mono text-slate-400/50 group-hover/konami:text-slate-400 transition-colors bg-slate-900/80 px-2 py-0.5 rounded-md border border-slate-700/50 opacity-0 group-hover/konami:opacity-100 cursor-help" title="Konami Code">
+          Hint: ⬆ ⬆ ⬇ ⬇ ⬅ ➡ ⬅ ➡ B A
+        </div>
       </div>
 
       {/* Konami Code Modal */}

@@ -63,7 +63,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 left-6 p-4 bg-slate-900 text-green-400 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.3)] hover:scale-110 transition-transform z-50 group border border-slate-700"
+        className="fixed bottom-24 right-6 p-4 bg-slate-900 text-green-400 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.3)] hover:scale-110 transition-transform z-50 group border border-slate-700"
       >
         <TerminalIcon className="w-6 h-6 group-hover:animate-pulse" />
       </button>
