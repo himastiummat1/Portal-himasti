@@ -17,8 +17,6 @@ export async function POST(req: Request) {
       content: msg.text
     }));
 
-
-
     formattedMessages.unshift({
       role: "system",
       content: `Kamu adalah AI Asisten resmi untuk HIMASTI (Himpunan Mahasiswa Sistem dan Teknologi Informasi) di Universitas Muhammadiyah Mataram (UMMAT).
@@ -32,4 +30,18 @@ Jawablah pertanyaan seputar sejarah HIMASTI dan Kemuhammadiyahan dengan akurat b
 - Nilai Kemuhammadiyahan: HIMASTI menjunjung nilai Muhammadiyah (didirikan KH Ahmad Dahlan pada 18 Nov 1912) untuk mewujudkan Islam modern, toleran, pendidikan, dan sosial.
 Jawab dengan ramah, informatif, singkat, dan profesional. Jangan mengarang fakta.`
     });
-    const chatCompletionundefined
+
+    const chatCompletion = await groq.chat.completions.create({
+      messages: formattedMessages,
+      model: "qwen/qwen3.8-27b",
+      temperature: 0.5,
+      max_tokens: 500,
+    });
+
+    return NextResponse.json({ text: chatCompletion.choices[0]?.message?.content || "Data diterima." });
+    
+  } catch (error: any) {
+    console.error("Groq API Error:", error);
+    return NextResponse.json({ text: "Maaf, sistem AI sedang mengalami gangguan koneksi." }, { status: 500 });
+  }
+}
