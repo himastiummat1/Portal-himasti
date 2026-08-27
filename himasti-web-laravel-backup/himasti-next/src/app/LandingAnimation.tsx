@@ -4,22 +4,22 @@ import CompetitionMarquee from "./CompetitionMarquee";
 
 export default function LandingAnimation({ competitions }: { competitions?: any[] }) {
   return (
-    <div className="min-h-screen bg-white text-gray-900 selection:bg-gray-900 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-white text-purple-950 selection:bg-purple-700 selection:text-purple-950 font-sans antialiased overflow-x-hidden">
       
       {/* Top Navbar */}
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
         <div className="max-w-6xl mx-auto flex h-14 items-center justify-between px-6">
           <div className="flex items-center gap-2 font-semibold tracking-tight text-lg">
-            <div className="h-6 w-6 bg-gray-900 rounded-md flex items-center justify-center">
+            <div className="h-6 w-6 bg-purple-700 rounded-md flex items-center justify-center">
               <span className="text-white text-xs font-bold">H</span>
             </div>
             HIMASTI Portal
           </div>
           <nav className="flex items-center gap-6 text-sm font-medium text-gray-500">
-            <a href="#features" className="hover:text-gray-900 transition-colors">Features</a>
-            <a href="#divisions" className="hover:text-gray-900 transition-colors">Divisions</a>
-            <Link href="/login" className="text-gray-900 hover:text-gray-600 transition-colors">Sign In</Link>
-            <Link href="/register" className="h-8 flex items-center justify-center rounded-md bg-gray-900 px-4 text-white hover:bg-gray-800 transition-colors">
+            <a href="#features" className="hover:text-purple-950 transition-colors">Features</a>
+            <a href="#divisions" className="hover:text-purple-950 transition-colors">Divisions</a>
+            <Link href="/login" className="text-purple-950 hover:text-gray-600 transition-colors">Sign In</Link>
+            <Link href="/register" className="h-8 flex items-center justify-center rounded-md bg-purple-700 px-4 text-white hover:bg-purple-800 transition-colors">
               Sign Up
             </Link>
           </nav>
@@ -33,11 +33,11 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         
         <div className="max-w-4xl mx-auto text-center relative z-10">
           <div className="inline-flex items-center rounded-full border border-gray-200 bg-gray-50 px-3 py-1 text-sm text-gray-600 mb-8">
-            <span className="flex h-2 w-2 rounded-full bg-gray-900 mr-2"></span>
+            <span className="flex h-2 w-2 rounded-full bg-purple-700 mr-2"></span>
             HIMASTI Digital Ecosystem v2.0
           </div>
           
-          <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tighter text-gray-900 mb-8 leading-tight">
+          <h1 className="text-5xl sm:text-7xl font-extrabold tracking-tighter text-purple-950 mb-8 leading-tight">
             Manage. Organize. <br className="hidden sm:block" /> Accelerate.
           </h1>
           
@@ -47,11 +47,11 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           </p>
           
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/login" className="h-12 w-full sm:w-auto flex items-center justify-center rounded-md bg-gray-900 px-8 text-sm font-medium text-white hover:bg-gray-800 transition-all duration-200 shadow-sm hover:shadow-md">
+            <Link href="/login" className="h-12 w-full sm:w-auto flex items-center justify-center rounded-md bg-purple-700 px-8 text-sm font-medium text-white hover:bg-purple-800 transition-all duration-200 shadow-sm hover:shadow-md">
               Access Dashboard
               <ArrowRight className="ml-2 h-4 w-4" />
             </Link>
-            <a href="#features" className="h-12 w-full sm:w-auto flex items-center justify-center rounded-md border border-gray-200 bg-white px-8 text-sm font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+            <a href="#features" className="h-12 w-full sm:w-auto flex items-center justify-center rounded-md border border-gray-200 bg-white px-8 text-sm font-medium text-purple-950 hover:bg-gray-50 transition-colors">
               Explore Features
             </a>
           </div>
@@ -67,7 +67,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       <section id="features" className="w-full py-24 px-6 border-b border-gray-200">
         <div className="max-w-6xl mx-auto">
           <div className="mb-16">
-            <h2 className="text-3xl font-bold tracking-tight mb-4 text-gray-900">Core Infrastructure</h2>
+            <h2 className="text-3xl font-bold tracking-tight mb-4 text-purple-950">Core Infrastructure</h2>
             <p className="text-gray-500 max-w-xl">Everything you need to manage the organization efficiently, built on modern web technologies.</p>
           </div>
           
@@ -79,10 +79,10 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               { icon: Server, title: "Keuangan", desc: "Transparent financial tracking and treasury management." }
             ].map((Feature, i) => (
               <div key={i} className="p-6 border border-gray-200 rounded-lg bg-white hover:shadow-sm transition-all duration-200 group">
-                <div className="h-10 w-10 rounded-md border border-gray-200 bg-gray-50 flex items-center justify-center mb-4 group-hover:bg-gray-900 group-hover:text-white transition-colors">
+                <div className="h-10 w-10 rounded-md border border-gray-200 bg-gray-50 flex items-center justify-center mb-4 group-hover:bg-purple-700 group-hover:text-white transition-colors">
                   <Feature.icon className="h-5 w-5" />
                 </div>
-                <h3 className="font-semibold text-gray-900 mb-2">{Feature.title}</h3>
+                <h3 className="font-semibold text-purple-950 mb-2">{Feature.title}</h3>
                 <p className="text-sm text-gray-500 leading-relaxed">{Feature.desc}</p>
               </div>
             ))}
@@ -94,7 +94,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       <section id="divisions" className="w-full py-24 px-6 border-b border-gray-200 bg-gray-50">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold tracking-tight mb-4 text-gray-900">Structural Divisions</h2>
+            <h2 className="text-3xl font-bold tracking-tight mb-4 text-purple-950">Structural Divisions</h2>
             <p className="text-gray-500">The 8 pillars that drive HIMASTI forward.</p>
           </div>
           
@@ -110,7 +110,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               { name: 'Aksi dan Advokasi', desc: 'Menampung aspirasi mahasiswa dan mengawal isu-isu kebijakan strategis kampus.' }
             ].map((divisi, i) => (
               <details key={i} className="group rounded-md border border-gray-200 bg-white overflow-hidden [&_summary::-webkit-details-marker]:hidden">
-                <summary className="flex cursor-pointer items-center justify-between p-4 font-medium text-gray-900 hover:bg-gray-50 transition-colors">
+                <summary className="flex cursor-pointer items-center justify-between p-4 font-medium text-purple-950 hover:bg-gray-50 transition-colors">
                   {divisi.name}
                   <span className="transition duration-200 group-open:-rotate-180">
                     <svg fill="none" height="24" shapeRendering="geometricPrecision" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path></svg>
@@ -128,8 +128,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       {/* Footer */}
       <footer className="w-full py-12 px-6 bg-white">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
-          <div className="flex items-center gap-2 font-semibold tracking-tight text-gray-900">
-            <div className="h-5 w-5 bg-gray-900 rounded-sm flex items-center justify-center">
+          <div className="flex items-center gap-2 font-semibold tracking-tight text-purple-950">
+            <div className="h-5 w-5 bg-purple-700 rounded-sm flex items-center justify-center">
               <span className="text-white text-[10px] font-bold">H</span>
             </div>
             HIMASTI
