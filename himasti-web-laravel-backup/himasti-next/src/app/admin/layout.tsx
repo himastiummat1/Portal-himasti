@@ -20,10 +20,10 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const isSuperAdmin = userRoles.includes('super_admin');
   
   const canAccessKader = isSuperAdmin || userRoles.some(r => r.includes('kaderisasi') || r.includes('pengkaderan'));
-  const canAccessKeuangan = isSuperAdmin || userRoles.includes('bendahara');
-  const canAccessSurat = isSuperAdmin || userRoles.includes('admin_sekretariat');
+  const canAccessKeuangan = isSuperAdmin || userRoles.includes('bendahara') || userRoles.includes('bendahara_umum');
+  const canAccessSurat = isSuperAdmin || userRoles.includes('sekretaris_umum');
   const canAccessArtikel = isSuperAdmin || userRoles.some(r => r.includes('metkom') || r.includes('humas'));
-  const canAccessRapat = isSuperAdmin || userRoles.some(r => r.includes('ketua') || r.includes('sekretariat') || r.includes('bendahara') || r.includes('kabid'));
+  const canAccessRapat = isSuperAdmin || userRoles.some(r => r.includes('ketua') || r.includes('sekretaris') || r.includes('bendahara') || r.includes('kabid'));
   const canAccessAkademik = true; // Everyone can access these
   const canAccessDivisi = isSuperAdmin || userRoles.some(r => r.includes('kabid') || r.includes('wakil'));
 
