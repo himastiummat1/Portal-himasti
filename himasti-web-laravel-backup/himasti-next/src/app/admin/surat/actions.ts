@@ -39,7 +39,7 @@ export async function createSurat(formData: FormData) {
       perihal,
       
       file_pdf: filePath,
-      created_by: createdBy
+      user_id: createdBy
     }
   });
 
