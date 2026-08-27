@@ -41,6 +41,7 @@ model DataKader {
   status_kaderisasi String
   skills            String?
   no_hp             String?
+  jenis_kelamin     String?
   deleted_at        DateTime?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt

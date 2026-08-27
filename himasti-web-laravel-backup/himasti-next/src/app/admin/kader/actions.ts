@@ -16,6 +16,7 @@ export async function updateKader(userId: number, formData: FormData) {
 
   const email = formData.get("email") as string;
   const no_hp = formData.get("no_hp") as string;
+  const jenis_kelamin = formData.get("jenis_kelamin") as string;
   const role_name = formData.get("role_name") as string;
 
   try {
@@ -28,7 +29,7 @@ export async function updateKader(userId: number, formData: FormData) {
     if (no_hp) {
       const kader = await prisma.dataKader.findFirst({ where: { user_id: userId } });
       if (kader) {
-        await prisma.dataKader.update({ where: { id: kader.id }, data: { no_hp } });
+        await prisma.dataKader.update({ where: { id: kader.id }, data: { no_hp, ...(jenis_kelamin && { jenis_kelamin }) } });
       }
     }
 

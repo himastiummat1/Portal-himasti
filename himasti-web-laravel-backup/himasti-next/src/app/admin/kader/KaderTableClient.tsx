@@ -193,7 +193,15 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
                 </div>
                 <div>
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Jenis Kelamin</label>
-                  <div className="text-gray-900 font-medium">{selectedKader.jenis_kelamin === 'L' ? 'Laki-laki' : selectedKader.jenis_kelamin === 'P' ? 'Perempuan' : '-'}</div>
+                  {isEditing ? (
+                    <select name="jenis_kelamin" defaultValue={selectedKader.jenis_kelamin} className="w-full border border-gray-200 p-2 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none">
+                      <option value="">Pilih</option>
+                      <option value="L">Laki-laki</option>
+                      <option value="P">Perempuan</option>
+                    </select>
+                  ) : (
+                    <div className="text-gray-900 font-medium">{selectedKader.jenis_kelamin === 'L' ? 'Laki-laki' : selectedKader.jenis_kelamin === 'P' ? 'Perempuan' : '-'}</div>
+                  )}
                 </div>
                 <div>
                   <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Role Saat Ini</label>
