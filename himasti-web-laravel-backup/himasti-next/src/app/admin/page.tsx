@@ -4,7 +4,7 @@ import Link from "next/link";
 import { 
   Users, FileText, Database, Shield, BookOpen, 
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
-  Calendar, Info
+  Calendar, Info, Trophy, ExternalLink
 } from "lucide-react";
 
 export default async function AdminDashboard() {
@@ -32,6 +32,11 @@ export default async function AdminDashboard() {
   const totalSurat = await prisma.surat.count();
 
   // Fetch real events
+  const competitions = await prisma.competitionInfo.findMany({
+    orderBy: { deadline: 'asc' },
+    take: 4
+  });
+
   const upcomingEvents = await prisma.event.findMany({
     orderBy: { tanggal_mulai: 'asc' },
     take: 3
@@ -116,6 +121,32 @@ export default async function AdminDashboard() {
               </div>
             )}
           </div>
+
+          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-2xl overflow-hidden ">
+             <div className="px-5 py-4 border-b border-slate-200/60 bg-slate-50/50 flex justify-between items-center">
+              <h2 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
+                <Trophy className="w-4 h-4 text-amber-500" /> Radar Hackathon Global
+              </h2>
+            </div>
+            <div className="p-5">
+              {competitions.length === 0 ? (
+                <p className="text-xs text-slate-500 font-mono text-center py-4">Belum ada info lomba ditarik.</p>
+              ) : (
+                <div className="space-y-4">
+                  {competitions.map((c: any) => (
+                    <div key={c.id} className="border-l-2 border-amber-400 pl-3 group">
+                      <a href={c.link} target="_blank" className="flex justify-between items-start">
+                        <h4 className="text-sm font-semibold text-slate-800 group-hover:text-amber-600 transition-colors line-clamp-1">{c.title}</h4>
+                        <ExternalLink className="w-3 h-3 text-slate-300 group-hover:text-amber-500 shrink-0 ml-2" />
+                      </a>
+                      <p className="text-xs text-slate-500 mt-0.5">{c.deadline ? c.deadline.toLocaleDateString('id-ID', { month: 'short', day: 'numeric', year: 'numeric' }) : '-'}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
         </div>
 
       </div>
