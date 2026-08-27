@@ -1,9 +1,9 @@
 const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
-async function main() {
+async function check() {
   const roles = await prisma.role.findMany();
-  console.log("Existing Roles:", roles);
+  console.log(roles.map(r => r.name).join(', '));
 }
 
-main().catch(console.error).finally(() => prisma.$disconnect());
+check().finally(() => prisma.$disconnect());

@@ -12,7 +12,7 @@ export default async function DataKaderPage() {
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
   
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kaderisasi") || r.role.name.includes("pengkaderan") || r.role.name.includes("sekretaris")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kaderisasi") || r.role.name.includes("pengkaderan") || r.role.name.includes("sekretaris"));
 
   if (!isExecutive) {
     return (

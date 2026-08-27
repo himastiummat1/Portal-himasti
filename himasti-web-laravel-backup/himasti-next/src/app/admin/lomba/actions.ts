@@ -1,8 +1,16 @@
 "use server";
+import { auth } from "@/auth";
+
+async function requireAuth() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+  return session;
+}
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function addLomba(formData: FormData) {
+  await requireAuth();
   const title = formData.get("title") as string;
   const organizer = formData.get("organizer") as string;
   const deadlineStr = formData.get("deadline") as string;
@@ -24,11 +32,13 @@ export async function addLomba(formData: FormData) {
 }
 
 export async function deleteLomba(id: number) {
+  await requireAuth();
   await prisma.competitionInfo.delete({ where: { id } });
   revalidatePath("/admin/lomba");
 }
 
 export async function syncMockLomba() {
+  await requireAuth();
   try {
     // We fetch real data from Devpost API
     const response = await fetch("https://devpost.com/api/hackathons?status=upcoming,open", { cache: "no-store" });

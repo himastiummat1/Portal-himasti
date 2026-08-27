@@ -9,7 +9,7 @@ async function isAuthorized() {
   if (!session) return false;
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  return userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("sekretaris") || r.role.name.includes("kaderisasi") || r.role.name.includes("pengkaderan")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  return userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("sekretaris") || r.role.name.includes("kaderisasi") || r.role.name.includes("pengkaderan"));
 }
 
 export async function updateKader(userId: number, formData: FormData) {
@@ -73,7 +73,12 @@ export async function deleteKader(userId: number) {
 
 
 export async function impersonateUser(targetUserId: number) {
-  if (!(await isAuthorized())) return { success: false, error: "Akses Ditolak." };
+  const session = await auth();
+  if (!session) return { success: false, error: "Akses Ditolak." };
+  const userId = parseInt(session.user?.id || "0");
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  const isSuperAdmin = userRoles.some(r => r.role.name === "super_admin");
+  if (!isSuperAdmin) return { success: false, error: "Hanya Super Admin yang dapat menggunakan fitur Impersonasi." };
   
   const cookieStore = await cookies();
   cookieStore.set("impersonated_user_id", targetUserId.toString(), {

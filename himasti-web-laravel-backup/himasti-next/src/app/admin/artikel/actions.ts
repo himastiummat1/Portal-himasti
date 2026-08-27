@@ -1,9 +1,17 @@
 "use server";
+import { auth } from "@/auth";
+
+async function requireAuth() {
+  const session = await auth();
+  if (!session?.user?.id) throw new Error("Unauthorized");
+  return session;
+}
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 
 export async function addArtikel(formData: FormData) {
+  await requireAuth();
   const title = formData.get("title") as string;
   const description = formData.get("description") as string;
   const link = formData.get("link") as string;
@@ -28,6 +36,7 @@ export async function addArtikel(formData: FormData) {
 }
 
 export async function deleteArtikel(id: number) {
+  await requireAuth();
   try {
     await prisma.artikel.delete({ where: { id } });
     revalidatePath("/admin/artikel");
@@ -38,6 +47,7 @@ export async function deleteArtikel(id: number) {
 }
 
 export async function updateArtikelStatus(id: number, status: string) {
+  await requireAuth();
   try {
     await prisma.artikel.update({ where: { id }, data: { status } });
     revalidatePath("/admin/artikel");

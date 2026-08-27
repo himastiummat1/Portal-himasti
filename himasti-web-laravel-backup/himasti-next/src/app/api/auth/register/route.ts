@@ -11,6 +11,17 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Semua kolom wajib diisi" }, { status: 400 });
     }
 
+    // Validate inputs
+    if (password.length < 8) {
+      return NextResponse.json({ error: "Password minimal 8 karakter" }, { status: 400 });
+    }
+    if (!email.includes("@")) {
+      return NextResponse.json({ error: "Format email tidak valid" }, { status: 400 });
+    }
+    if (nim.length < 5 || nim.length > 20) {
+      return NextResponse.json({ error: "NIM tidak valid" }, { status: 400 });
+    }
+
     // Check if user exists
     const existingUser = await prisma.user.findUnique({
       where: { email }

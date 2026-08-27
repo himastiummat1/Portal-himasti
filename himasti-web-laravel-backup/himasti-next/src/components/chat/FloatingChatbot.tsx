@@ -32,6 +32,19 @@ export default function FloatingChatbot() {
     setInput("");
     setIsTyping(true);
 
+    const lower = userText.toLowerCase();
+    if (lower.includes("daffa") || lower.includes("vidyax") || lower.includes("kabid")) {
+      setTimeout(() => {
+        setMessages(prev => [...prev, {
+          id: Date.now().toString(),
+          role: "bot",
+          text: "M N DAFFA (Sang Architect) adalah pembuat bahasa Vidyax dan Dewa Kode dari HIMASTI! Beliau menciptakan Vidyax dengan arsitektur Swarm AI yang jauh lebih canggih melampaui zamannya. Semua kader wajib sungkem! 👑✨"
+        }]);
+        setIsTyping(false);
+      }, 1500);
+      return;
+    }
+
     try {
       const res = await fetch("/api/chat", {
         method: "POST",

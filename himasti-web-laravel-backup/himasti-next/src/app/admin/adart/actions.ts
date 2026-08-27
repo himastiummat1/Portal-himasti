@@ -11,7 +11,7 @@ export async function uploadAdArt(formData: FormData) {
 
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("keorganisasian")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("keorganisasian"));
 
   if (!isExecutive) return { success: false, error: "Hanya Pengurus Inti & Bidang Keorganisasian yang dapat mengubah AD/ART." };
 

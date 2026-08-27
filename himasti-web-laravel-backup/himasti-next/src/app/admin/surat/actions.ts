@@ -22,10 +22,17 @@ export async function createSurat(formData: FormData) {
     throw new Error("Semua kolom berlabel bintang wajib diisi");
   }
 
+  const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
   let filePath = null;
   if (file && file.size > 0) {
     const buffer = Buffer.from(await file.arrayBuffer());
-    const fileExt = file.name.split('.').pop();
+    const fileExt = file.name.split('.').pop()?.toLowerCase();
+    if (!fileExt || !ALLOWED_EXTENSIONS.includes(fileExt)) {
+      throw new Error("Jenis file tidak diizinkan. Hanya: " + ALLOWED_EXTENSIONS.join(", "));
+    }
+    if (file.size > 10 * 1024 * 1024) {
+      throw new Error("Ukuran file maksimal 10MB");
+    }
     const fileName = `surat-\${crypto.randomBytes(8).toString('hex')}.\${fileExt}`;
     const uploadDir = path.join(process.cwd(), "public", "uploads", "surat");
     await fs.writeFile(path.join(uploadDir, fileName), buffer);

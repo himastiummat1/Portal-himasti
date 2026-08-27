@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
-  secret: process.env.AUTH_SECRET || "supersecret_himasti_key_replace_me_in_production",
+  secret: process.env.AUTH_SECRET,
   pages: {
     signIn: "/login",
   },

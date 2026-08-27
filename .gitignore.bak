@@ -1,0 +1,9 @@
+.vscode/
+.env
+*.zip
+*.sqlite
+*.log
+vendor/
+node_modules/
+public/storage/
+himastiummat

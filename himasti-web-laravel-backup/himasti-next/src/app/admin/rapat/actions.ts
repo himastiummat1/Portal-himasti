@@ -1,4 +1,5 @@
 "use server";
+import { auth } from "@/auth";
 
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
@@ -15,8 +16,9 @@ export async function addRapat(formData: FormData) {
   }
 
   try {
-    const user = await prisma.user.findFirst(); // Dummy login user
-    if (!user) return { success: false, error: "Tidak ada user." };
+    const session = await auth();
+    if (!session?.user?.id) return { success: false, error: "Unauthorized" };
+    const userId = parseInt(session.user.id);
 
     await prisma.meeting.create({
       data: {
@@ -25,7 +27,7 @@ export async function addRapat(formData: FormData) {
         type,
         location,
         event_date: new Date(eventDate),
-        created_by: user.id
+        created_by: userId
       }
     });
 
@@ -38,6 +40,8 @@ export async function addRapat(formData: FormData) {
 }
 
 export async function deleteRapat(id: number) {
+  const session = await auth();
+  if (!session?.user?.id) return { success: false, error: "Unauthorized" };
   try {
     await prisma.meeting.delete({ where: { id } });
     revalidatePath("/admin/rapat");

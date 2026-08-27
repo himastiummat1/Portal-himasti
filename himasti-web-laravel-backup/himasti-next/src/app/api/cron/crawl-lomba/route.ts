@@ -2,7 +2,11 @@ import { NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 
-export async function GET() {
+export async function GET(request: Request) {
+  const authHeader = request.headers.get('authorization');
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET || "himasti_cron_2026"}`) {
+    return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
   try {
     const res = await fetch('https://devpost.com/api/hackathons?page=1', { cache: 'no-store' });
     const data = await res.json();

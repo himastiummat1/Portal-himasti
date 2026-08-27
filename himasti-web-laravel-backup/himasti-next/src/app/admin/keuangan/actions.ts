@@ -9,7 +9,7 @@ export async function addKeuangan(formData: FormData) {
   if (!session) return { success: false, error: "Unauthorized" };
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara"));
   if (!isExecutive) return { success: false, error: "Akses Ditolak" };
 
   const tipe = formData.get("tipe") as string;
@@ -49,7 +49,7 @@ export async function updateKeuangan(id: number, formData: FormData) {
   if (!session) return { success: false, error: "Unauthorized" };
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara"));
   if (!isExecutive) return { success: false, error: "Akses Ditolak" };
 
   const tipe = formData.get("tipe") as string;
@@ -90,7 +90,7 @@ export async function deleteKeuangan(id: number) {
   if (!session) return { success: false, error: "Unauthorized" };
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara"));
   if (!isExecutive) return { success: false, error: "Akses Ditolak" };
 
   try {

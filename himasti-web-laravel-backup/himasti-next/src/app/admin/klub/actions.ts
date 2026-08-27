@@ -9,7 +9,7 @@ export async function addKlub(formData: FormData) {
   
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid"));
   if (!isExecutive) return { success: false, error: "Akses Ditolak: Hanya pengurus yang dapat meresmikan klub." };
 
   const title = formData.get("title") as string;
@@ -32,7 +32,7 @@ export async function deleteKlub(id: number) {
   
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid"));
   if (!isExecutive) return { success: false, error: "Akses Ditolak." };
 
   try {
