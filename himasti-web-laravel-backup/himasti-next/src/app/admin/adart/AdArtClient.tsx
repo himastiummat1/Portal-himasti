@@ -123,11 +123,28 @@ export default function AdArtClient({
               </a>
             </div>
           ) : (
-            <embed 
-              src="/uploads/adart/adart_official.pdf" 
+            <object 
+              data="/uploads/adart/adart_official.pdf" 
               type="application/pdf"
               className="w-full flex-1"
-            />
+            >
+              <div className="flex-1 flex flex-col items-center justify-center bg-gray-50 p-12 text-center">
+                <div className="w-20 h-20 bg-red-100 text-red-600 rounded-2xl flex items-center justify-center mb-6 border border-red-200">
+                  <FileText className="w-10 h-10" />
+                </div>
+                <h3 className="text-xl font-bold text-gray-900 mb-2">Browser tidak mendukung tampilan PDF</h3>
+                <p className="text-gray-500 max-w-md mx-auto mb-8">
+                  Silakan unduh dokumen untuk membacanya secara offline.
+                </p>
+                <a 
+                  href="/uploads/adart/adart_official.pdf" 
+                  download="AD-ART_HIMASTI_UMMAT.pdf"
+                  className="px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors"
+                >
+                  Unduh AD/ART (PDF)
+                </a>
+              </div>
+            </object>
           )}
         </div>
       ) : (
