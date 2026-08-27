@@ -6,6 +6,7 @@ import {
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
   Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid
 } from "lucide-react";
+import TerminalEasterEgg from "./TerminalEasterEgg";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -315,7 +316,7 @@ export default async function AdminDashboard() {
         </div>
 
       </div>
-      <TerminalEasterEgg userName={session.user.name || "Kader"} />
+      <TerminalEasterEgg userName={session?.user?.name || "Kader"} />
     </div>
   );
 }
