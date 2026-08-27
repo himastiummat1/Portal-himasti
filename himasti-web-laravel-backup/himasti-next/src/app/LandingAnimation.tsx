@@ -172,13 +172,13 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       </nav>
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-screen flex flex-col lg:flex-row items-center justify-center px-6 pt-24 lg:pt-0 max-w-7xl mx-auto gap-12">
+      <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 max-w-5xl mx-auto gap-12">
         {/* Left Typography */}
-        <div className="flex-1 flex flex-col items-start justify-center z-10 w-full">
+        <div className="flex flex-col items-center justify-center z-10 w-full">
           <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-medium leading-[1.1] tracking-tight text-black mb-6">
             {t.heroTitle}
           </h1>
-          <p className="text-lg md:text-xl text-gray-500 max-w-lg mb-10 leading-relaxed">
+          <p className="text-lg md:text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed mx-auto">
             {t.heroDesc}
           </p>
           <Link href="/login" className="px-8 py-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-colors flex items-center gap-2 group">
@@ -188,7 +188,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         </div>
 
         {/* Right AI Terminal (Unchanged functionally) */}
-        <div className="flex-1 w-full max-w-md z-10 mt-12 lg:mt-0">
+        <div className="w-full max-w-2xl z-10">
           <div className="bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
