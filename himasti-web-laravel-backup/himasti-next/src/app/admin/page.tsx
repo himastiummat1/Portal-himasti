@@ -315,6 +315,7 @@ export default async function AdminDashboard() {
         </div>
 
       </div>
+      <TerminalEasterEgg userName={session.user.name || "Kader"} />
     </div>
   );
 }
