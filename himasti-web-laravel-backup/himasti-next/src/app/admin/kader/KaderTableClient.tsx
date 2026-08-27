@@ -1,16 +1,20 @@
 "use client";
-import { useState } from "react";
-import { Search, FileSpreadsheet, Eye, X, Download } from "lucide-react";
+import { useState, useTransition } from "react";
+import { Search, FileSpreadsheet, Eye, X, Download, Edit2, Trash2, CheckCircle2 } from "lucide-react";
+import { updateKader, deleteKader } from "./actions";
 
 export default function KaderTableClient({ kaders }: { kaders: any[] }) {
   const [search, setSearch] = useState("");
   const [selectedKader, setSelectedKader] = useState<any | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [isPending, startTransition] = useTransition();
 
   const filtered = kaders.filter(k => 
     k.nama.toLowerCase().includes(search.toLowerCase()) || 
     k.nim.toLowerCase().includes(search.toLowerCase()) ||
     k.angkatan.toLowerCase().includes(search.toLowerCase())
   );
+
   const exportCSV = () => {
     const headers = ["ID", "Nama Lengkap", "NIM", "Email", "Angkatan", "No HP", "Jenis Kelamin", "Role", "Asal Sekolah", "Hobi"];
     const rows = filtered.map(k => [
@@ -38,6 +42,33 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
     document.body.removeChild(link);
   };
 
+  const handleUpdate = async (e: any) => {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    startTransition(async () => {
+      const res = await updateKader(selectedKader.user_id, formData);
+      if (res.success) {
+        alert("Data berhasil disimpan! Email login & role telah disinkronkan.");
+        window.location.reload();
+      } else {
+        alert(res.error);
+      }
+    });
+  };
+
+  const handleDelete = async (userId: number) => {
+    if (!confirm("PERINGATAN: Menghapus data ini juga akan menghapus akun login kader tersebut secara permanen. Lanjutkan?")) return;
+    startTransition(async () => {
+      const res = await deleteKader(userId);
+      if (res.success) {
+        alert("Akun kader berhasil dihapus permanen.");
+        window.location.reload();
+      } else {
+        alert(res.error);
+      }
+    });
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
@@ -63,49 +94,35 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50/50 text-gray-500 uppercase text-[10px] sm:text-xs tracking-wider border-b border-gray-200">
+            <thead className="bg-gray-50/50 text-gray-500 uppercase text-xs tracking-wider border-b border-gray-200">
               <tr>
-                <th className="px-4 sm:px-6 py-4 font-medium">Biodata Utama</th>
-                <th className="px-4 sm:px-6 py-4 font-medium hidden sm:table-cell">Kontak</th>
-                <th className="px-4 sm:px-6 py-4 font-medium hidden md:table-cell">Status Organisasi</th>
-                <th className="px-4 sm:px-6 py-4 font-medium text-right">Aksi</th>
+                <th className="px-6 py-4 font-medium">Mahasiswa</th>
+                <th className="px-6 py-4 font-medium">NIM</th>
+                <th className="px-6 py-4 font-medium">Angkatan</th>
+                <th className="px-6 py-4 font-medium">Role</th>
+                <th className="px-6 py-4 font-medium text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {filtered.length === 0 ? (
-                <tr>
-                  <td colSpan={4} className="px-6 py-12 text-center text-gray-400">
-                    Tidak ada data kader yang cocok.
-                  </td>
-                </tr>
-              ) : filtered.map((k) => (
+              {filtered.map((k) => (
                 <tr key={k.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-4 sm:px-6 py-4">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-full bg-purple-50 border border-purple-100 flex items-center justify-center text-purple-600 font-bold shrink-0 hidden sm:flex">
-                        {k.nama.charAt(0).toUpperCase()}
-                      </div>
-                      <div>
-                        <div className="font-bold text-gray-900">{k.nama}</div>
-                        <div className="text-gray-500 font-mono text-xs mt-0.5">{k.nim} • Angkt. {k.angkatan}</div>
-                      </div>
-                    </div>
-                  </td>
-                  <td className="px-4 sm:px-6 py-4 hidden sm:table-cell">
-                    <div className="text-gray-800">{k.no_hp}</div>
+                  <td className="px-6 py-4">
+                    <div className="font-semibold text-gray-900">{k.nama}</div>
                     <div className="text-gray-500 text-xs mt-0.5">{k.email}</div>
                   </td>
-                  <td className="px-4 sm:px-6 py-4 hidden md:table-cell">
-                    <span className="inline-flex px-2 py-1 rounded bg-gray-100 text-gray-600 text-[10px] font-bold uppercase tracking-wider border border-gray-200">
-                      {k.role.replace(/_/g, ' ')}
+                  <td className="px-6 py-4 font-mono">{k.nim}</td>
+                  <td className="px-6 py-4">{k.angkatan}</td>
+                  <td className="px-6 py-4">
+                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-purple-50 text-purple-700 border border-purple-100">
+                      {k.role.replace(/_/g, ' ').toUpperCase()}
                     </span>
                   </td>
-                  <td className="px-4 sm:px-6 py-4 text-right">
+                  <td className="px-6 py-4 text-right">
                     <button 
-                      onClick={() => setSelectedKader(k)} 
-                      className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 hover:border-purple-300 hover:text-purple-600 text-gray-600 rounded-lg text-xs font-medium transition-colors"
+                      onClick={() => { setSelectedKader(k); setIsEditing(false); }}
+                      className="text-purple-600 hover:text-purple-900 font-medium text-xs px-3 py-1.5 rounded-lg hover:bg-purple-50 transition-colors inline-flex items-center gap-1"
                     >
-                      <Eye className="w-3.5 h-3.5" /> Detail
+                      <Eye className="w-3.5 h-3.5" /> Lihat Berkas
                     </button>
                   </td>
                 </tr>
@@ -115,131 +132,133 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
         </div>
       </div>
 
-      {/* DETAIL MODAL */}
       {selectedKader && (
-        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-6 animate-in fade-in">
-          <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden slide-in-from-bottom-4 flex flex-col max-h-[90vh]">
-            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/80 sticky top-0">
+        <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-[100] flex items-center justify-center p-4 animate-in fade-in">
+          <div className="bg-white rounded-2xl w-full max-w-2xl shadow-2xl overflow-hidden slide-in-from-bottom-4 border border-gray-100">
+            {/* Header Modal */}
+            <div className="px-6 py-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
               <div>
                 <h3 className="font-bold text-gray-900 text-lg">Berkas Biodata Kader</h3>
-                <p className="text-xs text-gray-500 font-mono mt-0.5">ID: {selectedKader.nim}</p>
+                <p className="text-xs text-gray-500 font-mono mt-0.5">ID: {selectedKader.id.toString().padStart(8, '0')}</p>
               </div>
-              <button onClick={() => setSelectedKader(null)} className="p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-700 rounded-full transition-colors"><X className="w-5 h-5"/></button>
+              <div className="flex items-center gap-2">
+                <button onClick={() => setIsEditing(!isEditing)} className={`p-2 rounded-lg transition-colors ${isEditing ? 'bg-purple-100 text-purple-700' : 'text-gray-400 hover:text-gray-900 hover:bg-gray-100'}`}>
+                  <Edit2 className="w-5 h-5" />
+                </button>
+                <button onClick={() => handleDelete(selectedKader.user_id)} className="p-2 text-red-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
+                  <Trash2 className="w-5 h-5" />
+                </button>
+                <div className="w-px h-6 bg-gray-200 mx-1"></div>
+                <button onClick={() => { setSelectedKader(null); setIsEditing(false); }} className="text-gray-400 hover:text-gray-900 p-2 rounded-lg hover:bg-gray-100 transition-colors">
+                  <X className="w-5 h-5"/>
+                </button>
+              </div>
             </div>
-            
-            <div className="p-6 overflow-y-auto space-y-6">
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div className="p-4 bg-gray-50 border border-gray-100 rounded-xl">
-                  <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-1 block">Nama Lengkap</span>
-                  <p className="font-medium text-gray-900">{selectedKader.nama}</p>
-                </div>
-                <div className="p-4 bg-gray-50 border border-gray-100 rounded-xl">
-                  <span className="text-[10px] uppercase tracking-widest font-bold text-gray-400 mb-1 block">Angkatan</span>
-                  <p className="font-medium text-gray-900">{selectedKader.angkatan}</p>
-                </div>
-              </div>
 
-              <div>
-                <h4 className="text-sm font-bold text-gray-900 border-b border-gray-200 pb-2 mb-3">Informasi Kontak & Alamat</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-sm">
-                  <div>
-                    <span className="text-gray-500 block mb-0.5">Email</span>
-                    <span className="font-medium text-gray-900">{selectedKader.email}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-500 block mb-0.5">Nomor HP/WA</span>
-                    <span className="font-medium text-gray-900">{selectedKader.no_hp}</span>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <span className="text-gray-500 block mb-0.5">Alamat Domisili</span>
-                    <span className="font-medium text-gray-900 leading-relaxed">{selectedKader.alamat || "Belum diisi"}</span>
+            {/* Content Modal */}
+            <form onSubmit={handleUpdate} className="p-6 overflow-y-auto max-h-[70vh]">
+              <div className="flex items-start gap-6 mb-8">
+                <div className="w-24 h-24 bg-gradient-to-br from-purple-100 to-sky-100 rounded-2xl border border-purple-200/50 flex flex-col items-center justify-center text-purple-700 shadow-sm shrink-0">
+                  <span className="text-3xl font-black">{selectedKader.nama.charAt(0)}</span>
+                </div>
+                <div className="space-y-1 w-full">
+                  <h2 className="text-2xl font-bold text-gray-900">{selectedKader.nama}</h2>
+                  <div className="flex flex-wrap gap-2 items-center mt-2">
+                    <span className="px-2.5 py-1 bg-purple-50 text-purple-700 text-xs font-bold rounded-md border border-purple-100">
+                      NIM. {selectedKader.nim}
+                    </span>
+                    <span className="px-2.5 py-1 bg-sky-50 text-sky-700 text-xs font-bold rounded-md border border-sky-100">
+                      Angkatan {selectedKader.angkatan}
+                    </span>
                   </div>
                 </div>
               </div>
 
-              <div>
-                <h4 className="text-sm font-bold text-gray-900 border-b border-gray-200 pb-2 mb-3">Latar Belakang</h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-4 gap-x-6 text-sm">
-                  <div>
-                    <span className="text-gray-500 block mb-0.5">Asal Sekolah</span>
-                    <span className="font-medium text-gray-900">{selectedKader.asal_sekolah || "-"}</span>
-                  </div>
-                  <div>
-                    <span className="text-gray-500 block mb-0.5">Jenis Kelamin</span>
-                    <span className="font-medium text-gray-900">{selectedKader.jenis_kelamin || "-"}</span>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <span className="text-gray-500 block mb-0.5">Hobi / Minat</span>
-                    <span className="font-medium text-gray-900">{selectedKader.hobi || "-"}</span>
-                  </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+                <div>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Alamat Email (Akun Login)</label>
+                  {isEditing ? (
+                    <input type="email" name="email" defaultValue={selectedKader.email} className="w-full border border-gray-200 p-2 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none" required />
+                  ) : (
+                    <div className="text-gray-900 font-medium">{selectedKader.email}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Nomor WhatsApp</label>
+                  {isEditing ? (
+                    <input type="text" name="no_hp" defaultValue={selectedKader.no_hp} className="w-full border border-gray-200 p-2 rounded-lg text-sm focus:ring-2 focus:ring-purple-500 outline-none" />
+                  ) : (
+                    <div className="text-gray-900 font-medium">{selectedKader.no_hp}</div>
+                  )}
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Jenis Kelamin</label>
+                  <div className="text-gray-900 font-medium">{selectedKader.jenis_kelamin === 'L' ? 'Laki-laki' : selectedKader.jenis_kelamin === 'P' ? 'Perempuan' : '-'}</div>
+                </div>
+                <div>
+                  <label className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-1 block">Role Saat Ini</label>
+                  <div className="text-gray-900 font-medium uppercase">{selectedKader.role.replace(/_/g, ' ')}</div>
                 </div>
               </div>
 
-              {/* UBAH ROLE (Khusus Super Admin) */}
-              <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mt-6">
-                <h4 className="text-xs font-bold text-blue-800 uppercase tracking-widest mb-3">Manajemen Hak Akses (Role)</h4>
-                <div className="flex flex-col sm:flex-row gap-3">
+              {isEditing && (
+                <div className="bg-blue-50 border border-blue-100 rounded-xl p-4 mt-8">
+                  <h4 className="text-xs font-bold text-blue-800 uppercase tracking-widest mb-3">Ubah Role / Jabatan</h4>
                   <select 
-                    id="roleSelect"
-                    defaultValue={selectedKader.role} 
-                    className="flex-1 bg-white border border-blue-200 text-sm rounded-lg px-3 py-2 outline-none focus:ring-2 focus:ring-blue-500"
+                    name="role_name"
+                    defaultValue={selectedKader.role}
+                    className="w-full border border-blue-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-blue-500 outline-none bg-white text-gray-900 font-medium"
                   >
                     <option value="kader">Kader Biasa</option>
                     <option value="ketua_himpunan">Ketua Himpunan</option>
                     <option value="wakil_ketua">Wakil Ketua</option>
                     <option value="sekretaris_umum">Sekretaris Umum</option>
                     <option value="bendahara_umum">Bendahara Umum</option>
-                    <optgroup label="Kepala Bidang">
-                      <option value="kabid_rnd">Kabid R&D</option>
-                      <option value="kabid_kaderisasi">Kabid Kaderisasi</option>
-                      <option value="kabid_kominfo">Kabid Kominfo</option>
-                      <option value="kabid_psdm">Kabid PSDM</option>
+                    <optgroup label="Bidang Pengkaderan (Kaderisasi)">
+                      <option value="kabid_pengkaderan">Kabid Pengkaderan</option>
+                      <option value="anggota_pengkaderan">Anggota Pengkaderan</option>
                     </optgroup>
-                    <optgroup label="Wakil Kepala Bidang">
-                      <option value="wakil_kabid_rnd">Wakil Kabid R&D</option>
-                      <option value="wakil_kabid_kaderisasi">Wakil Kabid Kaderisasi</option>
-                      <option value="wakil_kabid_kominfo">Wakil Kabid Kominfo</option>
-                      <option value="wakil_kabid_psdm">Wakil Kabid PSDM</option>
+                    <optgroup label="Bidang Kominfo (Metkom)">
+                      <option value="kabid_metkom">Kabid Metkom</option>
+                      <option value="anggota_metkom">Anggota Metkom</option>
                     </optgroup>
-                    <optgroup label="Anggota Divisi">
-                      <option value="anggota_rnd">Anggota R&D</option>
-                      <option value="anggota_kaderisasi">Anggota Kaderisasi</option>
-                      <option value="anggota_kominfo">Anggota Kominfo</option>
-                      <option value="anggota_psdm">Anggota PSDM</option>
+                    <optgroup label="Bidang Litbang (R&D)">
+                      <option value="kabid_litbang">Kabid Litbang</option>
+                      <option value="anggota_litbang">Anggota Litbang</option>
                     </optgroup>
-                    <optgroup label="Lainnya">
+                    <optgroup label="Bidang Humas">
+                      <option value="kabid_humas">Kabid Humas</option>
+                      <option value="anggota_humas">Anggota Humas</option>
+                    </optgroup>
+                    <optgroup label="Bidang Lainnya">
+                      <option value="kabid_kemuhammadiyahan">Kabid Kemuhammadiyahan</option>
+                      <option value="kabid_keorganisasian">Kabid Keorganisasian</option>
+                      <option value="kabid_kewirausahaan">Kabid Kewirausahaan</option>
+                      <option value="kabid_mikat">Kabid Minat Bakat (Mikat)</option>
+                      <option value="kabid_aksi_advokasi">Kabid Aksi & Advokasi</option>
+                    </optgroup>
+                    <optgroup label="Lain-lain">
                       <option value="panitia_sementara">Panitia Sementara</option>
                       <option value="demisioner">Demisioner</option>
                     </optgroup>
                   </select>
-                  <button 
-                    onClick={async () => {
-                      const newRole = (document.getElementById('roleSelect') as HTMLSelectElement).value;
-                      if(newRole === selectedKader.role) return;
-                      const res = await fetch('/api/admin/kader/role', {
-                        method: 'POST', body: JSON.stringify({ userId: selectedKader.user_id, newRoleName: newRole })
-                      });
-                      if(res.ok) {
-                        alert('Berhasil mengubah role! Silakan refresh halaman.');
-                        window.location.reload();
-                      } else {
-                        alert('Gagal mengubah role. (Pastikan Anda Super Admin)');
-                      }
-                    }}
-                    className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-4 py-2 rounded-lg transition-colors text-sm"
-                  >
-                    Terapkan Role
-                  </button>
                 </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="mt-8 flex justify-end gap-3 pt-6 border-t border-gray-100">
+                <button type="button" onClick={() => { setSelectedKader(null); setIsEditing(false); }} className="px-6 py-2.5 bg-gray-100 text-gray-700 text-sm font-bold rounded-xl hover:bg-gray-200 transition-colors">
+                  Tutup
+                </button>
+                {isEditing && (
+                  <button type="submit" disabled={isPending} className="px-6 py-2.5 bg-purple-600 text-white text-sm font-bold rounded-xl hover:bg-purple-700 transition-colors flex items-center gap-2 disabled:opacity-50">
+                    <CheckCircle2 className="w-4 h-4" />
+                    {isPending ? "Menyimpan..." : "Simpan Perubahan"}
+                  </button>
+                )}
               </div>
-            </div>
-            
-            <div className="p-4 border-t border-gray-100 bg-gray-50 flex justify-end">
-              <button onClick={() => setSelectedKader(null)} className="px-6 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors">
-                Tutup Berkas
-              </button>
-            </div>
+            </form>
+
           </div>
         </div>
       )}
