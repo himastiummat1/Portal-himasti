@@ -9,7 +9,7 @@ export function Navigation() {
   const pathname = usePathname();
 
   // Hide global navigation on admin and login pages
-  if (pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
+  if (pathname === "/" || pathname?.startsWith("/register") || pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
     return null;
   }
 
