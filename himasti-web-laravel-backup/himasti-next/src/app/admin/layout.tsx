@@ -59,7 +59,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
 
   return (
-    <div className="min-h-screen bg-[#f8fafc] dark:bg-gray-900 selection:bg-blue-100 selection:text-blue-900">
+    <div className="min-h-screen bg-[#f8fafc]  selection:bg-blue-100 selection:text-blue-900">
       <TopNav 
         groups={groups} 
         userStr={session.user.name || "User"} 
