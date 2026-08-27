@@ -111,8 +111,8 @@ export default function HackerMode() {
             checked={isActive} 
             onChange={() => setIsActive(!isActive)} 
           />
-          <div className={\`w-8 h-4 rounded-full transition-colors relative \${isActive ? 'bg-green-500' : 'bg-slate-600'}\`}>
-            <div className={\`w-3 h-3 bg-white rounded-full absolute top-0.5 transition-transform \${isActive ? 'translate-x-4' : 'translate-x-0.5'}\`}></div>
+          <div className={`w-8 h-4 rounded-full transition-colors relative ${isActive ? 'bg-green-500' : 'bg-slate-600'}`}>
+            <div className={`w-3 h-3 bg-white rounded-full absolute top-0.5 transition-transform ${isActive ? 'translate-x-4' : 'translate-x-0.5'}`}></div>
           </div>
           <span className="text-xs font-mono font-bold text-slate-300">
             {isActive ? '> DEV MODE' : 'DEV MODE'}
