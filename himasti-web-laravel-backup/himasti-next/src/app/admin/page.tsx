@@ -4,7 +4,7 @@ import Link from "next/link";
 import { 
   Users, FileText, Database, Shield, BookOpen, 
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
-  Calendar, Info, Trophy, ExternalLink, Code
+  Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid
 } from "lucide-react";
 
 export default async function AdminDashboard() {
