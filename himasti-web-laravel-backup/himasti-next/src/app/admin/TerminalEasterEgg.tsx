@@ -26,19 +26,57 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
 
     let output = "";
     const lowerCmd = cmd.toLowerCase();
+    const args = cmd.split(' ').slice(1);
     
     if (lowerCmd.startsWith("sudo rm -rf")) {
       output = "Akses ditolak! Anda bukan super admin soo jadi ndak bisa yahh wkwkwk";
+    } else if (lowerCmd.startsWith("cd")) {
+      const target = args[0] || "~";
+      if (target === ".." && cwd !== "~" && cwd !== "/") {
+        setCwd("~");
+        output = "";
+      } else {
+        setCwd(target === "/" ? "/" : (target.startsWith("~") ? target : cwd === "/" ? "/" + target : cwd + "/" + target));
+        output = "";
+      }
+    } else if (lowerCmd.startsWith("mkdir")) {
+      output = args[0] ? `mkdir: created directory '${args[0]}'` : "mkdir: missing operand";
+    } else if (lowerCmd.startsWith("touch")) {
+      output = args[0] ? `touch: created file '${args[0]}'` : "touch: missing file operand";
+    } else if (lowerCmd.startsWith("echo")) {
+      output = args.join(" ");
+    } else if (lowerCmd.startsWith("ping")) {
+      output = `PING ${args[0] || "8.8.8.8"} (${args[0] || "8.8.8.8"}) 56(84) bytes of data.\n64 bytes from ${args[0] || "8.8.8.8"}: icmp_seq=1 ttl=117 time=14.2 ms\n64 bytes from ${args[0] || "8.8.8.8"}: icmp_seq=2 ttl=117 time=13.8 ms`;
+    } else if (lowerCmd === "pwd") {
+      output = cwd === "~" ? `/home/${userName.toLowerCase().replace(/\s/g, "")}` : `/home/${userName.toLowerCase().replace(/\s/g, "")}/${cwd.replace("~/", "")}`;
+    } else if (lowerCmd === "date") {
+      output = new Date().toString();
+    } else if (lowerCmd === "neofetch") {
+      output = `
+       \\\\\\\\\\\\        ${userName}@himasti-server
+      \\\\      \\\\       ---------------------
+     \\\\  HIMASTI \\\\      OS: HIMASTI OS v2.0
+    \\\\   PORTAL   \\\\     Host: Vidyax Swarm Engine
+   \\\\              \\\\    Kernel: 5.15.0-generic
+  \\\\\\\\\\\\\\\\\\\\\\\\     Uptime: 9999 days, 23 hours
+                           Shell: bash 5.1.16
+                           CPU: Intel i9-14900K (Bercanda)`;
     } else {
       switch (lowerCmd) {
         case "help":
-          output = "Perintah tersedia: whoami, ls, clear, vidyax, sudo rm -rf /";
+          output = "Perintah tersedia: whoami, ls, cd, pwd, mkdir, touch, echo, ping, date, neofetch, clear, vidyax, sudo rm -rf";
           break;
         case "whoami":
           output = `${userName} - Pengguna sah Portal HIMASTI`;
           break;
         case "ls":
-          output = "karya/  modul/  dev-tools/  surat-menyurat/  rahasia_negara/";
+          if (cwd === "~" || cwd === "/") {
+            output = "karya/  modul/  dev-tools/  surat-menyurat/  rahasia_negara/";
+          } else if (cwd.includes("rahasia_negara")) {
+            output = "skandal_organisasi.pdf  dana_himpunan.xlsx  password_superadmin.txt";
+          } else {
+            output = "Tidak ada file di direktori ini.";
+          }
           break;
         case "clear":
           setHistory([]);
@@ -52,7 +90,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
           setInput("");
           return;
         default:
-          output = `bash: ${cmd}: command not found`;
+          output = `bash: ${cmd.split(' ')[0]}: command not found`;
       }
     }
 
