@@ -18,7 +18,7 @@ export default function LoginContainer() {
         }`}
       >
         <div className="w-full max-w-sm mx-auto">
-          <button 
+          <Link href="/" 
             onClick={() => setShowLogin(false)}
             className="mb-8 flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors"
           >
@@ -26,7 +26,7 @@ export default function LoginContainer() {
               <path strokeLinecap="round" strokeLinejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
             </svg>
             Kembali ke Sambutan
-          </button>
+          </Link>
 
           <div className="flex justify-center mb-8">
             <div className="h-14 w-14 bg-white rounded-xl shadow-sm border border-gray-200 p-1.5 flex items-center justify-center">
@@ -74,7 +74,7 @@ export default function LoginContainer() {
             Sistem informasi manajemen terpadu untuk administrasi, riset, dan publikasi mahasiswa Sistem & Teknologi Informasi.
           </p>
 
-          <button 
+          <Link href="/" 
             onClick={() => setShowLogin(true)}
             className="group relative inline-flex items-center justify-center px-8 py-4 text-lg font-bold text-purple-950 bg-yellow-400 rounded-full overflow-hidden transition-all hover:scale-105 shadow-[0_0_20px_rgba(250,204,21,0.3)] hover:shadow-[0_0_40px_rgba(250,204,21,0.5)] active:scale-95"
           >
@@ -84,7 +84,7 @@ export default function LoginContainer() {
                 <path strokeLinecap="round" strokeLinejoin="round" d="M5 10l7-7m0 0l7 7m-7-7v18" />
               </svg>
             </span>
-          </button>
+          </Link>
           
         </div>
       </div>
