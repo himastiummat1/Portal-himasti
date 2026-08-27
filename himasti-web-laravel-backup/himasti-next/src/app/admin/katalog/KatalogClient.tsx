@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ExternalLink, Github, Plus, LayoutGrid, Rocket, Sparkles } from "lucide-react";
+import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles } from "lucide-react";
 
 export default function KatalogClient() {
   const [search, setSearch] = useState("");
@@ -127,7 +127,7 @@ export default function KatalogClient() {
                 <ExternalLink className="w-3.5 h-3.5" /> Kunjungi
               </a>
               <a href={work.repo} target="_blank" className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors">
-                <Github className="w-3.5 h-3.5" /> Repositori
+                <GitBranch className="w-3.5 h-3.5" /> Repositori
               </a>
             </div>
 
