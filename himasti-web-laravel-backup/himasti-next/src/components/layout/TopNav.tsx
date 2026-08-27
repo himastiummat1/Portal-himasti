@@ -122,9 +122,14 @@ export default function TopNav({
             >
               🔒 TOP SECRET
             </button>
+            
+            <Link href="/admin/profil" className="text-sm font-medium text-slate-500 hover:text-sky-700 ml-4 transition-colors">
+              Profil Saya
+            </Link>
             <button onClick={() => signOut({ callbackUrl: "/login" })} className="text-sm font-medium text-slate-500 hover:text-sky-700 ml-4 transition-colors">
               Logout
             </button>
+
           </div>
 
           {/* Mobile menu button */}
@@ -170,11 +175,16 @@ export default function TopNav({
                 ))}
               </div>
             ))}
+            
             <div className="border-t border-gray-100 mt-2 pt-2">
+              <Link href="/admin/profil" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 text-sm text-slate-500">
+                Profil Saya
+              </Link>
               <button onClick={() => signOut({ callbackUrl: "/login" })} className="w-full text-left px-3 py-2 text-sm text-slate-500">
                 Logout
               </button>
             </div>
+
           </div>
         </div>
       )}
