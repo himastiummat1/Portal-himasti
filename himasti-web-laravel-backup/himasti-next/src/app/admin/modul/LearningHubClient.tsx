@@ -281,7 +281,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                   Vidyax
                 </h2>
                 <p className="text-slate-400 text-lg leading-relaxed">
-                  Bahasa pemrograman <strong className="text-white">AI-first</strong> revolusioner ciptaan Daffa (Kader HIMASTI). Dirancang dari nol dengan dukungan bawaan untuk orkestrasi <em>LLM</em>, <em>Swarm Multi-Agent</em>, dan <em>Native Tool Calling</em>.
+                  Bahasa pemrograman <strong className="text-white">AI-first</strong> revolusioner ciptaan <strong className="text-rose-400">M N DAFFA</strong> (Kabid Riset & Pengembangan HIMASTI Periode 2025-2026). Dirancang dari nol dengan dukungan bawaan untuk orkestrasi <em>LLM</em>, <em>Swarm Multi-Agent</em>, dan <em>Native Tool Calling</em>.
                 </p>
                 <div className="flex gap-4">
                   <a href="https://github.com/Vidyax-Lang/Vidyax" target="_blank" className="px-6 py-3 bg-white text-black font-semibold rounded-xl hover:bg-slate-200 transition-colors">
