@@ -12,6 +12,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
   const roadmaps = [
     {
       id: "frontend",
+      link: "https://roadmap.sh/frontend",
       title: "Frontend Engineer",
       icon: <Layout className="w-8 h-8 text-sky-500" />,
       desc: "Bangun antarmuka visual yang interaktif, responsif, dan mutakhir.",
@@ -27,6 +28,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
     },
     {
       id: "backend",
+      link: "https://roadmap.sh/backend",
       title: "Backend Engineer",
       icon: <Server className="w-8 h-8 text-emerald-500" />,
       desc: "Rancang arsitektur server, API, dan sistem keamanan yang tangguh.",
@@ -42,6 +44,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
     },
     {
       id: "data",
+      link: "https://roadmap.sh/ai-data-scientist",
       title: "Data Science & AI",
       icon: <Cpu className="w-8 h-8 text-purple-500" />,
       desc: "Olah data menjadi wawasan, latih model AI, dan prediksi masa depan.",
@@ -57,6 +60,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
     },
     {
       id: "systems",
+      link: "https://roadmap.sh/computer-science",
       title: "Systems & Compiler Engineer",
       icon: <Terminal className="w-8 h-8 text-rose-500" />,
       desc: "Jalur 'Dewa' (Expert): Bangun bahasa pemrograman, OS, dan infrastruktur tingkat rendah.",
@@ -168,9 +172,9 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                   ))}
                 </div>
                 
-                <button className="mt-8 w-full py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm flex justify-center items-center gap-2">
+                <a href={road.link} target="_blank" className="mt-8 w-full py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm flex justify-center items-center gap-2">
                   Mulai Jalur Ini <ChevronRight className="w-4 h-4" />
-                </button>
+                </a>
               </div>
             ))}
           </div>
