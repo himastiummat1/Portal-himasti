@@ -14,9 +14,7 @@ export async function addLomba(formData: FormData) {
 
   try {
     await prisma.competitionInfo.create({
-      data: {
-        title, organizer, deadline, link, type, description
-      }
+      data: { title, organizer, deadline, link, type, description }
     });
     revalidatePath("/admin/lomba");
     return { success: true };
@@ -31,18 +29,51 @@ export async function deleteLomba(id: number) {
 }
 
 export async function syncMockLomba() {
-  const mockData = [
-    { title: "Global AI Hackathon 2026", organizer: "Devpost & OpenAI", deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 14), link: "https://devpost.com", type: "Hackathon", description: "Kompetisi global membangun solusi AI inovatif." },
-    { title: "AWS Cloud Practitioner Challenge", organizer: "Amazon Web Services", deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 30), link: "https://aws.amazon.com", type: "Sertifikasi", description: "Beasiswa dan challenge sertifikasi AWS gratis." },
-    { title: "Google Solution Challenge", organizer: "Google Developer Student Clubs", deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 45), link: "https://developers.google.com", type: "Lomba IT", description: "Selesaikan satu dari 17 tujuan pembangunan berkelanjutan PBB." },
-    { title: "NASA Space Apps Challenge", organizer: "NASA", deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7), link: "https://spaceappschallenge.org/", type: "Hackathon", description: "Hackathon internasional menggunakan data terbuka NASA." },
-    { title: "Cybersecurity Capture The Flag (CTF)", organizer: "HackTheBox", deadline: new Date(Date.now() + 1000 * 60 * 60 * 24 * 3), link: "https://hackthebox.com", type: "Lomba IT", description: "Kompetisi keamanan siber tingkat universitas se-Asia Tenggara." },
-  ];
+  try {
+    // We fetch real data from Devpost API
+    const response = await fetch("https://devpost.com/api/hackathons?status=upcoming,open", { cache: "no-store" });
+    if (!response.ok) throw new Error("Gagal mengambil data dari Devpost API");
+    
+    const data = await response.json();
+    const hackathons = data.hackathons.slice(0, 5); // Take top 5
 
-  for (const item of mockData) {
-    await prisma.competitionInfo.create({ data: item });
+    for (const h of hackathons) {
+      // Cek apakah lomba ini sudah ada di database (hindari duplikat)
+      const existing = await prisma.competitionInfo.findFirst({
+        where: { link: h.url }
+      });
+      
+      if (!existing) {
+        // Parse deadline from string like "Aug 04 - 31, 2026"
+        let deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7); // Default 7 days
+        try {
+          const dates = h.submission_period_dates.split("-");
+          if (dates.length > 1) {
+             const endDateStr = dates[1].trim(); 
+             // Sangat kasar, hanya perkiraan
+             deadline = new Date(endDateStr);
+             if (isNaN(deadline.getTime())) {
+                deadline = new Date(Date.now() + 1000 * 60 * 60 * 24 * 7);
+             }
+          }
+        } catch(e) {}
+
+        await prisma.competitionInfo.create({
+          data: {
+            title: h.title,
+            organizer: h.organization_name || "Devpost",
+            deadline: deadline,
+            link: h.url,
+            type: "Hackathon",
+            description: h.time_left_to_submission || "Hackathon Internasional"
+          }
+        });
+      }
+    }
+    revalidatePath("/admin/lomba");
+    return { success: true };
+  } catch (err: any) {
+    console.error("Scraping error:", err);
+    return { success: false, error: err.message };
   }
-
-  revalidatePath("/admin/lomba");
-  return { success: true };
 }
