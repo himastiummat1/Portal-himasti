@@ -115,7 +115,7 @@ export default function AdArtClient({
                 Browser tidak dapat menampilkan file Microsoft Word secara langsung. Silakan unduh dokumen untuk membacanya.
               </p>
               <a 
-                href="/uploads/adart/adart_official.docx" 
+                href="/api/adart" 
                 download="AD-ART_HIMASTI_UMMAT.docx"
                 className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-sm"
               >
@@ -124,7 +124,7 @@ export default function AdArtClient({
             </div>
           ) : (
             <iframe 
-              src="/uploads/adart/adart_official.pdf#toolbar=0" 
+              src={`/api/adart?t=${Date.now()}#toolbar=0`} 
               className="w-full flex-1 bg-gray-100"
               title="AD/ART HIMASTI"
             />
