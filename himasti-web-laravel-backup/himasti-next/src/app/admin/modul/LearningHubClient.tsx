@@ -81,13 +81,9 @@ export default function LearningHubClient({ userName }: { userName: string }) {
 
   const cheatsheets = [
     {
-      title: "Vidyax Lang: Hello World",
+      title: "Vidyax: Swarm AI Agents",
       lang: "vidyax",
-      code: `// Bahasa pemrograman karya anak HIMASTI (Nans)
-
-func main() {
-    print("Halo Dunia dari Compiler Vidyax!");
-}`
+      code: `use ai\n\n@tool(permissions="mutate")\nfunc swarm_send(channel, message):\n    shm_write(channel, message)\n    print "SwarmMessenger [TX -> " + channel + "] Terkirim."\n\nagent s1:\n    model "llama-3.1-8b-instant"\n    system "Kamu adalah Planner Agent (s1). Tugasmu menganalisis strategi."\n\nagent s2:\n    model "llama-3.1-8b-instant"\n    system "Kamu adalah Executor Agent (s2). Tugasmu mengeksekusi aksi."\n\n# S1 mengirim instruksi ke S2 via shared memory\nswarm_send("s2_inbox", "Plan Alpha Execute!")`
     },
     {
       title: "Git Workflow Standard",
