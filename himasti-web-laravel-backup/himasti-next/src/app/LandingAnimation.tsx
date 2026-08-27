@@ -16,7 +16,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
   // Load chat count from localStorage on mount
   useEffect(() => {
-    const savedCount = localStorage.getItem('himasti_chat_count_v2');
+    const savedCount = localStorage.getItem('himasti_chat_count_v3');
     if (savedCount) {
       setChatCount(parseInt(savedCount, 10));
     }
@@ -47,7 +47,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       
       const newCount = chatCount + 1;
       setChatCount(newCount);
-      localStorage.setItem('himasti_chat_count_v2', newCount.toString());
+      localStorage.setItem('himasti_chat_count_v3', newCount.toString());
       
     } catch (err) {
       setMessages(prev => [...prev, { role: 'bot', text: 'Maaf, koneksi ke server AI terputus.' }]);
