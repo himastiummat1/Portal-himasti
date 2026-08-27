@@ -10,7 +10,8 @@ type MenuGroup = { title: string; links: LinkItem[] };
 export default function TopNav({ 
   groups, 
   userStr, 
-  roleStr 
+  roleStr,
+  isImpersonating
 }: { 
   groups: MenuGroup[], 
   userStr: string, 
