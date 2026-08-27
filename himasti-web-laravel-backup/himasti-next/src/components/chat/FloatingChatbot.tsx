@@ -7,7 +7,6 @@ type Message = { id: string; role: "user" | "bot"; text: string };
 import { usePathname } from "next/navigation";
 export default function FloatingChatbot() {
   const pathname = usePathname();
-  if (pathname === "/") return null;
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", role: "bot", text: "Halo! Saya Asisten AI HIMASTI. Ada yang bisa saya bantu hari ini terkait informasi organisasi, modul kuliah, atau data kader?" }
@@ -56,6 +55,8 @@ export default function FloatingChatbot() {
       setIsTyping(false);
     }
   };
+
+  if (pathname === "/") return null;
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
