@@ -9,7 +9,7 @@ async function isAuthorized() {
   if (!session) return false;
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  return userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("sekretaris")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  return userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("sekretaris") || r.role.name.includes("kaderisasi") || r.role.name.includes("pengkaderan")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
 }
 
 export async function updateKader(userId: number, formData: FormData) {

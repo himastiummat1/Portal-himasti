@@ -3,6 +3,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import TopNav from "@/components/layout/TopNav";
 import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const session = await auth();
@@ -65,7 +66,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         groups={groups} 
         userStr={session.user.name || "User"} 
         roleStr={isSuperAdmin ? "Super Admin" : userRoles[0] || "Pengurus"} 
-        isImpersonating={(session.user as any).isImpersonating}
+        isImpersonating={!!(await cookies()).get("impersonated_user_id")}
       />
 
       <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
