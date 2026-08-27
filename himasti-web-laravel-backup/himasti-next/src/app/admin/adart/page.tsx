@@ -1,39 +1,33 @@
-import { BookOpen } from "lucide-react";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
+import fs from "fs/promises";
+import path from "path";
+import AdArtClient from "./AdArtClient";
+import { redirect } from "next/navigation";
 
-export default function AdArtPage() {
-  return (
-    <div className="max-w-4xl mx-auto py-8">
-      <div className="mb-8">
-        <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-          <BookOpen className="w-6 h-6 text-sky-600" />
-          Konstitusi (AD/ART) HIMASTI
-        </h1>
-        <p className="text-gray-500 mt-1">Anggaran Dasar dan Anggaran Rumah Tangga Himpunan Mahasiswa Teknik Informatika.</p>
-      </div>
+export const dynamic = "force-dynamic";
 
-      <div className="bg-white p-8 rounded-xl border border-gray-200 shadow-sm prose prose-sky max-w-none">
-        <h2>BAB I: NAMA, WAKTU, DAN TEMPAT KEDUDUKAN</h2>
-        <p><strong>Pasal 1: Nama</strong><br/>
-        Organisasi ini bernama Himpunan Mahasiswa Teknik Informatika Universitas Muhammadiyah Mataram, disingkat HIMASTI UMMAT.</p>
-        
-        <p><strong>Pasal 2: Waktu</strong><br/>
-        HIMASTI UMMAT didirikan di Mataram untuk batas waktu yang tidak ditentukan.</p>
+export default async function AdArtPage() {
+  const session = await auth();
+  if (!session) redirect("/login");
 
-        <h2>BAB II: ASAS DAN TUJUAN</h2>
-        <p><strong>Pasal 3: Asas</strong><br/>
-        HIMASTI UMMAT berasaskan Pancasila dan Tri Dharma Perguruan Tinggi.</p>
+  const userId = parseInt(session.user?.id || "0");
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("keorganisasian")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
 
-        <p><strong>Pasal 4: Tujuan</strong><br/>
-        Membina insan akademis, pencipta, pengabdi yang bernafaskan Islam, dan bertanggung jawab atas terwujudnya masyarakat adil makmur yang diridhai Allah SWT.</p>
+  let hasFile = false;
+  let metadata = null;
+  const uploadDir = path.join(process.cwd(), "public", "uploads", "adart");
 
-        <hr className="my-8 border-gray-100" />
-        
-        <div className="bg-sky-50 p-4 rounded-lg border border-sky-100">
-          <p className="text-sm text-sky-800 m-0 font-medium">
-            Catatan: Ini adalah pratinjau digital dari AD/ART. Untuk dokumen cetak atau perubahan terbaru, silakan hubungi Bidang Keorganisasian.
-          </p>
-        </div>
-      </div>
-    </div>
-  );
+  try {
+    await fs.access(path.join(uploadDir, "adart_official.pdf"));
+    hasFile = true;
+    const metaBuffer = await fs.readFile(path.join(uploadDir, "meta.json"), "utf8");
+    metadata = JSON.parse(metaBuffer);
+  } catch (e) {
+    // File or metadata doesn't exist
+  }
+
+  return <AdArtClient hasFile={hasFile} metadata={metadata} isExecutive={isExecutive} />;
 }

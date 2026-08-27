@@ -30,6 +30,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   const groups = [];
   
+  // Group Organisasi (Global)
+  const groupOrganisasi = { title: "Profil & Organisasi", links: [] as any[] };
+  groupOrganisasi.links.push({ href: "/admin/adart", label: "AD/ART & Konstitusi" });
+  groups.push(groupOrganisasi);
+
   // Group Utama
   const groupUtama = { title: "Manajemen Utama", links: [] as any[] };
   if (canAccessKader) groupUtama.links.push({ href: "/admin/kader", label: "Data Kader" });
@@ -45,7 +50,6 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     groupAkademik.links.push({ href: "/admin/modul", label: "Bank Modul" });
     groupAkademik.links.push({ href: "/admin/devtools", label: "DevTools" });
     groupAkademik.links.push({ href: "/admin/karya", label: "Katalog Karya" });
-    groupAkademik.links.push({ href: "/admin/adart", label: "AD/ART & Konstitusi" });
     groupAkademik.links.push({ href: "/admin/lomba", label: "Info Lomba" });
   }
   if (groupAkademik.links.length > 0) groups.push(groupAkademik);
