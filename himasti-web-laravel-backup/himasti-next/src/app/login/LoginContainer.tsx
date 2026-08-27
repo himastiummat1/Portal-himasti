@@ -29,7 +29,6 @@ export default function LoginContainer() {
         </div>
         
         <p className="text-center text-sm text-gray-500">
-          Belum memiliki akun? <Link href="/register" className="text-blue-600 font-medium hover:underline">Daftar sekarang</Link>
         </p>
       </div>
 
