@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Bot, Send, Terminal, Loader2, Globe, Building2, Users } from 'lucide-react';
 import Link from 'next/link';
-import CompetitionMarquee from '@/components/CompetitionMarquee';
+import CompetitionMarquee from './CompetitionMarquee';
 
 type Lang = 'id' | 'en' | 'ar';
 
