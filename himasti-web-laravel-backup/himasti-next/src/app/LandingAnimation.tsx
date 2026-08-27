@@ -104,6 +104,17 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   const chatEndRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    setMessages(prev => {
+      const newArr = [...prev];
+      if (newArr.length > 0 && newArr[0].role === 'bot' && prev.length === 1) {
+        newArr[0].text = lang === 'en' ? 'Hello! I am the HIMASTI AI. How can I help you today?' : lang === 'ar' ? 'مرحباً! أنا ذكاء هيمساتي الاصطناعي. كيف يمكنني مساعدتك؟' : 'Halo! Saya AI Asisten HIMASTI. Ada yang bisa saya bantu tentang organisasi atau kampus?';
+      }
+      return newArr;
+    });
+  }, [lang]);
+
+
+  useEffect(() => {
     const saved = localStorage.getItem('himasti_chat_count_v3');
     if (saved) setChatCount(parseInt(saved));
   }, []);
