@@ -63,8 +63,8 @@ export default function LearningHubClient({ userName }: { userName: string }) {
       steps: [
         "1. Low-Level: C, C++, Rust, atau Zig",
         "2. Arsitektur Komputer & OS Internals",
-        "3. Teori Kompilator: Lexer, Parser, AST",
-        "4. Code Generation: LLVM & GCC Internals",
+        "3. Teori Kompilator & AST (Contoh: Vidyax)",
+        "4. Code Generation & Runtime (Studi: Vidyax)",
         "5. Sistem Memori & Garbage Collection",
         "6. High-Performance Computing (HPC)",
         "7. Sistem Terdistribusi Skala Masif"
@@ -80,6 +80,15 @@ export default function LearningHubClient({ userName }: { userName: string }) {
   ];
 
   const cheatsheets = [
+    {
+      title: "Vidyax Lang: Hello World",
+      lang: "vidyax",
+      code: `// Bahasa pemrograman karya anak HIMASTI (Nans)
+
+func main() {
+    print("Halo Dunia dari Compiler Vidyax!");
+}`
+    },
     {
       title: "Git Workflow Standard",
       lang: "bash",
