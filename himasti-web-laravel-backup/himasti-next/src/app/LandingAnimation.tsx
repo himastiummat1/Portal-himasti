@@ -233,13 +233,15 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                      onChange={(e) => setInput(e.target.value)}
                      disabled={isLoading}
                      placeholder={t.aiPrompt}
-                     className={`w-full bg-gray-50 border border-gray-200 rounded-xl py-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all disabled:opacity-50 ${isRTL ? 'pr-4 pl-12' : 'pl-4 pr-12'}`}
+                     style={{ paddingInlineStart: '1rem', paddingInlineEnd: '3rem' }}
+                     className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all disabled:opacity-50"
                      dir={isRTL ? 'rtl' : 'ltr'}
                    />
                    <button 
                      type="submit" 
                      disabled={!input.trim() || isLoading}
-                     className={`absolute ${isRTL ? 'left-2' : 'right-2'} p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors`}
+                     style={{ [isRTL ? 'left' : 'right']: '0.5rem' }}
+                     className="absolute p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
                    >
                      <Send className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
