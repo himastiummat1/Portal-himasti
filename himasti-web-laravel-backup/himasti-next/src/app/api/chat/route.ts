@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     // Format chat history for Groq
-    const formattedMessages = messages.map((msg: any) => ({
+    const formattedMessages = messages.slice(-5).map((msg: any) => ({
       role: msg.role === "bot" ? "assistant" : "user",
       content: msg.text
     }));
@@ -27,7 +27,7 @@ export async function POST(req: Request) {
 
     const chatCompletion = await groq.chat.completions.create({
       messages: formattedMessages,
-      model: "groq/compound",
+      model: "llama3-8b-8192",
       temperature: 0.5,
       max_tokens: 500,
     });
