@@ -27,10 +27,10 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden relative">
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
+      <div className="bg-white  rounded-lg shadow-sm overflow-hidden relative">
+        <div className="p-6 border-b border-gray-200  flex justify-between items-center">
           <div>
-            <h2 className="text-xl font-bold dark:text-white">Publikasi Artikel</h2>
+            <h2 className="text-xl font-bold ">Publikasi Artikel</h2>
             <p className="text-sm text-gray-500 mt-1">Kelola konten artikel dan berita himpunan.</p>
           </div>
           <button onClick={() => setIsAddModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
@@ -39,19 +39,19 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-900/50">
+          <table className="min-w-full divide-y divide-gray-200 ">
+            <thead className="bg-gray-50 ">
               <tr>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Judul & Cuplikan</th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
                 <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase">Aksi</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-gray-200 ">
               {records.map(record => (
                 <tr key={record.id}>
                   <td className="px-6 py-4">
-                    <div className="font-medium text-gray-900 dark:text-white mb-1">{record.title}</div>
+                    <div className="font-medium text-gray-900  mb-1">{record.title}</div>
                     <div className="text-sm text-gray-500 line-clamp-2 max-w-md">{record.description}</div>
                   </td>
                   <td className="px-6 py-4">
@@ -78,25 +78,25 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen p-4">
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75" onClick={() => setIsAddModalOpen(false)}></div>
-            <div className="relative z-10 w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg p-6">
-              <h3 className="text-lg font-medium dark:text-white mb-4">Tulis Artikel Baru</h3>
+            <div className="relative z-10 w-full max-w-2xl bg-white  rounded-lg p-6">
+              <h3 className="text-lg font-medium  mb-4">Tulis Artikel Baru</h3>
               <form onSubmit={handleAddSubmit} className="space-y-4">
                 <div>
-                  <label className="block text-sm dark:text-gray-300">Judul Artikel</label>
-                  <input type="text" name="title" required className="mt-1 p-2 w-full border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+                  <label className="block text-sm ">Judul Artikel</label>
+                  <input type="text" name="title" required className="mt-1 p-2 w-full border rounded-md   " />
                 </div>
                 <div>
-                  <label className="block text-sm dark:text-gray-300">Isi Konten (Teks / HTML)</label>
-                  <textarea name="description" required rows={6} className="mt-1 p-2 w-full border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white"></textarea>
+                  <label className="block text-sm ">Isi Konten (Teks / HTML)</label>
+                  <textarea name="description" required rows={6} className="mt-1 p-2 w-full border rounded-md   "></textarea>
                 </div>
                 <div className="grid grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm dark:text-gray-300">Tautan / Link Gambar (Opsional)</label>
-                    <input type="url" name="link" className="mt-1 p-2 w-full border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white" />
+                    <label className="block text-sm ">Tautan / Link Gambar (Opsional)</label>
+                    <input type="url" name="link" className="mt-1 p-2 w-full border rounded-md   " />
                   </div>
                   <div>
-                    <label className="block text-sm dark:text-gray-300">Status Awal</label>
-                    <select name="status" className="mt-1 p-2 w-full border rounded-md dark:bg-gray-700 dark:border-gray-600 dark:text-white">
+                    <label className="block text-sm ">Status Awal</label>
+                    <select name="status" className="mt-1 p-2 w-full border rounded-md   ">
                       <option value="Draft">Simpan sbg Draft</option>
                       <option value="Published">Langsung Publikasikan</option>
                     </select>

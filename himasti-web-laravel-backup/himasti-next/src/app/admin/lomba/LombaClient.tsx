@@ -22,7 +22,7 @@ export default function LombaClient({ records }: { records: any[] }) {
 
   return (
     <div className="space-y-6">
-      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white  rounded-2xl shadow-sm border border-gray-200 overflow-hidden">
         
         <div className="p-6 border-b border-gray-100 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 bg-gray-50/50">
           <div>

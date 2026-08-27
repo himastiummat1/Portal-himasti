@@ -113,17 +113,17 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
     <div className="space-y-6">
       {/* SUMMARY CARDS */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Pemasukan</h3>
-          <p className="mt-2 text-3xl font-bold text-green-600 dark:text-green-400">{formatRupiah(totalPemasukan)}</p>
+        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
+          <h3 className="text-sm font-medium text-gray-500 ">Total Pemasukan</h3>
+          <p className="mt-2 text-3xl font-bold text-green-600 ">{formatRupiah(totalPemasukan)}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Total Pengeluaran</h3>
-          <p className="mt-2 text-3xl font-bold text-red-600 dark:text-red-400">{formatRupiah(totalPengeluaran)}</p>
+        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
+          <h3 className="text-sm font-medium text-gray-500 ">Total Pengeluaran</h3>
+          <p className="mt-2 text-3xl font-bold text-red-600 ">{formatRupiah(totalPengeluaran)}</p>
         </div>
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-          <h3 className="text-sm font-medium text-gray-500 dark:text-gray-400">Saldo Akhir (Kas)</h3>
-          <p className={`mt-2 text-3xl font-bold ${saldoAkhir >= 0 ? 'text-blue-600 dark:text-blue-400' : 'text-red-600 dark:text-red-400'}`}>
+        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
+          <h3 className="text-sm font-medium text-gray-500 ">Saldo Akhir (Kas)</h3>
+          <p className={`mt-2 text-3xl font-bold ${saldoAkhir >= 0 ? 'text-blue-600 ' : 'text-red-600 '}`}>
             {formatRupiah(saldoAkhir)}
           </p>
         </div>
@@ -132,8 +132,8 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
 
       {/* DIAGRAM KEUANGAN */}
       {records.length > 0 && (
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 border border-gray-100 dark:border-gray-700">
-          <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-4">Grafik Arus Kas (Per Bulan)</h3>
+        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
+          <h3 className="text-lg font-bold text-gray-900  mb-4">Grafik Arus Kas (Per Bulan)</h3>
           <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
@@ -154,18 +154,18 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
       )}
 
       {/* MAIN TABLE */}
-      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm overflow-hidden relative">
-        <div className="p-6 border-b border-gray-200 dark:border-gray-700 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+      <div className="bg-white  rounded-lg shadow-sm overflow-hidden relative">
+        <div className="p-6 border-b border-gray-200  flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h2 className="text-xl font-bold dark:text-white">Buku Kas & Keuangan</h2>
-            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">Kelola data pemasukan dan pengeluaran organisasi.</p>
+            <h2 className="text-xl font-bold ">Buku Kas & Keuangan</h2>
+            <p className="text-sm text-gray-500  mt-1">Kelola data pemasukan dan pengeluaran organisasi.</p>
           </div>
           
           <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
             <select 
               value={filterType} 
               onChange={(e) => setFilterType(e.target.value)}
-              className="block w-full sm:w-auto py-2 px-3 border border-gray-300 rounded-md leading-5 bg-white dark:bg-gray-700 dark:border-gray-600 dark:text-white sm:text-sm"
+              className="block w-full sm:w-auto py-2 px-3 border border-gray-300 rounded-md leading-5 bg-white    sm:text-sm"
             >
               <option value="all">Semua Data</option>
               <option value="pemasukan">Hanya Pemasukan</option>
@@ -179,59 +179,59 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
         </div>
 
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-            <thead className="bg-gray-50 dark:bg-gray-900/50">
+          <table className="min-w-full divide-y divide-gray-200 ">
+            <thead className="bg-gray-50 ">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                   Tanggal
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                   Tipe
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                   Keterangan
                 </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
                   Jumlah
                 </th>
-                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500  uppercase tracking-wider">
                   Aksi
                 </th>
               </tr>
             </thead>
-            <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="bg-white  divide-y divide-gray-200 ">
               {filteredRecords.length > 0 ? (
                 filteredRecords.map((record) => (
-                  <tr key={record.id} className="hover:bg-gray-50 dark:hover:bg-gray-700/50 transition">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
+                  <tr key={record.id} className="hover:bg-gray-50 :bg-gray-700/50 transition">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
                       {formatDate(record.tanggal)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
                         record.tipe === 'pemasukan' 
-                          ? 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300' 
-                          : 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-300'
+                          ? 'bg-green-100 text-green-800  ' 
+                          : 'bg-red-100 text-red-800  '
                       }`}>
                         {record.tipe.toUpperCase()}
                       </span>
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 dark:text-gray-300">
+                    <td className="px-6 py-4 text-sm text-gray-900 ">
                       {record.keterangan || '-'}
                     </td>
                     <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${
-                          record.tipe === 'pemasukan' ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'
+                          record.tipe === 'pemasukan' ? 'text-green-600 ' : 'text-red-600 '
                         }`}>
                       {record.tipe === 'pemasukan' ? '+' : '-'} {formatRupiah(record.jumlah)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button onClick={() => openEditModal(record)} className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 mr-3">Edit</button>
-                      <button onClick={() => handleDelete(record.id)} className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300">Hapus</button>
+                      <button onClick={() => openEditModal(record)} className="text-blue-600 hover:text-blue-900  :text-blue-300 mr-3">Edit</button>
+                      <button onClick={() => handleDelete(record.id)} className="text-red-600 hover:text-red-900  :text-red-300">Hapus</button>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500 dark:text-gray-400">
+                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500 ">
                     Tidak ada transaksi tercatat.
                   </td>
                 </tr>
@@ -246,13 +246,13 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen p-4">
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setIsAddModalOpen(false)}></div>
-            <div className="relative z-10 w-full max-w-lg bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
-              <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Catat Transaksi Baru</h3>
+            <div className="relative z-10 w-full max-w-lg bg-white  rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
+              <div className="bg-white  px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 className="text-lg font-medium text-gray-900  mb-4">Catat Transaksi Baru</h3>
                 
                 {errorMsg && (
-                  <div className="mb-4 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 p-4">
-                    <p className="text-sm text-red-700 dark:text-red-400">{errorMsg}</p>
+                  <div className="mb-4 bg-red-50  border-l-4 border-red-500 p-4">
+                    <p className="text-sm text-red-700 ">{errorMsg}</p>
                   </div>
                 )}
 
@@ -260,33 +260,33 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipe</label>
-                        <select name="tipe" className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md">
+                        <label className="block text-sm font-medium text-gray-700 ">Tipe</label>
+                        <select name="tipe" className="mt-1 p-2 w-full border border-gray-300    rounded-md">
                           <option value="pemasukan">Pemasukan</option>
                           <option value="pengeluaran">Pengeluaran</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal</label>
-                        <input type="date" name="tanggal" required className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" defaultValue={new Date().toISOString().split('T')[0]} />
+                        <label className="block text-sm font-medium text-gray-700 ">Tanggal</label>
+                        <input type="date" name="tanggal" required className="mt-1 p-2 w-full border border-gray-300    rounded-md" defaultValue={new Date().toISOString().split('T')[0]} />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah (Rp)</label>
-                      <input type="number" name="jumlah" required min="1" className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" placeholder="50000" />
+                      <label className="block text-sm font-medium text-gray-700 ">Jumlah (Rp)</label>
+                      <input type="number" name="jumlah" required min="1" className="mt-1 p-2 w-full border border-gray-300    rounded-md" placeholder="50000" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Keterangan</label>
-                      <textarea name="keterangan" required rows={2} className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" placeholder="Detail transaksi..."></textarea>
+                      <label className="block text-sm font-medium text-gray-700 ">Keterangan</label>
+                      <textarea name="keterangan" required rows={2} className="mt-1 p-2 w-full border border-gray-300    rounded-md" placeholder="Detail transaksi..."></textarea>
                     </div>
                   </div>
                 </form>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse">
+              <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse">
                 <button type="submit" form="addForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
                   {isSubmitting ? "Menyimpan..." : "Simpan"}
                 </button>
-                <button type="button" onClick={() => setIsAddModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                <button type="button" onClick={() => setIsAddModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white  text-gray-700  hover:bg-gray-50 :bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                   Batal
                 </button>
               </div>
@@ -300,13 +300,13 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen p-4">
             <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setIsEditModalOpen(false)}></div>
-            <div className="relative z-10 w-full max-w-lg bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
-              <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Edit Transaksi</h3>
+            <div className="relative z-10 w-full max-w-lg bg-white  rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
+              <div className="bg-white  px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <h3 className="text-lg font-medium text-gray-900  mb-4">Edit Transaksi</h3>
                 
                 {errorMsg && (
-                  <div className="mb-4 bg-red-50 dark:bg-red-900/30 border-l-4 border-red-500 p-4">
-                    <p className="text-sm text-red-700 dark:text-red-400">{errorMsg}</p>
+                  <div className="mb-4 bg-red-50  border-l-4 border-red-500 p-4">
+                    <p className="text-sm text-red-700 ">{errorMsg}</p>
                   </div>
                 )}
 
@@ -314,33 +314,33 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
                   <div className="space-y-4">
                     <div className="grid grid-cols-2 gap-4">
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tipe</label>
-                        <select name="tipe" defaultValue={editingRecord.tipe} className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md">
+                        <label className="block text-sm font-medium text-gray-700 ">Tipe</label>
+                        <select name="tipe" defaultValue={editingRecord.tipe} className="mt-1 p-2 w-full border border-gray-300    rounded-md">
                           <option value="pemasukan">Pemasukan</option>
                           <option value="pengeluaran">Pengeluaran</option>
                         </select>
                       </div>
                       <div>
-                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Tanggal</label>
-                        <input type="date" name="tanggal" defaultValue={editingRecord.tanggal.split('T')[0]} required className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" />
+                        <label className="block text-sm font-medium text-gray-700 ">Tanggal</label>
+                        <input type="date" name="tanggal" defaultValue={editingRecord.tanggal.split('T')[0]} required className="mt-1 p-2 w-full border border-gray-300    rounded-md" />
                       </div>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Jumlah (Rp)</label>
-                      <input type="number" name="jumlah" defaultValue={editingRecord.jumlah} required min="1" className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md" />
+                      <label className="block text-sm font-medium text-gray-700 ">Jumlah (Rp)</label>
+                      <input type="number" name="jumlah" defaultValue={editingRecord.jumlah} required min="1" className="mt-1 p-2 w-full border border-gray-300    rounded-md" />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">Keterangan</label>
-                      <textarea name="keterangan" defaultValue={editingRecord.keterangan || ""} required rows={2} className="mt-1 p-2 w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-white rounded-md"></textarea>
+                      <label className="block text-sm font-medium text-gray-700 ">Keterangan</label>
+                      <textarea name="keterangan" defaultValue={editingRecord.keterangan || ""} required rows={2} className="mt-1 p-2 w-full border border-gray-300    rounded-md"></textarea>
                     </div>
                   </div>
                 </form>
               </div>
-              <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 sm:flex sm:flex-row-reverse">
+              <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse">
                 <button type="submit" form="editForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
                   {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
-                <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white  text-gray-700  hover:bg-gray-50 :bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
                   Batal
                 </button>
               </div>
