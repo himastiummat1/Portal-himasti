@@ -9,7 +9,7 @@ export async function GET() {
     const metaBuffer = await fs.readFile(path.join(uploadDir, "meta.json"), "utf8");
     const metadata = JSON.parse(metaBuffer);
     const ext = metadata.extension || "pdf";
-    const filePath = path.join(uploadDir, \`adart_official.\${ext}\`);
+    const filePath = path.join(uploadDir, `adart_official.${ext}`);
     
     const fileBuffer = await fs.readFile(filePath);
     
