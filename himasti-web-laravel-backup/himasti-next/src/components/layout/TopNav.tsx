@@ -3,6 +3,7 @@ import { signOut } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState, useRef, useEffect } from "react";
+import { stopImpersonating } from "@/app/admin/kader/actions";
 
 type LinkItem = { href: string; label: string };
 type MenuGroup = { title: string; links: LinkItem[] };
@@ -96,8 +97,8 @@ export default function TopNav({
           {/* Right side Profile */}
           {isImpersonating && (
             <button 
-              onClick={() => {
-                document.cookie = "impersonated_user_id=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+              onClick={async () => {
+                await stopImpersonating();
                 window.location.href = "/admin";
               }}
               className="mr-4 text-xs font-bold bg-red-100 text-red-600 px-3 py-1.5 rounded-full hover:bg-red-200 transition-colors flex items-center gap-1 shadow-sm"
