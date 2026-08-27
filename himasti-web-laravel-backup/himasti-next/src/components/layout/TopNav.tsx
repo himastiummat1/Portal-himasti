@@ -100,7 +100,14 @@ export default function TopNav({
             <div className="h-8 w-8 bg-gray-100 border border-slate-200/60 rounded-full flex items-center justify-center text-xs font-mono font-bold">
               {userStr.charAt(0)}
             </div>
-            <button onClick={() => signOut({ callbackUrl: "/login" })} className="text-sm font-medium text-slate-500 hover:text-sky-700 ml-2 transition-colors">
+            <button 
+              onClick={() => window.dispatchEvent(new CustomEvent('request-dev-mode'))} 
+              className="text-[10px] font-mono font-bold text-slate-400 hover:text-emerald-500 ml-4 border border-slate-200 hover:border-emerald-500 px-2 py-1 rounded transition-colors"
+              title="Dev Mode (Locked)"
+            >
+              🔒 TOP SECRET
+            </button>
+            <button onClick={() => signOut({ callbackUrl: "/login" })} className="text-sm font-medium text-slate-500 hover:text-sky-700 ml-4 transition-colors">
               Logout
             </button>
           </div>
