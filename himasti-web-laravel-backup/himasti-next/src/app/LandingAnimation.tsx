@@ -5,7 +5,9 @@ import Image from "next/image";
 import { ArrowRight, Terminal, BookOpen, Layers } from "lucide-react";
 import { motion, useScroll, useTransform } from "framer-motion";
 
-export default function LandingAnimation() {
+import CompetitionMarquee from "./CompetitionMarquee";
+
+export default function LandingAnimation({ competitions }: { competitions?: any[] }) {
   const containerRef = useRef<HTMLDivElement>(null);
 
   // Lacak progress scroll hanya pada area 200vh
@@ -160,6 +162,8 @@ export default function LandingAnimation() {
             </div>
           </div>
         </section>
+        <CompetitionMarquee competitions={competitions || []} />
+
 
         
         {/* Struktur Divisi HIMASTI */}
