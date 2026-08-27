@@ -19,12 +19,12 @@ export function Navigation() {
   ];
 
   return (
-    <nav className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700">
+    <nav className="bg-white  border-b border-gray-100 ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="shrink-0 flex items-center">
-              <Link href="/" className="font-bold text-xl dark:text-white">
+              <Link href="/" className="font-bold text-xl ">
                 HIMASTI (Publik)
               </Link>
             </div>
@@ -33,7 +33,7 @@ export function Navigation() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out border-transparent text-gray-500 dark:text-gray-400 hover:text-gray-700 hover:border-gray-300`}
+                  className={`inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium leading-5 transition duration-150 ease-in-out border-transparent text-gray-500  hover:text-gray-700 hover:border-gray-300`}
                 >
                   {link.name}
                 </Link>
