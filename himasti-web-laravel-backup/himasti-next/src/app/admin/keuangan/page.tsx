@@ -33,6 +33,6 @@ export default async function KeuanganPage() {
   }));
 
   return (
-    <KeuanganClient records={transformedRecords} isExecutive={isExecutive} />
+    <KeuanganClient records={transformedRecords} isExecutive={!!isExecutive} />
   );
 }
