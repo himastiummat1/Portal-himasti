@@ -54,6 +54,21 @@ export default function LearningHubClient({ userName }: { userName: string }) {
         "6. Deep Learning: TensorFlow, PyTorch, Neural Nets",
         "7. Generative AI: LangChain, RAG, & HuggingFace"
       ]
+    },
+    {
+      id: "systems",
+      title: "Systems & Compiler Engineer",
+      icon: <Terminal className="w-8 h-8 text-rose-500" />,
+      desc: "Jalur 'Dewa' (Expert): Bangun bahasa pemrograman, OS, dan infrastruktur tingkat rendah.",
+      steps: [
+        "1. Low-Level: C, C++, Rust, atau Zig",
+        "2. Arsitektur Komputer & OS Internals",
+        "3. Teori Kompilator: Lexer, Parser, AST",
+        "4. Code Generation: LLVM & GCC Internals",
+        "5. Sistem Memori & Garbage Collection",
+        "6. High-Performance Computing (HPC)",
+        "7. Sistem Terdistribusi Skala Masif"
+      ]
     }
   ];
 
@@ -79,6 +94,21 @@ export default function LearningHubClient({ userName }: { userName: string }) {
       title: "Basic Tailwind Card",
       lang: "html",
       code: `<div class="bg-white/90 backdrop-blur shadow-sm border border-slate-200 rounded-2xl p-6 hover:shadow-md transition-all">\n  <h3 class="font-bold text-slate-800">Hello World</h3>\n</div>`
+    },
+    {
+      id: "systems",
+      title: "Systems & Compiler Engineer",
+      icon: <Terminal className="w-8 h-8 text-rose-500" />,
+      desc: "Jalur 'Dewa' (Expert): Bangun bahasa pemrograman, OS, dan infrastruktur tingkat rendah.",
+      steps: [
+        "1. Low-Level: C, C++, Rust, atau Zig",
+        "2. Arsitektur Komputer & OS Internals",
+        "3. Teori Kompilator: Lexer, Parser, AST",
+        "4. Code Generation: LLVM & GCC Internals",
+        "5. Sistem Memori & Garbage Collection",
+        "6. High-Performance Computing (HPC)",
+        "7. Sistem Terdistribusi Skala Masif"
+      ]
     }
   ];
 
@@ -125,7 +155,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
             </div>
           </div>
           
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-6">
             {roadmaps.map((road) => (
               <div key={road.id} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-sky-300 hover:shadow-md transition-all flex flex-col group">
                 <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-sky-50 transition-transform">
