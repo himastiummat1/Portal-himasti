@@ -193,9 +193,8 @@ export default async function AdminDashboard() {
 
         </div>
 
+        <TerminalEasterEgg userName={session?.user?.name || "Kader"} />
       </div>
-      <TerminalEasterEgg userName={session?.user?.name || "Kader"} />
-    </div>
     );
   }
 
