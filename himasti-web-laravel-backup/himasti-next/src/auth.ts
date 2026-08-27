@@ -6,6 +6,7 @@ import { prisma } from "@/lib/prisma"; // We'll create this soon
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
+  secret: "supersecret_himasti_key_replace_me_in_production",
   pages: {
     signIn: "/login",
   },
