@@ -119,8 +119,6 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                       </svg>
                     </div>
                     <div className="text-8xl font-black text-gray-50 absolute top-4 left-6 pointer-events-none select-none tracking-tighter">0{i+1}</div>
-                    <h4 className="text-xl font-bold text-gray-900 mb-2 relative z-10">Sistem & Tata Kelola</h4>
-                    <p className="text-sm text-gray-500 max-w-xs relative z-10">Dirancang secara spesifik untuk menangani {divisi.name} dengan skalabilitas tinggi.</p>
                   </div>
                 </div>
                 <div className="flex-1 space-y-6">
