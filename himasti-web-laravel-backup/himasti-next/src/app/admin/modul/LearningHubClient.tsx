@@ -241,7 +241,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                     {cheat.lang}
                   </span>
                 </div>
-                <div className="p-4 overflow-x-auto text-sm font-mono text-slate-300 leading-relaxed whitespace-pre">
+                <div className="p-4 overflow-x-auto text-sm font-mono text-slate-300 leading-relaxed whitespace-pre-wrap break-words">
                   {cheat.code}
                 </div>
               </div>
@@ -288,7 +288,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                     </div>
                     <span className="ml-4 text-xs font-mono text-slate-500">swarm_demo.vx</span>
                   </div>
-                  <div className="p-5 text-sm font-mono text-slate-300 leading-loose overflow-x-auto">
+                  <div className="p-5 text-sm font-mono text-slate-300 leading-loose overflow-x-auto whitespace-pre-wrap break-words">
                     <span className="text-purple-400">use</span> ai<br/><br/>
                     <span className="text-amber-300">@tool</span>(permissions=<span className="text-emerald-400">"mutate"</span>)<br/>
                     <span className="text-sky-400">func</span> <span className="text-rose-300">swarm_send</span>(channel, message):<br/>
