@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     const chatCompletion = await groq.chat.completions.create({
       messages: formattedMessages,
-      model: "llama3-8b-8192", // We can use whatever, if it fails, it falls back gracefully
+      model: "mixtral-8x7b-32768",
       temperature: 0.5,
       max_tokens: 500,
     });
@@ -32,16 +32,7 @@ export async function POST(req: Request) {
     return NextResponse.json({ text: chatCompletion.choices[0]?.message?.content || "Data diterima." });
     
   } catch (error: any) {
-    console.error("Groq API Error Fallback Activated");
-    // GUARANTEED FALLBACK FOR DEMO (Bulletproof)
-    const responses = [
-      "Sistem: Koneksi API dibatasi. Namun sebagai AI HIMASTI, saya siap membantu presentasi Anda hari ini!",
-      "HIMASTI OS merespons: Kami adalah Himpunan Mahasiswa Sistem dan Teknologi Informasi. Sistem kami sangat canggih.",
-      "Akses diterima. Modul Kaderisasi dan Pengembangan telah diaktifkan untuk presentasi Anda.",
-      "Pertanyaan yang bagus. Di HIMASTI, kami fokus pada pengembangan teknologi dan kolaborasi digital.",
-      "Memproses data... Presentasi ini terlihat sangat menjanjikan! Lanjutkan!"
-    ];
-    const randomRes = responses[Math.floor(Math.random() * responses.length)];
-    return NextResponse.json({ text: randomRes });
+    console.error("Groq API Error:", error);
+    return NextResponse.json({ text: "Maaf, sistem AI sedang mengalami gangguan koneksi." }, { status: 500 });
   }
 }
