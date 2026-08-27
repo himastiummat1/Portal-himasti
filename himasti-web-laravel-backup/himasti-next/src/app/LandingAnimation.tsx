@@ -135,7 +135,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       const res = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ messages: [...messages, { role: 'user', text: userMsg }] })
+        body: JSON.stringify({ lang, messages: [...messages, { role: 'user', text: userMsg }] })
       });
       const data = await res.json();
       setMessages(prev => [...prev, { role: 'bot', text: data.text }]);

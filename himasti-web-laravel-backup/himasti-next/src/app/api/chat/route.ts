@@ -4,7 +4,10 @@ import Groq from "groq-sdk";
 export async function POST(req: Request) {
   const groq = new Groq({ apiKey: process.env.API_KEY_GROQ || "dummy_key" });
   try {
-    const { messages } = await req.json();
+    const { messages, lang } = await req.json();
+    let langInstruction = "";
+    if(lang === "en") langInstruction = "\nMohon jawab dalam BAHASA INGGRIS (English).";
+    if(lang === "ar") langInstruction = "\nMohon jawab dalam BAHASA ARAB (Arabic).";
     
     if (!process.env.API_KEY_GROQ) {
       return NextResponse.json({ 
@@ -28,7 +31,7 @@ Jawablah pertanyaan seputar sejarah HIMASTI dan Kemuhammadiyahan dengan akurat b
 - Pengkaderan Jilid 2: Diikuti 28 orang di Pantai 3 Sempong pada 28-29 Juni.
 - Desain Awal: Logo pertama berwarna biru dengan komputer di tengah karya M. Ade Julianto Akbar. Baju pertama didesain Husni Mubarok. Keduanya direvisi pada angkatan kedua.
 - Nilai Kemuhammadiyahan: HIMASTI menjunjung nilai Muhammadiyah (didirikan KH Ahmad Dahlan pada 18 Nov 1912) untuk mewujudkan Islam modern, toleran, pendidikan, dan sosial.
-Jawab dengan ramah, informatif, singkat, dan profesional. Jangan mengarang fakta.`
+Jawab dengan ramah, informatif, singkat, dan profesional. Jangan mengarang fakta.` + langInstruction
     });
 
     const chatCompletion = await groq.chat.completions.create({
