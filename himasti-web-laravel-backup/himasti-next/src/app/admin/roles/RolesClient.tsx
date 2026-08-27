@@ -101,12 +101,12 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                     </td>
                     <td className="px-6 py-4">
                       <select 
-                        disabled={isPending}
+                        disabled={isPending || u.roles.some((r: any) => r.role.name === "super_admin")}
                         value={currentRoleId || ""}
                         onChange={(e) => handleRoleChange(u.id, parseInt(e.target.value))}
                         className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2 disabled:opacity-50"
                       >
-                        {roles.map(role => (
+                        {roles.filter(r => r.name !== "super_admin").map(role => (
                           <option key={role.id} value={role.id}>
                             {role.name.replace(/_/g, ' ').toUpperCase()}
                           </option>
