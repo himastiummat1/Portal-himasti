@@ -24,7 +24,7 @@ export async function POST(req: Request) {
 
     const chatCompletion = await groq.chat.completions.create({
       messages: formattedMessages,
-      model: "mixtral-8x7b-32768",
+      model: "qwen/qwen3.8-27b",
       temperature: 0.5,
       max_tokens: 500,
     });
