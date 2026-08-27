@@ -4,7 +4,7 @@ import Link from "next/link";
 import { 
   Users, FileText, Database, Shield, BookOpen, 
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
-  Calendar, Info, Trophy, ExternalLink
+  Calendar, Info, Trophy, ExternalLink, Code
 } from "lucide-react";
 
 export default async function AdminDashboard() {
@@ -100,6 +100,10 @@ export default async function AdminDashboard() {
               <Link href="#" className="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 hover:border-sky-200 transition-colors group text-center">
                 <FileText className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-sky-500 transition-colors" />
                 <span className="text-xs font-semibold text-slate-700">Katalog Karya (Coming Soon)</span>
+              </Link>
+              <Link href="/admin/devtools" className="p-4 border border-slate-100 rounded-xl hover:bg-slate-50 hover:border-sky-200 transition-colors group text-center">
+                <Code className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-sky-500 transition-colors" />
+                <span className="text-xs font-semibold text-slate-700">Dev Tools</span>
               </Link>
             </div>
           </div>
@@ -209,6 +213,7 @@ export default async function AdminDashboard() {
                 { title: "Manajemen Keuangan", desc: "Laporan kas, donasi, dan transparansi anggaran", href: "/admin/keuangan", reqSuper: false },
                 { title: "Bank Modul IT", desc: "Akses materi perkuliahan dan kurikulum himpunan", href: "/admin/modul", reqSuper: false },
                 { title: "Manajemen Hak Akses (RBAC)", desc: "Pengaturan permissions dan delegasi peran", href: "/admin/roles", reqSuper: true },
+                { title: "Developer Tools", desc: "Utilitas ringan (JSON, Base64, Hash) untuk mempermudah coding", href: "/admin/devtools", reqSuper: false },
               ].map((mod, i) => {
                 if (mod.reqSuper && !isSuperAdmin) return null;
                 return (
