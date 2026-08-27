@@ -14,7 +14,7 @@ export default async function ArtikelPage() {
     description: record.description,
     link: record.link,
     status: record.status,
-    created_at: record.created_at.toISOString(),
+    created_at: record.created_at ? record.created_at.toISOString() : new Date().toISOString(),
   }));
 
   return <ArtikelClient records={records} />;
