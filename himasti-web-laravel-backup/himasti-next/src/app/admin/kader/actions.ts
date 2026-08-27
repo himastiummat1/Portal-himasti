@@ -52,8 +52,14 @@ export async function deleteKader(userId: number) {
   if (!(await isAuthorized())) return { success: false, error: "Akses Ditolak." };
 
   try {
-    // Cascade delete works mostly, but let's be safe and delete manually if needed
-    // Assuming deleting the User will cascade to DataKader, ModelHasRole, etc.
+    // Karena DB bawaan Laravel mungkin tidak memiliki FK Constraint CASCADE,
+    // kita hapus secara manual dari tabel-tabel relasinya terlebih dahulu!
+    await prisma.dataKader.deleteMany({ where: { user_id: userId } });
+    await prisma.modelHasRole.deleteMany({ where: { model_id: userId, model_type: "App\\Models\\User" } });
+    await prisma.surat.deleteMany({ where: { user_id: userId } });
+    await prisma.keuangan.updateMany({ where: { user_id: userId }, data: { user_id: null } });
+    
+    // Baru hapus User utamanya
     await prisma.user.delete({ where: { id: userId } });
     revalidatePath("/admin/kader");
     return { success: true };
