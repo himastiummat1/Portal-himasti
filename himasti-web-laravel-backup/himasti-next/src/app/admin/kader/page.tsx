@@ -49,11 +49,11 @@ export default async function DataKaderPage() {
     nim: k.nim,
     angkatan: k.angkatan || "-",
     no_hp: k.no_hp || "-",
-    jenis_kelamin: k.jenis_kelamin || "-",
+    jenis_kelamin: (k as any).jenis_kelamin || "-",
     role: k.user.roles[0]?.role.name || "kader",
-    asal_sekolah: k.asal_sekolah,
-    hobi: k.hobi,
-    alamat: k.alamat_sekarang
+    asal_sekolah: (k as any).asal_sekolah,
+    hobi: (k as any).hobi,
+    alamat: (k as any).alamat_sekarang
   }));
 
   return (

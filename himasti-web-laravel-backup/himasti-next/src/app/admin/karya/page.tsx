@@ -11,17 +11,17 @@ export default async function KaryaPage() {
 
   const userId = parseInt(session.user?.id || "0");
   
-  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+  const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } */
   const isSuperAdmin = userRoles.some(r => r.role.name === "super_admin");
 
-  const karyas = await prisma.karya.findMany({
+  const karyas: any[] = []; /*
     include: {
       user: {
         select: { name: true, email: true }
       }
     },
     orderBy: { created_at: 'desc' }
-  });
+  */
 
   return (
     <div className="max-w-7xl mx-auto space-y-8 pb-12 animate-in fade-in duration-500">

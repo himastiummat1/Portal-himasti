@@ -141,7 +141,7 @@ export default function KeuanganClient({ records }: { records: KeuanganRecord[] 
                 <XAxis dataKey="name" stroke="#9ca3af" />
                 <YAxis stroke="#9ca3af" tickFormatter={(val) => `Rp${(val/1000).toFixed(0)}k`} />
                 <Tooltip 
-                  formatter={(value: number) => formatRupiah(value)}
+                  formatter={(value: any) => formatRupiah(value)}
                   contentStyle={{ backgroundColor: '#1f2937', color: '#fff', borderRadius: '8px' }}
                 />
                 <Legend />

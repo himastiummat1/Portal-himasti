@@ -32,7 +32,7 @@ export default async function SuratPage() {
   }
 
   const surats = await prisma.surat.findMany({
-    orderBy: { tanggal_surat: 'desc' }
+    orderBy: { created_at: 'desc' }
   });
 
   return (

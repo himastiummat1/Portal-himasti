@@ -1,7 +1,7 @@
 "use client";
 import { useState, useTransition } from "react";
 import { uploadKarya, deleteKarya } from "./actions";
-import { Search, Upload, Trash2, ExternalLink, Github, Image as ImageIcon, X, Lightbulb } from "lucide-react";
+import { Search, Upload, Trash2, ExternalLink, Image as ImageIcon, X, Lightbulb } from "lucide-react";
 
 export default function KaryaClient({ karyas, currentUserId, isSuperAdmin }: { karyas: any[], currentUserId: number, isSuperAdmin: boolean }) {
   const [isPending, startTransition] = useTransition();
@@ -150,7 +150,7 @@ export default function KaryaClient({ karyas, currentUserId, isSuperAdmin }: { k
                 )}
                 {karya.link_repo && (
                   <a href={karya.link_repo} target="_blank" rel="noopener noreferrer" className="flex-1 flex items-center justify-center gap-1 text-xs font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 py-1.5 rounded-lg transition-colors">
-                    <Github className="w-3.5 h-3.5" /> Source
+                    <ExternalLink className="w-3.5 h-3.5" /> Source
                   </a>
                 )}
               </div>

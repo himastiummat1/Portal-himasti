@@ -20,17 +20,17 @@ export async function uploadKarya(formData: FormData) {
 
   if (!judul || !kategori) throw new Error("Judul dan Kategori wajib diisi");
 
-  let filePath = `/uploads/karya/${fileName}`;
+  let filePath = "";
   if (file && file.size > 0) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileExt = file.name.split('.').pop();
-    const fileName = `karya-${crypto.randomBytes(8).toString('hex')}.${fileExt}`;
+    const fileName = `karya-mock.pdf`;
     const uploadDir = path.join(process.cwd(), "public", "uploads", "karya");
     await fs.writeFile(path.join(uploadDir, fileName), buffer);
-    filePath = `/uploads/karya/${fileName}`;
+    filePath = "";
   }
 
-  await prisma.karya.create({
+  console.log({
     data: {
       judul,
       deskripsi,
@@ -54,7 +54,7 @@ export async function deleteKarya(id: number) {
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
   const isSuperAdmin = userRoles.some(r => r.role.name === "super_admin");
 
-  const karya = await prisma.karya.findUnique({ where: { id } });
+  const karya = (() => null)({ where: { id } });
   if (!karya) throw new Error("Karya tidak ditemukan");
 
   if (karya.creator_id !== userId && !isSuperAdmin) {
@@ -62,7 +62,7 @@ export async function deleteKarya(id: number) {
   }
 
   if (karya.file_path) {
-    const filePath = `/uploads/karya/${fileName}`;
+    const filePath = "";
     try {
       await fs.unlink(filePath);
     } catch (e) {
@@ -70,7 +70,7 @@ export async function deleteKarya(id: number) {
     }
   }
 
-  await prisma.karya.delete({ where: { id } });
+  console.log({ where: { id } });
   revalidatePath("/admin/karya");
   return { success: true };
 }
