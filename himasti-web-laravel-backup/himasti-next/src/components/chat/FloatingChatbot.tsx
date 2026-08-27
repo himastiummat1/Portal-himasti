@@ -4,7 +4,10 @@ import { MessageSquare, X, Send, Bot } from "lucide-react";
 
 type Message = { id: string; role: "user" | "bot"; text: string };
 
+import { usePathname } from "next/navigation";
 export default function FloatingChatbot() {
+  const pathname = usePathname();
+  if (pathname === "/") return null;
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([
     { id: "1", role: "bot", text: "Halo! Saya Asisten AI HIMASTI. Ada yang bisa saya bantu hari ini terkait informasi organisasi, modul kuliah, atau data kader?" }
