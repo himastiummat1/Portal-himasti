@@ -124,7 +124,7 @@ export default function AdArtClient({
             </div>
           ) : (
             <iframe 
-              src={`/api/adart?t=${Date.now()}#toolbar=0`} 
+              src={`/api/adart?t=${metadata?.uploadedAt || "default"}#toolbar=0`} 
               className="w-full flex-1 bg-gray-100"
               title="AD/ART HIMASTI"
             />

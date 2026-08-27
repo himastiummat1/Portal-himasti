@@ -18,7 +18,7 @@ export async function GET() {
     return new NextResponse(fileBuffer, {
       headers: {
         "Content-Type": contentType,
-        "Content-Disposition": ext === "pdf" ? "inline; filename=AD-ART.pdf" : "attachment; filename=AD-ART.docx",
+        ...(ext === "docx" ? { "Content-Disposition": "attachment; filename=AD-ART.docx" } : {}),
         "Cache-Control": "no-store, max-age=0"
       },
     });
