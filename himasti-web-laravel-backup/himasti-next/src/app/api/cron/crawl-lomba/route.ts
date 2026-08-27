@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 
 export async function GET() {
@@ -38,6 +39,7 @@ export async function GET() {
       data: competitions
     });
 
+    revalidatePath('/');
     return NextResponse.json({ success: true, count: competitions.length, data: competitions });
   } catch (error) {
     return NextResponse.json({ success: false, error: String(error) }, { status: 500 });
