@@ -20,14 +20,14 @@ export async function uploadKarya(formData: FormData) {
 
   if (!judul || !kategori) throw new Error("Judul dan Kategori wajib diisi");
 
-  let filePath = null;
+  let filePath = `/uploads/karya/${fileName}`;
   if (file && file.size > 0) {
     const buffer = Buffer.from(await file.arrayBuffer());
     const fileExt = file.name.split('.').pop();
-    const fileName = \`karya-\${crypto.randomBytes(8).toString('hex')}.\${fileExt}\`;
+    const fileName = `karya-${crypto.randomBytes(8).toString('hex')}.${fileExt}`;
     const uploadDir = path.join(process.cwd(), "public", "uploads", "karya");
     await fs.writeFile(path.join(uploadDir, fileName), buffer);
-    filePath = \`/uploads/karya/\${fileName}\`;
+    filePath = `/uploads/karya/${fileName}`;
   }
 
   await prisma.karya.create({
@@ -62,7 +62,7 @@ export async function deleteKarya(id: number) {
   }
 
   if (karya.file_path) {
-    const filePath = path.join(process.cwd(), "public", karya.file_path);
+    const filePath = `/uploads/karya/${fileName}`;
     try {
       await fs.unlink(filePath);
     } catch (e) {
