@@ -50,8 +50,8 @@ model DataKader {
 
 model Surat {
   id                Int       @id @default(autoincrement())
-  user_id           Int
-  user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  user_id           Int?
+  user              User?     @relation(fields: [user_id], references: [id], onDelete: SetNull)
   nomor_surat       String?
   jenis_surat       String    // "Masuk" atau "Keluar"
   perihal           String

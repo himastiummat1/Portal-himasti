@@ -56,7 +56,7 @@ export async function deleteKader(userId: number) {
     // kita hapus secara manual dari tabel-tabel relasinya terlebih dahulu!
     await prisma.dataKader.deleteMany({ where: { user_id: userId } });
     await prisma.modelHasRole.deleteMany({ where: { model_id: userId, model_type: "App\\Models\\User" } });
-    await prisma.surat.deleteMany({ where: { user_id: userId } });
+    await prisma.surat.updateMany({ where: { user_id: userId }, data: { user_id: null } });
     await prisma.keuangan.updateMany({ where: { user_id: userId }, data: { user_id: null } });
     
     // Baru hapus User utamanya
