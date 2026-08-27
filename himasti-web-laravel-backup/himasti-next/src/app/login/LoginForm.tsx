@@ -40,7 +40,7 @@ export default function LoginForm() {
         <label className="block text-sm font-medium text-gray-700">Email Akun</label>
         <input
           type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-600/10 sm:text-sm transition-all"
+          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 sm:text-sm transition-all"
           placeholder="admin@email.com"
         />
       </div>
@@ -48,16 +48,16 @@ export default function LoginForm() {
       <div className="space-y-1">
         <div className="flex items-center justify-between">
           <label className="block text-sm font-medium text-gray-700">Kata Sandi</label>
-          <a href="#" className="text-sm font-medium text-purple-600 hover:text-purple-600 transition-colors">Lupa sandi?</a>
+          <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-600 transition-colors">Lupa sandi?</a>
         </div>
         <input
           type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-600/10 sm:text-sm transition-all"
+          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 sm:text-sm transition-all"
           placeholder="••••••••"
         />
       </div>
 
-      <button type="submit" disabled={isLoading} className="w-full flex justify-center items-center rounded-lg bg-purple-700 px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-purple-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed">
+      <button type="submit" disabled={isLoading} className="w-full flex justify-center items-center rounded-lg bg-black px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition-all disabled:opacity-50 disabled:cursor-not-allowed">
         {isLoading ? (
           <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
@@ -87,7 +87,7 @@ export default function LoginForm() {
     </form>
     <div className="mt-8 text-center text-sm text-gray-500">
       Belum memiliki akun kader?{' '}
-      <Link href="/register" className="font-bold text-purple-600 hover:text-purple-800 transition-colors">
+      <Link href="/register" className="font-bold text-blue-600 hover:text-blue-800 transition-colors">
         Daftar Sekarang
       </Link>
     </div>
