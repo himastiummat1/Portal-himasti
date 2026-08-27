@@ -69,7 +69,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       <header className="w-full bg-white border-b border-gray-100">
         <div className="max-w-6xl mx-auto flex h-20 items-center justify-between px-6">
           <div className="flex items-center gap-2 font-medium text-lg tracking-tight">
-            <div className="text-blue-600 font-bold text-xl tracking-tighter">HIMASTI</div>
+            <div className="flex items-center gap-2"><img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 object-contain rounded-lg" /><span className="text-black font-bold text-xl tracking-tighter">HIMASTI</span></div>
             <span className="text-gray-400">Portal</span>
           </div>
           <div className="flex items-center gap-4">

@@ -38,7 +38,7 @@ export default function TopNav({
           
           <div className="flex items-center h-full" ref={navRef}>
             <Link href="/admin" className="font-bold text-lg text-black mr-8 tracking-tight flex items-center gap-2">
-              <span className="w-5 h-5 bg-black rounded-sm inline-block"></span>
+              <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-6 h-6 object-contain rounded-md" />
               HIMASTI
             </Link>
             
