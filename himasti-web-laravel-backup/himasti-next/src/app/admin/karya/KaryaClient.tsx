@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles } from "lucide-react";
+import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles, Download, Lock } from "lucide-react";
 
 export default function KatalogKaryaClient() {
   const [search, setSearch] = useState("");
@@ -123,12 +123,19 @@ export default function KatalogKaryaClient() {
 
             {/* Footer Actions */}
             <div className="px-5 py-4 bg-slate-50/50 border-t border-slate-100 flex gap-2">
-              <a href={work.demo} target="_blank" className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-white border border-slate-200 hover:border-sky-300 hover:text-sky-600 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
-                <ExternalLink className="w-3.5 h-3.5" /> Kunjungi
+              <a href={work.demo} target={work.demo === "#" ? "_self" : "_blank"} className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-white border border-slate-200 hover:border-sky-300 hover:text-sky-600 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
+                <ExternalLink className="w-3.5 h-3.5" /> {work.demo === "#" ? "Demo Offline" : "Kunjungi"}
               </a>
-              <a href={work.repo} target="_blank" className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors">
-                <GitBranch className="w-3.5 h-3.5" /> Repositori
-              </a>
+              
+              {work.repo === "#" ? (
+                <button onClick={() => alert("File ZIP Source Code sedang dipersiapkan...")} className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors">
+                  <Download className="w-3.5 h-3.5" /> Download
+                </button>
+              ) : (
+                <a href={work.repo} target="_blank" className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors">
+                  <GitBranch className="w-3.5 h-3.5" /> Repositori
+                </a>
+              )}
             </div>
 
           </div>
