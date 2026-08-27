@@ -123,10 +123,10 @@ export default function AdArtClient({
               </a>
             </div>
           ) : (
-            <iframe 
-              src={`/uploads/adart/adart_official.pdf#toolbar=0`} 
-              className="w-full flex-1 bg-gray-100"
-              title="AD/ART HIMASTI"
+            <embed 
+              src="/uploads/adart/adart_official.pdf" 
+              type="application/pdf"
+              className="w-full flex-1"
             />
           )}
         </div>
