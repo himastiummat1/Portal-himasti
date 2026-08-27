@@ -40,7 +40,7 @@ export default function LoginForm() {
         <label className="block text-sm font-medium text-gray-700">Email Akun</label>
         <input
           type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-          className="block w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-600/10 sm:text-sm transition-all"
+          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-600/10 sm:text-sm transition-all"
           placeholder="admin@email.com"
         />
       </div>
@@ -52,7 +52,7 @@ export default function LoginForm() {
         </div>
         <input
           type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-          className="block w-full appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-600/10 sm:text-sm transition-all"
+          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-purple-600 focus:outline-none focus:ring-4 focus:ring-purple-600/10 sm:text-sm transition-all"
           placeholder="••••••••"
         />
       </div>
