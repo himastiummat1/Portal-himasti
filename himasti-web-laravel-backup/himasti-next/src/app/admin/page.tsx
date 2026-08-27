@@ -7,6 +7,7 @@ import {
   Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid
 } from "lucide-react";
 import TerminalEasterEgg from "./TerminalEasterEgg";
+import { katalogKarya } from "@/lib/karyaData";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -24,6 +25,25 @@ export default async function AdminDashboard() {
       where: { user_id: parseInt(session.user.id) }
     });
   }
+
+  const creatorCounts = katalogKarya.reduce((acc, curr) => {
+    acc[curr.creator] = (acc[curr.creator] || 0) + 1;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const dynamicLeaderboard = Object.entries(creatorCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 4)
+    .map((entry, index) => {
+       const [name, count] = entry;
+       let role = "Member";
+       let icon = "✨";
+       if (index === 0) { role = "The Architect"; icon = "👑"; }
+       else if (index === 1) { role = "Code Ninja"; icon = "🔥"; }
+       else if (index === 2) { role = "Bug Hunter"; icon = "⚔️"; }
+       
+       return { name, role, score: count.toString(), icon };
+    });
 
   const isSuperAdmin = userRoles.includes('super_admin');
   
@@ -161,17 +181,12 @@ export default async function AdminDashboard() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-800">Dewa Kode HIMASTI</h3>
-                <p className="text-sm text-slate-500">Top Kontributor GitHub (Bulan Ini)</p>
+                <p className="text-sm text-slate-500">Kreator Teraktif (Katalog Karya)</p>
               </div>
             </div>
             
             <div className="space-y-4 relative z-10">
-              {[
-                { name: "M N DAFFA", role: "The Architect", score: "1,240", icon: "👑" },
-                { name: "Arif Rahman", role: "Code Ninja", score: "980", icon: "🔥" },
-                { name: "Samiul Ghozi", role: "Bug Hunter", score: "750", icon: "⚔️" },
-                { name: "Husni Mubarok", role: "Frontend Wizard", score: "620", icon: "✨" }
-              ].map((p, i) => (
+              {dynamicLeaderboard.map((p, i) => (
                 <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-amber-200 hover:bg-amber-50 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-sm font-bold text-slate-500">
@@ -184,7 +199,7 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-slate-800">{p.score}</p>
-                    <p className="text-[10px] text-slate-500">Commits</p>
+                    <p className="text-[10px] text-slate-500">Karya</p>
                   </div>
                 </div>
               ))}
@@ -339,17 +354,12 @@ export default async function AdminDashboard() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-800">Dewa Kode HIMASTI</h3>
-                <p className="text-sm text-slate-500">Top Kontributor GitHub (Bulan Ini)</p>
+                <p className="text-sm text-slate-500">Kreator Teraktif (Katalog Karya)</p>
               </div>
             </div>
             
             <div className="space-y-4 relative z-10">
-              {[
-                { name: "M N DAFFA", role: "The Architect", score: "1,240", icon: "👑" },
-                { name: "Arif Rahman", role: "Code Ninja", score: "980", icon: "🔥" },
-                { name: "Samiul Ghozi", role: "Bug Hunter", score: "750", icon: "⚔️" },
-                { name: "Husni Mubarok", role: "Frontend Wizard", score: "620", icon: "✨" }
-              ].map((p, i) => (
+              {dynamicLeaderboard.map((p, i) => (
                 <div key={i} className="flex items-center justify-between p-3 rounded-xl border border-slate-100 hover:border-amber-200 hover:bg-amber-50 transition-colors">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center text-sm font-bold text-slate-500">
@@ -362,7 +372,7 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-slate-800">{p.score}</p>
-                    <p className="text-[10px] text-slate-500">Commits</p>
+                    <p className="text-[10px] text-slate-500">Karya</p>
                   </div>
                 </div>
               ))}

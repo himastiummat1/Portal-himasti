@@ -1,53 +1,13 @@
 "use client";
 
 import { useState } from "react";
+import { katalogKarya } from "@/lib/karyaData";
 import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles, Download, Lock } from "lucide-react";
 
 export default function KatalogKaryaClient() {
   const [search, setSearch] = useState("");
 
-  const works = [
-    {
-      id: 1,
-      title: "Vidyax Language Compiler",
-      creator: "M N DAFFA (Kabid R&D)",
-      desc: "Bahasa pemrograman AI-first dengan eksekusi multi-agen (Swarm) dan memori bersama secara native.",
-      tags: ["C", "Python", "Compiler", "AI"],
-      repo: "https://github.com/Vidyax-Lang/Vidyax",
-      demo: "https://github.com/daffa2555/Vidyax-Vscode",
-      featured: true
-    },
-    {
-      id: 2,
-      title: "Portal HIMASTI v2",
-      creator: "Tim Pengurus HIMASTI",
-      desc: "Sistem informasi terpadu himpunan mahasiswa berbasis Next.js App Router dengan arsitektur modern.",
-      tags: ["Next.js", "Tailwind", "Prisma"],
-      repo: "#",
-      demo: "#",
-      featured: true
-    },
-    {
-      id: 3,
-      title: "Sistem Deteksi Hama Padi AI",
-      creator: "Riset Bersama Angkatan '22",
-      desc: "Model Computer Vision YOLOv8 untuk mendeteksi penyakit daun padi secara real-time melalui kamera ponsel.",
-      tags: ["Python", "YOLOv8", "TensorFlow"],
-      repo: "#",
-      demo: "#",
-      featured: false
-    },
-    {
-      id: 4,
-      title: "E-Voting Pemira Himpunan",
-      creator: "Divisi IT HIMASTI",
-      desc: "Aplikasi pemilihan ketua himpunan berbasis blockchain sederhana untuk menjamin integritas suara.",
-      tags: ["React", "Express", "Crypto"],
-      repo: "#",
-      demo: "#",
-      featured: false
-    }
-  ];
+  const works = katalogKarya;
 
   const filtered = works.filter(w => 
     w.title.toLowerCase().includes(search.toLowerCase()) || 
