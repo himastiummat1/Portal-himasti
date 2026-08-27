@@ -127,7 +127,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
           
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {roadmaps.map((road) => (
-              <div key={road.id} className="bg-white/90 backdrop-blur-sm border border-slate-200/60 rounded-3xl p-6 shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] hover:border-sky-200 hover:shadow-sky-100 transition-all flex flex-col group">
+              <div key={road.id} className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm hover:border-sky-300 hover:shadow-md transition-all flex flex-col group">
                 <div className="w-16 h-16 bg-slate-50 border border-slate-100 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 group-hover:bg-sky-50 transition-transform">
                   {road.icon}
                 </div>
@@ -140,14 +140,14 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                       <div className="flex items-center justify-center w-6 h-6 rounded-full border-2 border-white bg-slate-200 text-slate-500 shadow shrink-0 md:order-1 md:group-odd:-translate-x-1/2 md:group-even:translate-x-1/2 z-10 relative">
                         <div className="w-2 h-2 bg-slate-400 rounded-full"></div>
                       </div>
-                      <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-slate-50 p-3 rounded-xl border border-slate-100 text-xs font-semibold text-slate-700">
+                      <div className="w-[calc(100%-2rem)] md:w-[calc(50%-1.5rem)] bg-white p-3 rounded-xl border border-slate-200 shadow-sm text-xs font-semibold text-slate-700">
                         {step}
                       </div>
                     </div>
                   ))}
                 </div>
                 
-                <button className="mt-6 w-full py-3 bg-white/90 backdrop-blur-sm border border-slate-200/60 shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] hover:bg-slate-50 hover:border-sky-200 text-slate-700 rounded-xl text-sm font-semibold transition-colors flex justify-center items-center gap-2">
+                <button className="mt-8 w-full py-3 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-semibold transition-colors shadow-sm flex justify-center items-center gap-2">
                   Mulai Jalur Ini <ChevronRight className="w-4 h-4" />
                 </button>
               </div>
@@ -172,7 +172,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {materis.map((smt, idx) => (
-              <div key={idx} className="bg-white/90 backdrop-blur-sm border border-slate-200/60 rounded-2xl overflow-hidden shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)]">
+              <div key={idx} className="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
                 <div className="bg-slate-50/50 px-5 py-4 border-b border-slate-200/60 font-semibold text-slate-800 flex justify-between items-center">
                   {smt.semester}
                   <span className="text-xs bg-slate-200 text-slate-600 px-2 py-1 rounded-lg">{smt.courses.length} Modul</span>
