@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles } from "lucide-react";
 
-export default function KaryaClient() {
+export default function KatalogKaryaClient() {
   const [search, setSearch] = useState("");
 
   const works = [
