@@ -4,7 +4,7 @@ import CompetitionMarquee from "./CompetitionMarquee";
 
 export default function LandingAnimation({ competitions }: { competitions?: any[] }) {
   return (
-    <div className="min-h-screen bg-white text-purple-950 selection:bg-purple-700 selection:text-purple-950 font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-white text-purple-950 selection:bg-yellow-400 selection:text-purple-900 font-sans antialiased overflow-x-hidden">
       
       {/* Top Navbar */}
       <header className="sticky top-0 z-50 w-full border-b border-gray-200 bg-white/80 backdrop-blur-md">
