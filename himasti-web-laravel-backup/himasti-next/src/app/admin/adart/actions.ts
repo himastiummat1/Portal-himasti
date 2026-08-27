@@ -25,13 +25,18 @@ export async function uploadAdArt(formData: FormData) {
     const uploadDir = path.join(process.cwd(), "public", "uploads", "adart");
     await fs.mkdir(uploadDir, { recursive: true });
     
-    const fileName = "adart_official.pdf"; // Enforce PDF name
+    const ext = file.name.split(".").pop()?.toLowerCase();
+    if (ext !== "pdf" && ext !== "docx") return { success: false, error: "Hanya file PDF atau DOCX yang diizinkan." };
+    const fileName = `adart_official.${ext}`;
+    try { await fs.unlink(path.join(uploadDir, "adart_official.pdf")); } catch(e){}
+    try { await fs.unlink(path.join(uploadDir, "adart_official.docx")); } catch(e){}
     await fs.writeFile(path.join(uploadDir, fileName), buffer);
 
     // Also write a metadata file to track upload time
     await fs.writeFile(path.join(uploadDir, "meta.json"), JSON.stringify({ 
       uploadedAt: new Date().toISOString(),
-      uploadedBy: session.user?.name
+      uploadedBy: session.user?.name,
+      extension: ext
     }));
 
     revalidatePath("/admin/adart");

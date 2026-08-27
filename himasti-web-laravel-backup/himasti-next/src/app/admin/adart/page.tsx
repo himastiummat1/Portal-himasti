@@ -21,10 +21,10 @@ export default async function AdArtPage() {
   const uploadDir = path.join(process.cwd(), "public", "uploads", "adart");
 
   try {
-    await fs.access(path.join(uploadDir, "adart_official.pdf"));
-    hasFile = true;
     const metaBuffer = await fs.readFile(path.join(uploadDir, "meta.json"), "utf8");
     metadata = JSON.parse(metaBuffer);
+    await fs.access(path.join(uploadDir, `adart_official.${metadata.extension || "pdf"}`));
+    hasFile = true;
   } catch (e) {
     // File or metadata doesn't exist
   }
