@@ -10,6 +10,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
     { type: "output", text: "Ketik 'help' untuk melihat daftar perintah." }
   ]);
   const [input, setInput] = useState("");
+  const [cwd, setCwd] = useState("~");
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -21,7 +22,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
     if (!input.trim()) return;
 
     const cmd = input.trim();
-    const newHistory = [...history, { type: "input", text: `[${userName}@himasti ~]$ ${cmd}` } as const];
+    const newHistory = [...history, { type: "input", text: `[${userName}@himasti ${cwd}]$ ${cmd}` } as const];
 
     let output = "";
     const lowerCmd = cmd.toLowerCase();
@@ -90,12 +91,12 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
         {/* Terminal Body */}
         <div className="flex-1 p-4 overflow-y-auto text-green-500 space-y-1">
           {history.map((line, i) => (
-            <div key={i} className={line.type === "input" ? "text-slate-300" : "text-green-400"}>
+            <div key={i} className={line.type === "input" ? "text-slate-300" : "text-green-400 whitespace-pre-wrap font-mono"}>
               {line.text}
             </div>
           ))}
           <form onSubmit={handleCommand} className="flex gap-2 mt-2">
-            <span className="text-slate-300">[{userName}@himasti ~]$</span>
+            <span className="text-slate-300">[{userName}@himasti {cwd}]$</span>
             <input 
               type="text" 
               value={input}
