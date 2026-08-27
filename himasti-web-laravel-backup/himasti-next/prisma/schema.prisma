@@ -16,8 +16,8 @@ model User {
   password          String
   remember_token    String?
   deleted_at        DateTime?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   data_kader        DataKader?
   meetings          Meeting[]
@@ -42,8 +42,8 @@ model DataKader {
   skills            String?
   no_hp             String?
   deleted_at        DateTime?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("data_kaders")
 }
@@ -53,13 +53,16 @@ model Surat {
   user_id           Int
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   nomor_surat       String?
-  jenis_surat       String
+  jenis_surat       String    // "Masuk" atau "Keluar"
   perihal           String
-  status            String    @default("pending") // 'pending', 'approved', 'rejected'
-  file_pdf          String?
+  tanggal_surat     DateTime  @default(now())
+  pengirim          String?
+  tujuan            String?
+  status            String    @default("pending")
+  file_path         String?
   deleted_at        DateTime?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("surats")
 }
@@ -73,8 +76,8 @@ model Keuangan {
   keterangan        String
   tanggal           DateTime  @db.Date
   bukti_pembayaran  String?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("keuangans")
 }
@@ -88,8 +91,8 @@ model Meeting {
   location          String
   created_by        Int
   creator           User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("meetings")
 }
@@ -100,8 +103,8 @@ model Artikel {
   description       String
   link              String?
   status            String    @default("Draft")
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("artikels")
 }
@@ -112,8 +115,8 @@ model Role {
   id                Int       @id @default(autoincrement())
   name              String
   guard_name        String
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   users             ModelHasRole[]
   permissions       RoleHasPermission[]
@@ -126,8 +129,8 @@ model Permission {
   id                Int       @id @default(autoincrement())
   name              String
   guard_name        String
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   roles             RoleHasPermission[]
 
@@ -213,8 +216,8 @@ model Event {
   tanggal_mulai     DateTime
   tanggal_selesai   DateTime
   status            String    @default("draft")
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   absensis          Absensi[]
   registrations     EventRegistration[]
@@ -231,8 +234,8 @@ model Absensi {
   waktu_hadir       DateTime
   status_kehadiran  String    @default("hadir") // hadir, izin, sakit, alfa
   catatan           String?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("absensis")
 }
@@ -244,8 +247,8 @@ model EventRegistration {
   user_id           Int
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   status_pendaftaran String   @default("pending") // pending, approved, rejected
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("event_registrations")
 }
@@ -255,8 +258,8 @@ model Survey {
   status            String    @default("draft")
   title             String
   description       String
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("surveys")
 }
@@ -265,8 +268,8 @@ model Klub {
   id                Int       @id @default(autoincrement())
   title             String
   description       String
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("klubs")
 }
@@ -276,8 +279,8 @@ model Merchandise {
   title             String
   description       String
   gambar            String?
-  created_at        DateTime  @default(now())
-  updated_at        DateTime  @updatedAt
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
 
   @@map("merchandises")
 }

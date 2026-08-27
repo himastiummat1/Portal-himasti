@@ -37,8 +37,10 @@ export async function createSurat(formData: FormData) {
       nomor_surat,
       jenis_surat,
       perihal,
-      
-      file_pdf: filePath,
+      tanggal_surat,
+      pengirim: jenis_surat === "Masuk" ? entitas : null,
+      tujuan: jenis_surat === "Keluar" ? entitas : null,
+      file_path: filePath,
       user_id: createdBy
     }
   });
@@ -63,8 +65,8 @@ export async function deleteSurat(id: number) {
   const surat = await prisma.surat.findUnique({ where: { id } });
   if (!surat) throw new Error("Surat tidak ditemukan");
 
-  if (surat.file_pdf) {
-    const filePath = path.join(process.cwd(), "public", surat.file_pdf);
+  if (surat.file_path) {
+    const filePath = path.join(process.cwd(), "public", surat.file_path);
     try {
       await fs.unlink(filePath);
     } catch (e) {
