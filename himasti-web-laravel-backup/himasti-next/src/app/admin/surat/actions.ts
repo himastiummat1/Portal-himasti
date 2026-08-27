@@ -38,8 +38,7 @@ export async function createSurat(formData: FormData) {
       jenis_surat,
       perihal,
       
-      tujuan: jenis_surat === "Keluar" ? entitas : null,
-      file_path: filePath,
+      file_pdf: filePath,
       created_by: createdBy
     }
   });
