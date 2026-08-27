@@ -38,7 +38,6 @@ export async function createSurat(formData: FormData) {
       jenis_surat,
       perihal,
       
-      penerima: jenis_surat === "Masuk" ? entitas : null,
       tujuan: jenis_surat === "Keluar" ? entitas : null,
       file_path: filePath,
       created_by: createdBy
