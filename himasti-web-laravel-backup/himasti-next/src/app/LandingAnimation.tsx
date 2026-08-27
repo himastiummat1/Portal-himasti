@@ -115,7 +115,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
 
   useEffect(() => {
-    const saved = localStorage.getItem('himasti_chat_count_v3');
+    const saved = localStorage.getItem('himasti_chat_count_v4');
     if (saved) setChatCount(parseInt(saved));
   }, []);
 
@@ -142,7 +142,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       
       const newCount = chatCount + 1;
       setChatCount(newCount);
-      localStorage.setItem('himasti_chat_count_v3', newCount.toString());
+      localStorage.setItem('himasti_chat_count_v4', newCount.toString());
     } catch (err) {
       setMessages(prev => [...prev, { role: 'bot', text: 'Maaf, koneksi ke server AI terputus.' }]);
     } finally {
