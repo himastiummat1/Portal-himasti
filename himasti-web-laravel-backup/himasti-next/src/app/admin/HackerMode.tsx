@@ -5,11 +5,25 @@ import { Terminal, ShieldAlert } from "lucide-react";
 export default function HackerMode() {
   const [isActive, setIsActive] = useState(false);
   const [konamiUnlocked, setKonamiUnlocked] = useState(false);
+  const [showRiddle, setShowRiddle] = useState(false);
+  const [riddleAnswer, setRiddleAnswer] = useState("");
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Konami Code sequence
   const secretCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
   const [keyHistory, setKeyHistory] = useState<string[]>([]);
+
+  useEffect(() => {
+    const handleRequest = () => {
+      if (isActive) {
+        setIsActive(false);
+      } else {
+        setShowRiddle(true);
+      }
+    };
+    window.addEventListener('request-dev-mode', handleRequest);
+    return () => window.removeEventListener('request-dev-mode', handleRequest);
+  }, [isActive]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -102,26 +116,53 @@ export default function HackerMode() {
         />
       )}
 
-      {/* Toggle Button */}
-      <div className="fixed bottom-[10.5rem] right-6 z-50 flex flex-col items-end gap-1 group/konami">
-        <label className="flex items-center gap-2 cursor-pointer bg-slate-900/50 backdrop-blur border border-slate-700 px-3 py-1.5 rounded-full hover:bg-slate-800 transition-colors">
-          <input 
-            type="checkbox" 
-            className="sr-only" 
-            checked={isActive} 
-            onChange={() => setIsActive(!isActive)} 
-          />
-          <div className={`w-8 h-4 rounded-full transition-colors relative ${isActive ? 'bg-green-500' : 'bg-slate-600'}`}>
-            <div className={`w-3 h-3 bg-white rounded-full absolute top-0.5 transition-transform ${isActive ? 'translate-x-4' : 'translate-x-0.5'}`}></div>
+
+            {/* Riddle Modal */}
+      {showRiddle && !isActive && (
+        <div className="fixed inset-0 bg-slate-950/80 z-[999] flex items-center justify-center animate-in zoom-in duration-300 backdrop-blur-sm">
+          <div className="bg-slate-900 border border-slate-700 p-8 rounded-3xl max-w-md w-full shadow-2xl relative">
+            <button onClick={() => setShowRiddle(false)} className="absolute top-4 right-4 text-slate-500 hover:text-white">
+              <ShieldAlert className="w-5 h-5" />
+            </button>
+            <h2 className="text-xl font-bold text-white mb-2 flex items-center gap-2">
+              <span className="text-amber-500">🔒</span> Security Clearance Required
+            </h2>
+            <p className="text-sm text-slate-400 mb-6 pb-4 border-b border-slate-800">
+              Dev Mode hanya dapat diakses oleh kader tingkat tinggi. Jawab teka-teki berikut untuk membuktikan identitas Anda:
+            </p>
+            <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
+              <p className="text-emerald-400 font-mono text-sm leading-relaxed">
+                "Saya lahir dari pemikiran kolaboratif. Saya adalah bahasa pemrograman AI-first dengan eksekusi Swarm. Siapakah saya?"
+              </p>
+            </div>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (riddleAnswer.toLowerCase().trim() === "vidyax") {
+                setShowRiddle(false);
+                setIsActive(true);
+                setRiddleAnswer("");
+              } else {
+                alert("Akses Ditolak! Jawaban salah. Anda bukan kader sejati!");
+              }
+            }}>
+              <input 
+                type="text" 
+                autoFocus
+                placeholder="Masukkan jawaban..."
+                value={riddleAnswer}
+                onChange={(e) => setRiddleAnswer(e.target.value)}
+                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 mb-4"
+              />
+              <button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl transition-colors">
+                Unlock System
+              </button>
+            </form>
+            <div className="mt-4 text-center">
+              <p className="text-[10px] font-mono text-slate-600">Hint: ⬆ ⬆ ⬇ ⬇ ⬅ ➡ ⬅ ➡ B A</p>
+            </div>
           </div>
-          <span className="text-xs font-mono font-bold text-slate-300">
-            {isActive ? '> DEV MODE' : 'DEV MODE'}
-          </span>
-        </label>
-        <div className="text-[9px] font-mono text-slate-400/50 group-hover/konami:text-slate-400 transition-colors bg-slate-900/80 px-2 py-0.5 rounded-md border border-slate-700/50 opacity-0 group-hover/konami:opacity-100 cursor-help" title="Konami Code">
-          Hint: ⬆ ⬆ ⬇ ⬇ ⬅ ➡ ⬅ ➡ B A
         </div>
-      </div>
+      )}
 
       {/* Konami Code Modal */}
       {konamiUnlocked && (
