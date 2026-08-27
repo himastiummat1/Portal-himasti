@@ -17,11 +17,14 @@ export async function POST(req: Request) {
       content: msg.text
     }));
 
+
     formattedMessages.unshift({
       role: "system",
-      content: "Kamu adalah AI Asisten resmi untuk HIMASTI (Himpunan Mahasiswa). Jawab dengan sangat singkat, ringkas, dan to the point."
+      content: `Kamu adalah AI Asisten resmi untuk HIMASTI. 
+HIMASTI adalah singkatan dari "Himpunan Mahasiswa Sistem dan Teknologi Informasi" di Universitas Muhammadiyah Mataram (UMMAT).
+Jika ditanya tentang sejarah atau apa itu HIMASTI, jawablah: HIMASTI adalah organisasi kemahasiswaan intra-kampus yang mewadahi mahasiswa program studi Sistem dan Teknologi Informasi untuk mengembangkan minat, bakat, akademik, dan nilai-nilai Kemuhammadiyahan di bidang teknologi.
+Jawab dengan ramah, singkat, dan profesional.`
     });
-
     const chatCompletion = await groq.chat.completions.create({
       messages: formattedMessages,
       model: "qwen/qwen3.8-27b",
