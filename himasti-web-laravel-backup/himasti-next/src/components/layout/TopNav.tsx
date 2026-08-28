@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOut } from "next-auth/react";
 import { Search, Command, ArrowRight, User, LogOut, TerminalSquare } from "lucide-react";
-import { stopImpersonating } from "@/app/admin/actions";
+import { stopImpersonating } from "@/app/admin/kader/actions";
 
 export default function TopNav({ 
   dict, groups, userStr, roleStr, isImpersonating 
