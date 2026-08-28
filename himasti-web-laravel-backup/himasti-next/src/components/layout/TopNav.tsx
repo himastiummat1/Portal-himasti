@@ -17,7 +17,8 @@ export default function TopNav({
   groups: MenuGroup[], 
   userStr: string, 
   roleStr: string,
-  isImpersonating?: boolean
+  isImpersonating?: boolean,
+  dict: any
 }) {
   const pathname = usePathname();
   const [openGroup, setOpenGroup] = useState<string | null>(null);
@@ -48,7 +49,7 @@ export default function TopNav({
             {/* Desktop Menu */}
             <div className="hidden md:flex h-full space-x-6">
               <Link href="/admin" className={`inline-flex items-center text-sm transition-colors border-b-2 ${pathname === "/admin" ? "border-gray-900 text-gray-900" : "border-transparent text-slate-500 hover:text-gray-900"}`}>
-                Overview
+                {dict.menu.overview}
               </Link>
 
               {groups.map((group) => {
@@ -124,10 +125,10 @@ export default function TopNav({
             </button>
             
             <Link href="/admin/profil" className="text-sm font-medium text-slate-500 hover:text-gray-900 ml-4 transition-colors">
-              Profil Saya
+              {dict.menu.profile}
             </Link>
             <button onClick={() => signOut({ callbackUrl: "/login" })} className="text-sm font-medium text-slate-500 hover:text-gray-900 ml-4 transition-colors">
-              Logout
+              {dict.menu.logout}
             </button>
 
           </div>
@@ -155,7 +156,7 @@ export default function TopNav({
             <div className="text-xs font-mono text-slate-500 uppercase">{roleStr}</div>
           </div>
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <div className="mb-2"><Link href="/admin" onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-2 text-sm ${pathname === "/admin" ? "text-gray-900 font-medium" : "text-slate-500"}`}>Overview</Link></div>
+            <div className="mb-2"><Link href="/admin" onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-2 text-sm ${pathname === "/admin" ? "text-gray-900 font-medium" : "text-slate-500"}`}>{dict.menu.overview}</Link></div>
             {groups.map((group) => (
               <div key={group.title} className="mb-2">
                 <div className="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider">{group.title}</div>
@@ -178,10 +179,10 @@ export default function TopNav({
             
             <div className="border-t border-gray-100 mt-2 pt-2">
               <Link href="/admin/profil" onClick={() => setMobileMenuOpen(false)} className="block px-3 py-2 text-sm text-slate-500">
-                Profil Saya
+                {dict.menu.profile}
               </Link>
               <button onClick={() => signOut({ callbackUrl: "/login" })} className="w-full text-left px-3 py-2 text-sm text-slate-500">
-                Logout
+                {dict.menu.logout}
               </button>
             </div>
 

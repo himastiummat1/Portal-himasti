@@ -93,6 +93,20 @@ const divIcons = [
 
 export default function LandingAnimation({ competitions }: { competitions?: any[] }) {
   const [lang, setLang] = useState<Lang>('id');
+  const [langOpen, setLangOpen] = useState(false);
+
+  useEffect(() => {
+    const match = document.cookie.match(new RegExp('(^| )himasti_lang=([^;]+)'));
+    if (match && ['id', 'en', 'ar'].includes(match[2])) {
+      setLang(match[2] as Lang);
+    }
+  }, []);
+
+  const changeLang = (l: Lang) => {
+    setLang(l);
+    document.cookie = `himasti_lang=${l}; path=/; max-age=31536000`;
+  };
+
   const t = translations[lang];
   const isRTL = lang === 'ar';
 
@@ -160,10 +174,17 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           <span className="text-slate-900 font-bold text-lg sm:text-xl tracking-tighter">HIMASTI</span>
         </div>
         <div className="flex items-center gap-2 sm:gap-4">
-          <div className="hidden sm:flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 text-xs">
-            <button onClick={() => setLang('id')} className={`px-2 py-1 rounded ${lang === 'id' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>ID</button>
-            <button onClick={() => setLang('en')} className={`px-2 py-1 rounded ${lang === 'en' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>EN</button>
-            <button onClick={() => setLang('ar')} className={`px-2 py-1 rounded ${lang === 'ar' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>عربي</button>
+          <div className="relative">
+            <button onClick={() => setLangOpen(!langOpen)} className="p-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors text-slate-500">
+              <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
+            </button>
+            {langOpen && (
+              <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden z-50 text-xs sm:text-sm">
+                <button onClick={() => { changeLang('id'); setLangOpen(false); }} className={`block w-full text-left px-4 py-2 hover:bg-slate-50 ${lang === 'id' ? 'font-bold text-slate-900 bg-slate-50' : 'text-slate-500'}`}>🇮🇩 Indonesia</button>
+                <button onClick={() => { changeLang('en'); setLangOpen(false); }} className={`block w-full text-left px-4 py-2 hover:bg-slate-50 ${lang === 'en' ? 'font-bold text-slate-900 bg-slate-50' : 'text-slate-500'}`}>🇬🇧 English</button>
+                <button onClick={() => { changeLang('ar'); setLangOpen(false); }} className={`block w-full text-left px-4 py-2 hover:bg-slate-50 ${lang === 'ar' ? 'font-bold text-slate-900 bg-slate-50' : 'text-slate-500'}`}>🇸🇦 عربي</button>
+              </div>
+            )}
           </div>
           <Link href="/login" className="px-4 py-2 bg-slate-900 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap">
             {t.login}

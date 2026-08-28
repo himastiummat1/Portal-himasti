@@ -66,7 +66,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
 
   return (
     <div className="min-h-screen bg-[#f8fafc]  selection:bg-gray-200 selection:text-gray-900">
-      <TopNav 
+      <TopNav dict={dict} 
         groups={groups} 
         userStr={session.user.name || "User"} 
         roleStr={isSuperAdmin ? "Super Admin" : userRoles[0] || "Pengurus"} 
