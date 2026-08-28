@@ -4,7 +4,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Bot, Send, Terminal, Loader2, Globe, Building2, Users } from 'lucide-react';
 import Link from 'next/link';
 import CompetitionMarquee from './CompetitionMarquee';
-import BrutalistGrid from '@/components/ui/BrutalistGrid';
+import BrutalistCore from '@/components/ui/BrutalistCore';
 
 type Lang = 'id' | 'en' | 'ar';
 
@@ -176,9 +176,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 max-w-5xl mx-auto gap-12">
         {/* Left Typography */}
         <div className="flex flex-col items-center justify-center z-10 w-full">
-          <div className="mb-10 flex justify-center w-full">
-            <BrutalistGrid />
-          </div>
+          <BrutalistCore />
           <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-medium leading-[1.1] tracking-tight text-black mb-6">
             {t.heroTitle}
           </h1>

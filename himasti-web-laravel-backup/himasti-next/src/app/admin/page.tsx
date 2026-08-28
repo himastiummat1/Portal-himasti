@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import BrutalistGrid from "@/components/ui/BrutalistGrid";
 import { 
   Users, FileText, Database, Shield, BookOpen, 
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
@@ -224,9 +223,7 @@ export default async function AdminDashboard() {
       {/* Header Section (Vercel Style) */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200/60 pb-6">
         <div className="flex items-center gap-6">
-          <div className="block">
-            <BrutalistGrid />
-          </div>
+          
           <div>
             <h1 className="text-3xl font-semibold text-slate-800 tracking-tight">Portal Dasbor</h1>
             <p className="text-sm text-slate-500 mt-1">Sistem Informasi HIMASTI v2.0 • Diotorisasi sebagai <span className="font-mono text-xs bg-slate-50/50 text-slate-800 px-1.5 py-0.5 rounded-2xl border border-slate-200/60">{userRoles[0] ? userRoles[0].replace(/_/g, ' ') : 'KADER'}</span></p>
