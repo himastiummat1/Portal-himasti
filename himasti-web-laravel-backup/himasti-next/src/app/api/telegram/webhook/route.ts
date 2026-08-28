@@ -9,13 +9,13 @@ const groupCooldowns = new Map<number, number>();
 const COOLDOWN_MS = 5000;
 
 async function sendMessage(chatId: number, text: string, parseMode = "HTML", replyMarkup?: any) {
-  const payload: any = { chat_id: chatId, text, parse_mode: parseMode };
+  const payload: any = { chat_id: chatId, text, parse_mode: parseMode, disable_web_page_preview: true };
   if (replyMarkup) payload.reply_markup = replyMarkup;
   await fetch(`${TELEGRAM_API}/sendMessage`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
 }
 
 async function editMessageText(chatId: number, messageId: number, text: string, parseMode = "HTML", replyMarkup?: any) {
-  const payload: any = { chat_id: chatId, message_id: messageId, text, parse_mode: parseMode };
+  const payload: any = { chat_id: chatId, message_id: messageId, text, parse_mode: parseMode, disable_web_page_preview: true };
   if (replyMarkup) payload.reply_markup = replyMarkup;
   await fetch(`${TELEGRAM_API}/editMessageText`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
 }
