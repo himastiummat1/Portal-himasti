@@ -133,9 +133,10 @@ export default function AiRobotAnimation() {
         return { ...p, px, py, z: z2, scale, origZ: p.z }; // keep original Z for logic
       });
 
-      // Split into back and front arrays for strict Z-indexing
-      const backNodes = projectedPoints.filter(p => p.type === 'node' && p.z > 0).sort((a,b) => b.z - a.z);
-      const frontNodes = projectedPoints.filter(p => p.type === 'node' && p.z <= 0).sort((a,b) => b.z - a.z);
+      // Split into back and front arrays to push the text deeper inside
+      // By changing the cutoff from 0 to -0.3, more nodes will be drawn in front of the text
+      const backNodes = projectedPoints.filter(p => p.type === 'node' && p.z > -0.3).sort((a,b) => b.z - a.z);
+      const frontNodes = projectedPoints.filter(p => p.type === 'node' && p.z <= -0.3).sort((a,b) => b.z - a.z);
       const allTexts = projectedPoints.filter(p => p.type === 'text');
 
       // Helper to draw node connections
@@ -189,7 +190,7 @@ export default function AiRobotAnimation() {
 
       // 2. Draw Orbiting Texts that are in the BACK
       for (const p of allTexts.filter(p => p.z > 0)) {
-          const alpha = Math.max(0.1, 1 - (p.z + 1) / 2) * 0.5; // fainter in back
+          const alpha = Math.max(0.1, 1 - (p.z + 1) / 2) * 0.5;
           const fontSize = Math.max(8, 12 * p.scale);
           ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
           ctx.font = `500 ${fontSize}px sans-serif`;
@@ -198,53 +199,21 @@ export default function AiRobotAnimation() {
           ctx.fillText(p.text, p.px, p.py);
       }
 
-      // 3. Draw the Central HIMASTI text & Core HUD
+      // 3. Draw the Central HIMASTI text (Clean, Elegant, and Deep inside)
       ctx.save();
       ctx.translate(centerX, centerY);
       
-      // Rotating HUD rings behind the text
-      ctx.lineWidth = 1.5;
-      ctx.strokeStyle = 'rgba(100, 116, 139, 0.2)';
-      ctx.setLineDash([5, 15, 25, 5]);
-      ctx.beginPath();
-      ctx.arc(0, 0, 90 + explosionRadius * 20, time * -0.02, time * -0.02 + Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([2, 8]);
-      ctx.beginPath();
-      ctx.arc(0, 0, 75 + explosionRadius * 10, time * 0.05, time * 0.05 + Math.PI * 2);
-      ctx.stroke();
-      ctx.setLineDash([]); // reset dash
-
       const fontSize = 56 * (1 + (explosionRadius * 0.2));
       
-      // Random glitch
-      const isGlitching = Math.random() > 0.98;
-      const glitchOffset = isGlitching ? (Math.random() - 0.5) * 6 : 0;
-      
-      // Clearer text color (slate-600) so it's readable on white but front nodes still pass over it
-      ctx.fillStyle = isGlitching ? '#94a3b8' : '#475569'; 
+      ctx.fillStyle = '#64748b'; // slate-500 for a solid, clear look
       ctx.font = `900 ${fontSize}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.letterSpacing = "6px";
-      
-      ctx.fillText("HIMASTI", glitchOffset, 2);
-
-      // Scanning Beam over the text
-      ctx.save();
-      ctx.beginPath();
-      ctx.rect(-120, -40, 240, 80); // clip region
-      ctx.clip();
-      
-      const scanY = ((time * 2) % 120) - 60; // sweep from top to bottom
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.15)'; // faint dark beam
-      ctx.fillRect(-120, scanY, 240, 10);
-      ctx.fillStyle = 'rgba(15, 23, 42, 0.3)'; // sharp line
-      ctx.fillRect(-120, scanY + 4, 240, 2);
-      ctx.restore();
-
+      ctx.fillText("HIMASTI", 0, 2);
       ctx.restore(); 
-      // 4. Draw FRONT nodes and lines (Will perfectly overlap the light text!)
+
+      // 4. Draw FRONT nodes and lines (Will perfectly overlap the text!)
       drawLines(frontNodes);
       drawNodeDots(frontNodes);
 
