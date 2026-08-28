@@ -110,3 +110,22 @@ export async function uploadNotulensi(formData: FormData) {
     return { success: false, error: "Gagal menyimpan file." };
   }
 }
+
+export async function getAttendance(meetingId: number) {
+  const session = await auth();
+  if (!session?.user?.id) return [];
+
+  const attendances = await prisma.meetingAttendance.findMany({
+    where: { meeting_id: meetingId },
+    include: { user: { select: { id: true, name: true, email: true } } },
+    orderBy: { waktu_hadir: 'asc' }
+  });
+
+  return attendances.map(a => ({
+    id: a.id,
+    userName: a.user.name,
+    userEmail: a.user.email,
+    waktuHadir: a.waktu_hadir.toISOString(),
+    status: a.status_kehadiran
+  }));
+}

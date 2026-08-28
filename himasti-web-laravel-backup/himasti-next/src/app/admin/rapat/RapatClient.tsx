@@ -1,8 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { addRapat, deleteRapat, uploadNotulensi } from "./actions";
+import { addRapat, deleteRapat, uploadNotulensi, getAttendance } from "./actions";
 import { tutupAbsensiDanRekap } from "./telegram";
+import { Users, X, CheckCircle2, Clock } from "lucide-react";
 
 type RapatRecord = {
   id: number;
@@ -22,6 +23,9 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
   const [errorMsg, setErrorMsg] = useState("");
   const [uploadMeetingId, setUploadMeetingId] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
+  const [attendanceModal, setAttendanceModal] = useState<{ meetingId: number; title: string } | null>(null);
+  const [attendanceList, setAttendanceList] = useState<any[]>([]);
+  const [isLoadingAttendance, setIsLoadingAttendance] = useState(false);
 
   const formatDate = (isoString: string) => {
     return new Intl.DateTimeFormat("id-ID", { 
@@ -64,6 +68,14 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
     if (!confirm("Tutup sesi absensi rapat ini dan kirim rekap ke Telegram?")) return;
     const result = await tutupAbsensiDanRekap(id);
     alert(result.message);
+  }
+
+  async function handleShowAttendance(meetingId: number, title: string) {
+    setAttendanceModal({ meetingId, title });
+    setIsLoadingAttendance(true);
+    const data = await getAttendance(meetingId);
+    setAttendanceList(data);
+    setIsLoadingAttendance(false);
   }
 
   async function handleDelete(id: number) {
@@ -118,6 +130,9 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                 <a href={`/admin/rapat/qr?id=${record.id}`} target="_blank" className="flex-1 bg-slate-900 border border-slate-900 text-white py-1.5 rounded text-sm text-center font-medium hover:bg-slate-800 flex items-center justify-center gap-2 mb-2 shadow-sm">
                   <span className="w-4 h-4">📱</span> Tampilkan QR Absensi
                 </a>
+                <button onClick={() => handleShowAttendance(record.id, record.title)} className="flex-1 bg-slate-50 border border-slate-200 text-slate-700 py-1.5 rounded text-sm text-center font-medium hover:bg-slate-100 flex items-center justify-center gap-2 mb-2">
+                  <Users className="w-4 h-4" /> Lihat Daftar Hadir
+                </button>
                 {record.notulensi_path ? (
                   <a href={record.notulensi_path} target="_blank" rel="noreferrer" className="flex-1 bg-green-50 border border-green-200 text-green-700 py-1.5 rounded text-sm text-center font-medium hover:bg-green-100">
                     Lihat Notulensi
@@ -201,6 +216,71 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                   <button type="submit" disabled={isUploading} className="px-4 py-2 bg-gray-900 text-white rounded-md">{isUploading ? 'Menyimpan...' : 'Upload'}</button>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Attendance List Modal */}
+      {attendanceModal && (
+        <div className="fixed inset-0 z-50 overflow-y-auto">
+          <div className="flex items-center justify-center min-h-screen p-4">
+            <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setAttendanceModal(null)}></div>
+            <div className="relative z-10 w-full max-w-2xl bg-white rounded-2xl shadow-2xl overflow-hidden">
+              <div className="p-6 border-b border-slate-200 flex justify-between items-center">
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900">Daftar Hadir</h3>
+                  <p className="text-sm text-slate-500 mt-0.5">{attendanceModal.title}</p>
+                </div>
+                <button onClick={() => setAttendanceModal(null)} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                  <X className="w-5 h-5 text-slate-600" />
+                </button>
+              </div>
+              
+              <div className="p-6">
+                {isLoadingAttendance ? (
+                  <div className="flex items-center justify-center py-8 text-slate-500 gap-2">
+                    <Clock className="w-5 h-5 animate-spin" /> Memuat data kehadiran...
+                  </div>
+                ) : attendanceList.length === 0 ? (
+                  <div className="text-center py-8 text-slate-500">
+                    <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                    <p className="font-medium">Belum ada yang absen</p>
+                    <p className="text-sm mt-1">Tampilkan QR Code di layar proyektor agar anggota bisa melakukan scan absensi.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
+                      <CheckCircle2 className="w-4 h-4" />
+                      Total Hadir: {attendanceList.length} Orang
+                    </div>
+                    <div className="overflow-x-auto">
+                      <table className="w-full text-sm">
+                        <thead>
+                          <tr className="border-b border-slate-200 text-left text-slate-500">
+                            <th className="py-3 px-4 font-medium">No</th>
+                            <th className="py-3 px-4 font-medium">Nama</th>
+                            <th className="py-3 px-4 font-medium hidden sm:table-cell">Email</th>
+                            <th className="py-3 px-4 font-medium">Waktu</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {attendanceList.map((a, i) => (
+                            <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
+                              <td className="py-3 px-4 text-slate-500 font-mono text-xs">{i + 1}</td>
+                              <td className="py-3 px-4 font-medium text-slate-900">{a.userName}</td>
+                              <td className="py-3 px-4 text-slate-500 font-mono text-xs hidden sm:table-cell truncate max-w-[200px]">{a.userEmail}</td>
+                              <td className="py-3 px-4 text-slate-500 text-xs font-mono">
+                                {new Date(a.waktuHadir).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
