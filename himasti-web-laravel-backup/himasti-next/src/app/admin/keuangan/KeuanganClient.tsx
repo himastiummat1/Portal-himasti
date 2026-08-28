@@ -109,6 +109,23 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
     setErrorMsg("");
   }
 
+  const handleExportCSV = () => {
+    const headers = ["Tanggal,Tipe,Nominal,Keterangan"];
+    const rows = filteredRecords.map(r => {
+      const ket = r.keterangan ? `"${r.keterangan.replace(/"/g, '""')}"` : "";
+      return `${r.tanggal.split('T')[0]},${r.tipe},${r.jumlah},${ket}`;
+    });
+    const csvString = [headers, ...rows].join("\n");
+    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.setAttribute("href", url);
+    link.setAttribute("download", `Laporan_Keuangan_HIMASTI_${new Date().toISOString().split('T')[0]}.csv`);
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <div className="space-y-6">
       {/* SUMMARY CARDS */}
@@ -172,6 +189,9 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
               <option value="pengeluaran">Hanya Pengeluaran</option>
             </select>
 
+            <button onClick={handleExportCSV} className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition w-full sm:w-auto text-center whitespace-nowrap">
+              ⬇️ Unduh Excel (CSV)
+            </button>
             <button onClick={() => { setIsAddModalOpen(true); setErrorMsg(""); }} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition w-full sm:w-auto text-center whitespace-nowrap">
               + Catat Transaksi
             </button>
