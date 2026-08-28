@@ -3,7 +3,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, CheckCircle2, Loader2, Eye, EyeOff } from "lucide-react";
 
-export default function RegisterContainer() {
+export default function RegisterContainer({ dict }: { dict: any }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -69,7 +69,7 @@ export default function RegisterContainer() {
     <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4 py-12 relative selection:bg-gray-200">
       
       <Link href="/" className="absolute top-8 left-8 flex items-center text-sm font-medium text-gray-500 hover:text-gray-900 transition-colors">
-        <ArrowLeft className="w-4 h-4 mr-1" /> Kembali ke Portal
+        <ArrowLeft className="w-4 h-4 mr-1" /> {dict.backToPortal}
       </Link>
 
       <div className="w-full max-w-md">
@@ -78,7 +78,7 @@ export default function RegisterContainer() {
         </div>
 
         <div className="mb-8 text-center">
-          <h2 className="text-2xl font-medium text-gray-900 tracking-tight">Daftar Akun</h2>
+          <h2 className="text-2xl font-medium text-gray-900 tracking-tight">{dict.register}</h2>
           <p className="mt-2 text-sm text-gray-500">
             Bergabung dengan ekosistem digital HIMASTI.
           </p>

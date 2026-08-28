@@ -5,7 +5,7 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff } from "lucide-react";
 
-export default function LoginForm() {
+export default function LoginForm({ dict }: { dict: any }) {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -39,7 +39,7 @@ export default function LoginForm() {
       )}
 
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-gray-700">Email Akun</label>
+        <label className="block text-sm font-medium text-gray-700">{dict.email}</label>
         <input
           type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
           className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-900/20 sm:text-sm transition-all"
@@ -49,8 +49,8 @@ export default function LoginForm() {
 
       <div className="space-y-1">
         <div className="flex items-center justify-between">
-          <label className="block text-sm font-medium text-gray-700">Kata Sandi</label>
-          <a href="#" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Lupa sandi?</a>
+          <label className="block text-sm font-medium text-gray-700">{dict.password}</label>
+          <a href="#" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">{dict.forgotPass}</a>
         </div>
         <div className="relative">
           <input
@@ -70,7 +70,7 @@ export default function LoginForm() {
             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
           </svg>
-        ) : "Masuk ke Panel"}
+        ) : dict.enterPanel}
       </button>
 
       <div className="relative mt-8">
@@ -78,7 +78,7 @@ export default function LoginForm() {
           <div className="w-full border-t border-gray-200"></div>
         </div>
         <div className="relative flex justify-center text-sm font-medium leading-6">
-          <span className="bg-white px-6 text-gray-400">Atau masuk dengan</span>
+          <span className="bg-white px-6 text-gray-400">{dict.orLoginWith}</span>
         </div>
       </div>
 
@@ -93,9 +93,9 @@ export default function LoginForm() {
       </button>
     </form>
     <div className="mt-8 text-center text-sm text-gray-500">
-      Belum memiliki akun kader?{' '}
+      {dict.noAccount}{' '}
       <Link href="/register" className="font-bold text-gray-900 hover:text-gray-800 transition-colors">
-        Daftar Sekarang
+        {dict.registerNow}
       </Link>
     </div>
     </>
