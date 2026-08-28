@@ -39,7 +39,7 @@ export default function AdArtClient({
             <BookOpen className="w-6 h-6 text-gray-900" />
             Konstitusi (AD/ART) HIMASTI
           </h1>
-          <p className="text-gray-500 mt-1">Anggaran Dasar dan Anggaran Rumah Tangga Himpunan Mahasiswa Teknik Informatika.</p>
+          <p className="text-gray-500 mt-1">Anggaran Dasar dan Anggaran Rumah Tangga Himpunan Mahasiswa Sistem dan Teknologi Informasi.</p>
         </div>
         
         {isExecutive && !isUploading && (
