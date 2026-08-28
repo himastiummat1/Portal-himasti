@@ -66,6 +66,8 @@ model Surat {
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
 
+  @@index([user_id], map: "idx_surat_user_id")
+  @@index([status], map: "idx_surat_status")
   @@map("surats")
 }
 
@@ -81,6 +83,8 @@ model Keuangan {
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
 
+  @@index([user_id], map: "idx_keuangan_user_id")
+  @@index([tipe], map: "idx_keuangan_tipe")
   @@map("keuangans")
 }
 
@@ -107,6 +111,8 @@ model Meeting {
 
   attendances       MeetingAttendance[]
 
+  @@index([created_by], map: "idx_meeting_created_by")
+  @@index([event_date], map: "idx_meeting_event_date")
   @@map("meetings")
 }
 
@@ -235,6 +241,7 @@ model Event {
   absensis          Absensi[]
   registrations     EventRegistration[]
 
+  @@index([tanggal_mulai], map: "idx_event_tanggal_mulai")
   @@map("events")
 }
 
@@ -250,6 +257,8 @@ model Absensi {
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
 
+  @@index([event_id], map: "idx_absensi_event_id")
+  @@index([user_id], map: "idx_absensi_user_id")
   @@map("absensis")
 }
 
@@ -263,6 +272,8 @@ model EventRegistration {
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
 
+  @@index([event_id], map: "idx_eventreg_event_id")
+  @@index([user_id], map: "idx_eventreg_user_id")
   @@map("event_registrations")
 }
 
@@ -313,5 +324,6 @@ model MeetingAttendance {
   updated_at        DateTime? @updatedAt
 
   @@unique([meeting_id, user_id])
+  @@index([user_id], map: "idx_meetingatt_user_id")
   @@map("meeting_attendances")
 }
