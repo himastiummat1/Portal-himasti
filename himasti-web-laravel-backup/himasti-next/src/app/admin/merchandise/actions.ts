@@ -1,33 +1,81 @@
 "use server";
+
 import { prisma } from "@/lib/prisma";
-import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
+import { revalidatePath } from "next/cache";
 
-async function requireAuth() {
+export async function getMerchandises() {
   const session = await auth();
-  if (!session?.user?.id) throw new Error("Unauthorized");
-  return session;
+  if (!session) throw new Error("Unauthorized");
+  return await prisma.merchandise.findMany({
+    orderBy: { created_at: "desc" }
+  });
 }
 
-export async function addMerch(formData: FormData) {
-  await requireAuth();
-  try {
-    await prisma.merchandise.create({
-      data: {
-        title: formData.get("title") as string,
-        description: formData.get("description") as string,
-      }
-    });
-    revalidatePath("/admin/merchandise");
-    return { success: true };
-  } catch (e) { return { success: false, error: "Gagal menambah produk" }; }
+export async function addMerchandise(formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
+
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const price = parseInt(formData.get("price") as string) || 0;
+  const stock = parseInt(formData.get("stock") as string) || 0;
+  const category = formData.get("category") as string;
+  const status = formData.get("status") as string;
+  const gambar = formData.get("gambar") as string;
+
+  if (!title || !category) throw new Error("Title and Category are required");
+
+  await prisma.merchandise.create({
+    data: {
+      title,
+      description: description || "",
+      price,
+      stock,
+      category,
+      status: status || "Tersedia",
+      gambar: gambar || null
+    }
+  });
+
+  revalidatePath("/admin/merchandise");
 }
 
-export async function deleteMerch(id: number) {
-  await requireAuth();
-  try {
-    await prisma.merchandise.delete({ where: { id } });
-    revalidatePath("/admin/merchandise");
-    return { success: true };
-  } catch (e) { return { success: false, error: "Gagal menghapus produk" }; }
+export async function updateMerchandise(id: number, formData: FormData) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
+
+  const title = formData.get("title") as string;
+  const description = formData.get("description") as string;
+  const price = parseInt(formData.get("price") as string) || 0;
+  const stock = parseInt(formData.get("stock") as string) || 0;
+  const category = formData.get("category") as string;
+  const status = formData.get("status") as string;
+  const gambar = formData.get("gambar") as string;
+
+  await prisma.merchandise.update({
+    where: { id },
+    data: {
+      title,
+      description,
+      price,
+      stock,
+      category,
+      status,
+      gambar: gambar || null
+    }
+  });
+
+  revalidatePath("/admin/merchandise");
+}
+
+export async function deleteMerchandise(id: number) {
+  const session = await auth();
+  if (!session) throw new Error("Unauthorized");
+
+  await prisma.merchandise.delete({
+    where: { id }
+  });
+
+  revalidatePath("/admin/merchandise");
 }

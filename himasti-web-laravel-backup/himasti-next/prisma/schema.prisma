@@ -303,6 +303,10 @@ model Merchandise {
   id                Int       @id @default(autoincrement())
   title             String
   description       String
+  price             Int       @default(0)
+  stock             Int       @default(0)
+  category          String    @default("General") // Baju, Sticker, Jaket, Makanan
+  status            String    @default("Tersedia") // Tersedia, Habis, Pre-Order
   gambar            String?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
