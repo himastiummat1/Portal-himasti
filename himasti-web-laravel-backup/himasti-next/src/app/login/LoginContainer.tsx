@@ -18,6 +18,12 @@ export default function LoginContainer({ dict }: { dict: any }) {
     return () => clearInterval(interval);
   }, []);
 
+  const [currentTime, setCurrentTime] = useState("");
+
+  useEffect(() => {
+    setCurrentTime(new Date().toISOString());
+  }, []);
+
   return (
     <div className="min-h-screen w-full flex bg-slate-50 relative selection:bg-slate-300">
       
@@ -84,7 +90,7 @@ export default function LoginContainer({ dict }: { dict: any }) {
         </div>
 
         <div className="relative z-10 flex items-end justify-between font-mono text-[10px] text-slate-500 uppercase tracking-widest">
-           <div>{new Date().toISOString()}</div>
+           <div>{currentTime || "ESTABLISHING..."}</div>
            <div>ENCRYPTED CONNECTION</div>
         </div>
       </div>
