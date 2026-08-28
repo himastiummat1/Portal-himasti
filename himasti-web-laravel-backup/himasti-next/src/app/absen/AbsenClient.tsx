@@ -45,7 +45,7 @@ export default function AbsenClient({ meeting, token, alreadyAttended, userName 
       setStatus("success");
     } else {
       setStatus("error");
-      setErrorMsg(result.error);
+      setErrorMsg(result.error || "Gagal melakukan absensi.");
     }
   }
 

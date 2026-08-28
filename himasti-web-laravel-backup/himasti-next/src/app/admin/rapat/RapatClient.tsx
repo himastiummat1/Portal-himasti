@@ -13,6 +13,7 @@ type RapatRecord = {
   location: string;
   creator: string;
   notulensi_path?: string | null;
+  is_active?: boolean | null;
 };
 
 export default function RapatClient({ records }: { records: RapatRecord[] }) {
