@@ -1,7 +1,25 @@
 import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
 
+// Simple in-memory rate limiter (per IP, 10 req/min)
+const rateMap = new Map<string, { count: number; reset: number }>();
+const RATE_LIMIT = 10;
+const WINDOW_MS = 60_000;
+
 export async function POST(req: Request) {
+  // Rate limit check
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
+  const now = Date.now();
+  const entry = rateMap.get(ip);
+  if (entry && now < entry.reset) {
+    entry.count++;
+    if (entry.count > RATE_LIMIT) {
+      return NextResponse.json({ text: "Terlalu banyak permintaan. Coba lagi nanti." }, { status: 429 });
+    }
+  } else {
+    rateMap.set(ip, { count: 1, reset: now + WINDOW_MS });
+  }
+
   const groq = new Groq({ apiKey: process.env.API_KEY_GROQ || "dummy_key" });
   try {
     const { messages, lang } = await req.json();
