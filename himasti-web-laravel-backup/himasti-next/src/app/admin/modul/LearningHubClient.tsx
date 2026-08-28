@@ -11,7 +11,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
   const [activeTab, setActiveTab] = useState<"roadmap" | "materi" | "cheat" | "vidyax">("roadmap");
   const [activeCourse, setActiveCourse] = useState<any>(null);
 
-  const roadmaps = [
+    const roadmaps = [
     {
       id: "frontend",
       link: "https://roadmap.sh/frontend",
@@ -40,8 +40,40 @@ export default function LearningHubClient({ userName }: { userName: string }) {
         "3. Relational DB: PostgreSQL, MySQL, Normalisasi",
         "4. API Design: RESTful API, GraphQL, Postman",
         "5. ORM & Query Builder: Prisma, Sequelize",
-        "6. Caching & Message Broker: Redis, RabbitMQ",
-        "7. Containerization: Docker & Dasar CI/CD"
+        "6. Keamanan: JWT Auth, OAuth, CORS, & Hashing",
+        "7. Arsitektur Lanjut: Redis Caching, Docker, CI/CD"
+      ]
+    },
+    {
+      id: "data",
+      link: "https://roadmap.sh/ai-data-scientist",
+      title: "Data Science & AI",
+      icon: <Cpu className="w-8 h-8 text-slate-900" />,
+      desc: "Olah data menjadi wawasan, latih model AI, dan prediksi masa depan.",
+      steps: [
+        "1. Dasar Pemrograman: Python Dasar & Algoritma",
+        "2. Matematika AI: Aljabar Linier & Statistika",
+        "3. Data Wrangling: Pandas, Numpy, & SQL Lanjut",
+        "4. Visualisasi: Matplotlib, Seaborn, Tableau",
+        "5. Machine Learning Basic: Scikit-Learn, Regresi",
+        "6. Deep Learning: TensorFlow, PyTorch, Neural Nets",
+        "7. Generative AI: LangChain, RAG, & HuggingFace"
+      ]
+    },
+    {
+      id: "systems",
+      link: "https://roadmap.sh/computer-science",
+      title: "Systems & Compiler Engineer",
+      icon: <Terminal className="w-8 h-8 text-rose-500" />,
+      desc: "Jalur 'Dewa' (Expert): Bangun bahasa pemrograman, OS, dan infrastruktur tingkat rendah.",
+      steps: [
+        "1. Low-Level: C, C++, Rust, atau Zig",
+        "2. Arsitektur Komputer & OS Internals",
+        "3. Teori Kompilator & AST (Contoh: Vidyax)",
+        "4. Code Generation & Runtime (Studi: Vidyax)",
+        "5. Sistem Memori & Garbage Collection",
+        "6. High-Performance Computing (HPC)",
+        "7. Sistem Terdistribusi Skala Masif"
       ]
     }
   ];
