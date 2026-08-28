@@ -49,7 +49,7 @@ export default async function AdminDashboard() {
   const isSuperAdmin = userRoles.includes('super_admin');
   
   // Dashboard Metrics
-  const totalKader = await prisma.user.count();
+  const totalKader = await prisma.dataKader.count();
   const totalEvent = await prisma.event.count();
   const totalSurat = await prisma.surat.count();
 
