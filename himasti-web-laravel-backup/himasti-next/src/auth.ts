@@ -42,6 +42,49 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
+    async signIn({ user, account }) {
+      if (account?.provider === "google") {
+        if (!user.email) return false;
+        
+        const existingUser = await prisma.user.findUnique({
+          where: { email: user.email }
+        });
+        
+        if (existingUser) {
+          user.id = existingUser.id.toString();
+          return true;
+        }
+
+        const hashedPassword = await bcrypt.hash(Math.random().toString(36).slice(-8), 10);
+        const newUser = await prisma.user.create({
+          data: {
+            name: user.name || "Kader HIMASTI",
+            email: user.email,
+            password: hashedPassword,
+          }
+        });
+
+        await prisma.dataKader.create({
+          data: {
+            user_id: newUser.id,
+            nim: "GGL-" + Math.floor(Math.random() * 1000000),
+            angkatan: new Date().getFullYear().toString(),
+            status_kaderisasi: "Aktif"
+          }
+        });
+
+        const role = await prisma.role.findFirst({ where: { name: "kader" } });
+        if (role) {
+          await prisma.modelHasRole.create({
+            data: { role_id: role.id, model_type: "App\\Models\\User", model_id: newUser.id }
+          });
+        }
+        
+        user.id = newUser.id.toString();
+        return true;
+      }
+      return true;
+    },
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id;
