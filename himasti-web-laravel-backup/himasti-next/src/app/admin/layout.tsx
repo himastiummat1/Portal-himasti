@@ -4,9 +4,11 @@ import { prisma } from "@/lib/prisma";
 import TopNav from "@/components/layout/TopNav";
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { getDict } from "./../i18n";
 
 export default async function AdminLayout({ children }: { children: ReactNode }) {
   const session = await auth();
+  const dict = await getDict();
   if (!session?.user) redirect("/login");
   
   let userRoles: string[] = [];

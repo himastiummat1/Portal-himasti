@@ -12,7 +12,8 @@ export default function TopNav({
   groups, 
   userStr, 
   roleStr,
-  isImpersonating
+  isImpersonating,
+  dict
 }: { 
   groups: MenuGroup[], 
   userStr: string, 
