@@ -21,8 +21,11 @@ export async function submitOnboarding(formData: FormData) {
     return { error: "Semua kolom wajib diisi." };
   }
 
-  const VALID_CODE = process.env.REGISTRATION_CODE || "HIMASTI-2024";
-  if (secret_code !== VALID_CODE) {
+  const VALID_CODE = process.env.REGISTRATION_CODE || "JIWA AKTIF JIWA KREATIF LUAR BIASA";
+  const cleanInput = secret_code.toUpperCase().replace(/[^A-Z]/g, '');
+  const cleanValid = VALID_CODE.toUpperCase().replace(/[^A-Z]/g, '');
+
+  if (cleanInput !== cleanValid) {
     return { error: "Kode Akses Pendaftaran tidak valid! Anda bukan kader." };
   }
 
