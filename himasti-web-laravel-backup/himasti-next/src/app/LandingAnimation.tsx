@@ -197,12 +197,9 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         
         <BrutalistCore />
         { /* Left Typography */ }
-        <div className="flex flex-col items-center justify-center z-10 w-full">
+        <div className="flex flex-col items-center justify-center z-10 w-full min-h-[300px]">
           <AiRobotAnimation />
-          <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-semibold leading-[1.1] tracking-tight text-slate-800 mb-8 -mt-6">
-            {t.heroTitle}
-          </h1>
-          <p className="text-lg md:text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed mx-auto">
+          <p className="text-lg md:text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed mx-auto mt-4">
             {t.heroDesc}
           </p>
           <Link href="/login" className="px-8 py-4 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors flex items-center gap-2 group">

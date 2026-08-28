@@ -22,9 +22,9 @@ export default function AiRobotAnimation() {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Set canvas dimensions - make it a bit wider to fit orbiting text
-    canvas.width = 600;
-    canvas.height = 300;
+    // Set canvas dimensions - large enough to dominate the hero section
+    canvas.width = 800;
+    canvas.height = 450;
 
     let animationFrameId: number;
     let time = 0;
@@ -43,9 +43,9 @@ export default function AiRobotAnimation() {
       const x = e.clientX - rect.left - canvas.width / 2;
       const y = e.clientY - rect.top - canvas.height / 2;
       
-      // Map mouse position to rotation target
-      targetRotY = x * 0.005;
-      targetRotX = y * 0.005;
+      // Increased sensitivity for better parallax feel
+      targetRotY = x * 0.003;
+      targetRotX = y * 0.003;
     };
 
     const handleClick = () => {
@@ -58,8 +58,8 @@ export default function AiRobotAnimation() {
 
     // Generate 3D Sphere Points (Fibonacci lattice)
     const spherePoints: {x: number, y: number, z: number, type: 'node'}[] = [];
-    const numPoints = 200;
-    const phi = Math.PI * (3 - Math.sqrt(5)); // golden angle
+    const numPoints = 250;
+    const phi = Math.PI * (3 - Math.sqrt(5));
     
     for (let i = 0; i < numPoints; i++) {
       const y = 1 - (i / (numPoints - 1)) * 2; 
@@ -75,11 +75,11 @@ export default function AiRobotAnimation() {
     const numDivs = divisions.length;
     for (let i = 0; i < numDivs; i++) {
       const angle = (Math.PI * 2 / numDivs) * i;
-      // Spread them around an orbit that is 1.8x the radius of the sphere
-      const x = Math.cos(angle) * 1.8;
-      const z = Math.sin(angle) * 1.8;
-      // Add slight varied Y tilt so they aren't completely flat
-      const y = Math.sin(angle * 2) * 0.2; 
+      // Orbit radius is 1.6x the sphere radius
+      const x = Math.cos(angle) * 1.6;
+      const z = Math.sin(angle) * 1.6;
+      // Slanted orbit
+      const y = Math.sin(angle * 2) * 0.15; 
       divisionPoints.push({ x, y, z, text: divisions[i], type: 'text' });
     }
 
@@ -88,14 +88,13 @@ export default function AiRobotAnimation() {
       
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2;
-      const baseRadius = 80;
+      const baseRadius = 150; // Much larger sphere
 
       // Smoothly interpolate current rotation to target rotation
       currentRotX += (targetRotX - currentRotX) * 0.05;
       currentRotY += (targetRotY - currentRotY) * 0.05;
 
-      // Continuous base rotation
-      const rotY = time * 0.005 + currentRotY;
+      const rotY = time * 0.003 + currentRotY;
       const rotX = currentRotX;
 
       // Handle explosion effect
@@ -113,107 +112,150 @@ export default function AiRobotAnimation() {
         }
       }
 
-      // Precalculate rotation sines/cosines
       const cosX = Math.cos(rotX);
       const sinX = Math.sin(rotX);
       const cosY = Math.cos(rotY);
       const sinY = Math.sin(rotY);
 
-      // Combine sphere and division points for projection
       const allPoints = [...spherePoints, ...divisionPoints];
 
-      // Project points to 2D
       const projectedPoints = allPoints.map(p => {
-        // Rotate around X axis
         let y1 = p.y * cosX - p.z * sinX;
         let z1 = p.y * sinX + p.z * cosX;
         
-        // Rotate around Y axis
         let x2 = p.x * cosY + z1 * sinY;
         let z2 = -p.x * sinY + z1 * cosY;
         
-        // Scale and project
-        const scale = 300 / (300 - z2 * currentRadius); 
+        const scale = 400 / (400 - z2 * currentRadius); 
         const px = centerX + x2 * currentRadius * scale;
         const py = centerY + y1 * currentRadius * scale;
         
-        return { ...p, px, py, z: z2, scale };
+        return { ...p, px, py, z: z2, scale, origZ: p.z }; // keep original Z for logic
       });
 
-      // We inject the center "HIMASTI" text at Z=0
-      projectedPoints.push({
-         type: 'center_text',
-         text: 'HIMASTI',
-         x: 0, y: 0, z: 0,
-         px: centerX,
-         py: centerY,
-         scale: 300 / 300 // Z is 0
-      });
+      // Split into back and front arrays for strict Z-indexing
+      const backNodes = projectedPoints.filter(p => p.type === 'node' && p.z > 0).sort((a,b) => b.z - a.z);
+      const frontNodes = projectedPoints.filter(p => p.type === 'node' && p.z <= 0).sort((a,b) => b.z - a.z);
+      const allTexts = projectedPoints.filter(p => p.type === 'text');
 
-      // Sort points by Z depth for proper rendering order (back to front)
-      projectedPoints.sort((a, b) => b.z - a.z);
+      // Helper to draw node connections
+      const drawLines = (nodes: any[]) => {
+          ctx.lineWidth = 0.5;
+          for (let i = 0; i < nodes.length; i++) {
+            const p1 = nodes[i];
+            
+            // Draw lines between nodes
+            for (let j = i + 1; j < Math.min(i + 7, nodes.length); j++) {
+               const p2 = nodes[j];
+               const dx = p1.px - p2.px;
+               const dy = p1.py - p2.py;
+               const dist = dx*dx + dy*dy;
+               if (dist < 3000) {
+                  const alpha = (1 - dist / 3000) * (p1.z < 0 ? 0.6 : 0.15);
+                  ctx.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
+                  ctx.beginPath();
+                  ctx.moveTo(p1.px, p1.py);
+                  ctx.lineTo(p2.px, p2.py);
+                  ctx.stroke();
+               }
+            }
+            
+            // Draw tether lines from the core to some nodes to make it look "suspended"
+            if (i % 8 === 0) {
+               ctx.strokeStyle = `rgba(15, 23, 42, ${p1.z < 0 ? 0.3 : 0.05})`;
+               ctx.beginPath();
+               ctx.moveTo(p1.px, p1.py);
+               ctx.lineTo(centerX, centerY);
+               ctx.stroke();
+            }
+          }
+      };
 
-      // Draw Connections for Nodes ONLY
-      ctx.lineWidth = 0.5;
-      const nodesOnly = projectedPoints.filter(p => p.type === 'node');
-      for (let i = 0; i < nodesOnly.length; i++) {
-        const p1 = nodesOnly[i];
-        if (p1.z > 0.5) continue; // Skip lines in the far back
-
-        for (let j = i + 1; j < Math.min(i + 7, nodesOnly.length); j++) {
-           const p2 = nodesOnly[j];
-           const dx = p1.px - p2.px;
-           const dy = p1.py - p2.py;
-           const dist = dx*dx + dy*dy;
-           
-           if (dist < 1200) {
-              const alpha = (1 - dist / 1200) * (p1.z < 0 ? 0.8 : 0.2);
-              ctx.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
-              ctx.beginPath();
-              ctx.moveTo(p1.px, p1.py);
-              ctx.lineTo(p2.px, p2.py);
-              ctx.stroke();
-           }
-        }
-      }
-
-      // Draw Entities (Nodes, Orbit Text, Center Text)
-      for (const p of projectedPoints) {
-        if (p.type === 'node') {
-            const alpha = Math.max(0.1, 1 - (p.z + 1) / 2);
+      const drawNodeDots = (nodes: any[]) => {
+          for (const p of nodes) {
+            const alpha = Math.max(0.05, 1 - (p.z + 1) / 2);
             const radius = Math.max(0.5, p.scale * 1.5);
             ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
             ctx.beginPath();
             ctx.arc(p.px, p.py, radius, 0, Math.PI * 2);
             ctx.fill();
-        } 
-        else if (p.type === 'text') {
-            // Division Names Orbiting
-            const alpha = Math.max(0.1, 1 - (p.z + 1) / 2);
-            const fontSize = Math.max(6, 11 * p.scale);
-            
-            ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
-            ctx.font = `600 ${fontSize}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            // Slight letter spacing simulation by just using standard fillText
-            ctx.fillText(p.text || '', p.px, p.py);
-        }
-        else if (p.type === 'center_text') {
-            // Central HIMASTI Text (3D illusion inside the core)
-            // It scales based on click explosion slightly
-            const fontSize = 24 * (1 + (explosionRadius * 0.2));
-            ctx.fillStyle = '#0f172a';
-            ctx.font = `900 ${fontSize}px sans-serif`;
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            
-            // Draw a glowing/white shadow behind it so it's readable through the front nodes
-            ctx.shadowColor = 'white';
-            ctx.shadowBlur = 10;
-            ctx.fillText(p.text || '', p.px, p.py);
-            ctx.shadowBlur = 0; // reset
-        }
+          }
+      };
+
+      // 1. Draw BACK nodes and lines
+      drawLines(backNodes);
+      drawNodeDots(backNodes);
+
+      // 2. Draw Orbiting Texts that are in the BACK
+      for (const p of allTexts.filter(p => p.z > 0)) {
+          const alpha = Math.max(0.1, 1 - (p.z + 1) / 2) * 0.5; // fainter in back
+          const fontSize = Math.max(8, 12 * p.scale);
+          ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
+          ctx.font = `500 ${fontSize}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          ctx.fillText(p.text, p.px, p.py);
+      }
+
+      // 3. Draw the Central HIMASTI text WITH 3D perspective
+      ctx.save();
+      // We apply a horizontal scale based on rotation to simulate a 3D plane turning
+      // We limit it so it doesn't completely disappear (minimum 20% width)
+      const textScaleX = Math.max(0.2, Math.abs(Math.cos(rotY)));
+      ctx.translate(centerX, centerY);
+      ctx.scale(textScaleX, 1); // 3D Y-axis rotation illusion
+      
+      const fontSize = 48 * (1 + (explosionRadius * 0.2));
+      
+      // Draw geometric glass box behind text
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)';
+      ctx.lineWidth = 1;
+      const boxW = 240;
+      const boxH = 70;
+      ctx.fillRect(-boxW/2, -boxH/2, boxW, boxH);
+      ctx.strokeRect(-boxW/2, -boxH/2, boxW, boxH);
+
+      // Inner brackets
+      ctx.beginPath();
+      ctx.moveTo(-boxW/2 + 10, -boxH/2 - 5);
+      ctx.lineTo(-boxW/2 - 5, -boxH/2 - 5);
+      ctx.lineTo(-boxW/2 - 5, -boxH/2 + 10);
+      ctx.stroke();
+
+      ctx.beginPath();
+      ctx.moveTo(boxW/2 - 10, boxH/2 + 5);
+      ctx.lineTo(boxW/2 + 5, boxH/2 + 5);
+      ctx.lineTo(boxW/2 + 5, boxH/2 - 10);
+      ctx.stroke();
+
+      // Text rendering
+      ctx.fillStyle = '#0f172a';
+      ctx.font = `900 ${fontSize}px sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.letterSpacing = "4px";
+      ctx.fillText("HIMASTI", 0, 2);
+      ctx.restore(); // Restore scale/translation
+
+      // 4. Draw FRONT nodes and lines (Will perfectly overlap the text!)
+      drawLines(frontNodes);
+      drawNodeDots(frontNodes);
+
+      // 5. Draw Orbiting Texts that are in the FRONT
+      for (const p of allTexts.filter(p => p.z <= 0)) {
+          const alpha = Math.min(1, Math.max(0.3, 1 - (p.z + 1) / 2));
+          const fontSize = Math.max(12, 14 * p.scale);
+          ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
+          ctx.font = `600 ${fontSize}px sans-serif`;
+          ctx.textAlign = 'center';
+          ctx.textBaseline = 'middle';
+          
+          // White shadow for better readability of front text
+          ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
+          ctx.shadowBlur = 4;
+          ctx.fillText(p.text, p.px, p.py);
+          ctx.shadowBlur = 0;
       }
 
       time++;
@@ -230,7 +272,7 @@ export default function AiRobotAnimation() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center mb-0 relative cursor-crosshair">
+    <div className="flex flex-col items-center justify-center mb-0 relative cursor-crosshair w-full overflow-hidden">
       <canvas 
         ref={canvasRef} 
         className="active:scale-[0.98] transition-transform duration-75 max-w-full"
