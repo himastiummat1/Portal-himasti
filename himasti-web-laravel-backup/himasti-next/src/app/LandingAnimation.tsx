@@ -122,7 +122,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
   useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
-  const handleSend = async (e: React.FormEvent) => {
+  const handleSend = async (e: React.FormEvent | React.PointerEvent) => {
     e.preventDefault();
     if (!input.trim() || isLoading) return;
     if (chatCount >= 5) return;
@@ -173,7 +173,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       </nav>
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 max-w-5xl mx-auto gap-12">
+      <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-32 pb-20 max-w-5xl mx-auto gap-8 md:gap-12">
         
         <BrutalistCore />
         { /* Left Typography */ }
@@ -192,7 +192,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         </div>
 
         {/* Right AI Terminal (Unchanged functionally) */}
-        <div className="w-full max-w-2xl z-10">
+        <div className="w-full max-w-2xl relative z-40">
           <div className="bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
@@ -231,20 +231,27 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                    {t.demoLimit}
                  </div>
                ) : (
-                 <form onSubmit={handleSend} className="flex gap-2">
+                 <form onSubmit={handleSend} className="flex gap-2 w-full relative z-50">
                    <input
                      type="text"
                      value={input}
                      onChange={(e) => setInput(e.target.value)}
                      disabled={isLoading}
                      placeholder={t.aiPrompt}
-                     className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50"
+                     className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50 relative z-50"
                      dir={isRTL ? 'rtl' : 'ltr'}
                    />
                    <button 
                      type="submit" 
                      disabled={!input.trim() || isLoading}
-                     className="p-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation"
+                     onPointerDown={(e) => {
+                       // Fire immediately on mobile touch to prevent keyboard dismiss swallowing the click
+                       if (input.trim() && !isLoading) {
+                         e.preventDefault();
+                         handleSend(e);
+                       }
+                     }}
+                     className="p-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation relative z-50"
                    >
                      <Send className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
