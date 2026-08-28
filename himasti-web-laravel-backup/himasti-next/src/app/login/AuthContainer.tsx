@@ -180,8 +180,7 @@ export default function AuthContainer({ dict }: { dict: any }) {
         </div>
 
         <p className="text-center mt-6 text-[10px] font-mono text-slate-400 uppercase tracking-widest leading-relaxed">
-          Sistem Informasi HIMASTI v2.0<br/>
-          <span className="font-semibold text-slate-500">"JIWA AKTIF, JIWA KREATIF, LUAR BIASA"</span>
+          Sistem Informasi HIMASTI v2.0
         </p>
       </div>
     </div>
