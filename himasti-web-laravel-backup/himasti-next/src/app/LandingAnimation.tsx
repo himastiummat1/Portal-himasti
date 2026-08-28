@@ -120,7 +120,6 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
     if (saved) setChatCount(parseInt(saved));
   }, []);
 
-  useEffect(() => { chatEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
   const handleSend = async (e: React.FormEvent | React.PointerEvent) => {
     e.preventDefault();

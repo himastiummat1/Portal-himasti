@@ -14,7 +14,6 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
   const endRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (endRef.current) endRef.current.scrollIntoView({ behavior: "smooth" });
   }, [history, isOpen]);
 
   const handleCommand = (e: React.FormEvent) => {
