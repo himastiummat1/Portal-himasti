@@ -3,11 +3,13 @@ import Link from "next/link";
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import { Eye, EyeOff } from "lucide-react";
 
 export default function LoginForm() {
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
@@ -50,11 +52,16 @@ export default function LoginForm() {
           <label className="block text-sm font-medium text-gray-700">Kata Sandi</label>
           <a href="#" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Lupa sandi?</a>
         </div>
-        <input
-          type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-900/20 sm:text-sm transition-all"
-          placeholder="••••••••"
-        />
+        <div className="relative">
+          <input
+            type={showPassword ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)}
+            className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 pl-4 pr-12 py-3 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-900/20 sm:text-sm transition-all"
+            placeholder="••••••••"
+          />
+          <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600 p-1">
+            {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+          </button>
+        </div>
       </div>
 
       <button type="submit" disabled={isLoading} className="w-full flex justify-center items-center rounded-lg bg-black px-4 py-3 text-sm font-semibold text-white shadow-sm hover:bg-gray-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black transition-all disabled:opacity-50 disabled:cursor-not-allowed">
