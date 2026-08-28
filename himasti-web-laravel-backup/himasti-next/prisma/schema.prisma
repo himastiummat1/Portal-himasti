@@ -25,6 +25,7 @@ model User {
   surats            Surat[]
   absensis          Absensi[]
   event_regs        EventRegistration[]
+  meeting_attendances MeetingAttendance[]
 
   // Spatie Roles
   roles             ModelHasRole[]
@@ -91,10 +92,20 @@ model Meeting {
   event_date        DateTime
   location          String
   notulensi_path    String?
+  
+  // Geofencing & Smart Attendance
+  latitude          Float?
+  longitude         Float?
+  radius_meter      Int?      @default(50)
+  qr_secret         String?
+  is_active         Boolean?  @default(true)
+
   created_by        Int
   creator           User      @relation(fields: [created_by], references: [id], onDelete: Cascade)
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
+
+  attendances       MeetingAttendance[]
 
   @@map("meetings")
 }
@@ -286,4 +297,21 @@ model Merchandise {
   updated_at        DateTime? @updatedAt
 
   @@map("merchandises")
+}
+
+model MeetingAttendance {
+  id                Int       @id @default(autoincrement())
+  meeting_id        Int
+  meeting           Meeting   @relation(fields: [meeting_id], references: [id], onDelete: Cascade)
+  user_id           Int
+  user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  waktu_hadir       DateTime  @default(now())
+  status_kehadiran  String    @default("hadir")
+  latitude_scan     Float?
+  longitude_scan    Float?
+  created_at        DateTime? @default(now())
+  updated_at        DateTime? @updatedAt
+
+  @@unique([meeting_id, user_id])
+  @@map("meeting_attendances")
 }

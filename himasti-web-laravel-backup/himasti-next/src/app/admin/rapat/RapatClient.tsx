@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { addRapat, deleteRapat, uploadNotulensi } from "./actions";
+import { tutupAbsensiDanRekap } from "./telegram";
 
 type RapatRecord = {
   id: number;
@@ -58,6 +59,12 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
     setIsUploading(false);
   }
 
+  async function handleTutupRekap(id: number) {
+    if (!confirm("Tutup sesi absensi rapat ini dan kirim rekap ke Telegram?")) return;
+    const result = await tutupAbsensiDanRekap(id);
+    alert(result.message);
+  }
+
   async function handleDelete(id: number) {
     if (!confirm("Hapus jadwal rapat ini?")) return;
     const result = await deleteRapat(id);
@@ -102,6 +109,14 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
               </div>
               
               <div className="mt-4 pt-4 border-t border-gray-200 flex flex-col gap-2">
+                {record.is_active && (
+                  <button onClick={() => handleTutupRekap(record.id)} className="flex-1 bg-blue-50 border border-blue-200 text-blue-700 py-1.5 rounded text-sm text-center font-medium hover:bg-blue-100 flex items-center justify-center gap-2 mb-2">
+                    <span className="w-4 h-4">📊</span> Tutup & Rekap (Telegram)
+                  </button>
+                )}
+                <a href={`/admin/rapat/qr?id=${record.id}`} target="_blank" className="flex-1 bg-slate-900 border border-slate-900 text-white py-1.5 rounded text-sm text-center font-medium hover:bg-slate-800 flex items-center justify-center gap-2 mb-2 shadow-sm">
+                  <span className="w-4 h-4">📱</span> Tampilkan QR Absensi
+                </a>
                 {record.notulensi_path ? (
                   <a href={record.notulensi_path} target="_blank" rel="noreferrer" className="flex-1 bg-green-50 border border-green-200 text-green-700 py-1.5 rounded text-sm text-center font-medium hover:bg-green-100">
                     Lihat Notulensi
