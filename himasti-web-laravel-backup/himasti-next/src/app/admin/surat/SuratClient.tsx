@@ -101,8 +101,9 @@ export default function SuratClient({ surats, isExecutive }: { surats: any[], is
                 </div>
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">File Scan Surat (Opsional)</label>
-                <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg" className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-900 hover:file:bg-gray-100 border border-gray-200 rounded-lg p-1" />
+                <label className="block text-sm font-medium text-gray-700 mb-1">Link Dokumen (Google Drive)</label>
+                <input type="url" name="file_url" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="https://drive.google.com/..." />
+                <p className="text-[10px] text-gray-400 mt-1">Gunakan link Google Drive untuk menghindari batas ukuran file.</p>
               </div>
               <button type="submit" disabled={loading} className="w-full bg-gray-900 text-white font-semibold rounded-lg py-2.5 hover:bg-gray-800 transition-colors disabled:opacity-50 mt-6">
                 {loading ? "Menyimpan..." : "Simpan Arsip Surat"}

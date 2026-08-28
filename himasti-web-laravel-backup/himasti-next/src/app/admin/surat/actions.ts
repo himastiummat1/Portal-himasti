@@ -2,9 +2,6 @@
 import { prisma } from "@/lib/prisma";
 import { revalidatePath } from "next/cache";
 import { auth } from "@/auth";
-import fs from "fs/promises";
-import path from "path";
-import crypto from "crypto";
 
 export async function createSurat(formData: FormData) {
   const session = await auth();
@@ -15,28 +12,11 @@ export async function createSurat(formData: FormData) {
   const perihal = formData.get("perihal") as string;
   const tanggal_surat = new Date(formData.get("tanggal_surat") as string);
   const entitas = formData.get("entitas") as string; // Pengirim/Tujuan
-  const file = formData.get("file") as File | null;
+  const file_url = formData.get("file_url") as string; // Ganti file fisik menjadi Link GDrive
   const createdBy = parseInt(session.user?.id || "0");
 
   if (!nomor_surat || !jenis_surat || !perihal || !tanggal_surat) {
     throw new Error("Semua kolom berlabel bintang wajib diisi");
-  }
-
-  const ALLOWED_EXTENSIONS = ['pdf', 'doc', 'docx', 'jpg', 'jpeg', 'png'];
-  let filePath = null;
-  if (file && file.size > 0) {
-    const buffer = Buffer.from(await file.arrayBuffer());
-    const fileExt = file.name.split('.').pop()?.toLowerCase();
-    if (!fileExt || !ALLOWED_EXTENSIONS.includes(fileExt)) {
-      throw new Error("Jenis file tidak diizinkan. Hanya: " + ALLOWED_EXTENSIONS.join(", "));
-    }
-    if (file.size > 10 * 1024 * 1024) {
-      throw new Error("Ukuran file maksimal 10MB");
-    }
-    const fileName = `surat-\${crypto.randomBytes(8).toString('hex')}.\${fileExt}`;
-    const uploadDir = path.join(process.cwd(), "public", "uploads", "surat");
-    await fs.writeFile(path.join(uploadDir, fileName), buffer);
-    filePath = `/uploads/surat/\${fileName}`;
   }
 
   await prisma.surat.create({
@@ -47,7 +27,7 @@ export async function createSurat(formData: FormData) {
       tanggal_surat,
       pengirim: jenis_surat === "Masuk" ? entitas : null,
       tujuan: jenis_surat === "Keluar" ? entitas : null,
-      file_path: filePath,
+      file_path: file_url || null,
       user_id: createdBy
     }
   });
@@ -71,15 +51,6 @@ export async function deleteSurat(id: number) {
 
   const surat = await prisma.surat.findUnique({ where: { id } });
   if (!surat) throw new Error("Surat tidak ditemukan");
-
-  if (surat.file_path) {
-    const filePath = path.join(process.cwd(), "public", surat.file_path);
-    try {
-      await fs.unlink(filePath);
-    } catch (e) {
-      console.error("Gagal menghapus file fisik surat", e);
-    }
-  }
 
   await prisma.surat.delete({ where: { id } });
   revalidatePath("/admin/surat");
