@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import LoginContainer from "./LoginContainer";
 import { getDict } from "../i18n";
 

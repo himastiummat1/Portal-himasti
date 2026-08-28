@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import RegisterContainer from "./RegisterContainer";
 import { auth } from "@/auth";
 import { redirect } from "next/navigation";
