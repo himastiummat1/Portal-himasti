@@ -18,6 +18,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
       include: { role: true }
     });
     userRoles = rolesData.map(r => r.role.name);
+
+    // Cek apakah user baru login dengan Google dan belum setel data
+    const kader = await prisma.dataKader.findUnique({
+      where: { user_id: parseInt(session.user.id) }
+    });
+    if (kader?.nim?.startsWith("GGL-")) {
+      redirect("/onboarding");
+    }
   }
 
   const isSuperAdmin = userRoles.includes('super_admin');
