@@ -5,7 +5,7 @@ import React, { useEffect, useRef } from 'react';
 const divisions = [
   "Kemuhammadiyahan",
   "Kaderisasi",
-  "Litbang",
+  "Riset & Pengembangan",
   "Medkom",
   "Humas",
   "Kewirausahaan",
@@ -197,39 +197,15 @@ export default function AiRobotAnimation() {
           ctx.fillText(p.text, p.px, p.py);
       }
 
-      // 3. Draw the Central HIMASTI text WITH 3D perspective
+      // 3. Draw the Central HIMASTI text
       ctx.save();
-      // We apply a horizontal scale based on rotation to simulate a 3D plane turning
-      // We limit it so it doesn't completely disappear (minimum 20% width)
-      const textScaleX = Math.max(0.2, Math.abs(Math.cos(rotY)));
       ctx.translate(centerX, centerY);
-      ctx.scale(textScaleX, 1); // 3D Y-axis rotation illusion
       
       const fontSize = 48 * (1 + (explosionRadius * 0.2));
       
-      // Draw geometric glass box behind text
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
-      ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)';
-      ctx.lineWidth = 1;
-      const boxW = 240;
-      const boxH = 70;
-      ctx.fillRect(-boxW/2, -boxH/2, boxW, boxH);
-      ctx.strokeRect(-boxW/2, -boxH/2, boxW, boxH);
-
-      // Inner brackets
-      ctx.beginPath();
-      ctx.moveTo(-boxW/2 + 10, -boxH/2 - 5);
-      ctx.lineTo(-boxW/2 - 5, -boxH/2 - 5);
-      ctx.lineTo(-boxW/2 - 5, -boxH/2 + 10);
-      ctx.stroke();
-
-      ctx.beginPath();
-      ctx.moveTo(boxW/2 - 10, boxH/2 + 5);
-      ctx.lineTo(boxW/2 + 5, boxH/2 + 5);
-      ctx.lineTo(boxW/2 + 5, boxH/2 - 10);
-      ctx.stroke();
-
       // Text rendering
+      ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
+      ctx.shadowBlur = 10;
       ctx.fillStyle = '#0f172a';
       ctx.font = `900 ${fontSize}px sans-serif`;
       ctx.textAlign = 'center';
