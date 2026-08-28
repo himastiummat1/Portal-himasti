@@ -14,11 +14,9 @@ export default function OnboardingForm({ userId, defaultName, defaultEmail }: { 
     const formData = new FormData(e.currentTarget);
     const result = await submitOnboarding(formData);
 
-    if (result.error) {
+    if (result?.error) {
       setError(result.error);
       setLoading(false);
-    } else {
-      // The server action will redirect to /admin
     }
   };
 
@@ -59,8 +57,13 @@ export default function OnboardingForm({ userId, defaultName, defaultEmail }: { 
         <p className="text-xs text-slate-500">Password ini akan digunakan saat Anda login secara manual (tanpa Google).</p>
       </div>
 
+      <div className="pt-2">
+        <label className="block text-sm font-bold text-slate-900 mb-1">Kode Akses Rahasia 🔒</label>
+        <input type="text" name="secret_code" required placeholder="Masukkan kode dari pengurus" className="w-full bg-white border border-slate-300 rounded-lg px-4 py-2.5 text-sm text-slate-900 focus:ring-2 focus:ring-slate-900 outline-none transition-all" />
+      </div>
+
       <button type="submit" disabled={loading} className="w-full mt-6 bg-slate-900 hover:bg-slate-800 text-white font-semibold py-3 px-4 rounded-lg transition-colors disabled:opacity-50">
-        {loading ? "Menyimpan..." : "Simpan & Masuk Portal"}
+        {loading ? "Menyimpan..." : "Verifikasi & Masuk Portal"}
       </button>
     </form>
   );

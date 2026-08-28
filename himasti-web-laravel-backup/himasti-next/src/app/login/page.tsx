@@ -1,5 +1,5 @@
 export const dynamic = "force-dynamic";
-import LoginContainer from "./LoginContainer";
+import AuthContainer from "./AuthContainer";
 import { getDict } from "../i18n";
 
 export const metadata = {
@@ -9,5 +9,5 @@ export const metadata = {
 
 export default async function LoginPage() {
   const dict = await getDict();
-  return <LoginContainer dict={dict} />;
+  return <AuthContainer dict={dict} />;
 }

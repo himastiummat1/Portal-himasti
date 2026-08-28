@@ -130,7 +130,7 @@ export default function AuthContainer({ dict }: { dict: any }) {
                             <p className="mt-1 text-sm text-slate-500">Bergabung dengan ekosistem digital.</p>
                          </div>
                          
-                         <form onSubmit={onRegisterSubmit} className="space-y-4">
+                         <form onSubmit={onRegisterSubmit} className="space-y-3">
                             {registerError && (
                               <div className="p-3 text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg text-center font-medium">
                                 {registerError}
@@ -146,17 +146,22 @@ export default function AuthContainer({ dict }: { dict: any }) {
                               <input name="nim" type="text" required className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="NIM" />
                               <input name="angkatan" type="number" required className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Angkatan" />
                             </div>
-                            <div className="relative">
-                              <input name="password" type={showPassword ? "text" : "password"} required className="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Password" />
-                              <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
-                                {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                              </button>
+                            <div className="grid grid-cols-2 gap-3">
+                              <div className="relative">
+                                <input name="password" type={showPassword ? "text" : "password"} required className="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Password" />
+                                <button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
+                                  {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                              </div>
+                              <div className="relative">
+                                <input name="confirmPassword" type={showConfirm ? "text" : "password"} required className="w-full pl-4 pr-10 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Ulangi Password" />
+                                <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-2 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
+                                  {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                                </button>
+                              </div>
                             </div>
-                            <div className="relative">
-                              <input name="confirmPassword" type={showConfirm ? "text" : "password"} required className="w-full pl-4 pr-12 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Ulangi Password" />
-                              <button type="button" onClick={() => setShowConfirm(!showConfirm)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1">
-                                {showConfirm ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
-                              </button>
+                            <div>
+                              <input name="secret_code" type="text" required className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-sm font-medium outline-none bg-white transition-all placeholder-slate-400" placeholder="Kode Rahasia Registrasi 🔒" />
                             </div>
 
                             <button disabled={registerLoading} className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition-colors mt-2 disabled:opacity-50 flex justify-center items-center shadow-sm">
