@@ -54,7 +54,7 @@ export default function AiRobotAnimation() {
       density: number;
 
       constructor(x: number, y: number) {
-        this.x = x + (Math.random() - 0.5) * 50; // spawn slightly scrambled
+        this.x = x + (Math.random() - 0.5) * 50;
         this.y = y + (Math.random() - 0.5) * 50;
         this.baseX = x;
         this.baseY = y;
@@ -72,7 +72,6 @@ export default function AiRobotAnimation() {
         let forceDirectionX = dx / distance;
         let forceDirectionY = dy / distance;
         
-        // Repel distance
         const maxDistance = 100;
         let force = (maxDistance - distance) / maxDistance;
         let directionX = forceDirectionX * force * this.density;
@@ -82,7 +81,6 @@ export default function AiRobotAnimation() {
           this.x -= directionX;
           this.y -= directionY;
         } else {
-          // Spring back to base position
           if (this.x !== this.baseX) {
             let dxBase = this.x - this.baseX;
             this.x -= dxBase / 10;
@@ -96,7 +94,7 @@ export default function AiRobotAnimation() {
 
       draw() {
         if (!ctx) return;
-        ctx.fillStyle = '#1e293b'; // slate-800
+        ctx.fillStyle = '#1e293b'; 
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
         ctx.fill();
@@ -107,8 +105,6 @@ export default function AiRobotAnimation() {
 
     const initParticles = () => {
       particles = [];
-      
-      // Draw text on canvas temporarily to scan pixels
       ctx.clearRect(0, 0, logicalWidth, logicalHeight);
       ctx.fillStyle = 'white';
       ctx.font = '900 110px sans-serif';
@@ -117,10 +113,7 @@ export default function AiRobotAnimation() {
       ctx.letterSpacing = '8px';
       ctx.fillText('HIMASTI', logicalWidth / 2, logicalHeight / 2 - 20);
 
-      // Scan canvas pixels
       const textCoordinates = ctx.getImageData(0, 0, logicalWidth * dpr, logicalHeight * dpr);
-      
-      // We step by 6 pixels to not have millions of particles, keeping it a "network"
       const step = 6 * dpr; 
       
       for (let y = 0; y < textCoordinates.height; y += step) {
@@ -129,8 +122,6 @@ export default function AiRobotAnimation() {
           const alpha = textCoordinates.data[index + 3];
           
           if (alpha > 128) {
-            // Found a pixel that belongs to the text
-            // Divide by dpr to convert back to logical coordinates
             particles.push(new Particle(x / dpr, y / dpr));
           }
         }
@@ -140,7 +131,7 @@ export default function AiRobotAnimation() {
 
     initParticles();
 
-    // Background floating nodes for depth
+    // Background floating nodes
     const bgNodes = Array.from({length: 40}, () => ({
         x: Math.random() * logicalWidth,
         y: Math.random() * logicalHeight,
@@ -149,7 +140,7 @@ export default function AiRobotAnimation() {
     }));
 
     const drawBgNetwork = () => {
-        ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)'; // faint slate-500
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)';
         ctx.lineWidth = 1;
 
         bgNodes.forEach(node => {
@@ -180,18 +171,16 @@ export default function AiRobotAnimation() {
     }
 
     const drawNetworkConnections = () => {
-      // Connect nearby particles in the text to form a web
-      ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)'; // slate-900 line
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)';
       ctx.lineWidth = 0.5;
       
       for (let i = 0; i < particles.length; i++) {
-        // Only check next few particles to save performance, since they are generated somewhat sequentially
         for (let j = i + 1; j < Math.min(i + 15, particles.length); j++) {
           const dx = particles[i].x - particles[j].x;
           const dy = particles[i].y - particles[j].y;
           const distance = dx * dx + dy * dy;
 
-          if (distance < 120) { // Connect if very close
+          if (distance < 120) {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
@@ -201,18 +190,59 @@ export default function AiRobotAnimation() {
       }
     };
 
-    const drawDivisions = () => {
-        const divs = ["Kemuhammadiyahan", "Kaderisasi", "Riset & Pengembangan", "Medkom", "Humas", "Kewirausahaan", "Minat Bakat", "Aksi Advokasi"];
+    // Division Ticker State
+    const divs = [
+      "KEMUHAMMADIYAHAN", 
+      "KADERISASI", 
+      "RISET & PENGEMBANGAN", 
+      "MEDKOM", 
+      "HUMAS", 
+      "KEWIRAUSAHAAN", 
+      "MINAT BAKAT", 
+      "AKSI ADVOKASI"
+    ];
+    let tickerOffset = 0;
+    const tickerSpeed = 0.4;
+    
+    // Prepare ticker layout
+    ctx.font = '500 12px monospace';
+    const padding = 40;
+    const tickerItems = divs.map(text => ({
+        text,
+        width: ctx.measureText(text).width + padding
+    }));
+    const totalTickerWidth = tickerItems.reduce((acc, curr) => acc + curr.width, 0);
+
+    const drawDivisionsMarquee = () => {
         ctx.fillStyle = '#64748b'; // slate-500
-        ctx.font = '500 12px sans-serif';
-        ctx.textAlign = 'center';
+        ctx.font = '500 12px monospace';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'middle';
         
-        const spacing = logicalWidth / divs.length;
-        divs.forEach((div, index) => {
-            const x = (spacing * index) + (spacing / 2);
-            const y = logicalHeight - 30;
-            ctx.fillText(div, x, y);
-        });
+        tickerOffset -= tickerSpeed;
+        if (tickerOffset <= -totalTickerWidth) {
+            tickerOffset = 0; // Seamless loop
+        }
+
+        const startY = logicalHeight - 20;
+
+        // Draw multiple times to ensure the screen is always filled
+        for (let loop = 0; loop < 3; loop++) {
+            let currentX = tickerOffset + (loop * totalTickerWidth);
+            
+            for (const item of tickerItems) {
+                // Only draw if within visible canvas horizontally to save performance
+                if (currentX + item.width > 0 && currentX < logicalWidth) {
+                    ctx.fillText(item.text, currentX, startY);
+                    
+                    // Draw a small bullet/node separator
+                    ctx.beginPath();
+                    ctx.arc(currentX + item.width - (padding/2), startY, 2, 0, Math.PI*2);
+                    ctx.fill();
+                }
+                currentX += item.width;
+            }
+        }
     }
 
     const animate = () => {
@@ -226,7 +256,7 @@ export default function AiRobotAnimation() {
         particles[i].draw();
       }
 
-      drawDivisions();
+      drawDivisionsMarquee();
 
       animationFrameId = requestAnimationFrame(animate);
     };
