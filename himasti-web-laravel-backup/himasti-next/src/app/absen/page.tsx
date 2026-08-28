@@ -5,17 +5,18 @@ import AbsenClient from "./AbsenClient";
 
 export const dynamic = "force-dynamic";
 
-export default async function AbsenPage({ searchParams }: { searchParams: { m?: string, t?: string } }) {
+export default async function AbsenPage({ searchParams }: { searchParams: Promise<{ m?: string, t?: string }> }) {
   const session = await auth();
-  
+  const params = await searchParams;
+
   // If not logged in, redirect to login with the callbackUrl to return here after login!
   if (!session) {
-    const params = new URLSearchParams(searchParams as any).toString();
-    redirect(`/login?callbackUrl=${encodeURIComponent(`/absen?${params}`)}`);
+    const qs = new URLSearchParams(params as any).toString();
+    redirect(`/login?callbackUrl=${encodeURIComponent(`/absen?${qs}`)}`);
   }
 
-  const meetingId = parseInt(searchParams.m || "0");
-  const token = searchParams.t;
+  const meetingId = parseInt(params.m || "0");
+  const token = params.t;
 
   if (!meetingId || !token) {
     return <div className="min-h-screen flex items-center justify-center p-4 bg-slate-50 text-slate-900">
@@ -37,7 +38,7 @@ export default async function AbsenPage({ searchParams }: { searchParams: { m?: 
   });
 
   return <AbsenClient 
-    meeting={meeting} 
+    meeting={{ id: meeting.id, title: meeting.title, latitude: meeting.latitude, longitude: meeting.longitude, radius_meter: meeting.radius_meter }}
     token={token} 
     alreadyAttended={!!existing} 
     userName={session.user?.name || "Kader"} 
