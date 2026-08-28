@@ -12,8 +12,12 @@ export default async function KeuanganPage() {
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
   
-  // Hanya Bendahara, Ketua, Super Admin, dan Kabid R&D (Backdoor) yang bisa mengedit
+  // Hanya Bendahara, Ketua, Super Admin, dan Kabid R&D (Backdoor) yang bisa melihat dan mengedit
   const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("bendahara")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+
+  if (!isExecutive) {
+    redirect("/admin");
+  }
 
   const dataKeuangan = await prisma.keuangan.findMany({
     orderBy: {

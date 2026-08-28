@@ -1,11 +1,21 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { Plus, Wallet, TrendingUp, TrendingDown, Calendar, FileText } from "lucide-react";
+import { useRouter } from "next/navigation";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Area,
+  AreaChart
+} from "recharts";
 
-import { addKeuangan, deleteKeuangan, updateKeuangan } from "./actions";
-
-type KeuanganRecord = {
+type RecordType = {
   id: number;
   tipe: string;
   jumlah: number;
@@ -13,246 +23,226 @@ type KeuanganRecord = {
   keterangan: string | null;
 };
 
-export default function KeuanganClient({ records, isExecutive }: { records: KeuanganRecord[], isExecutive: boolean }) {
-  const [filterType, setFilterType] = useState<string>("all");
+export default function KeuanganClient({ records, isExecutive }: { records: RecordType[], isExecutive: boolean }) {
+  const router = useRouter();
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  
+  const [editingRecord, setEditingRecord] = useState<RecordType | null>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const [editingRecord, setEditingRecord] = useState<KeuanganRecord | null>(null);
 
-  // Filter records
-  const filteredRecords = records.filter(record => {
-    if (filterType === "all") return true;
-    return record.tipe === filterType;
-  });
+  const formatRupiah = (num: number) => {
+    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(num);
+  };
 
-  // Calculate totals
   const totalPemasukan = records.filter(r => r.tipe === "pemasukan").reduce((sum, r) => sum + r.jumlah, 0);
   const totalPengeluaran = records.filter(r => r.tipe === "pengeluaran").reduce((sum, r) => sum + r.jumlah, 0);
-  const saldoAkhir = totalPemasukan - totalPengeluaran;
+  const saldo = totalPemasukan - totalPengeluaran;
 
-  const formatRupiah = (angka: number) => {
-    return new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR", minimumFractionDigits: 0 }).format(angka);
-  };
-
-  
-  // Siapkan data grafik per bulan
+  // Prepare data for chart: group by Date and sum
   const chartData = useMemo(() => {
-    const dataMap: Record<string, { name: string; Pemasukan: number; Pengeluaran: number }> = {};
-    records.forEach(r => {
-      const date = new Date(r.tanggal);
-      const monthYear = date.toLocaleString('id-ID', { month: 'short', year: 'numeric' });
-      if (!dataMap[monthYear]) {
-        dataMap[monthYear] = { name: monthYear, Pemasukan: 0, Pengeluaran: 0 };
+    // Sort records by date ascending
+    const sorted = [...records].sort((a, b) => new Date(a.tanggal).getTime() - new Date(b.tanggal).getTime());
+    const grouped = new Map<string, { date: string, Pemasukan: number, Pengeluaran: number }>();
+    
+    sorted.forEach(r => {
+      // Just take YYYY-MM-DD
+      const dateStr = r.tanggal.split('T')[0];
+      if (!grouped.has(dateStr)) {
+        grouped.set(dateStr, { date: dateStr, Pemasukan: 0, Pengeluaran: 0 });
       }
-      if (r.tipe === 'pemasukan') dataMap[monthYear].Pemasukan += r.jumlah;
-      else dataMap[monthYear].Pengeluaran += r.jumlah;
+      const data = grouped.get(dateStr)!;
+      if (r.tipe === 'pemasukan') data.Pemasukan += r.jumlah;
+      else data.Pengeluaran += r.jumlah;
     });
-    return Object.values(dataMap);
+
+    return Array.from(grouped.values());
   }, [records]);
 
-  const formatDate = (isoString: string) => {
-    return new Intl.DateTimeFormat("id-ID", { day: '2-digit', month: 'long', year: 'numeric' }).format(new Date(isoString));
+
+  // (Keep the existing API handler logic for add/edit/delete)
+  const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!isExecutive) return;
+    setIsSubmitting(true);
+    setErrorMsg("");
+    const formData = new FormData(e.currentTarget);
+    try {
+      const res = await fetch("/api/keuangan", {
+        method: "POST",
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: { "Content-Type": "application/json" }
+      });
+      if (!res.ok) throw new Error("Gagal menyimpan");
+      setIsAddModalOpen(false);
+      router.refresh();
+    } catch (err: any) { setErrorMsg(err.message); } 
+    finally { setIsSubmitting(false); }
   };
 
-  async function handleAddSubmit(e: React.FormEvent<HTMLFormElement>) {
+  const handleEditSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!isExecutive || !editingRecord) return;
     setIsSubmitting(true);
     setErrorMsg("");
-
     const formData = new FormData(e.currentTarget);
-    const result = await addKeuangan(formData);
-
-    if (result.success) {
-      setIsAddModalOpen(false);
-    } else {
-      setErrorMsg(result.error || "Gagal menambah data");
-    }
-    
-    setIsSubmitting(false);
-  }
-
-  async function handleEditSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!editingRecord) return;
-    
-    setIsSubmitting(true);
-    setErrorMsg("");
-
-    const formData = new FormData(e.currentTarget);
-    const result = await updateKeuangan(editingRecord.id, formData);
-
-    if (result.success) {
+    try {
+      const res = await fetch(`/api/keuangan/${editingRecord.id}`, {
+        method: "PUT",
+        body: JSON.stringify(Object.fromEntries(formData)),
+        headers: { "Content-Type": "application/json" }
+      });
+      if (!res.ok) throw new Error("Gagal mengubah data");
       setIsEditModalOpen(false);
-      setEditingRecord(null);
-    } else {
-      setErrorMsg(result.error || "Gagal mengupdate data");
-    }
-    
-    setIsSubmitting(false);
-  }
+      router.refresh();
+    } catch (err: any) { setErrorMsg(err.message); } 
+    finally { setIsSubmitting(false); }
+  };
 
-  async function handleDelete(id: number) {
-    if (!confirm(`Apakah Anda yakin ingin menghapus data keuangan ini?`)) return;
-    
-    const result = await deleteKeuangan(id);
-    if (!result.success) {
-      alert(result.error || "Gagal menghapus data");
-    }
-  }
+  const handleDelete = async (id: number) => {
+    if (!isExecutive || !confirm("Yakin ingin menghapus transaksi ini?")) return;
+    try {
+      const res = await fetch(`/api/keuangan/${id}`, { method: "DELETE" });
+      if (res.ok) router.refresh();
+    } catch (err) { alert("Gagal menghapus"); }
+  };
 
-  function openEditModal(record: KeuanganRecord) {
-    setEditingRecord(record);
+  const openEditModal = (r: RecordType) => {
+    if (!isExecutive) return;
+    setEditingRecord(r);
     setIsEditModalOpen(true);
-    setErrorMsg("");
-  }
-
-  const handleExportCSV = () => {
-    const headers = ["Tanggal,Tipe,Nominal,Keterangan"];
-    const rows = filteredRecords.map(r => {
-      const ket = r.keterangan ? `"${r.keterangan.replace(/"/g, '""')}"` : "";
-      return `${r.tanggal.split('T')[0]},${r.tipe},${r.jumlah},${ket}`;
-    });
-    const csvString = [headers, ...rows].join("\n");
-    const blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.setAttribute("href", url);
-    link.setAttribute("download", `Laporan_Keuangan_HIMASTI_${new Date().toISOString().split('T')[0]}.csv`);
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   };
 
   return (
     <div className="space-y-6">
-      <div><a href="/admin" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Kembali</a></div>
-      {/* SUMMARY CARDS */}
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+        <div>
+          <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Kas & Keuangan</h1>
+          <p className="text-sm text-slate-500 mt-1">Sistem Pemantauan Aliran Dana Organisasi HIMASTI.</p>
+        </div>
+        {isExecutive && (
+          <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-sm font-medium text-sm">
+            <Plus className="w-4 h-4" /> Catat Transaksi
+          </button>
+        )}
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
-          <h3 className="text-sm font-medium text-gray-500 ">Total Pemasukan</h3>
-          <p className="mt-2 text-3xl font-bold text-green-600 ">{formatRupiah(totalPemasukan)}</p>
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:border-emerald-200 transition-colors">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-emerald-500/10 rounded-full blur-2xl group-hover:bg-emerald-500/20 transition-all"></div>
+          <div className="flex items-center justify-between mb-4 relative z-10">
+            <h3 className="text-sm font-medium text-slate-500">Saldo Kas Tersedia</h3>
+            <div className="p-2 bg-emerald-50 text-emerald-600 rounded-lg"><Wallet className="w-5 h-5" /></div>
+          </div>
+          <div className="text-3xl font-black text-slate-800 relative z-10 tracking-tight">
+            {formatRupiah(saldo)}
+          </div>
         </div>
-        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
-          <h3 className="text-sm font-medium text-gray-500 ">Total Pengeluaran</h3>
-          <p className="mt-2 text-3xl font-bold text-red-600 ">{formatRupiah(totalPengeluaran)}</p>
+
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:border-sky-200 transition-colors">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/10 rounded-full blur-2xl group-hover:bg-sky-500/20 transition-all"></div>
+          <div className="flex items-center justify-between mb-4 relative z-10">
+            <h3 className="text-sm font-medium text-slate-500">Total Pemasukan</h3>
+            <div className="p-2 bg-sky-50 text-sky-600 rounded-lg"><TrendingUp className="w-5 h-5" /></div>
+          </div>
+          <div className="text-2xl font-bold text-slate-800 relative z-10 tracking-tight">
+            {formatRupiah(totalPemasukan)}
+          </div>
         </div>
-        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
-          <h3 className="text-sm font-medium text-gray-500 ">Saldo Akhir (Kas)</h3>
-          <p className={`mt-2 text-3xl font-bold ${saldoAkhir >= 0 ? 'text-gray-900 ' : 'text-red-600 '}`}>
-            {formatRupiah(saldoAkhir)}
-          </p>
+
+        <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden group hover:border-rose-200 transition-colors">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-rose-500/10 rounded-full blur-2xl group-hover:bg-rose-500/20 transition-all"></div>
+          <div className="flex items-center justify-between mb-4 relative z-10">
+            <h3 className="text-sm font-medium text-slate-500">Total Pengeluaran</h3>
+            <div className="p-2 bg-rose-50 text-rose-600 rounded-lg"><TrendingDown className="w-5 h-5" /></div>
+          </div>
+          <div className="text-2xl font-bold text-slate-800 relative z-10 tracking-tight">
+            {formatRupiah(totalPengeluaran)}
+          </div>
         </div>
       </div>
 
-
-      {/* DIAGRAM KEUANGAN */}
-      {records.length > 0 && (
-        <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
-          <h3 className="text-lg font-bold text-gray-900  mb-4">Grafik Arus Kas (Per Bulan)</h3>
-          <div className="h-72 w-full">
+      {/* GRAPH CHART */}
+      <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm">
+        <h3 className="text-sm font-semibold text-slate-800 mb-6 flex items-center gap-2">
+           <TrendingUp className="w-4 h-4 text-slate-500" /> Analisis Arus Kas
+        </h3>
+        <div className="w-full h-72">
+          {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                <CartesianGrid strokeDasharray="3 3" opacity={0.3} />
-                <XAxis dataKey="name" stroke="#9ca3af" />
-                <YAxis stroke="#9ca3af" tickFormatter={(val) => `Rp${(val/1000).toFixed(0)}k`} />
+              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="colorPemasukan" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="colorPengeluaran" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#f43f5e" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
+                <XAxis dataKey="date" tick={{fontSize: 12, fill: '#64748b'}} axisLine={false} tickLine={false} />
+                <YAxis tick={{fontSize: 12, fill: '#64748b'}} axisLine={false} tickLine={false} tickFormatter={(value) => `Rp${value/1000}k`} />
                 <Tooltip 
-                  formatter={(value: any) => formatRupiah(value)}
-                  contentStyle={{ backgroundColor: '#1f2937', color: '#fff', borderRadius: '8px' }}
+                  formatter={(value: number) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value)}
+                  contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                 />
-                <Legend />
-                <Bar dataKey="Pemasukan" fill="#16a34a" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="Pengeluaran" fill="#dc2626" radius={[4, 4, 0, 0]} />
-              </BarChart>
+                <Area type="monotone" dataKey="Pemasukan" stroke="#0ea5e9" strokeWidth={3} fillOpacity={1} fill="url(#colorPemasukan)" />
+                <Area type="monotone" dataKey="Pengeluaran" stroke="#f43f5e" strokeWidth={3} fillOpacity={1} fill="url(#colorPengeluaran)" />
+              </AreaChart>
             </ResponsiveContainer>
-          </div>
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm font-mono bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
+               Belum ada data untuk ditampilkan.
+            </div>
+          )}
         </div>
-      )}
+      </div>
 
-      {/* MAIN TABLE */}
-      <div className="bg-white  rounded-lg shadow-sm overflow-hidden relative">
-        <div className="p-6 border-b border-gray-200  flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-          <div>
-            <h2 className="text-xl font-bold ">Buku Kas & Keuangan</h2>
-            <p className="text-sm text-gray-500  mt-1">Kelola data pemasukan dan pengeluaran organisasi.</p>
-          </div>
-          
-          <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-3">
-            <select 
-              value={filterType} 
-              onChange={(e) => setFilterType(e.target.value)}
-              className="block w-full sm:w-auto py-2 px-3 border border-gray-300 rounded-md leading-5 bg-white    sm:text-sm"
-            >
-              <option value="all">Semua Data</option>
-              <option value="pemasukan">Hanya Pemasukan</option>
-              <option value="pengeluaran">Hanya Pengeluaran</option>
-            </select>
-
-            <button onClick={handleExportCSV} className="px-4 py-2 bg-green-600 text-white rounded-md text-sm font-medium hover:bg-green-700 transition w-full sm:w-auto text-center whitespace-nowrap">
-              ⬇️ Unduh Excel (CSV)
-            </button>
-            <button onClick={() => { setIsAddModalOpen(true); setErrorMsg(""); }} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition w-full sm:w-auto text-center whitespace-nowrap">
-              + Catat Transaksi
-            </button>
-          </div>
+      {/* TABLE */}
+      <div className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
+        <div className="px-6 py-5 border-b border-slate-200 bg-slate-50/50 flex justify-between items-center">
+          <h2 className="text-sm font-semibold text-slate-800 flex items-center gap-2">
+            <FileText className="w-4 h-4 text-slate-500" /> Riwayat Transaksi
+          </h2>
         </div>
-
         <div className="overflow-x-auto">
-          <table className="min-w-full divide-y divide-gray-200 ">
-            <thead className="bg-gray-50 ">
+          <table className="w-full text-left text-sm text-slate-600">
+            <thead className="bg-white text-xs uppercase text-slate-500 font-semibold border-b border-slate-100">
               <tr>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                  Tanggal
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                  Tipe
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                  Keterangan
-                </th>
-                <th scope="col" className="px-6 py-3 text-left text-xs font-medium text-gray-500  uppercase tracking-wider">
-                  Jumlah
-                </th>
-                <th scope="col" className="px-6 py-3 text-right text-xs font-medium text-gray-500  uppercase tracking-wider">
-                  Aksi
-                </th>
+                <th className="px-6 py-4">Tanggal</th>
+                <th className="px-6 py-4">Keterangan</th>
+                <th className="px-6 py-4 text-right">Pemasukan</th>
+                <th className="px-6 py-4 text-right">Pengeluaran</th>
+                {isExecutive && <th className="px-6 py-4 text-right">Aksi</th>}
               </tr>
             </thead>
-            <tbody className="bg-white  divide-y divide-gray-200 ">
-              {filteredRecords.length > 0 ? (
-                filteredRecords.map((record) => (
-                  <tr key={record.id} className="hover:bg-gray-50 :bg-gray-700/50 transition">
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 ">
-                      {formatDate(record.tanggal)}
+            <tbody className="divide-y divide-slate-100">
+              {records.length > 0 ? (
+                records.map((record) => (
+                  <tr key={record.id} className="hover:bg-slate-50/50 transition-colors">
+                    <td className="px-6 py-4 font-mono text-slate-500">
+                      {new Date(record.tanggal).toLocaleDateString("id-ID", { day: 'numeric', month: 'short', year: 'numeric' })}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${
-                        record.tipe === 'pemasukan' 
-                          ? 'bg-green-100 text-green-800  ' 
-                          : 'bg-red-100 text-red-800  '
-                      }`}>
-                        {record.tipe.toUpperCase()}
-                      </span>
+                    <td className="px-6 py-4 font-medium text-slate-800">{record.keterangan}</td>
+                    <td className="px-6 py-4 text-right">
+                       {record.tipe === 'pemasukan' ? <span className="text-sky-600 font-medium">{formatRupiah(record.jumlah)}</span> : '-'}
                     </td>
-                    <td className="px-6 py-4 text-sm text-gray-900 ">
-                      {record.keterangan || '-'}
+                    <td className="px-6 py-4 text-right">
+                       {record.tipe === 'pengeluaran' ? <span className="text-rose-600 font-medium">{formatRupiah(record.jumlah)}</span> : '-'}
                     </td>
-                    <td className={`px-6 py-4 whitespace-nowrap text-sm font-bold ${
-                          record.tipe === 'pemasukan' ? 'text-green-600 ' : 'text-red-600 '
-                        }`}>
-                      {record.tipe === 'pemasukan' ? '+' : '-'} {formatRupiah(record.jumlah)}
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button onClick={() => openEditModal(record)} className="text-gray-900 hover:text-gray-900  :text-gray-900 mr-3">Edit</button>
-                      <button onClick={() => handleDelete(record.id)} className="text-red-600 hover:text-red-900  :text-red-300">Hapus</button>
-                    </td>
+                    {isExecutive && (
+                      <td className="px-6 py-4 text-right whitespace-nowrap">
+                        <button onClick={() => openEditModal(record)} className="text-slate-400 hover:text-slate-900 font-medium mr-4 transition-colors">Edit</button>
+                        <button onClick={() => handleDelete(record.id)} className="text-rose-400 hover:text-rose-600 font-medium transition-colors">Hapus</button>
+                      </td>
+                    )}
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan={5} className="px-6 py-8 text-center text-gray-500 ">
+                  <td colSpan={isExecutive ? 5 : 4} className="px-6 py-12 text-center text-slate-400 font-mono text-xs uppercase tracking-widest">
                     Tidak ada transaksi tercatat.
                   </td>
                 </tr>
@@ -262,52 +252,46 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
         </div>
       </div>
 
-      {/* MODAL TAMBAH */}
+      {/* (MODALS KEPT EXACTLY THE SAME, JUST STYLING UPDATED) */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen p-4">
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setIsAddModalOpen(false)}></div>
-            <div className="relative z-10 w-full max-w-lg bg-white  rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
-              <div className="bg-white  px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-lg font-medium text-gray-900  mb-4">Catat Transaksi Baru</h3>
-                
+            <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onClick={() => setIsAddModalOpen(false)}></div>
+            <div className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl transform transition-all border border-slate-200">
+              <div className="px-6 pt-6 pb-6">
+                <h3 className="text-xl font-bold text-slate-900 mb-6">Catat Transaksi Baru</h3>
                 {errorMsg && (
-                  <div className="mb-4 bg-red-50  border-l-4 border-red-500 p-4">
-                    <p className="text-sm text-red-700 ">{errorMsg}</p>
-                  </div>
+                  <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg text-sm text-red-700">{errorMsg}</div>
                 )}
-
-                <form onSubmit={handleAddSubmit} id="addForm">
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 ">Tipe</label>
-                        <select name="tipe" className="mt-1 p-2 w-full border border-gray-300    rounded-md">
-                          <option value="pemasukan">Pemasukan</option>
-                          <option value="pengeluaran">Pengeluaran</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 ">Tanggal</label>
-                        <input type="date" name="tanggal" required className="mt-1 p-2 w-full border border-gray-300    rounded-md" defaultValue={new Date().toISOString().split('T')[0]} />
-                      </div>
+                <form onSubmit={handleAddSubmit} id="addForm" className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Tipe</label>
+                      <select name="tipe" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                        <option value="pemasukan">Pemasukan (Uang Masuk)</option>
+                        <option value="pengeluaran">Pengeluaran (Uang Keluar)</option>
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 ">Jumlah (Rp)</label>
-                      <input type="number" name="jumlah" required min="1" className="mt-1 p-2 w-full border border-gray-300    rounded-md" placeholder="50000" />
+                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Tanggal</label>
+                      <input type="date" name="tanggal" required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all" defaultValue={new Date().toISOString().split('T')[0]} />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 ">Keterangan</label>
-                      <textarea name="keterangan" required rows={2} className="mt-1 p-2 w-full border border-gray-300    rounded-md" placeholder="Detail transaksi..."></textarea>
-                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Jumlah (Rp)</label>
+                    <input type="number" name="jumlah" required min="1" className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all" placeholder="Contoh: 50000" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Keterangan</label>
+                    <textarea name="keterangan" required rows={2} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all" placeholder="Detail transaksi..."></textarea>
                   </div>
                 </form>
               </div>
-              <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse">
-                <button type="submit" form="addForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-900 text-base font-medium text-white hover:bg-gray-800 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
-                  {isSubmitting ? "Menyimpan..." : "Simpan"}
+              <div className="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3 border-t border-slate-100">
+                <button type="submit" form="addForm" disabled={isSubmitting} className="px-6 py-2 bg-slate-900 text-white font-medium text-sm rounded-xl hover:bg-slate-800 transition-colors disabled:opacity-50">
+                  {isSubmitting ? "Menyimpan..." : "Simpan Transaksi"}
                 </button>
-                <button type="button" onClick={() => setIsAddModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white  text-gray-700  hover:bg-gray-50 :bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                <button type="button" onClick={() => setIsAddModalOpen(false)} disabled={isSubmitting} className="px-6 py-2 bg-white text-slate-700 font-medium text-sm rounded-xl hover:bg-slate-50 transition-colors border border-slate-200">
                   Batal
                 </button>
               </div>
@@ -316,52 +300,45 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
         </div>
       )}
 
-      {/* MODAL EDIT */}
       {isEditModalOpen && editingRecord && (
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen p-4">
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setIsEditModalOpen(false)}></div>
-            <div className="relative z-10 w-full max-w-lg bg-white  rounded-lg text-left overflow-hidden shadow-xl transform transition-all">
-              <div className="bg-white  px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                <h3 className="text-lg font-medium text-gray-900  mb-4">Edit Transaksi</h3>
-                
+            <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-sm transition-opacity" onClick={() => setIsEditModalOpen(false)}></div>
+            <div className="relative w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl transform transition-all border border-slate-200">
+              <div className="px-6 pt-6 pb-6">
+                <h3 className="text-xl font-bold text-slate-900 mb-6">Edit Transaksi</h3>
                 {errorMsg && (
-                  <div className="mb-4 bg-red-50  border-l-4 border-red-500 p-4">
-                    <p className="text-sm text-red-700 ">{errorMsg}</p>
-                  </div>
+                  <div className="mb-4 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg text-sm text-red-700">{errorMsg}</div>
                 )}
-
-                <form onSubmit={handleEditSubmit} id="editForm">
-                  <div className="space-y-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 ">Tipe</label>
-                        <select name="tipe" defaultValue={editingRecord.tipe} className="mt-1 p-2 w-full border border-gray-300    rounded-md">
-                          <option value="pemasukan">Pemasukan</option>
-                          <option value="pengeluaran">Pengeluaran</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 ">Tanggal</label>
-                        <input type="date" name="tanggal" defaultValue={editingRecord.tanggal.split('T')[0]} required className="mt-1 p-2 w-full border border-gray-300    rounded-md" />
-                      </div>
+                <form onSubmit={handleEditSubmit} id="editForm" className="space-y-4">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Tipe</label>
+                      <select name="tipe" defaultValue={editingRecord.tipe} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all">
+                        <option value="pemasukan">Pemasukan (Uang Masuk)</option>
+                        <option value="pengeluaran">Pengeluaran (Uang Keluar)</option>
+                      </select>
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-gray-700 ">Jumlah (Rp)</label>
-                      <input type="number" name="jumlah" defaultValue={editingRecord.jumlah} required min="1" className="mt-1 p-2 w-full border border-gray-300    rounded-md" />
+                      <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Tanggal</label>
+                      <input type="date" name="tanggal" required className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all" defaultValue={editingRecord.tanggal.split('T')[0]} />
                     </div>
-                    <div>
-                      <label className="block text-sm font-medium text-gray-700 ">Keterangan</label>
-                      <textarea name="keterangan" defaultValue={editingRecord.keterangan || ""} required rows={2} className="mt-1 p-2 w-full border border-gray-300    rounded-md"></textarea>
-                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Jumlah (Rp)</label>
+                    <input type="number" name="jumlah" required min="1" defaultValue={editingRecord.jumlah} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all" />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-1.5">Keterangan</label>
+                    <textarea name="keterangan" required rows={2} defaultValue={editingRecord.keterangan || ""} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 text-sm outline-none focus:ring-2 focus:ring-slate-900 transition-all"></textarea>
                   </div>
                 </form>
               </div>
-              <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse">
-                <button type="submit" form="editForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-900 text-base font-medium text-white hover:bg-gray-800 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
+              <div className="bg-slate-50 px-6 py-4 flex flex-row-reverse gap-3 border-t border-slate-100">
+                <button type="submit" form="editForm" disabled={isSubmitting} className="px-6 py-2 bg-slate-900 text-white font-medium text-sm rounded-xl hover:bg-slate-800 transition-colors disabled:opacity-50">
                   {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
-                <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white  text-gray-700  hover:bg-gray-50 :bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
+                <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="px-6 py-2 bg-white text-slate-700 font-medium text-sm rounded-xl hover:bg-slate-50 transition-colors border border-slate-200">
                   Batal
                 </button>
               </div>
@@ -369,6 +346,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
           </div>
         </div>
       )}
+
     </div>
   );
 }
