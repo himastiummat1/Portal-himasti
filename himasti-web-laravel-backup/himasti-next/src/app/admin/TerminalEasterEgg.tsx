@@ -129,19 +129,23 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
         {/* Terminal Body */}
         <div className="flex-1 p-4 overflow-y-auto text-green-600 space-y-1">
           {history.map((line, i) => (
-            <div key={i} className={line.type === "input" ? "text-slate-300" : "text-green-600 whitespace-pre-wrap font-mono"}>
+            <div key={i} className={line.type === "input" ? "text-slate-300 break-all sm:break-normal" : "text-green-600 whitespace-pre-wrap font-mono break-all sm:break-normal"}>
               {line.text}
             </div>
           ))}
-          <form onSubmit={handleCommand} className="flex gap-2 mt-2">
-            <span className="text-slate-300">[{userName}@himasti {cwd}]$</span>
+          <form onSubmit={handleCommand} className="flex gap-2 mt-2 items-center">
+            <span className="text-slate-300 shrink-0">
+              <span className="hidden sm:inline">[{userName}@himasti {cwd}]$</span>
+              <span className="sm:hidden font-bold text-green-500">{cwd === '~' ? '~' : cwd.split('/').pop()} $</span>
+            </span>
             <input 
               type="text" 
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              className="flex-1 bg-transparent outline-none border-none text-white caret-green-500"
+              className="flex-1 bg-transparent outline-none border-none text-white caret-green-500 w-full min-w-0"
               autoFocus
               autoComplete="off"
+              spellCheck="false"
             />
           </form>
           <div ref={endRef} />
