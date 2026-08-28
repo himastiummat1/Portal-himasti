@@ -2,255 +2,249 @@
 
 import React, { useEffect, useRef } from 'react';
 
-const divisions = [
-  "Kemuhammadiyahan",
-  "Kaderisasi",
-  "Riset & Pengembangan",
-  "Medkom",
-  "Humas",
-  "Kewirausahaan",
-  "Minat Bakat",
-  "Aksi Advokasi"
-];
-
 export default function AiRobotAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas.getContext('2d', { willReadFrequently: true });
     if (!ctx) return;
 
-    // Set canvas dimensions - large enough to dominate the hero section
-    canvas.width = 800;
-    canvas.height = 450;
+    // High resolution canvas for sharp text
+    const dpr = window.devicePixelRatio || 1;
+    const logicalWidth = 800;
+    const logicalHeight = 350;
+    
+    canvas.width = logicalWidth * dpr;
+    canvas.height = logicalHeight * dpr;
+    canvas.style.width = `${logicalWidth}px`;
+    canvas.style.height = `${logicalHeight}px`;
+    ctx.scale(dpr, dpr);
 
     let animationFrameId: number;
-    let time = 0;
     
     // Mouse Interaction
-    let targetRotX = 0;
-    let targetRotY = 0;
-    let currentRotX = 0;
-    let currentRotY = 0;
-    
-    let isClicked = false;
-    let explosionRadius = 0;
+    let mouseX = -1000;
+    let mouseY = -1000;
 
     const handleMouseMove = (e: MouseEvent) => {
       const rect = canvas.getBoundingClientRect();
-      const x = e.clientX - rect.left - canvas.width / 2;
-      const y = e.clientY - rect.top - canvas.height / 2;
-      
-      // Increased sensitivity for better parallax feel
-      targetRotY = x * 0.003;
-      targetRotX = y * 0.003;
+      mouseX = e.clientX - rect.left;
+      mouseY = e.clientY - rect.top;
     };
 
-    const handleClick = () => {
-      isClicked = true;
-      explosionRadius = 1;
+    const handleMouseLeave = () => {
+      mouseX = -1000;
+      mouseY = -1000;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
-    canvas.addEventListener('click', handleClick);
+    canvas.addEventListener('mouseleave', handleMouseLeave);
 
-    // Generate 3D Sphere Points (Fibonacci lattice)
-    const spherePoints: {x: number, y: number, z: number, type: 'node'}[] = [];
-    const numPoints = 250;
-    const phi = Math.PI * (3 - Math.sqrt(5));
-    
-    for (let i = 0; i < numPoints; i++) {
-      const y = 1 - (i / (numPoints - 1)) * 2; 
-      const radiusAtY = Math.sqrt(1 - y * y); 
-      const theta = phi * i; 
-      const x = Math.cos(theta) * radiusAtY;
-      const z = Math.sin(theta) * radiusAtY;
-      spherePoints.push({ x, y, z, type: 'node' });
-    }
+    // Particle class
+    class Particle {
+      x: number;
+      y: number;
+      baseX: number;
+      baseY: number;
+      vx: number;
+      vy: number;
+      size: number;
+      density: number;
 
-    // Generate Division Orbit Points (Equatorial Ring)
-    const divisionPoints: {x: number, y: number, z: number, text: string, type: 'text'}[] = [];
-    const numDivs = divisions.length;
-    for (let i = 0; i < numDivs; i++) {
-      const angle = (Math.PI * 2 / numDivs) * i;
-      // Orbit radius is 1.6x the sphere radius
-      const x = Math.cos(angle) * 1.6;
-      const z = Math.sin(angle) * 1.6;
-      // Slanted orbit
-      const y = Math.sin(angle * 2) * 0.15; 
-      divisionPoints.push({ x, y, z, text: divisions[i], type: 'text' });
-    }
+      constructor(x: number, y: number) {
+        this.x = x + (Math.random() - 0.5) * 50; // spawn slightly scrambled
+        this.y = y + (Math.random() - 0.5) * 50;
+        this.baseX = x;
+        this.baseY = y;
+        this.vx = 0;
+        this.vy = 0;
+        this.size = Math.random() * 1.5 + 1;
+        this.density = (Math.random() * 30) + 1;
+      }
 
-    const drawCore = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      
-      const centerX = canvas.width / 2;
-      const centerY = canvas.height / 2;
-      const baseRadius = 150; // Much larger sphere
+      update() {
+        // Mouse repel physics
+        let dx = mouseX - this.x;
+        let dy = mouseY - this.y;
+        let distance = Math.sqrt(dx * dx + dy * dy);
+        let forceDirectionX = dx / distance;
+        let forceDirectionY = dy / distance;
+        
+        // Repel distance
+        const maxDistance = 100;
+        let force = (maxDistance - distance) / maxDistance;
+        let directionX = forceDirectionX * force * this.density;
+        let directionY = forceDirectionY * force * this.density;
 
-      // Smoothly interpolate current rotation to target rotation
-      currentRotX += (targetRotX - currentRotX) * 0.05;
-      currentRotY += (targetRotY - currentRotY) * 0.05;
-
-      const rotY = time * 0.003 + currentRotY;
-      const rotX = currentRotX;
-
-      // Handle explosion effect
-      let currentRadius = baseRadius;
-      if (isClicked) {
-        explosionRadius += (1.5 - explosionRadius) * 0.1;
-        currentRadius *= explosionRadius;
-        if (explosionRadius > 1.45) {
-            isClicked = false;
-        }
-      } else {
-        if (explosionRadius > 0) {
-            explosionRadius += (0 - explosionRadius) * 0.1;
-            currentRadius *= (1 + explosionRadius);
+        if (distance < maxDistance) {
+          this.x -= directionX;
+          this.y -= directionY;
+        } else {
+          // Spring back to base position
+          if (this.x !== this.baseX) {
+            let dxBase = this.x - this.baseX;
+            this.x -= dxBase / 10;
+          }
+          if (this.y !== this.baseY) {
+            let dyBase = this.y - this.baseY;
+            this.y -= dyBase / 10;
+          }
         }
       }
 
-      const cosX = Math.cos(rotX);
-      const sinX = Math.sin(rotX);
-      const cosY = Math.cos(rotY);
-      const sinY = Math.sin(rotY);
-
-      const allPoints = [...spherePoints, ...divisionPoints];
-
-      const projectedPoints = allPoints.map(p => {
-        let y1 = p.y * cosX - p.z * sinX;
-        let z1 = p.y * sinX + p.z * cosX;
-        
-        let x2 = p.x * cosY + z1 * sinY;
-        let z2 = -p.x * sinY + z1 * cosY;
-        
-        const scale = 400 / (400 - z2 * currentRadius); 
-        const px = centerX + x2 * currentRadius * scale;
-        const py = centerY + y1 * currentRadius * scale;
-        
-        return { ...p, px, py, z: z2, scale, origZ: p.z }; // keep original Z for logic
-      });
-
-      // Split into back and front arrays to push the text deeper inside
-      // By changing the cutoff from 0 to -0.3, more nodes will be drawn in front of the text
-      const backNodes = projectedPoints.filter(p => p.type === 'node' && p.z > -0.3).sort((a,b) => b.z - a.z);
-      const frontNodes = projectedPoints.filter(p => p.type === 'node' && p.z <= -0.3).sort((a,b) => b.z - a.z);
-      const allTexts = projectedPoints.filter(p => p.type === 'text');
-
-      // Helper to draw node connections
-      const drawLines = (nodes: any[]) => {
-          ctx.lineWidth = 0.5;
-          for (let i = 0; i < nodes.length; i++) {
-            const p1 = nodes[i];
-            
-            // Draw lines between nodes
-            for (let j = i + 1; j < Math.min(i + 7, nodes.length); j++) {
-               const p2 = nodes[j];
-               const dx = p1.px - p2.px;
-               const dy = p1.py - p2.py;
-               const dist = dx*dx + dy*dy;
-               if (dist < 3000) {
-                  const alpha = (1 - dist / 3000) * (p1.z < 0 ? 0.6 : 0.15);
-                  ctx.strokeStyle = `rgba(15, 23, 42, ${alpha})`;
-                  ctx.beginPath();
-                  ctx.moveTo(p1.px, p1.py);
-                  ctx.lineTo(p2.px, p2.py);
-                  ctx.stroke();
-               }
-            }
-            
-            // Draw tether lines from the core to some nodes to make it look "suspended"
-            if (i % 8 === 0) {
-               ctx.strokeStyle = `rgba(15, 23, 42, ${p1.z < 0 ? 0.3 : 0.05})`;
-               ctx.beginPath();
-               ctx.moveTo(p1.px, p1.py);
-               ctx.lineTo(centerX, centerY);
-               ctx.stroke();
-            }
-          }
-      };
-
-      const drawNodeDots = (nodes: any[]) => {
-          for (const p of nodes) {
-            const alpha = Math.max(0.05, 1 - (p.z + 1) / 2);
-            const pulse = Math.sin(time * 0.1 + p.origZ * 10) > 0.95 ? 1.5 : 0;
-            const radius = Math.max(0.5, p.scale * (1.5 + pulse));
-            ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
-            ctx.beginPath();
-            ctx.arc(p.px, p.py, radius, 0, Math.PI * 2);
-            ctx.fill();
-          }
-      };
-
-      // 1. Draw BACK nodes and lines
-      drawLines(backNodes);
-      drawNodeDots(backNodes);
-
-      // 2. Draw Orbiting Texts that are in the BACK
-      for (const p of allTexts.filter(p => p.z > 0)) {
-          const alpha = Math.max(0.1, 1 - (p.z + 1) / 2) * 0.5;
-          const fontSize = Math.max(8, 12 * p.scale);
-          ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
-          ctx.font = `500 ${fontSize}px sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
-          ctx.fillText(p.text, p.px, p.py);
+      draw() {
+        if (!ctx) return;
+        ctx.fillStyle = '#1e293b'; // slate-800
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fill();
       }
+    }
 
-      // 3. Draw the Central HIMASTI text (Clean, Elegant, and Deep inside)
-      ctx.save();
-      ctx.translate(centerX, centerY);
+    let particles: Particle[] = [];
+
+    const initParticles = () => {
+      particles = [];
       
-      const fontSize = 56 * (1 + (explosionRadius * 0.2));
-      
-      ctx.fillStyle = '#64748b'; // slate-500 for a solid, clear look
-      ctx.font = `900 ${fontSize}px sans-serif`;
+      // Draw text on canvas temporarily to scan pixels
+      ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+      ctx.fillStyle = 'white';
+      ctx.font = '900 110px sans-serif';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.letterSpacing = "6px";
-      ctx.fillText("HIMASTI", 0, 2);
-      ctx.restore(); 
+      ctx.letterSpacing = '8px';
+      ctx.fillText('HIMASTI', logicalWidth / 2, logicalHeight / 2 - 20);
 
-      // 4. Draw FRONT nodes and lines (Will perfectly overlap the text!)
-      drawLines(frontNodes);
-      drawNodeDots(frontNodes);
-
-      // 5. Draw Orbiting Texts that are in the FRONT
-      for (const p of allTexts.filter(p => p.z <= 0)) {
-          const alpha = Math.min(1, Math.max(0.3, 1 - (p.z + 1) / 2));
-          const fontSize = Math.max(12, 14 * p.scale);
-          ctx.fillStyle = `rgba(15, 23, 42, ${alpha})`;
-          ctx.font = `600 ${fontSize}px sans-serif`;
-          ctx.textAlign = 'center';
-          ctx.textBaseline = 'middle';
+      // Scan canvas pixels
+      const textCoordinates = ctx.getImageData(0, 0, logicalWidth * dpr, logicalHeight * dpr);
+      
+      // We step by 6 pixels to not have millions of particles, keeping it a "network"
+      const step = 6 * dpr; 
+      
+      for (let y = 0; y < textCoordinates.height; y += step) {
+        for (let x = 0; x < textCoordinates.width; x += step) {
+          const index = (y * textCoordinates.width + x) * 4;
+          const alpha = textCoordinates.data[index + 3];
           
-          // White shadow for better readability of front text
-          ctx.shadowColor = 'rgba(255, 255, 255, 0.8)';
-          ctx.shadowBlur = 4;
-          ctx.fillText(p.text, p.px, p.py);
-          ctx.shadowBlur = 0;
+          if (alpha > 128) {
+            // Found a pixel that belongs to the text
+            // Divide by dpr to convert back to logical coordinates
+            particles.push(new Particle(x / dpr, y / dpr));
+          }
+        }
       }
-
-      time++;
-      animationFrameId = requestAnimationFrame(drawCore);
+      ctx.clearRect(0, 0, logicalWidth, logicalHeight);
     };
 
-    drawCore();
+    initParticles();
+
+    // Background floating nodes for depth
+    const bgNodes = Array.from({length: 40}, () => ({
+        x: Math.random() * logicalWidth,
+        y: Math.random() * logicalHeight,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+    }));
+
+    const drawBgNetwork = () => {
+        ctx.strokeStyle = 'rgba(100, 116, 139, 0.15)'; // faint slate-500
+        ctx.lineWidth = 1;
+
+        bgNodes.forEach(node => {
+            node.x += node.vx;
+            node.y += node.vy;
+            if(node.x < 0 || node.x > logicalWidth) node.vx *= -1;
+            if(node.y < 0 || node.y > logicalHeight) node.vy *= -1;
+            
+            ctx.beginPath();
+            ctx.arc(node.x, node.y, 2, 0, Math.PI*2);
+            ctx.fillStyle = 'rgba(100, 116, 139, 0.3)';
+            ctx.fill();
+        });
+
+        for(let i=0; i<bgNodes.length; i++){
+            for(let j=i+1; j<bgNodes.length; j++){
+                let dx = bgNodes[i].x - bgNodes[j].x;
+                let dy = bgNodes[i].y - bgNodes[j].y;
+                let dist = dx*dx + dy*dy;
+                if(dist < 10000) {
+                    ctx.beginPath();
+                    ctx.moveTo(bgNodes[i].x, bgNodes[i].y);
+                    ctx.lineTo(bgNodes[j].x, bgNodes[j].y);
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    const drawNetworkConnections = () => {
+      // Connect nearby particles in the text to form a web
+      ctx.strokeStyle = 'rgba(15, 23, 42, 0.4)'; // slate-900 line
+      ctx.lineWidth = 0.5;
+      
+      for (let i = 0; i < particles.length; i++) {
+        // Only check next few particles to save performance, since they are generated somewhat sequentially
+        for (let j = i + 1; j < Math.min(i + 15, particles.length); j++) {
+          const dx = particles[i].x - particles[j].x;
+          const dy = particles[i].y - particles[j].y;
+          const distance = dx * dx + dy * dy;
+
+          if (distance < 120) { // Connect if very close
+            ctx.beginPath();
+            ctx.moveTo(particles[i].x, particles[i].y);
+            ctx.lineTo(particles[j].x, particles[j].y);
+            ctx.stroke();
+          }
+        }
+      }
+    };
+
+    const drawDivisions = () => {
+        const divs = ["Kemuhammadiyahan", "Kaderisasi", "Riset & Pengembangan", "Medkom", "Humas", "Kewirausahaan", "Minat Bakat", "Aksi Advokasi"];
+        ctx.fillStyle = '#64748b'; // slate-500
+        ctx.font = '500 12px sans-serif';
+        ctx.textAlign = 'center';
+        
+        const spacing = logicalWidth / divs.length;
+        divs.forEach((div, index) => {
+            const x = (spacing * index) + (spacing / 2);
+            const y = logicalHeight - 30;
+            ctx.fillText(div, x, y);
+        });
+    }
+
+    const animate = () => {
+      ctx.clearRect(0, 0, logicalWidth, logicalHeight);
+      
+      drawBgNetwork();
+
+      drawNetworkConnections();
+      for (let i = 0; i < particles.length; i++) {
+        particles[i].update();
+        particles[i].draw();
+      }
+
+      drawDivisions();
+
+      animationFrameId = requestAnimationFrame(animate);
+    };
+
+    animate();
 
     return () => {
       cancelAnimationFrame(animationFrameId);
       window.removeEventListener('mousemove', handleMouseMove);
-      canvas.removeEventListener('click', handleClick);
+      canvas.removeEventListener('mouseleave', handleMouseLeave);
     };
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center mb-0 relative cursor-crosshair w-full overflow-hidden">
+    <div className="flex flex-col items-center justify-center mb-0 relative w-full overflow-hidden">
       <canvas 
         ref={canvasRef} 
-        className="active:scale-[0.98] transition-transform duration-75 max-w-full"
+        className="cursor-crosshair max-w-full"
       />
     </div>
   );
