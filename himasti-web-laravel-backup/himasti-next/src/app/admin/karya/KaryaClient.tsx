@@ -22,7 +22,7 @@ export default function KatalogKaryaClient() {
       <div className="border-b border-slate-200/60 pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mt-8">
         <div>
           <h1 className="text-3xl font-semibold text-slate-800 tracking-tight flex items-center gap-3">
-            <LayoutGrid className="w-8 h-8 text-sky-500" /> Katalog Karya
+            <LayoutGrid className="w-8 h-8 text-gray-900" /> Katalog Karya
           </h1>
           <p className="text-sm text-slate-500 mt-2">Etalase digital proyek, aplikasi, dan riset kebanggaan mahasiswa HIMASTI.</p>
         </div>
@@ -34,10 +34,10 @@ export default function KatalogKaryaClient() {
               placeholder="Cari karya atau nama..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900"
             />
           </div>
-          <button className="flex items-center gap-2 px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-xl text-sm font-semibold transition-colors whitespace-nowrap">
+          <button className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-xl text-sm font-semibold transition-colors whitespace-nowrap">
             <Plus className="w-4 h-4" /> Unggah Karya
           </button>
         </div>
@@ -46,18 +46,18 @@ export default function KatalogKaryaClient() {
       {/* Grid of Projects */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {filtered.map(work => (
-          <div key={work.id} className={`group bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full ${work.featured ? 'border-sky-300 ring-1 ring-sky-100' : 'border-slate-200 hover:border-sky-200'}`}>
+          <div key={work.id} className={`group bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full ${work.featured ? 'border-gray-300 ring-1 ring-gray-100' : 'border-slate-200 hover:border-gray-200'}`}>
             
             {/* Thumbnail Mockup */}
-            <div className={`h-40 w-full flex items-center justify-center relative overflow-hidden ${work.featured ? 'bg-gradient-to-br from-slate-900 to-slate-800' : 'bg-slate-100'}`}>
-              {work.featured && <div className="absolute top-0 right-0 w-32 h-32 bg-sky-500/20 rounded-full blur-2xl"></div>}
+            <div className={`h-40 w-full flex items-center justify-center relative overflow-hidden ${work.featured ? 'bg-gray-50 from-slate-900 to-slate-800' : 'bg-slate-100'}`}>
+              {work.featured && <div className="absolute top-0 right-0 w-32 h-32 bg-gray-900/20 rounded-full blur-2xl"></div>}
               {work.featured ? (
-                 <Sparkles className="w-12 h-12 text-sky-400/50 group-hover:scale-110 transition-transform duration-500" />
+                 <Sparkles className="w-12 h-12 text-gray-300 group-hover:scale-110 transition-transform duration-500" />
               ) : (
                  <Rocket className="w-12 h-12 text-slate-300 group-hover:scale-110 transition-transform duration-500" />
               )}
               {work.featured && (
-                <div className="absolute top-3 left-3 px-2.5 py-1 bg-sky-500 text-white text-[10px] font-bold tracking-wider rounded-lg uppercase flex items-center gap-1">
+                <div className="absolute top-3 left-3 px-2.5 py-1 bg-gray-900 text-white text-[10px] font-bold tracking-wider rounded-lg uppercase flex items-center gap-1">
                   Mahkota
                 </div>
               )}
@@ -66,7 +66,7 @@ export default function KatalogKaryaClient() {
             {/* Content */}
             <div className="p-5 flex flex-col flex-1">
               <h3 className="text-lg font-bold text-slate-800 line-clamp-1">{work.title}</h3>
-              <p className="text-xs text-sky-600 font-medium mt-1">{work.creator}</p>
+              <p className="text-xs text-gray-900 font-medium mt-1">{work.creator}</p>
               
               <p className="text-sm text-slate-500 mt-3 line-clamp-2 flex-1">
                 {work.desc}
@@ -83,7 +83,7 @@ export default function KatalogKaryaClient() {
 
             {/* Footer Actions */}
             <div className="px-5 py-4 bg-slate-50/50 border-t border-slate-100 flex gap-2">
-              <a href={work.demo} target={work.demo === "#" ? "_self" : "_blank"} className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-white border border-slate-200 hover:border-sky-300 hover:text-sky-600 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
+              <a href={work.demo} target={work.demo === "#" ? "_self" : "_blank"} className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-white border border-slate-200 hover:border-gray-300 hover:text-gray-900 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
                 <ExternalLink className="w-3.5 h-3.5" /> {work.demo === "#" ? "Demo Offline" : "Kunjungi"}
               </a>
               

@@ -33,7 +33,7 @@ export default function LombaClient({ records }: { records: any[] }) {
             <button 
               onClick={handleSync}
               disabled={isPending}
-              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-emerald-100 text-emerald-700 hover:bg-emerald-200 border border-emerald-200 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
+              className="flex-1 md:flex-none flex items-center justify-center gap-2 px-4 py-2 bg-gray-100 text-gray-900 hover:bg-gray-200 border border-gray-200 rounded-lg text-sm font-medium transition-colors disabled:opacity-50"
             >
               <RefreshCw className={`w-4 h-4 ${isPending ? "animate-spin" : ""}`} /> 
               {isPending ? "Menyinkronkan..." : "Sync Devpost API"}
@@ -68,11 +68,11 @@ export default function LombaClient({ records }: { records: any[] }) {
                 <tr key={r.id} className="hover:bg-gray-50 transition-colors">
                   <td className="px-6 py-4">
                     <div className="flex items-start gap-3">
-                      <span className="mt-0.5 inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 whitespace-nowrap">
+                      <span className="mt-0.5 inline-flex px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-900 whitespace-nowrap">
                         {r.type}
                       </span>
                       <div>
-                        <a href={r.link} target="_blank" className="font-semibold text-gray-900 hover:text-blue-600 flex items-center gap-1.5">
+                        <a href={r.link} target="_blank" className="font-semibold text-gray-900 hover:text-gray-600 flex items-center gap-1.5">
                           {r.title} <ExternalLink className="w-3 h-3" />
                         </a>
                         <p className="text-xs text-gray-500 mt-1 line-clamp-1">{r.description}</p>
@@ -107,12 +107,12 @@ export default function LombaClient({ records }: { records: any[] }) {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Nama Kompetisi</label>
-                <input type="text" name="title" required className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none" />
+                <input type="text" name="title" required className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Tipe Event</label>
-                  <select name="type" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none">
+                  <select name="type" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 outline-none">
                     <option value="Lomba IT">Lomba IT</option>
                     <option value="Hackathon">Hackathon</option>
                     <option value="Sertifikasi">Sertifikasi</option>
@@ -120,20 +120,20 @@ export default function LombaClient({ records }: { records: any[] }) {
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Deadline</label>
-                  <input type="date" name="deadline" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                  <input type="date" name="deadline" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 outline-none" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Penyelenggara</label>
-                <input type="text" name="organizer" required placeholder="Kampus / Instansi" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                <input type="text" name="organizer" required placeholder="Kampus / Instansi" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Link Pendaftaran</label>
-                <input type="url" name="link" placeholder="https://..." className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none" />
+                <input type="url" name="link" placeholder="https://..." className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 outline-none" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi Singkat</label>
-                <textarea name="description" rows={3} className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-blue-500/20 outline-none"></textarea>
+                <textarea name="description" rows={3} className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 outline-none"></textarea>
               </div>
               
               <div className="flex justify-end gap-3 pt-4 border-t border-gray-100">

@@ -51,7 +51,7 @@ export default function RegisterContainer() {
       <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <div className="bg-white p-10 rounded-3xl shadow-sm border border-gray-200 max-w-md w-full text-center">
           <div className="flex justify-center mb-6">
-            <CheckCircle2 className="w-16 h-16 text-blue-500" strokeWidth={1.5} />
+            <CheckCircle2 className="w-16 h-16 text-gray-900" strokeWidth={1.5} />
           </div>
           <h2 className="text-2xl font-medium text-gray-900 mb-2">Pendaftaran Berhasil</h2>
           <p className="text-gray-500 mb-8 leading-relaxed">Akun Anda telah diotorisasi. Silakan masuk menggunakan kredensial yang baru saja Anda daftarkan.</p>
@@ -72,7 +72,7 @@ export default function RegisterContainer() {
 
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
-          <div className="text-2xl font-bold text-blue-600 tracking-tighter">HIMASTI</div>
+          <div className="text-2xl font-bold text-gray-900 tracking-tighter">HIMASTI</div>
         </div>
 
         <div className="mb-8 text-center">
@@ -92,33 +92,33 @@ export default function RegisterContainer() {
             
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1.5">NAMA LENGKAP</label>
-              <input name="name" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="John Doe" />
+              <input name="name" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="John Doe" />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1.5">EMAIL</label>
-              <input name="email" type="email" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="nama@email.com" />
+              <input name="email" type="email" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="nama@email.com" />
             </div>
 
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1.5">NIM</label>
-                <input name="nim" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="2024..." />
+                <input name="nim" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="2024..." />
               </div>
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1.5">ANGKATAN</label>
-                <input name="angkatan" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="2024" />
+                <input name="angkatan" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="2024" />
               </div>
             </div>
 
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1.5">PASSWORD</label>
-              <input name="password" type="password" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="••••••••" />
+              <input name="password" type="password" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="••••••••" />
             </div>
 
             <div>
               <label className="block text-xs font-medium text-gray-500 mb-1.5">KONFIRMASI PASSWORD</label>
-              <input name="confirmPassword" type="password" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="••••••••" />
+              <input name="confirmPassword" type="password" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="••••••••" />
             </div>
 
             <button disabled={loading} className="w-full bg-black hover:bg-gray-800 text-white font-medium py-3 px-4 rounded-full transition-colors mt-4 disabled:opacity-50 flex justify-center items-center">
@@ -128,7 +128,7 @@ export default function RegisterContainer() {
         </div>
 
         <p className="text-center text-sm text-gray-500">
-          Sudah punya akun? <Link href="/login" className="text-blue-600 font-medium hover:underline">Masuk di sini</Link>
+          Sudah punya akun? <Link href="/login" className="text-gray-900 font-medium hover:underline">Masuk di sini</Link>
         </p>
       </div>
 

@@ -42,7 +42,7 @@ export default async function SuratPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
         <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-          <Mail className="w-6 h-6 text-purple-600" />
+          <Mail className="w-6 h-6 text-gray-900" />
           Sistem Administrasi Surat
         </h1>
         <p className="text-gray-500 mt-1">Kelola arsip digital Surat Masuk dan Surat Keluar HIMASTI.</p>

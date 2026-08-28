@@ -51,7 +51,7 @@ export default async function RolesPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
         <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-          <ShieldCheck className="w-6 h-6 text-purple-600" />
+          <ShieldCheck className="w-6 h-6 text-gray-900" />
           Manajemen Role Pengurus
         </h1>
         <p className="text-gray-500 mt-1">Kelola hak akses dan penetapan jabatan untuk seluruh anggota HIMASTI.</p>

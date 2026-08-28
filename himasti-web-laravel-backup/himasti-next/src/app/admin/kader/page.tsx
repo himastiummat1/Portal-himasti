@@ -63,7 +63,7 @@ export default async function DataKaderPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
         <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-          <Users className="w-6 h-6 text-purple-600" />
+          <Users className="w-6 h-6 text-gray-900" />
           Master Data Kader
         </h1>
         <p className="text-gray-500 mt-1">Pangkalan data utama seluruh anggota Himpunan Mahasiswa.</p>

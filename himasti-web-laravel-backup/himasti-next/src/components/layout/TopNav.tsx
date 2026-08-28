@@ -40,14 +40,14 @@ export default function TopNav({
         <div className="flex justify-between items-center h-14">
           
           <div className="flex items-center h-full" ref={navRef}>
-            <Link href="/admin" className="font-bold text-lg text-sky-700 mr-8 tracking-tight flex items-center gap-2">
+            <Link href="/admin" className="font-bold text-lg text-gray-900 mr-8 tracking-tight flex items-center gap-2">
               <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-6 h-6 object-contain rounded-md" />
               HIMASTI
             </Link>
             
             {/* Desktop Menu */}
             <div className="hidden md:flex h-full space-x-6">
-              <Link href="/admin" className={`inline-flex items-center text-sm transition-colors border-b-2 ${pathname === "/admin" ? "border-sky-500 text-sky-700" : "border-transparent text-slate-500 hover:text-sky-700"}`}>
+              <Link href="/admin" className={`inline-flex items-center text-sm transition-colors border-b-2 ${pathname === "/admin" ? "border-gray-900 text-gray-900" : "border-transparent text-slate-500 hover:text-gray-900"}`}>
                 Overview
               </Link>
 
@@ -61,8 +61,8 @@ export default function TopNav({
                       onClick={() => setOpenGroup(isOpen ? null : group.title)}
                       className={`inline-flex items-center h-full text-sm transition-colors border-b-2 gap-1 ${
                         isActive || isOpen
-                          ? "border-sky-500 text-sky-700" 
-                          : "border-transparent text-slate-500 hover:text-sky-700"
+                          ? "border-gray-900 text-gray-900" 
+                          : "border-transparent text-slate-500 hover:text-gray-900"
                       }`}
                     >
                       {group.title}
@@ -79,8 +79,8 @@ export default function TopNav({
                             onClick={() => setOpenGroup(null)}
                             className={`block px-4 py-2 text-sm transition-colors ${
                               pathname?.startsWith(link.href)
-                                ? "text-sky-700 bg-gray-50 font-medium"
-                                : "text-gray-600 hover:text-sky-700 hover:bg-gray-50"
+                                ? "text-gray-900 bg-gray-50 font-medium"
+                                : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
                             }`}
                           >
                             {link.label}
@@ -117,16 +117,16 @@ export default function TopNav({
             </div>
             <button 
               onClick={() => window.dispatchEvent(new CustomEvent('request-dev-mode'))} 
-              className="text-[10px] font-mono font-bold text-slate-400 hover:text-emerald-500 ml-4 border border-slate-200 hover:border-emerald-500 px-2 py-1 rounded transition-colors"
+              className="text-[10px] font-mono font-bold text-slate-400 hover:text-gray-900 ml-4 border border-slate-200 hover:border-gray-500 px-2 py-1 rounded transition-colors"
               title="Dev Mode (Locked)"
             >
               🔒 TOP SECRET
             </button>
             
-            <Link href="/admin/profil" className="text-sm font-medium text-slate-500 hover:text-sky-700 ml-4 transition-colors">
+            <Link href="/admin/profil" className="text-sm font-medium text-slate-500 hover:text-gray-900 ml-4 transition-colors">
               Profil Saya
             </Link>
-            <button onClick={() => signOut({ callbackUrl: "/login" })} className="text-sm font-medium text-slate-500 hover:text-sky-700 ml-4 transition-colors">
+            <button onClick={() => signOut({ callbackUrl: "/login" })} className="text-sm font-medium text-slate-500 hover:text-gray-900 ml-4 transition-colors">
               Logout
             </button>
 
@@ -134,7 +134,7 @@ export default function TopNav({
 
           {/* Mobile menu button */}
           <div className="md:hidden flex items-center">
-            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-500 hover:text-sky-700 p-2">
+            <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="text-slate-500 hover:text-gray-900 p-2">
               <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 {mobileMenuOpen ? (
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
@@ -151,11 +151,11 @@ export default function TopNav({
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-slate-200/60 bg-white/80 backdrop-blur-md">
           <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
-            <div className="text-sm font-medium text-sky-700">{userStr}</div>
+            <div className="text-sm font-medium text-gray-900">{userStr}</div>
             <div className="text-xs font-mono text-slate-500 uppercase">{roleStr}</div>
           </div>
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <div className="mb-2"><Link href="/admin" onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-2 text-sm ${pathname === "/admin" ? "text-sky-700 font-medium" : "text-slate-500"}`}>Overview</Link></div>
+            <div className="mb-2"><Link href="/admin" onClick={() => setMobileMenuOpen(false)} className={`block px-3 py-2 text-sm ${pathname === "/admin" ? "text-gray-900 font-medium" : "text-slate-500"}`}>Overview</Link></div>
             {groups.map((group) => (
               <div key={group.title} className="mb-2">
                 <div className="px-3 py-1 text-[10px] font-bold text-gray-400 uppercase tracking-wider">{group.title}</div>
@@ -166,7 +166,7 @@ export default function TopNav({
                     onClick={() => setMobileMenuOpen(false)}
                     className={`block px-3 py-2 text-sm ${
                       pathname?.startsWith(link.href)
-                        ? "text-sky-700 font-medium"
+                        ? "text-gray-900 font-medium"
                         : "text-slate-500"
                     }`}
                   >

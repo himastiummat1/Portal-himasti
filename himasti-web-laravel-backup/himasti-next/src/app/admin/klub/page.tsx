@@ -26,7 +26,7 @@ export default async function KlubPage() {
           <ArrowLeft className="w-4 h-4" /> Kembali ke Dashboard
         </Link>
         <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3 tracking-tight">
-          <Gamepad2 className="w-8 h-8 text-sky-600" />
+          <Gamepad2 className="w-8 h-8 text-gray-900" />
           Klub IT & Minat Bakat
         </h1>
         <p className="text-gray-500 mt-2 text-lg">Wadah eksplorasi, kolaborasi, dan pengembangan *skill* spesifik mahasiswa Teknik Informatika.</p>

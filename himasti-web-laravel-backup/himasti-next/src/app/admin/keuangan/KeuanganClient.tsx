@@ -123,7 +123,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
         </div>
         <div className="bg-white  rounded-lg shadow-sm p-6 border border-gray-100 ">
           <h3 className="text-sm font-medium text-gray-500 ">Saldo Akhir (Kas)</h3>
-          <p className={`mt-2 text-3xl font-bold ${saldoAkhir >= 0 ? 'text-blue-600 ' : 'text-red-600 '}`}>
+          <p className={`mt-2 text-3xl font-bold ${saldoAkhir >= 0 ? 'text-gray-900 ' : 'text-red-600 '}`}>
             {formatRupiah(saldoAkhir)}
           </p>
         </div>
@@ -172,7 +172,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
               <option value="pengeluaran">Hanya Pengeluaran</option>
             </select>
 
-            <button onClick={() => { setIsAddModalOpen(true); setErrorMsg(""); }} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700 transition w-full sm:w-auto text-center whitespace-nowrap">
+            <button onClick={() => { setIsAddModalOpen(true); setErrorMsg(""); }} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition w-full sm:w-auto text-center whitespace-nowrap">
               + Catat Transaksi
             </button>
           </div>
@@ -224,7 +224,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
                       {record.tipe === 'pemasukan' ? '+' : '-'} {formatRupiah(record.jumlah)}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                      <button onClick={() => openEditModal(record)} className="text-blue-600 hover:text-blue-900  :text-blue-300 mr-3">Edit</button>
+                      <button onClick={() => openEditModal(record)} className="text-gray-900 hover:text-gray-900  :text-gray-900 mr-3">Edit</button>
                       <button onClick={() => handleDelete(record.id)} className="text-red-600 hover:text-red-900  :text-red-300">Hapus</button>
                     </td>
                   </tr>
@@ -283,7 +283,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
                 </form>
               </div>
               <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse">
-                <button type="submit" form="addForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
+                <button type="submit" form="addForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-900 text-base font-medium text-white hover:bg-gray-800 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
                   {isSubmitting ? "Menyimpan..." : "Simpan"}
                 </button>
                 <button type="button" onClick={() => setIsAddModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white  text-gray-700  hover:bg-gray-50 :bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">
@@ -337,7 +337,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
                 </form>
               </div>
               <div className="bg-gray-50  px-4 py-3 sm:flex sm:flex-row-reverse">
-                <button type="submit" form="editForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-blue-600 text-base font-medium text-white hover:bg-blue-700 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
+                <button type="submit" form="editForm" disabled={isSubmitting} className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-gray-900 text-base font-medium text-white hover:bg-gray-800 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50">
                   {isSubmitting ? "Menyimpan..." : "Simpan Perubahan"}
                 </button>
                 <button type="button" onClick={() => setIsEditModalOpen(false)} disabled={isSubmitting} className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white  text-gray-700  hover:bg-gray-50 :bg-gray-700 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">

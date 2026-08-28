@@ -33,7 +33,7 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
             <h2 className="text-xl font-bold ">Publikasi Artikel</h2>
             <p className="text-sm text-gray-500 mt-1">Kelola konten artikel dan berita himpunan.</p>
           </div>
-          <button onClick={() => setIsAddModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700">
+          <button onClick={() => setIsAddModalOpen(true)} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm hover:bg-gray-800">
             + Tulis Artikel
           </button>
         </div>
@@ -60,7 +60,7 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
                     ) : (
                       <span className="px-2 py-1 text-xs bg-green-100 text-green-800 rounded-full">Dipublikasikan</span>
                     )}
-                    <div className="mt-2 text-xs text-blue-600 cursor-pointer" onClick={() => updateArtikelStatus(record.id, record.status === 'Draft' ? 'Published' : 'Draft')}>
+                    <div className="mt-2 text-xs text-gray-900 cursor-pointer" onClick={() => updateArtikelStatus(record.id, record.status === 'Draft' ? 'Published' : 'Draft')}>
                       Ubah Status
                     </div>
                   </td>
@@ -104,7 +104,7 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
                 </div>
                 <div className="flex justify-end gap-3 mt-6">
                   <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-4 py-2 bg-gray-200 rounded-md">Batal</button>
-                  <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white rounded-md">Simpan</button>
+                  <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-gray-900 text-white rounded-md">Simpan</button>
                 </div>
               </form>
             </div>

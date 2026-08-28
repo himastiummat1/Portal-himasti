@@ -59,7 +59,7 @@ export default function ModulClient({ moduls, isSuperAdmin }: { moduls: any[], i
           <input 
             type="text" 
             placeholder="Cari berdasarkan nama snippet..." 
-            className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
+            className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -83,8 +83,8 @@ export default function ModulClient({ moduls, isSuperAdmin }: { moduls: any[], i
             onClick={() => setActiveCategory(cat)}
             className={`px-4 py-1.5 rounded-full text-xs font-semibold whitespace-nowrap transition-colors border ${
               activeCategory === cat 
-                ? "bg-purple-600 text-white border-purple-600 shadow-sm" 
-                : "bg-white text-gray-600 border-gray-200 hover:border-purple-300 hover:text-purple-600"
+                ? "bg-gray-900 text-white border-gray-900 shadow-sm" 
+                : "bg-white text-gray-600 border-gray-200 hover:border-gray-300 hover:text-gray-900"
             }`}
           >
             {cat}
@@ -103,23 +103,23 @@ export default function ModulClient({ moduls, isSuperAdmin }: { moduls: any[], i
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Judul *</label>
-                  <input required type="text" name="title" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" placeholder="Contoh: Koneksi Database PHP" />
+                  <input required type="text" name="title" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="Contoh: Koneksi Database PHP" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Kategori / Bahasa *</label>
-                  <input required type="text" name="category" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" placeholder="Contoh: PHP, React, Python" />
+                  <input required type="text" name="category" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="Contoh: PHP, React, Python" />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi Singkat (Opsional)</label>
-                <input type="text" name="description" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" placeholder="Kode untuk mengkoneksikan PDO ke MySQL" />
+                <input type="text" name="description" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="Kode untuk mengkoneksikan PDO ke MySQL" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2"><Code className="w-4 h-4"/> Code Snippet *</label>
-                <textarea required name="code_snippet" rows={8} className="w-full border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none font-mono bg-gray-50 text-gray-800" placeholder="Ketik atau paste kode Anda di sini..."></textarea>
+                <textarea required name="code_snippet" rows={8} className="w-full border border-gray-200 rounded-lg p-3 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none font-mono bg-gray-50 text-gray-800" placeholder="Ketik atau paste kode Anda di sini..."></textarea>
               </div>
               
-              <button type="submit" disabled={loading} className="w-full bg-purple-600 text-white font-semibold rounded-lg py-2.5 hover:bg-purple-700 transition-colors disabled:opacity-50 mt-4">
+              <button type="submit" disabled={loading} className="w-full bg-gray-900 text-white font-semibold rounded-lg py-2.5 hover:bg-gray-800 transition-colors disabled:opacity-50 mt-4">
                 {loading ? "Menyimpan..." : "Simpan Modul"}
               </button>
             </form>
@@ -135,7 +135,7 @@ export default function ModulClient({ moduls, isSuperAdmin }: { moduls: any[], i
             <p>Belum ada snippet kode untuk kategori ini.</p>
           </div>
         ) : filteredModuls.map(m => (
-          <div key={m.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all hover:border-purple-200 group">
+          <div key={m.id} className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm transition-all hover:border-gray-200 group">
             
             {/* Header Accordion */}
             <div 
@@ -143,7 +143,7 @@ export default function ModulClient({ moduls, isSuperAdmin }: { moduls: any[], i
               className="p-4 flex justify-between items-center bg-gray-50/50 cursor-pointer hover:bg-gray-50 transition-colors"
             >
               <div className="flex items-center gap-4">
-                <span className="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-purple-100 text-purple-700 border border-purple-200 w-24 justify-center">
+                <span className="inline-flex px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider bg-gray-100 text-gray-900 border border-gray-200 w-24 justify-center">
                   {m.category}
                 </span>
                 <div>

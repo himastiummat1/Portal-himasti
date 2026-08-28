@@ -101,7 +101,7 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
             </h3>
             
             {message && (
-              <div className={`p-3 mb-4 text-sm flex items-start gap-2 border \${message.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+              <div className={`p-3 mb-4 text-sm flex items-start gap-2 border \${message.type === 'success' ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-red-50 border-red-200 text-red-800'}`}>
                 {message.type === 'success' ? <CheckCircle2 className="w-4 h-4 mt-0.5" /> : <AlertCircle className="w-4 h-4 mt-0.5" />}
                 {message.text}
               </div>
@@ -150,7 +150,7 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
             </h3>
 
             {pwdMessage && (
-              <div className={`p-3 mb-4 text-sm flex items-start gap-2 border \${pwdMessage.type === 'success' ? 'bg-emerald-50 border-emerald-200 text-emerald-800' : 'bg-red-50 border-red-200 text-red-800'}`}>
+              <div className={`p-3 mb-4 text-sm flex items-start gap-2 border \${pwdMessage.type === 'success' ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-red-50 border-red-200 text-red-800'}`}>
                 {pwdMessage.type === 'success' ? <CheckCircle2 className="w-4 h-4 mt-0.5" /> : <AlertCircle className="w-4 h-4 mt-0.5" />}
                 {pwdMessage.text}
               </div>

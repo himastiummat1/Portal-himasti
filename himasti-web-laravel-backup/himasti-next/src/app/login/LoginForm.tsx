@@ -40,7 +40,7 @@ export default function LoginForm() {
         <label className="block text-sm font-medium text-gray-700">Email Akun</label>
         <input
           type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
-          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 sm:text-sm transition-all"
+          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-900/20 sm:text-sm transition-all"
           placeholder="admin@email.com"
         />
       </div>
@@ -48,11 +48,11 @@ export default function LoginForm() {
       <div className="space-y-1">
         <div className="flex items-center justify-between">
           <label className="block text-sm font-medium text-gray-700">Kata Sandi</label>
-          <a href="#" className="text-sm font-medium text-blue-600 hover:text-blue-600 transition-colors">Lupa sandi?</a>
+          <a href="#" className="text-sm font-medium text-gray-900 hover:text-gray-600 transition-colors">Lupa sandi?</a>
         </div>
         <input
           type="password" required value={password} onChange={(e) => setPassword(e.target.value)}
-          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 sm:text-sm transition-all"
+          className="block w-full text-gray-900 bg-white appearance-none rounded-lg border border-gray-300 px-4 py-3 placeholder-gray-400 focus:border-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-900/20 sm:text-sm transition-all"
           placeholder="••••••••"
         />
       </div>
@@ -87,7 +87,7 @@ export default function LoginForm() {
     </form>
     <div className="mt-8 text-center text-sm text-gray-500">
       Belum memiliki akun kader?{' '}
-      <Link href="/register" className="font-bold text-blue-600 hover:text-blue-800 transition-colors">
+      <Link href="/register" className="font-bold text-gray-900 hover:text-gray-800 transition-colors">
         Daftar Sekarang
       </Link>
     </div>

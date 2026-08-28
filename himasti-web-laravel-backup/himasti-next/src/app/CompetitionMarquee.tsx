@@ -6,7 +6,7 @@ export default function CompetitionMarquee({ competitions }: { competitions: any
 
   return (
     <section className="w-full bg-gray-50 py-3 overflow-hidden border-y border-gray-200 relative flex items-center z-10">
-      <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-gray-50 to-transparent z-20"></div>
+      <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gray-50 from-gray-50 to-transparent z-20"></div>
       
       <div className="flex gap-8 items-center whitespace-nowrap animate-marquee">
         {/* Render twice for infinite smooth scroll */}

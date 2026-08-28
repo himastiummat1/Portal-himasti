@@ -17,7 +17,7 @@ export default function SurveyClient({ records }: { records: any[] }) {
       <div className="bg-white  rounded-lg shadow-sm">
         <div className="p-6 border-b flex justify-between">
           <h2 className="text-xl font-bold ">Riset & Kuesioner</h2>
-          <button onClick={() => setIsOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm">+ Buat Kuesioner</button>
+          <button onClick={() => setIsOpen(true)} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm">+ Buat Kuesioner</button>
         </div>
         <div className="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
           {records.map(r => (
@@ -45,7 +45,7 @@ export default function SurveyClient({ records }: { records: any[] }) {
               </select>
               <div className="flex justify-end gap-2">
                 <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 bg-gray-200 rounded">Batal</button>
-                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+                <button type="submit" className="px-4 py-2 bg-gray-900 text-white rounded">Simpan</button>
               </div>
             </form>
           </div>

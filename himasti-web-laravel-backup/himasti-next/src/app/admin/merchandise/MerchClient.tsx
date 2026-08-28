@@ -17,7 +17,7 @@ export default function MerchClient({ records }: { records: any[] }) {
       <div className="bg-white  rounded-lg shadow-sm">
         <div className="p-6 border-b flex justify-between">
           <h2 className="text-xl font-bold ">Katalog Merchandise (Danus)</h2>
-          <button onClick={() => setIsOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm">+ Tambah Produk</button>
+          <button onClick={() => setIsOpen(true)} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm">+ Tambah Produk</button>
         </div>
         <div className="p-6 grid grid-cols-1 md:grid-cols-3 gap-6">
           {records.map(r => (
@@ -41,7 +41,7 @@ export default function MerchClient({ records }: { records: any[] }) {
               <textarea name="description" required placeholder="Deskripsi & Harga" className="w-full p-2 border rounded" rows={3}></textarea>
               <div className="flex justify-end gap-2">
                 <button type="button" onClick={() => setIsOpen(false)} className="px-4 py-2 bg-gray-200 rounded">Batal</button>
-                <button type="submit" className="px-4 py-2 bg-blue-600 text-white rounded">Simpan</button>
+                <button type="submit" className="px-4 py-2 bg-gray-900 text-white rounded">Simpan</button>
               </div>
             </form>
           </div>

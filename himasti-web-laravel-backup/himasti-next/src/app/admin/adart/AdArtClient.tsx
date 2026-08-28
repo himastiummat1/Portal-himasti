@@ -36,7 +36,7 @@ export default function AdArtClient({
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div>
           <h1 className="text-2xl font-bold text-gray-900 flex items-center gap-2">
-            <BookOpen className="w-6 h-6 text-sky-600" />
+            <BookOpen className="w-6 h-6 text-gray-900" />
             Konstitusi (AD/ART) HIMASTI
           </h1>
           <p className="text-gray-500 mt-1">Anggaran Dasar dan Anggaran Rumah Tangga Himpunan Mahasiswa Teknik Informatika.</p>
@@ -53,7 +53,7 @@ export default function AdArtClient({
       </div>
 
       {message && (
-        <div className={`p-4 rounded-xl flex items-start gap-3 border ${message.type === 'success' ? 'bg-emerald-50 border-emerald-100 text-emerald-800' : 'bg-red-50 border-red-100 text-red-800'}`}>
+        <div className={`p-4 rounded-xl flex items-start gap-3 border ${message.type === 'success' ? 'bg-gray-50 border-gray-200 text-gray-900' : 'bg-red-50 border-red-100 text-red-800'}`}>
           {message.type === 'success' ? <CheckCircle2 className="w-5 h-5 shrink-0" /> : <AlertCircle className="w-5 h-5 shrink-0" />}
           <div className="text-sm font-medium">{message.text}</div>
         </div>
@@ -69,7 +69,7 @@ export default function AdArtClient({
                 name="file" 
                 accept=".pdf,.docx"
                 required
-                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-700 hover:file:bg-sky-100"
+                className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-900 hover:file:bg-gray-100"
               />
             </div>
             <div className="flex gap-3 pt-2">
@@ -83,7 +83,7 @@ export default function AdArtClient({
               <button 
                 type="submit"
                 disabled={isPending}
-                className="px-4 py-2 bg-sky-600 text-white rounded-lg text-sm font-medium hover:bg-sky-700 transition-colors flex items-center gap-2 disabled:opacity-50"
+                className="px-4 py-2 bg-gray-900 text-white rounded-lg text-sm font-medium hover:bg-gray-800 transition-colors flex items-center gap-2 disabled:opacity-50"
               >
                 {isPending ? "Mengunggah..." : "Unggah Sekarang"}
               </button>
@@ -96,7 +96,7 @@ export default function AdArtClient({
         <div className="bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden flex flex-col h-[700px]">
           <div className="px-4 py-3 bg-gray-50 border-b border-gray-100 flex justify-between items-center">
             <div className="flex items-center gap-2 text-sm font-medium text-gray-700">
-              <FileText className="w-4 h-4 text-sky-600" />
+              <FileText className="w-4 h-4 text-gray-900" />
               Dokumen Resmi AD/ART HIMASTI UMMAT
             </div>
             {metadata && (
@@ -107,7 +107,7 @@ export default function AdArtClient({
           </div>
           {metadata?.extension === 'docx' ? (
             <div className="flex-1 flex flex-col items-center justify-center bg-gray-50/50 p-12 text-center">
-              <div className="w-20 h-20 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-blue-200">
+              <div className="w-20 h-20 bg-gray-100 text-gray-900 rounded-2xl flex items-center justify-center mb-6 shadow-sm border border-gray-200">
                 <FileText className="w-10 h-10" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">Dokumen Microsoft Word (.docx)</h3>
@@ -117,7 +117,7 @@ export default function AdArtClient({
               <a 
                 href="/uploads/adart/adart_official.docx" 
                 download="AD-ART_HIMASTI_UMMAT.docx"
-                className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors shadow-sm"
+                className="px-6 py-3 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-sm"
               >
                 Unduh Dokumen AD/ART
               </a>

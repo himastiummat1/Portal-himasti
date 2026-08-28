@@ -102,7 +102,7 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
     return (
       <button 
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-24 right-6 p-4 bg-slate-900 text-green-400 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.3)] hover:scale-110 transition-transform z-50 group border border-slate-700"
+        className="fixed bottom-24 right-6 p-4 bg-slate-900 text-green-600 rounded-full shadow-[0_0_15px_rgba(34,197,94,0.3)] hover:scale-110 transition-transform z-50 group border border-slate-700"
       >
         <TerminalIcon className="w-6 h-6 group-hover:animate-pulse" />
       </button>
@@ -127,9 +127,9 @@ export default function TerminalEasterEgg({ userName }: { userName: string }) {
         </div>
 
         {/* Terminal Body */}
-        <div className="flex-1 p-4 overflow-y-auto text-green-500 space-y-1">
+        <div className="flex-1 p-4 overflow-y-auto text-green-600 space-y-1">
           {history.map((line, i) => (
-            <div key={i} className={line.type === "input" ? "text-slate-300" : "text-green-400 whitespace-pre-wrap font-mono"}>
+            <div key={i} className={line.type === "input" ? "text-slate-300" : "text-green-600 whitespace-pre-wrap font-mono"}>
               {line.text}
             </div>
           ))}

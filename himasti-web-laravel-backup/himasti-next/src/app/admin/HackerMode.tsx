@@ -102,7 +102,7 @@ export default function HackerMode() {
           color: #0F0 !important;
           background-color: transparent !important;
         }
-        body.hacker-active .bg-white, body.hacker-active .bg-slate-50, body.hacker-active .bg-sky-50 {
+        body.hacker-active .bg-white, body.hacker-active .bg-slate-50, body.hacker-active .bg-gray-50 {
           background-color: rgba(0,20,0,0.8) !important;
           backdrop-filter: blur(4px);
         }
@@ -151,9 +151,9 @@ export default function HackerMode() {
                 placeholder="Masukkan jawaban..."
                 value={riddleAnswer}
                 onChange={(e) => setRiddleAnswer(e.target.value)}
-                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-sky-500 mb-4"
+                className="w-full bg-slate-950 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-gray-900 mb-4"
               />
-              <button type="submit" className="w-full bg-sky-600 hover:bg-sky-500 text-white font-bold py-3 rounded-xl transition-colors">
+              <button type="submit" className="w-full bg-gray-900 hover:bg-gray-900 text-white font-bold py-3 rounded-xl transition-colors">
                 Unlock System
               </button>
             </form>
@@ -168,10 +168,10 @@ export default function HackerMode() {
       {konamiUnlocked && (
         <div className="fixed inset-0 bg-black/90 z-[999] flex items-center justify-center animate-in zoom-in duration-300 backdrop-blur-md">
           <div className="bg-slate-950 border-2 border-green-500 p-8 rounded-3xl max-w-lg text-center shadow-[0_0_50px_rgba(0,255,0,0.2)]">
-            <ShieldAlert className="w-20 h-20 text-green-500 mx-auto mb-6 animate-bounce" />
-            <h2 className="text-3xl font-mono font-bold text-green-500 mb-2">DEVELOPER UNLOCKED</h2>
+            <ShieldAlert className="w-20 h-20 text-green-600 mx-auto mb-6 animate-bounce" />
+            <h2 className="text-3xl font-mono font-bold text-green-600 mb-2">DEVELOPER UNLOCKED</h2>
             <div className="w-16 h-1 bg-green-500 mx-auto mb-6"></div>
-            <p className="text-green-400 font-mono text-sm leading-relaxed mb-8">
+            <p className="text-green-600 font-mono text-sm leading-relaxed mb-8">
               Hormat kepada Sang Architect, <strong className="text-white bg-green-900 px-2 py-1">M N DAFFA</strong>! 
               <br/><br/>
               Sistem telah mendeteksi kode rahasia Konami. Semua protokol keamanan Vidyax Engine di-bypass. Anda sekarang memiliki kendali penuh atas portal HIMASTI.

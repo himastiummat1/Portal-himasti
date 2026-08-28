@@ -14,7 +14,7 @@ export default function LoginContainer() {
 
       <div className="w-full max-w-sm mx-auto p-6">
         <div className="flex justify-center mb-8">
-          <div className="text-2xl font-bold text-blue-600 tracking-tighter">HIMASTI</div>
+          <div className="text-2xl font-bold text-gray-900 tracking-tighter">HIMASTI</div>
         </div>
 
         <div className="mb-8 text-center">

@@ -151,7 +151,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   };
 
   return (
-    <div className={`w-full min-h-screen bg-white text-gray-900 font-sans selection:bg-blue-100 selection:text-blue-900 ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`w-full min-h-screen bg-white text-gray-900 font-sans selection:bg-gray-200 selection:text-gray-900 ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       
       {/* Navbar Minimalist */}
       <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
@@ -194,14 +194,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-gray-300"></div>
                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                   </div>
                   <div className={`${isRTL ? 'mr-4' : 'ml-4'} text-xs font-mono text-gray-500 flex items-center gap-2`}>
                     <Terminal className="w-3 h-3"/> {lang === "en" ? "HIMASTI_AI_CORE_v2.0" : lang === "ar" ? "نظام_هيمساتي_للذكاء_الاصطناعي" : "HIMASTI_AI_CORE_v2.0"}
                   </div>
                 </div>
-                <Bot className="w-5 h-5 text-blue-500" />
+                <Bot className="w-5 h-5 text-gray-900" />
              </div>
              <div className="flex-1 p-4 overflow-y-auto bg-gray-50/50 space-y-4">
                 {messages.map((msg, idx) => (
@@ -214,7 +214,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-sm flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-blue-500" />
+                      <Loader2 className="w-4 h-4 animate-spin text-gray-900" />
                       <span className="text-xs text-gray-500">{lang === "en" ? "AI is thinking..." : lang === "ar" ? "الذكاء الاصطناعي يفكر..." : "AI sedang berpikir..."}</span>
                     </div>
                   </div>
@@ -235,14 +235,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                      disabled={isLoading}
                      placeholder={t.aiPrompt}
                      style={{ paddingInlineStart: '1rem', paddingInlineEnd: '3rem' }}
-                     className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 text-sm outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all disabled:opacity-50"
+                     className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50"
                      dir={isRTL ? 'rtl' : 'ltr'}
                    />
                    <button 
                      type="submit" 
                      disabled={!input.trim() || isLoading}
                      style={{ [isRTL ? 'left' : 'right']: '0.5rem' }}
-                     className="absolute p-1.5 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 transition-colors"
+                     className="absolute p-1.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
                    >
                      <Send className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
@@ -265,12 +265,12 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           </div>
           <div className="grid grid-cols-2 gap-4 flex-1">
              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
-                <Building2 className="w-8 h-8 mx-auto text-sky-500 mb-2" />
+                <Building2 className="w-8 h-8 mx-auto text-gray-900 mb-2" />
                 <div className="text-2xl font-bold text-black">2022</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wider">Tahun Berdiri</div>
              </div>
              <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
-                <Users className="w-8 h-8 mx-auto text-sky-500 mb-2" />
+                <Users className="w-8 h-8 mx-auto text-gray-900 mb-2" />
                 <div className="text-2xl font-bold text-black">8</div>
                 <div className="text-xs text-gray-500 uppercase tracking-wider">Pencetus</div>
              </div>
@@ -295,8 +295,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             {t.divs.map((divisi, i) => (
               <div key={i} className="group flex flex-col items-start bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 w-full text-left">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 bg-sky-50 rounded-xl border border-sky-100 group-hover:bg-blue-50 transition-colors">
-                    <svg className="w-5 h-5 text-sky-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-xl border border-gray-100 group-hover:bg-gray-50 transition-colors">
+                    <svg className="w-5 h-5 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d={divIcons[i]} />
                     </svg>
                   </div>

@@ -72,7 +72,7 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
             <h2 className="text-xl font-bold ">Jadwal & Notulensi Rapat</h2>
             <p className="text-sm text-gray-500 mt-1">Manajemen jadwal rapat pengurus dan panitia.</p>
           </div>
-          <button onClick={() => setIsAddModalOpen(true)} className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm font-medium hover:bg-blue-700">
+          <button onClick={() => setIsAddModalOpen(true)} className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800">
             + Jadwalkan Rapat
           </button>
         </div>
@@ -81,7 +81,7 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
           {records.length > 0 ? records.map(record => (
             <div key={record.id} className="border border-gray-200  rounded-lg p-5 hover:shadow-md transition bg-gray-50 ">
               <div className="flex justify-between items-start mb-2">
-                <span className="px-2 py-1 text-xs font-semibold rounded-full bg-indigo-100 text-indigo-800  ">
+                <span className="px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-900  ">
                   {record.type.replace('_', ' ').toUpperCase()}
                 </span>
                 <button onClick={() => handleDelete(record.id)} className="text-red-500 hover:text-red-700 text-sm">Hapus</button>
@@ -160,7 +160,7 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                 </div>
                 <div className="flex justify-end gap-3 mt-6">
                   <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-4 py-2 bg-gray-200  rounded-md">Batal</button>
-                  <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-blue-600 text-white rounded-md">Simpan</button>
+                  <button type="submit" disabled={isSubmitting} className="px-4 py-2 bg-gray-900 text-white rounded-md">Simpan</button>
                 </div>
               </form>
             </div>
@@ -178,11 +178,11 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                 <input type="hidden" name="meetingId" value={uploadMeetingId} />
                 <div>
                   <label className="block text-sm font-medium mb-2">File Notulensi (PDF/DOCX)</label>
-                  <input type="file" name="file" accept=".pdf,.doc,.docx" required className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                  <input type="file" name="file" accept=".pdf,.doc,.docx" required className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-700 hover:file:bg-gray-100" />
                 </div>
                 <div className="flex justify-end gap-3 mt-6">
                   <button type="button" onClick={() => setUploadMeetingId(null)} className="px-4 py-2 bg-gray-200 rounded-md">Batal</button>
-                  <button type="submit" disabled={isUploading} className="px-4 py-2 bg-blue-600 text-white rounded-md">{isUploading ? 'Menyimpan...' : 'Upload'}</button>
+                  <button type="submit" disabled={isUploading} className="px-4 py-2 bg-gray-900 text-white rounded-md">{isUploading ? 'Menyimpan...' : 'Upload'}</button>
                 </div>
               </form>
             </div>

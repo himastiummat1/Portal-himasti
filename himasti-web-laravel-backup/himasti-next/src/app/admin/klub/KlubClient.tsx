@@ -12,9 +12,9 @@ export default function KlubClient({ records, isExecutive }: { records: any[], i
   const getClubIcon = (title: string) => {
     const t = title.toLowerCase();
     if (t.includes("cyber") || t.includes("security")) return <Shield className="w-8 h-8 text-rose-500" />;
-    if (t.includes("ai") || t.includes("data")) return <Rocket className="w-8 h-8 text-purple-500" />;
-    if (t.includes("web") || t.includes("mobile")) return <TerminalSquare className="w-8 h-8 text-sky-500" />;
-    return <Users className="w-8 h-8 text-emerald-500" />;
+    if (t.includes("ai") || t.includes("data")) return <Rocket className="w-8 h-8 text-gray-900" />;
+    if (t.includes("web") || t.includes("mobile")) return <TerminalSquare className="w-8 h-8 text-gray-900" />;
+    return <Users className="w-8 h-8 text-gray-900" />;
   };
 
   async function handleSubmit(e: any) {
@@ -86,7 +86,7 @@ export default function KlubClient({ records, isExecutive }: { records: any[], i
                     +
                   </div>
                 </div>
-                <button className="text-sm font-bold text-sky-600 hover:text-sky-700 flex items-center gap-1 group-hover:underline">
+                <button className="text-sm font-bold text-gray-900 hover:text-gray-900 flex items-center gap-1 group-hover:underline">
                   Gabung Klub <ExternalLink className="w-3 h-3" />
                 </button>
               </div>
@@ -112,7 +112,7 @@ export default function KlubClient({ records, isExecutive }: { records: any[], i
                   name="title" 
                   required 
                   placeholder="Misal: HIMASTI Cyber Security" 
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all font-medium" 
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 outline-none transition-all font-medium" 
                 />
               </div>
               <div>
@@ -121,7 +121,7 @@ export default function KlubClient({ records, isExecutive }: { records: any[], i
                   name="description" 
                   required 
                   placeholder="Jelaskan fokus klub ini dan kapan jadwal kumpul rutinnya..." 
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-sky-500 outline-none transition-all" 
+                  className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:border-gray-900 outline-none transition-all" 
                   rows={4}
                 ></textarea>
               </div>

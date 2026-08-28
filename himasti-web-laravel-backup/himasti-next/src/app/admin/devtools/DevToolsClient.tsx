@@ -67,7 +67,7 @@ export default function DevToolsClient() {
               <button 
                 key={tool.id} 
                 onClick={() => { setActiveTool(tool.id as any); setInput(""); setOutput(""); setError(""); }}
-                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTool === tool.id ? "bg-sky-50 text-sky-700 border border-sky-200" : "text-slate-600 hover:bg-slate-50 border border-transparent"}`}
+                className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-colors ${activeTool === tool.id ? "bg-gray-50 text-gray-900 border border-gray-200" : "text-slate-600 hover:bg-slate-50 border border-transparent"}`}
               >
                 {tool.icon} {tool.label}
               </button>
@@ -85,22 +85,22 @@ export default function DevToolsClient() {
               <textarea 
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className="flex-1 w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm font-mono focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 resize-none"
+                className="flex-1 w-full bg-slate-50 border border-slate-200 rounded-xl p-4 text-sm font-mono focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 resize-none"
                 placeholder={activeTool === "json" ? '{"nama": "HIMASTI"}' : "Ketik teks di sini..."}
               ></textarea>
               
               <div className="flex gap-2 mt-4">
                 {activeTool === "json" && (
-                  <button onClick={handleJsonFormat} className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Format JSON</button>
+                  <button onClick={handleJsonFormat} className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Format JSON</button>
                 )}
                 {activeTool === "base64" && (
                   <>
-                    <button onClick={() => handleBase64('encode')} className="px-4 py-2 bg-sky-600 hover:bg-sky-700 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Encode</button>
+                    <button onClick={() => handleBase64('encode')} className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Encode</button>
                     <button onClick={() => handleBase64('decode')} className="px-4 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Decode</button>
                   </>
                 )}
                 {activeTool === "hash" && (
-                  <button onClick={handleHash} className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Generate SHA-256</button>
+                  <button onClick={handleHash} className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-lg text-sm font-semibold transition-colors flex-1">Generate SHA-256</button>
                 )}
               </div>
             </div>

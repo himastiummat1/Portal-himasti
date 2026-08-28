@@ -58,7 +58,7 @@ export default function SuratClient({ surats, isExecutive }: { surats: any[], is
           <input 
             type="text" 
             placeholder="Cari nomor surat atau perihal..." 
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
+            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -84,27 +84,27 @@ export default function SuratClient({ surats, isExecutive }: { surats: any[], is
             <form onSubmit={handleUpload} className="p-6 space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Nomor Surat *</label>
-                <input required type="text" name="nomor_surat" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" placeholder="001/HIMASTI/VIII/2026" />
+                <input required type="text" name="nomor_surat" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="001/HIMASTI/VIII/2026" />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Perihal *</label>
-                <input required type="text" name="perihal" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" placeholder="Undangan Rapat Kerja" />
+                <input required type="text" name="perihal" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="Undangan Rapat Kerja" />
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Surat *</label>
-                  <input required type="date" name="tanggal_surat" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" />
+                  <input required type="date" name="tanggal_surat" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" />
                 </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">{tab === "Masuk" ? "Pengirim *" : "Tujuan *"}</label>
-                  <input required type="text" name="entitas" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 outline-none" placeholder={tab === "Masuk" ? "BEM Fakultas" : "Dekan Fakultas"} />
+                  <input required type="text" name="entitas" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder={tab === "Masuk" ? "BEM Fakultas" : "Dekan Fakultas"} />
                 </div>
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">File Scan Surat (Opsional)</label>
-                <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg" className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-purple-50 file:text-purple-700 hover:file:bg-purple-100 border border-gray-200 rounded-lg p-1" />
+                <input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg" className="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-gray-50 file:text-gray-900 hover:file:bg-gray-100 border border-gray-200 rounded-lg p-1" />
               </div>
-              <button type="submit" disabled={loading} className="w-full bg-purple-600 text-white font-semibold rounded-lg py-2.5 hover:bg-purple-700 transition-colors disabled:opacity-50 mt-6">
+              <button type="submit" disabled={loading} className="w-full bg-gray-900 text-white font-semibold rounded-lg py-2.5 hover:bg-gray-800 transition-colors disabled:opacity-50 mt-6">
                 {loading ? "Menyimpan..." : "Simpan Arsip Surat"}
               </button>
             </form>
@@ -145,7 +145,7 @@ export default function SuratClient({ surats, isExecutive }: { surats: any[], is
                   </td>
                   <td className="px-6 py-4">
                     {s.file_path ? (
-                      <a href={s.file_path} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-purple-600 hover:text-purple-800 bg-purple-50 px-3 py-1.5 rounded-md transition-colors">
+                      <a href={s.file_path} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-gray-900 hover:text-gray-900 bg-gray-50 px-3 py-1.5 rounded-md transition-colors">
                         <FileText className="w-3 h-3" /> Buka
                       </a>
                     ) : (

@@ -34,14 +34,14 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
           <input 
             type="text" 
             placeholder="Cari nama atau email kader..." 
-            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500/20 focus:border-purple-500 transition-all text-sm"
+            className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
         {message && (
-          <div className={`flex items-center gap-2 text-sm px-4 py-2 rounded-lg border \${message.type === 'success' ? 'bg-emerald-50 text-emerald-700 border-emerald-200' : 'bg-red-50 text-red-700 border-red-200'} animate-in fade-in slide-in-from-top-2`}>
+          <div className={`flex items-center gap-2 text-sm px-4 py-2 rounded-lg border \${message.type === 'success' ? 'bg-gray-50 text-gray-900 border-gray-200' : 'bg-red-50 text-red-700 border-red-200'} animate-in fade-in slide-in-from-top-2`}>
             {message.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
             {message.text}
           </div>
@@ -94,7 +94,7 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border \${currentRoleName.includes('admin') || currentRoleName.includes('ketua') ? 'bg-red-50 text-red-600 border-red-100' : currentRoleName.includes('kabid') ? 'bg-purple-50 text-purple-600 border-purple-100' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border \${currentRoleName.includes('admin') || currentRoleName.includes('ketua') ? 'bg-red-50 text-red-600 border-red-100' : currentRoleName.includes('kabid') ? 'bg-gray-50 text-gray-900 border-gray-100' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
                         {(currentRoleName.includes('admin') || currentRoleName.includes('ketua') || currentRoleName.includes('kabid')) && <Shield className="w-3 h-3" />}
                         {currentRoleName.replace(/_/g, ' ')}
                       </span>
@@ -104,7 +104,7 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                         disabled={isPending || u.roles.some((r: any) => r.role.name === "super_admin")}
                         value={currentRoleId || ""}
                         onChange={(e) => handleRoleChange(u.id, parseInt(e.target.value))}
-                        className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2 disabled:opacity-50"
+                        className="bg-white border border-gray-200 text-gray-700 text-sm rounded-lg focus:ring-gray-900 focus:border-gray-900 block w-full p-2 disabled:opacity-50"
                       >
                         {roles.filter(r => r.name !== "super_admin").map(role => (
                           <option key={role.id} value={role.id}>
