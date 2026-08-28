@@ -1,32 +1,26 @@
-// Server or Client component, pure CSS animation
-
 export default function BrutalistGrid() {
-
   return (
-    <div className="grid grid-cols-4 gap-2 w-fit">
+    <div className="grid grid-cols-4 gap-1 w-fit opacity-60 hover:opacity-100 transition-opacity duration-700">
       <style>{`
-        @keyframes popUp {
-          0%, 100% { transform: translateY(0); box-shadow: 0 0 0 rgba(0,0,0,0); }
-          50% { transform: translateY(-6px); box-shadow: 0 4px 0 rgba(0,0,0,0.9); }
+        @keyframes subtlePulse {
+          0%, 100% { opacity: 0.1; }
+          50% { opacity: 0.5; }
         }
-        .animate-pop {
-          animation: popUp 2s infinite ease-in-out;
+        .animate-subtle {
+          animation: subtlePulse 3s infinite ease-in-out;
         }
       `}</style>
       
       {Array.from({ length: 16 }).map((_, i) => {
-        // Create a wave effect across the 4x4 grid
         const row = Math.floor(i / 4);
         const col = i % 4;
-        const delay = (row + col) * 0.15;
+        const delay = (row + col) * 0.2;
         
         return (
           <div
             key={i}
-            className="w-10 h-10 bg-white border-2 border-gray-900 rounded-sm animate-pop"
-            style={{
-              animationDelay: `${delay}s`
-            }}
+            className="w-2.5 h-2.5 bg-gray-400 rounded-[1px] animate-subtle"
+            style={{ animationDelay: `${delay}s` }}
           />
         );
       })}
