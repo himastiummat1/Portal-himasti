@@ -30,39 +30,47 @@ export async function tutupAbsensiDanRekap(meetingId: number) {
   const hadir = meeting.attendances.map(a => a.user.name);
   const tidakHadir = allUsers.filter(u => !hadirIds.includes(u.id)).map(u => u.name);
 
-  // 3. Format Pesan Telegram
+  // Escape HTML characters to prevent breaking Telegram's parser
+  const escapeHtml = (text: string) => text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+  // 3. Format Pesan Telegram (Menggunakan HTML agar lebih kebal error)
   const message = `
-📊 *REKAP ABSENSI RAPAT HIMASTI* 📊
-*Agenda:* ${meeting.title}
-*Tanggal:* ${meeting.event_date.toLocaleDateString('id-ID')}
-*Lokasi:* ${meeting.location}
+📊 <b>REKAP ABSENSI RAPAT HIMASTI</b> 📊
+<b>Agenda:</b> ${escapeHtml(meeting.title)}
+<b>Tanggal:</b> ${meeting.event_date.toLocaleDateString('id-ID')}
+<b>Lokasi:</b> ${escapeHtml(meeting.location)}
 
-✅ *HADIR (${hadir.length} Orang):*
-${hadir.map((n, i) => `${i+1}. ${n}`).join('\n') || '-'}
+✅ <b>HADIR (${hadir.length} Orang):</b>
+${hadir.map((n, i) => `${i+1}. ${escapeHtml(n)}`).join('\n') || '-'}
 
-❌ *TIDAK HADIR / ALFA (${tidakHadir.length} Orang):*
-${tidakHadir.map((n, i) => `${i+1}. ${n}`).join('\n') || '-'}
+❌ <b>TIDAK HADIR / ALFA (${tidakHadir.length} Orang):</b>
+${tidakHadir.map((n, i) => `${i+1}. ${escapeHtml(n)}`).join('\n') || '-'}
 
-_Sistem Absensi Cerdas HIMASTI v2.0_
+<i>Sistem Absensi Cerdas HIMASTI v2.0</i>
 `;
 
-  // 4. Kirim ke Telegram (Jika token diatur di .env)
+  // 4. Kirim ke Telegram
   const botToken = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
 
   if (botToken && chatId) {
     try {
-      await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+      const response = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: chatId,
           text: message,
-          parse_mode: 'Markdown'
+          parse_mode: 'HTML'
         })
       });
+      
+      const result = await response.json();
+      if (!result.ok) {
+        console.error("Telegram API Error:", result);
+      }
     } catch (e) {
-      console.error("Gagal mengirim Telegram:", e);
+      console.error("Gagal menghubungi server Telegram:", e);
     }
   }
 
