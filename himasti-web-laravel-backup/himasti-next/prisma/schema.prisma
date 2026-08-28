@@ -260,6 +260,7 @@ model Survey {
   status            String    @default("draft")
   title             String
   description       String
+  link              String?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt
 

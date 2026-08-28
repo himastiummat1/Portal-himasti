@@ -16,12 +16,15 @@ export async function addSurvey(formData: FormData) {
       data: {
         title: formData.get("title") as string,
         description: formData.get("description") as string,
+        link: (formData.get("link") as string) || null,
         status: formData.get("status") as string,
       }
     });
     revalidatePath("/admin/survey");
     return { success: true };
-  } catch (e) { return { success: false, error: "Gagal menambah survey" }; }
+  } catch (e: any) { 
+    return { success: false, error: e.message || "Gagal menambah kuesioner" }; 
+  }
 }
 
 export async function deleteSurvey(id: number) {
@@ -30,5 +33,7 @@ export async function deleteSurvey(id: number) {
     await prisma.survey.delete({ where: { id } });
     revalidatePath("/admin/survey");
     return { success: true };
-  } catch (e) { return { success: false, error: "Gagal menghapus survey" }; }
+  } catch (e: any) { 
+    return { success: false, error: e.message || "Gagal menghapus kuesioner" }; 
+  }
 }
