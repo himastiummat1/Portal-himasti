@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 export default function AiRobotAnimation() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -32,19 +32,11 @@ export default function AiRobotAnimation() {
 
     const handleClick = () => {
       isClicked = true;
-      clickTimer = 20; // Glitch / scan effect duration
+      clickTimer = 15;
     };
 
     window.addEventListener('mousemove', handleMouseMove);
     canvas.addEventListener('click', handleClick);
-
-    // Random data strings for "High-Tech" background
-    const randomStrings = Array(5).fill(0).map(() => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      text: Math.random().toString(36).substring(2, 8).toUpperCase(),
-      speed: Math.random() * 0.5 + 0.1
-    }));
 
     const drawGrid = () => {
       ctx.strokeStyle = '#f1f5f9'; // Very faint grid
@@ -63,134 +55,167 @@ export default function AiRobotAnimation() {
       }
     };
 
-    const drawDataStrings = () => {
-      ctx.fillStyle = '#94a3b8'; // slate-400
-      ctx.font = '10px monospace';
-      randomStrings.forEach(str => {
-        ctx.fillText(str.text, str.x, str.y);
-        str.y -= str.speed;
-        if (str.y < 0) {
-          str.y = canvas.height;
-          str.text = Math.random().toString(36).substring(2, 10).toUpperCase();
-        }
-      });
-    };
-
-    const drawRobot = (t: number) => {
+    const drawHumanoid = (t: number) => {
       const centerX = canvas.width / 2;
       const centerY = canvas.height / 2 + 10;
-
+      
       // Bobbing effect
-      const yOffset = Math.sin(t * 0.05) * 5;
+      const yOffset = Math.sin(t * 0.05) * 3;
       
       // Calculate Look Direction based on Mouse
       const dx = mouseX - centerX;
       const dy = mouseY - centerY;
       const distance = Math.sqrt(dx * dx + dy * dy);
-      const maxEyeOffset = 15;
-      const eyeOffsetX = (dx / (distance || 1)) * Math.min(distance * 0.1, maxEyeOffset);
-      const eyeOffsetY = (dy / (distance || 1)) * Math.min(distance * 0.1, maxEyeOffset) * 0.5;
+      
+      // We limit how far the inner face plates move to create a 3D parallax effect
+      const maxParallax = 8;
+      const pX = (dx / (distance || 1)) * Math.min(distance * 0.05, maxParallax);
+      const pY = (dy / (distance || 1)) * Math.min(distance * 0.05, maxParallax);
 
-      // Head Glitch Effect on Click
-      let glitchX = 0;
+      // Glitch Effect on Click
+      let gX = 0;
+      let gY = 0;
       if (clickTimer > 0) {
-        glitchX = (Math.random() - 0.5) * 10;
+        gX = (Math.random() - 0.5) * 8;
+        gY = (Math.random() - 0.5) * 8;
         clickTimer--;
         if (clickTimer === 0) isClicked = false;
       }
 
-      // Draw Crosshairs
-      ctx.strokeStyle = '#cbd5e1';
-      ctx.beginPath();
-      ctx.arc(centerX, centerY + yOffset, 90, 0, Math.PI * 2);
-      ctx.stroke();
-      
-      const headWidth = 140;
-      const headHeight = 100;
-      const headX = centerX - headWidth / 2 + glitchX;
-      const headY = centerY - headHeight / 2 + yOffset;
+      ctx.save();
+      ctx.translate(centerX + gX, centerY + yOffset + gY);
 
-      // Neck
-      ctx.fillStyle = '#334155'; // dark slate
-      ctx.fillRect(centerX - 20 + glitchX, headY + headHeight, 40, 30);
-      for(let i=0; i<3; i++) {
-        ctx.strokeStyle = '#0f172a';
-        ctx.beginPath();
-        ctx.moveTo(centerX - 20 + glitchX, headY + headHeight + 10 + (i*8));
-        ctx.lineTo(centerX + 20 + glitchX, headY + headHeight + 10 + (i*8));
-        ctx.stroke();
-      }
-
-      // Main Head
+      // Style for the wireframe/plating
+      ctx.strokeStyle = '#0f172a'; // Slate-900 (Brutalist Dark)
+      ctx.lineWidth = 1.5;
+      ctx.lineJoin = 'round';
       ctx.fillStyle = 'white';
-      ctx.strokeStyle = '#0f172a'; // slate-900
-      ctx.lineWidth = 3;
-      ctx.fillRect(headX, headY, headWidth, headHeight);
-      ctx.strokeRect(headX, headY, headWidth, headHeight);
 
-      // Cybernetic panel lines
+      // --- OUTER HEAD SILHOUETTE ---
       ctx.beginPath();
-      ctx.moveTo(headX, headY + 20);
-      ctx.lineTo(headX + 20, headY);
+      ctx.moveTo(0, 75); // Chin
+      ctx.lineTo(25, 60); // Jaw Right
+      ctx.lineTo(40, 25); // Cheek Right
+      ctx.lineTo(38, -15); // Temple Right
+      ctx.lineTo(25, -60); // Forehead Right
+      ctx.lineTo(0, -75); // Crown
+      ctx.lineTo(-25, -60); // Forehead Left
+      ctx.lineTo(-38, -15); // Temple Left
+      ctx.lineTo(-40, 25); // Cheek Left
+      ctx.lineTo(-25, 60); // Jaw Left
+      ctx.closePath();
+      ctx.fill();
+      ctx.stroke();
+
+      // --- INNER CYBERNETIC PLATING (Affected by parallax) ---
+      // We shift the context slightly to simulate looking around
+      ctx.translate(pX, pY);
+
+      // Forehead Plate
+      ctx.beginPath();
+      ctx.moveTo(-20, -55);
+      ctx.lineTo(20, -55);
+      ctx.lineTo(15, -30);
+      ctx.lineTo(-15, -30);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Nose Bridge
+      ctx.beginPath();
+      ctx.moveTo(-10, -30);
+      ctx.lineTo(10, -30);
+      ctx.lineTo(12, 10);
+      ctx.lineTo(0, 18);
+      ctx.lineTo(-12, 10);
+      ctx.closePath();
       ctx.stroke();
       
-      // Ears / Sensors
-      const earWidth = 18;
-      const earHeight = 45;
-      ctx.fillStyle = '#e2e8f0';
-      ctx.fillRect(headX - earWidth, headY + 25, earWidth, earHeight);
-      ctx.strokeRect(headX - earWidth, headY + 25, earWidth, earHeight);
-      ctx.fillRect(headX + headWidth, headY + 25, earWidth, earHeight);
-      ctx.strokeRect(headX + headWidth, headY + 25, earWidth, earHeight);
+      // Nose Detail
+      ctx.beginPath();
+      ctx.moveTo(0, -10);
+      ctx.lineTo(0, 18);
+      ctx.stroke();
 
-      // Visor Screen
-      ctx.fillStyle = isClicked ? '#b91c1c' : '#0f172a'; // Turns red on click
-      const visorWidth = 110;
-      const visorHeight = 40;
-      const visorX = centerX - visorWidth / 2 + glitchX;
-      const visorY = headY + 20;
-      ctx.fillRect(visorX, visorY, visorWidth, visorHeight);
-      
-      // Scanning line inside visor
-      if (!isClicked) {
-         const scanY = Math.sin(t * 0.1) * (visorHeight/2 - 2);
-         ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+      // Cheek Bones Left
+      ctx.beginPath();
+      ctx.moveTo(-15, 10);
+      ctx.lineTo(-30, 25);
+      ctx.lineTo(-20, 45);
+      ctx.lineTo(-10, 35);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Cheek Bones Right
+      ctx.beginPath();
+      ctx.moveTo(15, 10);
+      ctx.lineTo(30, 25);
+      ctx.lineTo(20, 45);
+      ctx.lineTo(10, 35);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Jaw / Mouth Plate
+      ctx.beginPath();
+      ctx.moveTo(-10, 40);
+      ctx.lineTo(10, 40);
+      ctx.lineTo(15, 55);
+      ctx.lineTo(0, 65);
+      ctx.lineTo(-15, 55);
+      ctx.closePath();
+      ctx.stroke();
+
+      // Mouth horizontal lines (synthetic vocal cords)
+      for(let i=0; i<3; i++) {
          ctx.beginPath();
-         ctx.moveTo(visorX, visorY + visorHeight/2 + scanY);
-         ctx.lineTo(visorX + visorWidth, visorY + visorHeight/2 + scanY);
+         ctx.moveTo(-8 + i, 45 + i*5);
+         ctx.lineTo(8 - i, 45 + i*5);
          ctx.stroke();
       }
 
-      // Eyes (Follow Mouse)
-      ctx.fillStyle = isClicked ? 'white' : '#38bdf8'; // Sky blue normally, white when alert
-      
-      // Left Eye
-      ctx.fillRect(centerX - 30 + eyeOffsetX + glitchX, visorY + 12 + eyeOffsetY, 16, 16);
-      // Right Eye
-      ctx.fillRect(centerX + 14 + eyeOffsetX + glitchX, visorY + 12 + eyeOffsetY, 16, 16);
+      // --- EYES (Tracking further) ---
+      // We add even more parallax to the glowing pupils for realism
+      const eyePx = pX * 1.5;
+      const eyePy = pY * 1.5;
 
-      // Core / Voice module
-      const mouthY = headY + 75;
-      ctx.strokeStyle = '#0f172a';
-      ctx.lineWidth = 2;
-      const numWaves = isClicked ? 7 : 4;
-      const waveSpread = isClicked ? 8 : 10;
-      for (let i = -numWaves; i <= numWaves; i++) {
-        const activeWave = isClicked ? t * 0.5 : t * 0.15;
-        const waveHeight = Math.abs(Math.sin(activeWave + i)) * (isClicked ? 15 : 8) + 2;
-        ctx.beginPath();
-        ctx.moveTo(centerX + i * waveSpread + glitchX, mouthY - waveHeight/2);
-        ctx.lineTo(centerX + i * waveSpread + glitchX, mouthY + waveHeight/2);
-        ctx.stroke();
-      }
+      // Eye Sockets
+      ctx.fillStyle = '#0f172a'; // Black sockets
+      ctx.beginPath();
+      ctx.moveTo(-28, -25);
+      ctx.lineTo(-12, -25);
+      ctx.lineTo(-8, -10);
+      ctx.lineTo(-24, -10);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.beginPath();
+      ctx.moveTo(28, -25);
+      ctx.lineTo(12, -25);
+      ctx.lineTo(8, -10);
+      ctx.lineTo(24, -10);
+      ctx.closePath();
+      ctx.fill();
+
+      // Synthetic Pupils (Glow blue or red if clicked)
+      ctx.fillStyle = isClicked ? '#ef4444' : '#38bdf8'; // Red alert vs Sky blue
+      
+      // Left Pupil
+      ctx.beginPath();
+      ctx.arc(-18 + eyePx, -17 + eyePy, 3, 0, Math.PI * 2);
+      ctx.fill();
+      
+      // Right Pupil
+      ctx.beginPath();
+      ctx.arc(18 + eyePx, -17 + eyePy, 3, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.restore();
     };
 
     const animate = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       drawGrid();
-      drawDataStrings();
-      drawRobot(time);
+      drawHumanoid(time);
       
       time++;
       animationFrameId = requestAnimationFrame(animate);
@@ -210,11 +235,8 @@ export default function AiRobotAnimation() {
       <div className="absolute inset-0 bg-slate-100 rounded-full blur-3xl opacity-0 group-hover:opacity-50 transition-opacity duration-1000 -z-10"></div>
       <canvas 
         ref={canvasRef} 
-        className="active:scale-95 transition-transform duration-75"
+        className="active:scale-[0.98] transition-transform duration-75"
       />
-      <div className="text-[10px] font-mono text-slate-400 mt-2 tracking-widest uppercase">
-        Click to initiate system scan
-      </div>
     </div>
   );
 }
