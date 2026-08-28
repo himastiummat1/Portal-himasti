@@ -224,7 +224,7 @@ export default async function AdminDashboard() {
       {/* Header Section (Vercel Style) */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-end gap-4 border-b border-slate-200/60 pb-6">
         <div className="flex items-center gap-6">
-          <div className="hidden sm:block">
+          <div className="block">
             <BrutalistGrid />
           </div>
           <div>

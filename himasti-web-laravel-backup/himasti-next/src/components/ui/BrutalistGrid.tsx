@@ -1,15 +1,6 @@
-"use client";
-
-import { useEffect, useState } from "react";
+// Server or Client component, pure CSS animation
 
 export default function BrutalistGrid() {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
 
   return (
     <div className="grid grid-cols-4 gap-2 w-fit">
