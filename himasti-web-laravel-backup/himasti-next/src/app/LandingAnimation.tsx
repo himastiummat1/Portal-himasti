@@ -193,7 +193,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
         {/* Right AI Terminal (Unchanged functionally) */}
         <div className="w-full max-w-2xl relative z-40">
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[500px]">
+          <div className="bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[400px] sm:h-[500px] w-full">
              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
@@ -231,14 +231,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                    {t.demoLimit}
                  </div>
                ) : (
-                 <form onSubmit={handleSend} className="flex gap-2 w-full relative z-50">
+                 <form onSubmit={handleSend} className="flex items-center gap-2 w-full relative z-50">
                    <input
                      type="text"
                      value={input}
                      onChange={(e) => setInput(e.target.value)}
                      disabled={isLoading}
                      placeholder={t.aiPrompt}
-                     className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50 relative z-50"
+                     className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 h-12 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50 relative z-50"
                      dir={isRTL ? 'rtl' : 'ltr'}
                    />
                    <button 
@@ -251,7 +251,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                          handleSend(e);
                        }
                      }}
-                     className="p-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation relative z-50"
+                     className="w-12 h-12 bg-gray-900 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation relative z-50"
                    >
                      <Send className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
