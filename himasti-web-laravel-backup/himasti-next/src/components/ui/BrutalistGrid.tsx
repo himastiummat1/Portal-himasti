@@ -25,7 +25,7 @@ export default function BrutalistGrid() {
             key={i}
             className="w-10 h-10 bg-white border-2 border-gray-900 rounded-sm animate-pop"
             style={{
-              animationDelay: \`\${delay}s\`
+              animationDelay: `${delay}s`
             }}
           />
         );
