@@ -7,9 +7,12 @@ export default function MerchClient({ records }: { records: any[] }) {
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    const result = await addMerchandise(new FormData(e.target));
-    if (result.success) setIsOpen(false);
-    else alert(result.error);
+    try {
+      await addMerchandise(new FormData(e.target));
+      setIsOpen(false);
+    } catch (err: any) {
+      alert("Gagal menambahkan merchandise.");
+    }
   }
 
   return (
