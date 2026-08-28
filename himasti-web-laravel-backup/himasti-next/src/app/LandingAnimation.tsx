@@ -231,24 +231,22 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                    {t.demoLimit}
                  </div>
                ) : (
-                 <form onSubmit={handleSend} className="relative flex items-center">
+                 <form onSubmit={handleSend} className="flex gap-2">
                    <input
                      type="text"
                      value={input}
                      onChange={(e) => setInput(e.target.value)}
                      disabled={isLoading}
                      placeholder={t.aiPrompt}
-                     style={{ paddingInlineStart: '1rem', paddingInlineEnd: '3rem' }}
-                     className="w-full bg-gray-50 border border-gray-200 rounded-xl py-3 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50"
+                     className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 py-3 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50"
                      dir={isRTL ? 'rtl' : 'ltr'}
                    />
                    <button 
                      type="submit" 
                      disabled={!input.trim() || isLoading}
-                     style={{ [isRTL ? 'left' : 'right']: '0.5rem' }}
-                     className="absolute p-2.5 sm:p-1.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors z-20"
+                     className="p-3 bg-gray-900 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation"
                    >
-                     <Send className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
+                     <Send className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
                  </form>
                )}
