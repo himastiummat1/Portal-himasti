@@ -1,17 +1,17 @@
-
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
 import { Bot, Send, Terminal, Loader2, Globe, Building2, Users } from 'lucide-react';
 import Link from 'next/link';
 import CompetitionMarquee from './CompetitionMarquee';
 import BrutalistCore from '@/components/ui/BrutalistCore';
+import AiRobotAnimation from '@/components/ui/AiRobotAnimation';
 
 type Lang = 'id' | 'en' | 'ar';
 
 const translations = {
   id: {
     login: "Masuk",
-    heroTitle: "HIMASTI 2.0",
+    heroTitle: "HIMASTI",
     heroDesc: "Portal Ekosistem Digital HIMASTI adalah platform terdedikasi Anda untuk berkolaborasi. Orkestrasikan berbagai divisi dan program kerja secara paralel dalam satu ruang independen.",
     startBtn: "Mulai Akses",
     aiPrompt: "Tanyakan sesuatu ke AI HIMASTI...",
@@ -34,7 +34,7 @@ const translations = {
   },
   en: {
     login: "Login",
-    heroTitle: "HIMASTI 2.0",
+    heroTitle: "HIMASTI",
     heroDesc: "The HIMASTI Digital Ecosystem Portal is your dedicated platform for collaboration. Orchestrate various divisions and work programs in parallel within an independent space.",
     startBtn: "Get Started",
     aiPrompt: "Ask the HIMASTI AI something...",
@@ -57,7 +57,7 @@ const translations = {
   },
   ar: {
     login: "تسجيل الدخول",
-    heroTitle: "هيمساتي ٢.٠",
+    heroTitle: "هيمساتي",
     heroDesc: "بوابة النظام البيئي الرقمي لهيمساتي هي منصتك المخصصة للتعاون. نظّم مختلف الأقسام وبرامج العمل بشكل متوازٍ في مساحة مستقلة.",
     startBtn: "ابدأ الآن",
     aiPrompt: "اسأل ذكاء هيمساتي الاصطناعي...",
@@ -198,8 +198,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         <BrutalistCore />
         { /* Left Typography */ }
         <div className="flex flex-col items-center justify-center z-10 w-full">
-          
-          <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-semibold leading-[1.1] tracking-tight text-slate-800 mb-8">
+          <AiRobotAnimation />
+          <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-semibold leading-[1.1] tracking-tight text-slate-800 mb-8 -mt-6">
             {t.heroTitle}
           </h1>
           <p className="text-lg md:text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed mx-auto">

@@ -103,13 +103,15 @@ export async function POST(req: Request) {
           return NextResponse.json({ ok: true });
         }
 
+        const firstName = update.message.from?.first_name || "Mahasiswa";
+
         const groq = new Groq({ apiKey: process.env.API_KEY_GROQ || "" });
         if (!process.env.API_KEY_GROQ) return NextResponse.json({ ok: true });
 
         try {
           const chatCompletion = await groq.chat.completions.create({
             messages: [
-              { role: "system", content: "Kamu adalah AI Asisten resmi HIMASTI UMMAT. Jawab sangat ringkas." },
+              { role: "system", content: `Kamu adalah AI Asisten resmi HIMASTI UMMAT yang gaul, profesional, tapi santai. Kamu sedang berbicara dengan ${firstName}. Sapa dia di awal jika cocok. Jawab dengan sangat ringkas.` },
               { role: "user", content: prompt }
             ],
             model: "qwen/qwen3.8-27b",
