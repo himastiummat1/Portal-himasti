@@ -174,9 +174,11 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
       {/* Hero Section */}
       <section className="relative w-full min-h-screen flex flex-col items-center justify-center text-center px-6 pt-32 pb-20 max-w-5xl mx-auto gap-12">
-        {/* Left Typography */}
+        
+        <BrutalistCore />
+        { /* Left Typography */ }
         <div className="flex flex-col items-center justify-center z-10 w-full">
-          <BrutalistCore />
+          
           <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-medium leading-[1.1] tracking-tight text-black mb-6">
             {t.heroTitle}
           </h1>
@@ -244,7 +246,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                      type="submit" 
                      disabled={!input.trim() || isLoading}
                      style={{ [isRTL ? 'left' : 'right']: '0.5rem' }}
-                     className="absolute p-1.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                     className="absolute p-2.5 sm:p-1.5 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors z-20"
                    >
                      <Send className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
