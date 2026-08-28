@@ -200,21 +200,18 @@ export default function AiRobotAnimation() {
       // 3. Draw the Central HIMASTI text
       ctx.save();
       ctx.translate(centerX, centerY);
+      const fontSize = 56 * (1 + (explosionRadius * 0.2));
       
-      const fontSize = 48 * (1 + (explosionRadius * 0.2));
-      
-      // Text rendering
-      ctx.shadowColor = 'rgba(255, 255, 255, 0.9)';
-      ctx.shadowBlur = 10;
-      ctx.fillStyle = '#0f172a';
+      // We use a light slate color so the dark front-nodes clearly pass OVER it.
+      ctx.fillStyle = '#cbd5e1'; // slate-300
       ctx.font = `900 ${fontSize}px sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.letterSpacing = "4px";
+      ctx.letterSpacing = "6px";
       ctx.fillText("HIMASTI", 0, 2);
-      ctx.restore(); // Restore scale/translation
+      ctx.restore(); 
 
-      // 4. Draw FRONT nodes and lines (Will perfectly overlap the text!)
+      // 4. Draw FRONT nodes and lines (Will perfectly overlap the light text!)
       drawLines(frontNodes);
       drawNodeDots(frontNodes);
 
