@@ -18,14 +18,14 @@ export default function BrutalistCore() {
       `}</style>
 
       {/* Ripple Rings */}
-      <div className="absolute w-[300px] h-[300px] border border-gray-300 rounded-full animate-ripple" style={{ animationDelay: '0s' }} />
-      <div className="absolute w-[300px] h-[300px] border border-gray-300 rounded-full animate-ripple" style={{ animationDelay: '2s' }} />
-      <div className="absolute w-[300px] h-[300px] border border-gray-300 rounded-full animate-ripple" style={{ animationDelay: '4s' }} />
-      <div className="absolute w-[300px] h-[300px] border border-gray-300 rounded-full animate-ripple" style={{ animationDelay: '6s' }} />
+      <div className="absolute w-[300px] h-[300px] border border-slate-300 rounded-full animate-ripple" style={{ animationDelay: '0s' }} />
+      <div className="absolute w-[300px] h-[300px] border border-slate-300 rounded-full animate-ripple" style={{ animationDelay: '2s' }} />
+      <div className="absolute w-[300px] h-[300px] border border-slate-300 rounded-full animate-ripple" style={{ animationDelay: '4s' }} />
+      <div className="absolute w-[300px] h-[300px] border border-slate-300 rounded-full animate-ripple" style={{ animationDelay: '6s' }} />
       
       {/* Static Center Core */}
-      <div className="absolute w-[120px] h-[120px] bg-white border border-gray-200 rounded-full shadow-sm flex items-center justify-center z-10">
-         <div className="w-[8px] h-[8px] bg-gray-900 rounded-full" />
+      <div className="absolute w-[120px] h-[120px] bg-white border border-slate-200 rounded-full shadow-sm flex items-center justify-center z-10">
+         <div className="w-[8px] h-[8px] bg-slate-900 rounded-full" />
       </div>
     </div>
   );

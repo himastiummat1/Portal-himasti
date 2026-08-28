@@ -151,40 +151,40 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   };
 
   return (
-    <div className={`w-full min-h-screen bg-white text-gray-900 font-sans selection:bg-gray-200 selection:text-gray-900 ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`w-full min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-slate-200 selection:text-slate-900 ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       
       {/* Navbar Minimalist */}
       <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
         <div className="flex items-center gap-2">
           <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 object-contain rounded-lg" />
-          <span className="text-black font-bold text-xl tracking-tighter">HIMASTI</span>
+          <span className="text-slate-900 font-bold text-xl tracking-tighter">HIMASTI</span>
         </div>
         <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 bg-gray-50 border border-gray-200 rounded-lg p-1 text-xs">
-            <button onClick={() => setLang('id')} className={`px-2 py-1 rounded ${lang === 'id' ? 'bg-white shadow-sm font-bold' : 'text-gray-500'}`}>ID</button>
-            <button onClick={() => setLang('en')} className={`px-2 py-1 rounded ${lang === 'en' ? 'bg-white shadow-sm font-bold' : 'text-gray-500'}`}>EN</button>
-            <button onClick={() => setLang('ar')} className={`px-2 py-1 rounded ${lang === 'ar' ? 'bg-white shadow-sm font-bold' : 'text-gray-500'}`}>عربي</button>
+          <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 text-xs">
+            <button onClick={() => setLang('id')} className={`px-2 py-1 rounded ${lang === 'id' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>ID</button>
+            <button onClick={() => setLang('en')} className={`px-2 py-1 rounded ${lang === 'en' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>EN</button>
+            <button onClick={() => setLang('ar')} className={`px-2 py-1 rounded ${lang === 'ar' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>عربي</button>
           </div>
-          <Link href="/login" className="px-4 py-2 bg-black text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors">
+          <Link href="/login" className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
             {t.login}
           </Link>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-32 pb-20 max-w-5xl mx-auto gap-8 md:gap-12">
+      <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-40 pb-28 max-w-5xl mx-auto gap-8 md:gap-12">
         
         <BrutalistCore />
         { /* Left Typography */ }
         <div className="flex flex-col items-center justify-center z-10 w-full">
           
-          <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-medium leading-[1.1] tracking-tight text-black mb-6">
+          <h1 className="text-[clamp(3rem,8vw,5.5rem)] font-semibold leading-[1.1] tracking-tight text-slate-800 mb-8">
             {t.heroTitle}
           </h1>
-          <p className="text-lg md:text-xl text-gray-500 max-w-2xl mb-10 leading-relaxed mx-auto">
+          <p className="text-lg md:text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed mx-auto">
             {t.heroDesc}
           </p>
-          <Link href="/login" className="px-8 py-4 bg-black text-white rounded-full font-medium hover:bg-gray-800 transition-colors flex items-center gap-2 group">
+          <Link href="/login" className="px-8 py-4 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors flex items-center gap-2 group">
             {t.startBtn}
             <span className="group-hover:translate-x-1 transition-transform">→</span>
           </Link>
@@ -192,39 +192,39 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
         {/* Right AI Terminal (Unchanged functionally) */}
         <div className="w-full max-w-2xl relative z-40">
-          <div className="bg-white border border-gray-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[400px] sm:h-[500px] w-full">
-             <div className="bg-gray-50 px-4 py-3 border-b border-gray-200 flex items-center justify-between shrink-0">
+          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[400px] sm:h-[500px] w-full">
+             <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-2">
                   <div className="flex gap-1.5">
                     <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-gray-300"></div>
+                    <div className="w-3 h-3 rounded-full bg-slate-300"></div>
                     <div className="w-3 h-3 rounded-full bg-green-400"></div>
                   </div>
-                  <div className={`${isRTL ? 'mr-4' : 'ml-4'} text-xs font-mono text-gray-500 flex items-center gap-2`}>
+                  <div className={`${isRTL ? 'mr-4' : 'ml-4'} text-xs font-mono text-slate-500 flex items-center gap-2`}>
                     <Terminal className="w-3 h-3"/> {lang === "en" ? "HIMASTI_AI_CORE_v2.0" : lang === "ar" ? "نظام_هيمساتي_للذكاء_الاصطناعي" : "HIMASTI_AI_CORE_v2.0"}
                   </div>
                 </div>
-                <Bot className="w-5 h-5 text-gray-900" />
+                <Bot className="w-5 h-5 text-slate-900" />
              </div>
-             <div className="flex-1 p-4 overflow-y-auto bg-gray-50/50 space-y-4">
+             <div className="flex-1 p-4 overflow-y-auto bg-slate-50/50 space-y-4">
                 {messages.map((msg, idx) => (
                   <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user' ? 'bg-black text-white rounded-tr-sm' : 'bg-white border border-gray-200 text-gray-800 rounded-tl-sm shadow-sm'}`}>
+                    <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user' ? 'bg-slate-900 text-white rounded-tr-sm' : 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm shadow-sm'}`}>
                       {msg.text}
                     </div>
                   </div>
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-gray-200 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-sm flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-gray-900" />
-                      <span className="text-xs text-gray-500">{lang === "en" ? "AI is thinking..." : lang === "ar" ? "الذكاء الاصطناعي يفكر..." : "AI sedang berpikir..."}</span>
+                    <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-sm flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin text-slate-900" />
+                      <span className="text-xs text-slate-500">{lang === "en" ? "AI is thinking..." : lang === "ar" ? "الذكاء الاصطناعي يفكر..." : "AI sedang berpikir..."}</span>
                     </div>
                   </div>
                 )}
                 <div ref={chatEndRef} />
              </div>
-             <div className="p-3 bg-white border-t border-gray-200 shrink-0">
+             <div className="p-3 bg-white border-t border-slate-200 shrink-0">
                {chatCount >= 5 ? (
                  <div className="text-center p-2 text-xs font-medium text-red-500 bg-red-50 rounded-lg">
                    {t.demoLimit}
@@ -237,7 +237,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                      onChange={(e) => setInput(e.target.value)}
                      disabled={isLoading}
                      placeholder={t.aiPrompt}
-                     className="flex-1 bg-gray-50 border border-gray-200 rounded-xl px-4 h-12 text-sm outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 transition-all disabled:opacity-50 relative z-50"
+                     className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 h-12 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all disabled:opacity-50 relative z-50"
                      dir={isRTL ? 'rtl' : 'ltr'}
                    />
                    <button 
@@ -250,13 +250,13 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                          handleSend(e);
                        }
                      }}
-                     className="w-12 h-12 bg-gray-900 text-white rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation relative z-50"
+                     className="w-12 h-12 bg-slate-900 text-white rounded-xl hover:bg-slate-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation relative z-50"
                    >
                      <Send className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
                  </form>
                )}
-               <div className="text-center mt-2 text-[10px] text-gray-400 font-medium">{t.demoLeft}: {5 - chatCount}/5</div>
+               <div className="text-center mt-2 text-[10px] text-slate-400 font-medium">{t.demoLeft}: {5 - chatCount}/5</div>
              </div>
           </div>
         </div>
@@ -266,28 +266,28 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       <section className="w-full py-24 px-6 bg-slate-50 border-y border-slate-100">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-center">
           <div className="flex-1">
-            <h2 className="text-3xl font-medium tracking-tight text-black mb-4">{t.histTitle}</h2>
-            <p className="text-gray-500 leading-relaxed text-lg">
+            <h2 className="text-3xl font-medium tracking-tight text-slate-900 mb-4">{t.histTitle}</h2>
+            <p className="text-slate-500 leading-relaxed text-lg">
               {t.histDesc}
             </p>
           </div>
           <div className="grid grid-cols-2 gap-4 flex-1">
-             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
-                <Building2 className="w-8 h-8 mx-auto text-gray-900 mb-2" />
-                <div className="text-2xl font-bold text-black">2022</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">Tahun Berdiri</div>
+             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+                <Building2 className="w-8 h-8 mx-auto text-slate-900 mb-2" />
+                <div className="text-2xl font-bold text-slate-900">2022</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wider">Tahun Berdiri</div>
              </div>
-             <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm text-center">
-                <Users className="w-8 h-8 mx-auto text-gray-900 mb-2" />
-                <div className="text-2xl font-bold text-black">8</div>
-                <div className="text-xs text-gray-500 uppercase tracking-wider">Pencetus</div>
+             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+                <Users className="w-8 h-8 mx-auto text-slate-900 mb-2" />
+                <div className="text-2xl font-bold text-slate-900">8</div>
+                <div className="text-xs text-slate-500 uppercase tracking-wider">Pencetus</div>
              </div>
           </div>
         </div>
       </section>
 
       {/* Marquee */}
-      <div className="border-b border-gray-100 bg-white py-4">
+      <div className="border-b border-slate-100 bg-white py-4">
         <CompetitionMarquee competitions={competitions || []} />
       </div>
 
@@ -295,22 +295,22 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       <section id="divisions" className="w-full py-24 px-6 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-medium tracking-tight mb-4 text-black">{t.divTitle}</h2>
-            <p className="text-gray-500 text-lg">{t.divDesc}</p>
+            <h2 className="text-3xl font-medium tracking-tight mb-4 text-slate-900">{t.divTitle}</h2>
+            <p className="text-slate-500 text-lg">{t.divDesc}</p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
             {t.divs.map((divisi, i) => (
-              <div key={i} className="group flex flex-col items-start bg-white border border-gray-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 w-full text-left">
+              <div key={i} className="group flex flex-col items-start bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 w-full text-left">
                 <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 bg-gray-50 rounded-xl border border-gray-100 group-hover:bg-gray-50 transition-colors">
-                    <svg className="w-5 h-5 text-gray-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                  <div className="flex items-center justify-center w-12 h-12 bg-slate-50 rounded-xl border border-slate-100 group-hover:bg-slate-50 transition-colors">
+                    <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
                       <path strokeLinecap="round" strokeLinejoin="round" d={divIcons[i]} />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 leading-tight">{divisi.name}</h3>
+                  <h3 className="text-lg font-medium text-slate-900 leading-tight">{divisi.name}</h3>
                 </div>
-                <p className="text-gray-500 leading-relaxed text-sm">{divisi.desc}</p>
+                <p className="text-slate-500 leading-relaxed text-sm">{divisi.desc}</p>
               </div>
             ))}
           </div>
@@ -318,12 +318,12 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       </section>
 
       {/* Footer */}
-      <footer className="w-full py-12 px-6 bg-gray-50 border-t border-gray-100">
+      <footer className="w-full py-12 px-6 bg-slate-50 border-t border-slate-100">
         <div className="max-w-6xl mx-auto flex flex-col items-center justify-center gap-4 text-center">
-          <div className="font-medium tracking-tight text-gray-900">
+          <div className="font-medium tracking-tight text-slate-900">
             HIMASTI Portal
           </div>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-slate-400">
             &copy; {new Date().getFullYear()} HIMASTI Digital Ecosystem. All rights reserved.
           </p>
         </div>
