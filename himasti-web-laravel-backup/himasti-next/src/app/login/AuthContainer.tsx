@@ -57,7 +57,7 @@ export default function AuthContainer({ dict }: { dict: any }) {
       x: 0,
       opacity: 1,
       filter: "blur(0px)",
-      transition: { duration: 0.4, type: "spring", bounce: 0.2 }
+      transition: { duration: 0.4, type: "spring" as const, bounce: 0.2 }
     },
     exit: (direction: number) => ({
       x: direction < 0 ? 50 : -50,

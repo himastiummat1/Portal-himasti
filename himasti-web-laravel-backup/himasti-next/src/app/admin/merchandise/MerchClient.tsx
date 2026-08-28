@@ -1,13 +1,13 @@
 "use client";
 import { useState } from "react";
-import { addMerch, deleteMerch } from "./actions";
+import { addMerchandise, deleteMerchandise } from "./actions";
 
 export default function MerchClient({ records }: { records: any[] }) {
   const [isOpen, setIsOpen] = useState(false);
 
   async function handleSubmit(e: any) {
     e.preventDefault();
-    const result = await addMerch(new FormData(e.target));
+    const result = await addMerchandise(new FormData(e.target));
     if (result.success) setIsOpen(false);
     else alert(result.error);
   }
@@ -26,7 +26,7 @@ export default function MerchClient({ records }: { records: any[] }) {
               <div className="p-4">
                 <h3 className="font-bold text-lg ">{r.title}</h3>
                 <p className="text-sm text-gray-500 mb-4">{r.description}</p>
-                <button onClick={() => deleteMerch(r.id)} className="text-red-500 text-xs font-semibold w-full text-right border-t pt-3 mt-3">Hapus Produk</button>
+                <button onClick={() => deleteMerchandise(r.id)} className="text-red-500 text-xs font-semibold w-full text-right border-t pt-3 mt-3">Hapus Produk</button>
               </div>
             </div>
           ))}

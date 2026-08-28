@@ -10,7 +10,7 @@ export default async function OnboardingPage() {
   }
 
   const kader = await prisma.dataKader.findUnique({
-    where: { user_id: parseInt(session.user.id) }
+    where: { user_id: parseInt(session.user.id || "0") }
   });
 
   if (!kader?.nim?.startsWith("GGL-")) {
@@ -30,7 +30,7 @@ export default async function OnboardingPage() {
           </p>
         </div>
         <OnboardingForm 
-           userId={session.user.id} 
+           userId={session.user.id || ""} 
            defaultName={session.user.name || ""} 
            defaultEmail={session.user.email || ""} 
         />
