@@ -171,7 +171,7 @@ export default function KatalogKaryaClient({ records, isExecutive, userName }: {
                   <input type="text" name="title" required className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="Contoh: SIakad v2.0" />
                 </div>
                 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1">Nama Pembuat</label>
                     <input type="text" name="student_name" defaultValue={userName} required className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" />
@@ -192,7 +192,7 @@ export default function KatalogKaryaClient({ records, isExecutive, userName }: {
                   <textarea name="description" rows={3} className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="Jelaskan fitur utama karya ini..."></textarea>
                 </div>
 
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-semibold text-slate-700 mb-1">Link Demo (Opsional)</label>
                     <input type="url" name="demo_link" className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="https://..." />

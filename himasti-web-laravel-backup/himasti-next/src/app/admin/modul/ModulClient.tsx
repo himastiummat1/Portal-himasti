@@ -100,7 +100,7 @@ export default function ModulClient({ moduls, isSuperAdmin }: { moduls: any[], i
               <button onClick={() => setIsUploadOpen(false)} className="text-gray-400 hover:text-gray-600"><X className="w-5 h-5"/></button>
             </div>
             <form onSubmit={handleUpload} className="p-6 space-y-4 max-h-[80vh] overflow-y-auto">
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Judul *</label>
                   <input required type="text" name="title" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="Contoh: Koneksi Database PHP" />

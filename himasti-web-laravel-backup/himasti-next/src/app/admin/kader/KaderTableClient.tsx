@@ -119,13 +119,13 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
             <tbody className="divide-y divide-gray-100">
               {filtered.map((k) => (
                 <tr key={k.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-semibold text-gray-900">{k.nama}</div>
                     <div className="text-gray-500 text-xs mt-0.5">{k.email}</div>
                   </td>
                   <td className="px-6 py-4 font-mono">{k.nim}</td>
-                  <td className="px-6 py-4">{k.angkatan}</td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">{k.angkatan}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-900 border border-gray-100">
                       {k.role.replace(/_/g, ' ').toUpperCase()}
                     </span>

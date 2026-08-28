@@ -278,7 +278,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
 
                 <form onSubmit={handleAddSubmit} id="addForm">
                   <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 ">Tipe</label>
                         <select name="tipe" className="mt-1 p-2 w-full border border-gray-300    rounded-md">
@@ -332,7 +332,7 @@ export default function KeuanganClient({ records, isExecutive }: { records: Keua
 
                 <form onSubmit={handleEditSubmit} id="editForm">
                   <div className="space-y-4">
-                    <div className="grid grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                       <div>
                         <label className="block text-sm font-medium text-gray-700 ">Tipe</label>
                         <select name="tipe" defaultValue={editingRecord.tipe} className="mt-1 p-2 w-full border border-gray-300    rounded-md">

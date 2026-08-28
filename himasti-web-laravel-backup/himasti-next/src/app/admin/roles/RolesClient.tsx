@@ -72,7 +72,7 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                 
                 return (
                   <tr key={u.id} className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500 font-bold shrink-0">
                           {u.name.charAt(0).toUpperCase()}
@@ -93,13 +93,13 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                         <span className="text-gray-400 italic">Belum melengkapi data</span>
                       )}
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border \${currentRoleName.includes('admin') || currentRoleName.includes('ketua') ? 'bg-red-50 text-red-600 border-red-100' : currentRoleName.includes('kabid') ? 'bg-gray-50 text-gray-900 border-gray-100' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
                         {(currentRoleName.includes('admin') || currentRoleName.includes('ketua') || currentRoleName.includes('kabid')) && <Shield className="w-3 h-3" />}
                         {currentRoleName.replace(/_/g, ' ')}
                       </span>
                     </td>
-                    <td className="px-6 py-4">
+                    <td className="px-6 py-4 whitespace-nowrap">
                       <select 
                         disabled={isPending || u.roles.some((r: any) => r.role.name === "super_admin")}
                         value={currentRoleId || ""}

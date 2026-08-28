@@ -109,7 +109,7 @@ export default function LombaClient({ records }: { records: any[] }) {
                 <label className="block text-sm font-medium text-gray-700 mb-1">Nama Kompetisi</label>
                 <input type="text" name="title" required className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Tipe Event</label>
                   <select name="type" className="w-full p-2.5 border border-gray-200 rounded-lg text-sm focus:ring-2 focus:ring-gray-900/20 outline-none">

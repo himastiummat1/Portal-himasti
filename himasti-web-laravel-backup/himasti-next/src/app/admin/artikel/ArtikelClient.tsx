@@ -50,11 +50,11 @@ export default function ArtikelClient({ records }: { records: ArtikelRecord[] })
             <tbody className="divide-y divide-gray-200 ">
               {records.map(record => (
                 <tr key={record.id}>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium text-gray-900  mb-1">{record.title}</div>
                     <div className="text-sm text-gray-500 line-clamp-2 max-w-md">{record.description}</div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {record.status === 'Draft' ? (
                       <span className="px-2 py-1 text-xs bg-gray-100 text-gray-800 rounded-full">Draft</span>
                     ) : (

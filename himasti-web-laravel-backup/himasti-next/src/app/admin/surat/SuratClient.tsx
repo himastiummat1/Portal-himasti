@@ -90,7 +90,7 @@ export default function SuratClient({ surats, isExecutive }: { surats: any[], is
                 <label className="block text-sm font-medium text-gray-700 mb-1">Perihal *</label>
                 <input required type="text" name="perihal" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" placeholder="Undangan Rapat Kerja" />
               </div>
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-1">Tanggal Surat *</label>
                   <input required type="date" name="tanggal_surat" className="w-full border border-gray-200 rounded-lg p-2 text-sm focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 outline-none" />
@@ -134,17 +134,17 @@ export default function SuratClient({ surats, isExecutive }: { surats: any[], is
                 </tr>
               ) : filteredSurats.map((s) => (
                 <tr key={s.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-mono font-medium text-gray-900">{s.nomor_surat}</div>
                     <div className="text-gray-500 text-xs mt-0.5">{new Date(s.tanggal_surat).toLocaleDateString('id-ID')}</div>
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     <div className="font-medium text-gray-800 line-clamp-2">{s.perihal}</div>
                   </td>
                   <td className="px-6 py-4 text-gray-600">
                     {tab === "Masuk" ? s.pengirim : s.tujuan}
                   </td>
-                  <td className="px-6 py-4">
+                  <td className="px-6 py-4 whitespace-nowrap">
                     {s.file_path ? (
                       <a href={s.file_path} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-xs font-semibold text-gray-900 hover:text-gray-900 bg-gray-50 px-3 py-1.5 rounded-md transition-colors">
                         <FileText className="w-3 h-3" /> Buka

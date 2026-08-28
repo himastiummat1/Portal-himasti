@@ -168,7 +168,7 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                   <label className="block text-sm font-medium ">Agenda / Judul</label>
                   <input type="text" name="title" required className="mt-1 p-2 w-full border rounded-md   " />
                 </div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label className="block text-sm font-medium ">Tipe Rapat</label>
                     <select name="type" className="mt-1 p-2 w-full border rounded-md   ">
