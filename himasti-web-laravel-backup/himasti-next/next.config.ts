@@ -1,8 +1,13 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Allow mobile testing via local IP
+  allowedDevOrigins: ['10.125.145.85', 'localhost', '127.0.0.1'],
   images: {
-    domains: ["avatars.githubusercontent.com", "lh3.googleusercontent.com"],
+    remotePatterns: [
+      { protocol: "https", hostname: "avatars.githubusercontent.com" },
+      { protocol: "https", hostname: "lh3.googleusercontent.com" }
+    ],
   },
   async headers() {
     return [
