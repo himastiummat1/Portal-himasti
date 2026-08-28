@@ -102,7 +102,7 @@ export default function RegisterContainer() {
               <input name="email" type="email" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="nama@email.com" />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label className="block text-xs font-medium text-gray-500 mb-1.5">NIM</label>
                 <input name="nim" type="text" required className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:ring-1 focus:ring-gray-900 focus:border-gray-900 text-sm transition-all outline-none bg-gray-50 hover:bg-white focus:bg-white" placeholder="2024..." />

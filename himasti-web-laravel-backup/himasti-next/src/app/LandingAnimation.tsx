@@ -154,18 +154,18 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
     <div className={`w-full min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-slate-200 selection:text-slate-900 ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       
       {/* Navbar Minimalist */}
-      <nav className="absolute top-0 w-full p-6 flex justify-between items-center z-20">
+      <nav className="absolute top-0 w-full p-4 sm:p-6 flex justify-between items-center z-20">
         <div className="flex items-center gap-2">
-          <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 object-contain rounded-lg" />
-          <span className="text-slate-900 font-bold text-xl tracking-tighter">HIMASTI</span>
+          <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg shadow-sm" />
+          <span className="text-slate-900 font-bold text-lg sm:text-xl tracking-tighter">HIMASTI</span>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 text-xs">
+        <div className="flex items-center gap-2 sm:gap-4">
+          <div className="hidden sm:flex items-center gap-1 bg-slate-50 border border-slate-200 rounded-lg p-1 text-xs">
             <button onClick={() => setLang('id')} className={`px-2 py-1 rounded ${lang === 'id' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>ID</button>
             <button onClick={() => setLang('en')} className={`px-2 py-1 rounded ${lang === 'en' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>EN</button>
             <button onClick={() => setLang('ar')} className={`px-2 py-1 rounded ${lang === 'ar' ? 'bg-white shadow-sm font-bold' : 'text-slate-500'}`}>عربي</button>
           </div>
-          <Link href="/login" className="px-4 py-2 bg-slate-900 text-white text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors">
+          <Link href="/login" className="px-4 py-2 bg-slate-900 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap">
             {t.login}
           </Link>
         </div>
