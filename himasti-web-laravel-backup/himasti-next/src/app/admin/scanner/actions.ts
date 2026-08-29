@@ -31,8 +31,7 @@ export async function scanKtaAbsen(meetingId: number, nim: string) {
       data: {
         meeting_id: meetingId,
         user_id: kader.user_id,
-        status: "hadir",
-        verified_by: session.user.name || "Admin Scanner"
+        status_kehadiran: "hadir"
       }
     });
 
