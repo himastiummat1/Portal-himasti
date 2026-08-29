@@ -159,9 +159,7 @@ export default function TopNav({
                   <LogOut className="w-4 h-4" />
                 </button>
                 
-                <div className="h-8 w-8 bg-slate-900 text-white rounded-full flex items-center justify-center text-xs font-bold shadow-sm ml-2">
-                  {userStr.charAt(0)}
-                </div>
+                <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(userStr)}`} alt="Avatar" className="h-8 w-8 rounded-full shadow-sm ml-2 bg-slate-100" />
               </div>
             </div>
 
@@ -187,9 +185,7 @@ export default function TopNav({
         {mobileMenuOpen && (
           <div className="md:hidden border-b border-slate-200 bg-white">
             <div className="px-4 py-3 border-b border-slate-100 bg-slate-50 flex items-center gap-3">
-              <div className="h-10 w-10 bg-slate-900 text-white rounded-full flex items-center justify-center font-bold">
-                {userStr.charAt(0)}
-              </div>
+              <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(userStr)}`} alt="Avatar" className="h-10 w-10 rounded-full shadow-sm bg-slate-100" />
               <div>
                 <div className="text-sm font-bold text-slate-900">{userStr}</div>
                 <div className="text-[10px] font-mono text-slate-500 uppercase tracking-widest">{roleStr}</div>

@@ -97,9 +97,12 @@ export default function DigitalKTA({
 
       <div className={`flex ${zoomed ? 'flex-col md:flex-row mt-8 md:mt-auto md:mb-auto' : 'flex-row mt-6'} gap-6 md:gap-4 items-start md:items-end justify-between w-full relative z-10`} style={{ transform: "translateZ(50px)" }}>
         <div className="flex-1 min-w-0 w-full pr-0 md:pr-4">
-          <div className="mb-4">
-            <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1.5 md:mb-2' : 'text-[9px] mb-1'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
-            <div className={`${zoomed ? 'text-3xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-xl truncate leading-tight'} font-bold text-white w-full`}>{name}</div>
+          <div className="mb-4 flex items-center gap-3 md:gap-5">
+            <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(nim)}`} alt="Avatar" className={`rounded-lg md:rounded-2xl shadow-lg bg-white/5 border border-white/10 shrink-0 ${zoomed ? 'w-16 h-16 md:w-24 md:h-24' : 'w-10 h-10'}`} />
+            <div className="flex-1 min-w-0">
+              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
+              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-lg truncate leading-tight'} font-bold text-white w-full`}>{name}</div>
+            </div>
           </div>
           
           <div className={`flex flex-wrap ${zoomed ? 'gap-8 md:gap-16 mt-6 md:mt-8' : 'gap-4 mt-2'}`}>
