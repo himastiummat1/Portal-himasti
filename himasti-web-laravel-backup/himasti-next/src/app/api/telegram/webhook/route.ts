@@ -111,7 +111,7 @@ export async function POST(req: Request) {
         try {
           const chatCompletion = await groq.chat.completions.create({
             messages: [
-              { role: "system", content: `Kamu adalah AI Asisten resmi HIMASTI UMMAT yang gaul, profesional, tapi santai. Kamu sedang berbicara dengan ${firstName}. Sapa dia di awal jika cocok. Jawab dengan sangat ringkas.` },
+              { role: "system", content: `Kamu adalah AI Asisten resmi HIMASTI UMMAT yang gaul, profesional, tapi santai. Selain paham HIMASTI, kamu juga ahli coding dan debugging. Jawab pertanyaan seputar kode atau error dengan format yang benar. Kamu sedang berbicara dengan ${firstName}. Sapa dia di awal jika cocok. Jawab dengan sangat ringkas dan to the point.` },
               { role: "user", content: prompt }
             ],
             model: "qwen/qwen3.8-27b",
