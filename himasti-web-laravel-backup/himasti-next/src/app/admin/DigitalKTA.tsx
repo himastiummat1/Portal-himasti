@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
 import { Command, X } from "lucide-react";
@@ -11,6 +12,7 @@ export default function DigitalKTA({
   name: string, nim: string, email: string, angkatan: string 
 }) {
   const [isZoomed, setIsZoomed] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   
   const x = useMotionValue(0);
@@ -23,6 +25,10 @@ export default function DigitalKTA({
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
   const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["100%", "0%"]);
   const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["100%", "0%"]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, targetRef: React.RefObject<HTMLDivElement | null>) => {
     if (!targetRef.current || isZoomed) return;
@@ -48,8 +54,14 @@ export default function DigitalKTA({
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsZoomed(false);
     };
-    if (isZoomed) window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    if (isZoomed) {
+      window.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden"; // Prevent background scrolling
+    }
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "unset";
+    };
   }, [isZoomed]);
 
   const CardContent = ({ zoomed = false }) => (
@@ -139,31 +151,34 @@ export default function DigitalKTA({
         </motion.div>
       </div>
 
-      <AnimatePresence>
-        {isZoomed && (
-          <motion.div 
-            layoutId="kta-card-body"
-            className="fixed inset-0 z-[200] w-full h-[100dvh] bg-black flex flex-col justify-between p-6 md:p-16 overflow-y-auto"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ type: "spring", damping: 25, stiffness: 200 }}
-          >
-            {/* Background geometric pattern for fullscreen to look premium */}
-            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, #ffffff 1px, transparent 1px), radial-gradient(circle at 0% 100%, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
-            <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900/50 to-black pointer-events-none"></div>
-
-            <button 
-              onClick={() => setIsZoomed(false)}
-              className="absolute top-6 right-6 md:top-12 md:right-12 w-14 h-14 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black shadow-2xl transition-all duration-300 z-[210] cursor-pointer"
+      {mounted && createPortal(
+        <AnimatePresence>
+          {isZoomed && (
+            <motion.div 
+              layoutId="kta-card-body"
+              className="fixed inset-0 z-[9999] w-screen h-[100dvh] bg-black flex flex-col justify-between p-6 md:p-16 overflow-y-auto m-0 rounded-none border-none"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 200 }}
             >
-              <X className="w-8 h-8" />
-            </button>
-            
-            <CardContent zoomed={true} />
-          </motion.div>
-        )}
-      </AnimatePresence>
+              {/* Background geometric pattern for fullscreen to look premium */}
+              <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 100% 0%, #ffffff 1px, transparent 1px), radial-gradient(circle at 0% 100%, #ffffff 1px, transparent 1px)', backgroundSize: '40px 40px' }}></div>
+              <div className="absolute inset-0 z-0 bg-gradient-to-br from-slate-900/50 to-black pointer-events-none"></div>
+
+              <button 
+                onClick={() => setIsZoomed(false)}
+                className="absolute top-6 right-6 md:top-12 md:right-12 w-14 h-14 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black shadow-2xl transition-all duration-300 z-[9999] cursor-pointer"
+              >
+                <X className="w-8 h-8" />
+              </button>
+              
+              <CardContent zoomed={true} />
+            </motion.div>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </>
   );
 }
