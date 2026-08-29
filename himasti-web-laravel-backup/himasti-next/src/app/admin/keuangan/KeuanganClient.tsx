@@ -11,8 +11,9 @@ import {
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
-  Area,
-  AreaChart
+  Bar,
+  BarChart,
+  Legend
 } from "recharts";
 
 type RecordType = {
@@ -167,30 +168,22 @@ export default function KeuanganClient({ records, isExecutive }: { records: Reco
         <h3 className="text-sm font-semibold text-slate-800 mb-6 flex items-center gap-2">
            <TrendingUp className="w-4 h-4 text-slate-500" /> Analisis Arus Kas
         </h3>
-        <div className="w-full h-72">
+        <div className="w-full h-80">
           {chartData.length > 0 ? (
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="colorPemasukan" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#0ea5e9" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#0ea5e9" stopOpacity={0}/>
-                  </linearGradient>
-                  <linearGradient id="colorPengeluaran" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#f43f5e" stopOpacity={0.3}/>
-                    <stop offset="95%" stopColor="#f43f5e" stopOpacity={0}/>
-                  </linearGradient>
-                </defs>
+              <BarChart data={chartData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f1f5f9" />
                 <XAxis dataKey="date" tick={{fontSize: 12, fill: '#64748b'}} axisLine={false} tickLine={false} />
                 <YAxis tick={{fontSize: 12, fill: '#64748b'}} axisLine={false} tickLine={false} tickFormatter={(value) => `Rp${value/1000}k`} />
                 <Tooltip 
                   formatter={(value: any) => new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', minimumFractionDigits: 0 }).format(value)}
                   contentStyle={{ borderRadius: '12px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                  cursor={{ fill: '#f8fafc' }}
                 />
-                <Area type="monotone" dataKey="Pemasukan" stroke="#0ea5e9" strokeWidth={3} fillOpacity={1} fill="url(#colorPemasukan)" />
-                <Area type="monotone" dataKey="Pengeluaran" stroke="#f43f5e" strokeWidth={3} fillOpacity={1} fill="url(#colorPengeluaran)" />
-              </AreaChart>
+                <Legend iconType="circle" wrapperStyle={{ fontSize: '12px', paddingTop: '10px' }} />
+                <Bar dataKey="Pemasukan" fill="#0ea5e9" radius={[4, 4, 0, 0]} maxBarSize={50} />
+                <Bar dataKey="Pengeluaran" fill="#f43f5e" radius={[4, 4, 0, 0]} maxBarSize={50} />
+              </BarChart>
             </ResponsiveContainer>
           ) : (
             <div className="w-full h-full flex items-center justify-center text-slate-400 text-sm font-mono bg-slate-50/50 rounded-2xl border border-dashed border-slate-200">
