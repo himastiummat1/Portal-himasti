@@ -17,7 +17,6 @@ export default function DigitalKTA({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  // Smooth springs for elegant 3D movement
   const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
   const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
 
@@ -48,7 +47,6 @@ export default function DigitalKTA({
 
   const qrValue = JSON.stringify({ type: "himasti_kta", nim, name });
 
-  // Escape key to close modal
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") setIsZoomed(false);
@@ -59,7 +57,6 @@ export default function DigitalKTA({
 
   const CardContent = ({ zoomed = false }) => (
     <>
-      {/* Elegant Glare Effect (No dots) */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-50 rounded-[inherit]"
         style={{
@@ -76,55 +73,54 @@ export default function DigitalKTA({
       {/* Top Header */}
       <div className="flex justify-between items-start w-full relative z-10" style={{ transform: "translateZ(30px)" }}>
         <div className="flex items-center gap-3">
-          <div className={`${zoomed ? 'w-14 h-14 rounded-xl' : 'w-8 h-8 rounded-lg'} bg-white text-black flex items-center justify-center shadow-sm`}>
-            <Command className={zoomed ? "w-7 h-7" : "w-4 h-4"} />
+          <div className={`${zoomed ? 'w-10 h-10 rounded-xl' : 'w-8 h-8 rounded-lg'} bg-white text-black flex items-center justify-center shadow-sm`}>
+            <Command className={zoomed ? "w-5 h-5" : "w-4 h-4"} />
           </div>
           <div>
-            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-3xl' : 'text-base'}`}>HIMASTI</div>
-            <div className={`${zoomed ? 'text-sm mt-1.5' : 'text-[10px] mt-0.5'} text-slate-400 font-mono tracking-widest uppercase`}>Member Card</div>
+            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl' : 'text-base'}`}>HIMASTI</div>
+            <div className={`${zoomed ? 'text-xs mt-1' : 'text-[10px] mt-0.5'} text-slate-400 font-mono tracking-widest uppercase`}>Member Card</div>
           </div>
         </div>
-        <div className={`px-3 py-1.5 bg-white/10 border border-white/20 rounded-md ${zoomed ? 'text-sm px-4 py-2' : 'text-[9px] px-2 py-1'} font-mono font-bold text-white backdrop-blur-sm tracking-widest`}>
+        <div className={`px-2 py-1 bg-white/10 border border-white/20 rounded-md ${zoomed ? 'text-xs px-3 py-1.5' : 'text-[9px] px-2 py-1'} font-mono font-bold text-white backdrop-blur-sm tracking-widest`}>
           VERIFIED
         </div>
       </div>
 
       {/* Middle Content */}
-      <div className={`flex gap-4 items-end justify-between w-full relative z-10 ${zoomed ? 'mt-16' : 'mt-6'}`} style={{ transform: "translateZ(50px)" }}>
+      <div className={`flex gap-4 items-end justify-between w-full relative z-10 ${zoomed ? 'mt-10' : 'mt-6'}`} style={{ transform: "translateZ(50px)" }}>
         <div className="flex-1 min-w-0 pr-4">
           <div className="mb-4">
-            <div className={`${zoomed ? 'text-sm mb-2' : 'text-[9px] mb-1'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
-            <div className={`${zoomed ? 'text-5xl md:text-6xl whitespace-normal break-words leading-tight' : 'text-xl truncate leading-tight'} font-bold text-white w-full`}>{name}</div>
+            <div className={`${zoomed ? 'text-xs mb-1' : 'text-[9px] mb-1'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
+            <div className={`${zoomed ? 'text-3xl md:text-4xl whitespace-normal break-words leading-tight' : 'text-xl truncate leading-tight'} font-bold text-white w-full`}>{name}</div>
           </div>
           
-          <div className={`flex ${zoomed ? 'gap-16 mt-8' : 'gap-4 mt-2'}`}>
+          <div className={`flex ${zoomed ? 'gap-8 mt-6' : 'gap-4 mt-2'}`}>
             <div>
-              <div className={`${zoomed ? 'text-sm mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>NIM</div>
-              <div className={`${zoomed ? 'text-2xl' : 'text-sm'} font-mono font-bold text-slate-200`}>{nim}</div>
+              <div className={`${zoomed ? 'text-xs mb-1' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>NIM</div>
+              <div className={`${zoomed ? 'text-xl' : 'text-sm'} font-mono font-bold text-slate-200`}>{nim}</div>
             </div>
             <div>
-              <div className={`${zoomed ? 'text-sm mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>ANGKATAN</div>
-              <div className={`${zoomed ? 'text-2xl' : 'text-sm'} font-mono font-bold text-slate-200`}>{angkatan}</div>
+              <div className={`${zoomed ? 'text-xs mb-1' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>ANGKATAN</div>
+              <div className={`${zoomed ? 'text-xl' : 'text-sm'} font-mono font-bold text-slate-200`}>{angkatan}</div>
             </div>
           </div>
         </div>
 
-        <div className={`p-2 border border-white/10 bg-white shrink-0 shadow-2xl ${zoomed ? 'p-5 rounded-2xl' : 'rounded-xl'}`} style={{ transform: "translateZ(60px)" }}>
-          <QRCodeSVG value={qrValue} size={zoomed ? 180 : 64} level="H" />
+        <div className={`p-2 border border-white/10 bg-white shrink-0 shadow-2xl ${zoomed ? 'p-3 rounded-2xl' : 'rounded-xl'}`} style={{ transform: "translateZ(60px)" }}>
+          <QRCodeSVG value={qrValue} size={zoomed ? 110 : 64} level="H" />
         </div>
       </div>
 
       {/* Footer */}
-      <div className={`w-full flex justify-between items-end border-t border-white/10 relative z-10 ${zoomed ? 'mt-12 pt-6 gap-6' : 'mt-4 pt-3 gap-2'}`} style={{ transform: "translateZ(20px)" }}>
-        <div className={`${zoomed ? 'text-lg whitespace-normal break-all' : 'text-[9px] truncate max-w-[200px]'} text-slate-400 font-mono w-full`}>{email}</div>
-        <div className={`${zoomed ? 'text-lg' : 'text-[9px]'} text-slate-500 font-mono uppercase shrink-0`}>ID-{nim.substring(0,8)}</div>
+      <div className={`w-full flex justify-between items-end border-t border-white/10 relative z-10 ${zoomed ? 'mt-8 pt-4 gap-4' : 'mt-4 pt-3 gap-2'}`} style={{ transform: "translateZ(20px)" }}>
+        <div className={`${zoomed ? 'text-sm whitespace-normal break-all' : 'text-[9px] truncate max-w-[200px]'} text-slate-400 font-mono w-full`}>{email}</div>
+        <div className={`${zoomed ? 'text-sm' : 'text-[9px]'} text-slate-500 font-mono uppercase shrink-0`}>ID-{nim.substring(0,8)}</div>
       </div>
     </>
   );
 
   return (
     <>
-      {/* Small Card on Dashboard */}
       <div 
         className="perspective-1000 flex items-center justify-center w-full relative group"
         style={{ perspective: "1000px" }}
@@ -145,11 +141,9 @@ export default function DigitalKTA({
         </motion.div>
       </div>
 
-      {/* Fullscreen Zoom Modal */}
       <AnimatePresence>
         {isZoomed && (
           <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 md:p-12 overflow-hidden">
-            {/* Elegant Dark Backdrop */}
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -158,16 +152,15 @@ export default function DigitalKTA({
               className="absolute inset-0 bg-slate-950/80 backdrop-blur-xl cursor-zoom-out"
             />
             
-            {/* Massive Card Container */}
             <div 
-              className="relative z-10 w-full max-w-5xl perspective-1000 flex items-center justify-center"
+              className="relative z-10 w-full max-w-xl perspective-1000 flex items-center justify-center"
               style={{ perspective: "2000px" }}
             >
               <button 
                 onClick={() => setIsZoomed(false)}
-                className="absolute -top-16 right-0 w-12 h-12 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black shadow-2xl transition-all duration-300 z-[110]"
+                className="absolute -top-12 right-0 w-10 h-10 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black shadow-2xl transition-all duration-300 z-[110]"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
 
               <motion.div
@@ -184,7 +177,7 @@ export default function DigitalKTA({
                   rotateY,
                   transformStyle: "preserve-3d",
                 }}
-                className="w-full relative aspect-[1.6/1] bg-black rounded-[2rem] p-10 md:p-14 shadow-[0_30px_100px_rgba(0,0,0,0.5)] flex flex-col justify-between border border-slate-800"
+                className="w-full relative aspect-[1.6/1] bg-black rounded-[2rem] p-6 md:p-8 shadow-[0_30px_100px_rgba(0,0,0,0.5)] flex flex-col justify-between border border-slate-800"
               >
                 <CardContent zoomed={true} />
               </motion.div>
