@@ -2,29 +2,21 @@ import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Portal HIMASTI - Ekosistem Digital HIMASTI UMMAT",
-  description: "Portal resmi ekosistem digital HIMASTI (Himpunan Mahasiswa Sistem dan Teknologi Informasi) Universitas Muhammadiyah Mataram.",
-  keywords: ["HIMASTI", "UMMAT", "Sistem dan Teknologi Informasi", "Portal HIMASTI", "Mataram"],
-  authors: [{ name: "HIMASTI UMMAT" }],
-  creator: "HIMASTI",
-  metadataBase: new URL("https://portal-himasti-beta.vercel.app"),
-  openGraph: {
-    title: "Portal HIMASTI - Ekosistem Digital HIMASTI UMMAT",
-    description: "Platform kolaborasi, divisi, dan ekosistem digital mahasiswa STI.",
-    url: "https://portal-himasti-beta.vercel.app",
-    siteName: "HIMASTI Portal",
-    images: [
-      {
-        url: "/images/logo_himasti.jpg",
-        width: 800,
-        height: 600,
-      },
-    ],
-    locale: "id_ID",
-    type: "website",
-  },
-  robots: {
-    index: true,
-    follow: true,
+  description: "Portal resmi ekosistem digital HIMASTI Universitas Muhammadiyah Mataram.",
+  // Tambahkan baris verification ini:
+  verification: {
+    google: "nA1ksDi8zu990WSLCnvaFdYoZ59ewc0d9jrtciqCOzk",
   },
 };
 
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
+    <html lang="id">
+      <body>{children}</body>
+    </html>
+  );
+}
