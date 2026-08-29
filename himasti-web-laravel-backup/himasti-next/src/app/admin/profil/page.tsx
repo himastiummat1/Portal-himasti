@@ -7,9 +7,15 @@ export const dynamic = "force-dynamic";
 
 export default async function ProfilPage() {
   const session = await auth();
-  if (!session?.user?.id) redirect("/login");
+  if (!session?.user?.id) {
+    return <div className="p-8 m-4 bg-red-50 border border-red-200 rounded-lg text-red-600 font-bold">Terjadi kesalahan: Sesi Anda hilang. Silakan logout dan login kembali.</div>;
+  }
 
-  const userId = parseInt(session.user.id);
+  const userId = typeof session.user.id === 'string' ? parseInt(session.user.id) : Number(session.user.id);
+
+  if (isNaN(userId)) {
+    return <div className="p-8 m-4 bg-red-50 border border-red-200 rounded-lg text-red-600 font-bold">Terjadi kesalahan: ID Sesi tidak valid (NaN). Silakan logout dan login kembali.</div>;
+  }
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
@@ -19,10 +25,15 @@ export default async function ProfilPage() {
     }
   });
 
-  if (!user) redirect("/login");
+  if (!user) {
+    return <div className="p-8 m-4 bg-red-50 border border-red-200 rounded-lg text-red-600 font-bold">Terjadi kesalahan: Data Pengguna (ID: {userId}) tidak ditemukan di Database.</div>;
+  }
 
-  // Transform roles to a readable format
-  const roleNames = user.roles.map(r => r.role.name.replace(/_/g, ' ').toUpperCase()).join(', ');
+  // SAFE transform roles to a readable format (handle null roles if DB is corrupted)
+  const roleNames = (user.roles || [])
+    .filter(r => r && r.role && r.role.name)
+    .map(r => r.role.name.replace(/_/g, ' ').toUpperCase())
+    .join(', ');
 
   const profileData = {
     id: user.id,
