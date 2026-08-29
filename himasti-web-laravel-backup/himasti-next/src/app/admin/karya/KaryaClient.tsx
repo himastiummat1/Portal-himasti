@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles, X, Trash2 } from "lucide-react";
+import { Search, ExternalLink, GitBranch, Plus, LayoutGrid, Rocket, Sparkles, X, Trash2, Shield } from "lucide-react";
 import { addKarya, deleteKarya } from "./actions";
 
 type ProjectRecord = {
@@ -30,12 +30,8 @@ export default function KatalogKaryaClient({ records, isExecutive, userName }: {
     setIsSubmitting(true);
     const formData = new FormData(e.currentTarget);
     const result = await addKarya(formData);
-    
-    if (result.success) {
-      setIsAddModalOpen(false);
-    } else {
-      alert(result.error);
-    }
+    if (result.success) setIsAddModalOpen(false);
+    else alert(result.error);
     setIsSubmitting(false);
   }
 
@@ -45,8 +41,20 @@ export default function KatalogKaryaClient({ records, isExecutive, userName }: {
     if (!result.success) alert(result.error);
   }
 
+  // Helper to determine span based on index
+  const getBentoSpan = (idx: number) => {
+    // A classic 4-column bento layout pattern
+    const pattern = idx % 6;
+    if (pattern === 0) return "md:col-span-2 md:row-span-2 h-[340px]"; // Featured Large
+    if (pattern === 1) return "md:col-span-2 md:row-span-1 h-[200px]"; // Wide
+    if (pattern === 2) return "md:col-span-1 md:row-span-1 h-[200px]"; // Standard
+    if (pattern === 3) return "md:col-span-1 md:row-span-2 h-[340px]"; // Tall
+    if (pattern === 4) return "md:col-span-2 md:row-span-1 h-[200px]"; // Wide
+    return "md:col-span-1 md:row-span-1 h-[200px]"; // Standard
+  };
+
   return (
-    <div className="max-w-6xl mx-auto space-y-8 pb-12 animate-in fade-in duration-500">
+    <div className="max-w-7xl mx-auto space-y-8 pb-12 animate-in fade-in duration-500">
       
       {/* Header */}
       <div className="border-b border-slate-200/60 pb-6 flex flex-col md:flex-row justify-between items-start md:items-end gap-4 mt-8">
@@ -61,158 +69,162 @@ export default function KatalogKaryaClient({ records, isExecutive, userName }: {
             <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
             <input 
               type="text" 
-              placeholder="Cari karya atau pembuat..." 
+              placeholder="Cari karya..." 
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900"
+              className="w-full pl-9 pr-4 py-2 bg-white border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 shadow-sm"
             />
           </div>
-          <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-xl text-sm font-semibold transition-colors whitespace-nowrap">
+          <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-xl text-sm font-semibold transition-colors whitespace-nowrap shadow-md">
             <Plus className="w-4 h-4" /> Unggah Karya
           </button>
         </div>
       </div>
 
-      {/* Grid of Projects */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* BENTO GRID */}
+      <div className="grid grid-cols-1 md:grid-cols-4 auto-rows-min gap-4">
         {filtered.map((work, idx) => {
-          const featured = idx === 0; // Highlight the latest project
+          const bentoClass = getBentoSpan(idx);
+          const isFeatured = idx % 6 === 0;
+
           return (
-            <div key={work.id} className={`group bg-white border rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col h-full ${featured ? 'border-gray-300 ring-1 ring-gray-100' : 'border-slate-200 hover:border-gray-200'}`}>
-              
-              {/* Thumbnail Mockup */}
-              <div className={`h-40 w-full flex items-center justify-center relative overflow-hidden ${featured ? 'bg-gray-50 from-slate-900 to-slate-800' : 'bg-slate-100'}`}>
-                {featured && <div className="absolute top-0 right-0 w-32 h-32 bg-gray-900/20 rounded-full blur-2xl"></div>}
-                {featured ? (
-                   <Sparkles className="w-12 h-12 text-gray-300 group-hover:scale-110 transition-transform duration-500" />
-                ) : (
-                   <Rocket className="w-12 h-12 text-slate-300 group-hover:scale-110 transition-transform duration-500" />
-                )}
-                {featured && (
-                  <div className="absolute top-3 left-3 px-2.5 py-1 bg-gray-900 text-white text-[10px] font-bold tracking-wider rounded-lg uppercase flex items-center gap-1">
-                    Terbaru
-                  </div>
-                )}
-                
-                {(isExecutive || userName === work.student_name) && (
-                  <button onClick={() => handleDelete(work.id)} className="absolute top-3 right-3 p-1.5 bg-red-500/80 hover:bg-red-600 text-white rounded-lg backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                )}
+            <div 
+              key={work.id} 
+              className={`group relative bg-white border rounded-3xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-500 flex flex-col ${bentoClass} ${isFeatured ? 'border-sky-200/60' : 'border-slate-200 hover:border-gray-300'}`}
+            >
+              {/* Dynamic Hover Glare */}
+              <div className="pointer-events-none absolute inset-0 z-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_50%_0%,rgba(14,165,233,0.08)_0%,transparent_60%)]"></div>
+
+              {/* Graphic Header / Background */}
+              <div className={`absolute top-0 right-0 p-6 opacity-10 group-hover:opacity-20 transition-opacity duration-500 z-0`}>
+                {isFeatured ? <Sparkles className="w-48 h-48 -mr-12 -mt-12 text-sky-500" /> : <Rocket className="w-24 h-24 -mr-6 -mt-6 text-slate-500" />}
               </div>
 
-              {/* Content */}
-              <div className="p-5 flex flex-col flex-1">
-                <h3 className="text-lg font-bold text-slate-800 line-clamp-1">{work.title}</h3>
-                <p className="text-xs text-gray-900 font-medium mt-1">{work.student_name}</p>
-                
-                <p className="text-sm text-slate-500 mt-3 line-clamp-2 flex-1">
-                  {work.description || "Tidak ada deskripsi."}
-                </p>
-
-                <div className="flex flex-wrap gap-1.5 mt-4">
-                  <span className="px-2 py-1 bg-slate-100 text-slate-600 text-[10px] font-semibold rounded-md border border-slate-200">
-                    {work.category.toUpperCase()}
+              {/* Content Box */}
+              <div className="p-6 md:p-8 flex flex-col h-full relative z-10">
+                <div className="flex justify-between items-start mb-4">
+                  <span className={`px-3 py-1 rounded-full text-[10px] font-bold tracking-widest uppercase border ${isFeatured ? 'bg-sky-50 text-sky-600 border-sky-100' : 'bg-slate-50 text-slate-500 border-slate-100'}`}>
+                    {work.category}
                   </span>
+                  {(isExecutive || userName === work.student_name) && (
+                    <button onClick={() => handleDelete(work.id)} className="p-2 bg-white hover:bg-red-50 text-red-400 hover:text-red-600 rounded-full shadow-sm transition-colors opacity-0 group-hover:opacity-100">
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  )}
+                </div>
+
+                <div className="mt-auto">
+                  <h3 className={`${isFeatured ? 'text-3xl' : 'text-xl'} font-bold text-slate-900 tracking-tight leading-tight group-hover:text-sky-600 transition-colors duration-300 line-clamp-2`}>
+                    {work.title}
+                  </h3>
+                  <div className="flex items-center gap-2 mt-2">
+                    <div className="w-5 h-5 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center text-[8px] font-bold text-slate-600">
+                      {work.student_name.charAt(0)}
+                    </div>
+                    <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{work.student_name}</p>
+                  </div>
+                  
+                  {isFeatured && (
+                    <p className="text-sm text-slate-500 mt-4 line-clamp-3 leading-relaxed">
+                      {work.description || "Sebuah inovasi luar biasa karya mahasiswa HIMASTI tanpa deskripsi."}
+                    </p>
+                  )}
+                </div>
+
+                {/* Footer Action Links */}
+                <div className="flex items-center gap-3 mt-6 border-t border-slate-100/50 pt-4">
+                  {work.demo_link ? (
+                    <a href={work.demo_link} target="_blank" className="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-sky-500 transition-colors">
+                      <ExternalLink className="w-4 h-4" /> Live Demo
+                    </a>
+                  ) : (
+                    <span className="flex items-center gap-1.5 text-xs font-medium text-slate-300">
+                      <ExternalLink className="w-4 h-4" /> No Demo
+                    </span>
+                  )}
+                  
+                  {work.github_link ? (
+                    <a href={work.github_link} target="_blank" className="flex items-center gap-1.5 text-xs font-bold text-slate-700 hover:text-sky-500 transition-colors ml-4">
+                      <GitBranch className="w-4 h-4" /> Repository
+                    </a>
+                  ) : (
+                    <span className="flex items-center gap-1.5 text-xs font-medium text-slate-300 ml-4">
+                      <GitBranch className="w-4 h-4" /> Private
+                    </span>
+                  )}
                 </div>
               </div>
-
-              {/* Footer Actions */}
-              <div className="px-5 py-4 bg-slate-50/50 border-t border-slate-100 flex gap-2">
-                {work.demo_link ? (
-                  <a href={work.demo_link} target="_blank" className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-white border border-slate-200 hover:border-gray-300 hover:text-gray-900 rounded-xl text-xs font-semibold text-slate-700 transition-colors">
-                    <ExternalLink className="w-3.5 h-3.5" /> Kunjungi
-                  </a>
-                ) : (
-                  <button disabled className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-100 border border-transparent text-slate-400 rounded-xl text-xs font-semibold cursor-not-allowed">
-                     Tidak ada Demo
-                  </button>
-                )}
-                
-                {work.github_link ? (
-                  <a href={work.github_link} target="_blank" className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-800 hover:bg-slate-900 text-white rounded-xl text-xs font-semibold transition-colors">
-                    <GitBranch className="w-3.5 h-3.5" /> Repositori
-                  </a>
-                ) : (
-                  <button disabled className="flex-1 flex justify-center items-center gap-1.5 py-2 bg-slate-200 text-slate-400 rounded-xl text-xs font-semibold cursor-not-allowed">
-                     Source Tertutup
-                  </button>
-                )}
-              </div>
-
             </div>
           );
         })}
 
         {filtered.length === 0 && (
-          <div className="col-span-full py-20 flex flex-col items-center justify-center text-slate-400">
-            <Search className="w-12 h-12 mb-4 opacity-20" />
-            <p>Tidak ada karya yang ditemukan.</p>
+          <div className="col-span-full py-32 flex flex-col items-center justify-center text-slate-400">
+            <Search className="w-16 h-16 mb-6 opacity-20" />
+            <p className="text-lg font-medium">Tidak ada karya yang ditemukan.</p>
           </div>
         )}
       </div>
 
       {/* Add Modal */}
       {isAddModalOpen && (
-        <div className="fixed inset-0 z-50 overflow-y-auto">
-          <div className="flex items-center justify-center min-h-screen p-4">
-            <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm" onClick={() => setIsAddModalOpen(false)}></div>
-            <div className="relative z-10 w-full max-w-lg bg-white rounded-2xl p-6 shadow-2xl">
-              <div className="flex justify-between items-center mb-6">
-                <h3 className="text-xl font-bold text-slate-900">Unggah Karya Baru</h3>
-                <button onClick={() => setIsAddModalOpen(false)} className="text-slate-400 hover:text-slate-600">
-                  <X className="w-5 h-5" />
-                </button>
+        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4">
+          <div className="fixed inset-0 bg-slate-900/40 backdrop-blur-md" onClick={() => setIsAddModalOpen(false)}></div>
+          <div className="relative z-10 w-full max-w-lg bg-white rounded-3xl p-8 shadow-2xl animate-in zoom-in-95 duration-200">
+            <div className="flex justify-between items-center mb-6">
+              <h3 className="text-2xl font-bold text-slate-900 tracking-tight">Unggah Karya</h3>
+              <button onClick={() => setIsAddModalOpen(false)} className="p-2 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-full transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+            
+            <form onSubmit={handleAddSubmit} className="space-y-5">
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Judul Aplikasi</label>
+                <input type="text" name="title" required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none focus:bg-white transition-colors" placeholder="Contoh: Sistem Informasi Pendataan..." />
               </div>
               
-              <form onSubmit={handleAddSubmit} className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Judul Aplikasi / Karya</label>
-                  <input type="text" name="title" required className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="Contoh: SIakad v2.0" />
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Pembuat</label>
+                  <input type="text" name="student_name" defaultValue={userName} required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none focus:bg-white" />
                 </div>
-                
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Nama Pembuat</label>
-                    <input type="text" name="student_name" defaultValue={userName} required className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Kategori</label>
-                    <select name="category" required className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none">
-                      <option value="web">Web App</option>
-                      <option value="mobile">Mobile App</option>
-                      <option value="ui/ux">Desain UI/UX</option>
-                      <option value="script">Script/Bot</option>
-                    </select>
-                  </div>
-                </div>
-
                 <div>
-                  <label className="block text-sm font-semibold text-slate-700 mb-1">Deskripsi Singkat</label>
-                  <textarea name="description" rows={3} className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="Jelaskan fitur utama karya ini..."></textarea>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Kategori</label>
+                  <select name="category" required className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none focus:bg-white">
+                    <option value="web">Web App</option>
+                    <option value="mobile">Mobile App</option>
+                    <option value="ui/ux">UI/UX Design</option>
+                    <option value="script">AI / Bot</option>
+                  </select>
                 </div>
+              </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Link Demo (Opsional)</label>
-                    <input type="url" name="demo_link" className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="https://..." />
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-slate-700 mb-1">Link GitHub (Opsional)</label>
-                    <input type="url" name="github_link" className="w-full p-2.5 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none" placeholder="https://github.com/..." />
-                  </div>
-                </div>
+              <div>
+                <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Deskripsi Singkat</label>
+                <textarea name="description" rows={3} className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none focus:bg-white" placeholder="Jelaskan 1-2 kalimat fungsi utama..."></textarea>
+              </div>
 
-                <div className="flex justify-end gap-3 pt-4 border-t border-slate-100">
-                  <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-4 py-2 bg-slate-100 text-slate-600 font-semibold rounded-xl hover:bg-slate-200">
-                    Batal
-                  </button>
-                  <button type="submit" disabled={isSubmitting} className="px-6 py-2 bg-gray-900 text-white font-semibold rounded-xl hover:bg-gray-800 disabled:opacity-50 flex items-center gap-2">
-                    {isSubmitting ? "Menyimpan..." : "Simpan Karya"}
-                  </button>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Link Demo (URL)</label>
+                  <input type="url" name="demo_link" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none focus:bg-white" placeholder="https://" />
                 </div>
-              </form>
-            </div>
+                <div>
+                  <label className="block text-xs font-bold text-slate-500 uppercase tracking-widest mb-2">Link GitHub</label>
+                  <input type="url" name="github_link" className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-gray-900 focus:outline-none focus:bg-white" placeholder="https://github.com/" />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-3 pt-6 border-t border-slate-100">
+                <button type="button" onClick={() => setIsAddModalOpen(false)} className="px-5 py-2.5 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors">
+                  Batal
+                </button>
+                <button type="submit" disabled={isSubmitting} className="px-6 py-2.5 bg-gray-900 text-white font-bold rounded-xl hover:bg-gray-800 disabled:opacity-50 transition-colors">
+                  {isSubmitting ? "Menyimpan..." : "Simpan Karya"}
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

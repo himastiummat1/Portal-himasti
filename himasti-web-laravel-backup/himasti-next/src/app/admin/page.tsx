@@ -9,6 +9,7 @@ import {
 import TerminalEasterEgg from "./TerminalEasterEgg";
 import HackerMode from "./HackerMode";
 import { katalogKarya } from "@/lib/karyaData";
+import DigitalKTA from "./DigitalKTA";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -320,34 +321,18 @@ export default async function AdminDashboard() {
         {/* Right Column (User & Logs) */}
         <div className="space-y-6">
           
-          {/* User ID Card */}
-          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-2xl p-5">
-            <h3 className="text-xs font-bold text-slate-500 uppercase tracking-widest mb-4">Identitas Sistem</h3>
-            <div className="flex items-center gap-4 mb-4">
-              <div className="w-12 h-12 bg-gray-50 border border-gray-100 rounded-xl flex items-center justify-center text-gray-900 font-mono text-lg font-bold">
-                {userName.charAt(0)}
-              </div>
-              <div>
-                <div className="text-sm font-bold text-slate-800">{userName}</div>
-                <div className="text-xs text-slate-500 font-mono">{session?.user?.email}</div>
-              </div>
-            </div>
-            <div className="space-y-2 text-sm border-t border-slate-100 pt-4">
-              <div className="flex justify-between">
-                <span className="text-slate-500">NIM</span>
-                <span className="font-mono text-slate-800 font-medium">{kaderData?.nim || "-"}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Angkatan</span>
-                <span className="font-mono text-slate-800 font-medium">{kaderData?.angkatan || "-"}</span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-slate-500">Status</span>
-                <span className="flex items-center gap-1 text-gray-900 text-xs font-bold bg-gray-50 px-2 py-0.5 rounded-full">
-                  <CheckCircle2 className="w-3 h-3" /> Aktif
-                </span>
-              </div>
-            </div>
+          {/* Digital KTA */}
+          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-3xl p-6">
+            <h3 className="text-sm font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-slate-500" /> Kartu Tanda Anggota
+            </h3>
+            <DigitalKTA 
+              name={userName}
+              nim={kaderData?.nim || "KADER-GUEST"}
+              email={session?.user?.email || ""}
+              angkatan={kaderData?.angkatan || new Date().getFullYear().toString()}
+            />
+            <p className="text-xs text-center text-slate-500 mt-6 font-medium">Arahkan kursor untuk melihat efek 3D hologram.</p>
           </div>
 
           {/* Dewa Kode Leaderboard */}
