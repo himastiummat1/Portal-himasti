@@ -25,7 +25,13 @@ async function answerCallbackQuery(callbackQueryId: string, text?: string) {
 }
 
 function formatForTelegramHTML(text: string) {
-  return text.replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\*\*(.*?)\*\*/g, "<b>$1</b>").replace(/\*(.*?)\*/g, "<i>$1</i>").replace(/`(.*?)`/g, "<code>$1</code>");
+  return text
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/\*\*(.*?)\*\*/g, "<b>$1</b>")
+    .replace(/\*(.*?)\*/g, "<i>$1</i>")
+    .replace(/```([\s\S]*?)```/g, "<pre><code>$1</code></pre>") // Triple backticks (multi-line)
+    .replace(/`(.*?)`/g, "<code>$1</code>"); // Single backticks
 }
 
 export async function POST(req: Request) {
@@ -90,7 +96,9 @@ export async function POST(req: Request) {
         return NextResponse.json({ ok: true });
       }
 
-      const isAiTriggered = text.toLowerCase().startsWith("/ai ") || text.includes("@himastiummatbot");
+      const isPrivateChat = update.message.chat.type === "private";
+      const isAiTriggered = text.toLowerCase().startsWith("/ai ") || text.includes("@himastiummatbot") || isPrivateChat;
+      
       if (isAiTriggered) {
         const now = Date.now();
         const lastQuery = groupCooldowns.get(chatId) || 0;
