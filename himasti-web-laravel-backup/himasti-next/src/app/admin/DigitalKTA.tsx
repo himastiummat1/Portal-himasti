@@ -32,22 +32,64 @@ export default function DigitalKTA({
     setMounted(true);
   }, []);
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, targetRef: React.RefObject<HTMLDivElement | null>) => {
+  const calculateTilt = (clientX: number, clientY: number, targetRef: React.RefObject<HTMLDivElement | null>) => {
     if (!targetRef.current) return;
     const rect = targetRef.current.getBoundingClientRect();
     const width = rect.width;
     const height = rect.height;
-    const mouseX = e.clientX - rect.left;
-    const mouseY = e.clientY - rect.top;
+    const mouseX = clientX - rect.left;
+    const mouseY = clientY - rect.top;
     
     x.set(mouseX / width - 0.5);
     y.set(mouseY / height - 0.5);
+  };
+
+  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>, targetRef: React.RefObject<HTMLDivElement | null>) => {
+    calculateTilt(e.clientX, e.clientY, targetRef);
+  };
+
+  const handleTouchMove = (e: React.TouchEvent<HTMLDivElement>, targetRef: React.RefObject<HTMLDivElement | null>) => {
+    if (e.touches.length > 0) {
+      calculateTilt(e.touches[0].clientX, e.touches[0].clientY, targetRef);
+    }
   };
 
   const handleMouseLeave = () => {
     x.set(0);
     y.set(0);
   };
+
+  // Add Device Orientation (Gyroscope) support for Android/Mobile
+  useEffect(() => {
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.gamma === null || e.beta === null) return;
+      
+      // gamma is left/right tilt (-90 to 90)
+      // beta is front/back tilt (-180 to 180)
+      // We map these to our -0.5 to 0.5 scale
+      let tiltX = e.gamma / 45; 
+      let tiltY = (e.beta - 45) / 45; 
+      
+      tiltX = Math.max(-1, Math.min(1, tiltX));
+      tiltY = Math.max(-1, Math.min(1, tiltY));
+
+      // Only apply gyroscope if we're on a mobile device (touch capable)
+      // This prevents desktop laptops with gyro from weird behaviors
+      if (typeof window !== 'undefined' && ('ontouchstart' in window)) {
+        x.set(tiltX * 0.5);
+        y.set(tiltY * 0.5);
+      }
+    };
+
+    if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
+      window.addEventListener("deviceorientation", handleOrientation);
+    }
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener("deviceorientation", handleOrientation);
+      }
+    };
+  }, [x, y]);
 
   const qrValue = JSON.stringify({ type: "himasti_kta", nim, name });
 
@@ -139,7 +181,9 @@ export default function DigitalKTA({
           ref={ref}
           onClick={() => setIsZoomed(true)}
           onMouseMove={(e) => handleMouseMove(e, ref)}
+          onTouchMove={(e) => handleTouchMove(e, ref)}
           onMouseLeave={handleMouseLeave}
+          onTouchEnd={handleMouseLeave}
           style={{
             rotateX,
             rotateY,
@@ -182,7 +226,9 @@ export default function DigitalKTA({
                   exit={{ scale: 0.8, opacity: 0, y: 40 }}
                   transition={{ type: "spring", damping: 30, stiffness: 200 }}
                   onMouseMove={(e) => handleMouseMove(e, zoomRef)}
+                  onTouchMove={(e) => handleTouchMove(e, zoomRef)}
                   onMouseLeave={handleMouseLeave}
+                  onTouchEnd={handleMouseLeave}
                   style={{
                     rotateX,
                     rotateY,
