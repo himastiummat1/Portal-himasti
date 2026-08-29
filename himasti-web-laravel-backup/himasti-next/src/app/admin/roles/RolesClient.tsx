@@ -85,10 +85,10 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                       </div>
                     </td>
                     <td className="px-6 py-4 text-gray-600 font-mono text-xs">
-                      {u.DataKader[0] ? (
+                      {u.data_kader ? (
                         <>
-                          <div className="font-medium text-gray-900">{u.DataKader[0].nim}</div>
-                          <div>Angkatan {u.DataKader[0].angkatan}</div>
+                          <div className="font-medium text-gray-900">{u.data_kader.nim}</div>
+                          <div>Angkatan {u.data_kader.angkatan}</div>
                         </>
                       ) : (
                         <span className="text-gray-400 italic">Belum melengkapi data</span>
