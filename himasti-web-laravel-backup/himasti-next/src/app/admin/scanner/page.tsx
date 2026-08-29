@@ -1,8 +1,7 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import dynamic from "next/dynamic";
-const ScannerClient = dynamic(() => import("./ScannerClient"), { ssr: false });
+import ScannerWrapper from "./ScannerWrapper";
 
 export const metadata = {
   title: "Live Scanner Absensi - HIMASTI",
@@ -18,5 +17,5 @@ export default async function ScannerPage() {
     orderBy: { event_date: 'asc' }
   });
 
-  return <ScannerClient meetings={activeMeetings} />;
+  return <ScannerWrapper meetings={activeMeetings} />;
 }
