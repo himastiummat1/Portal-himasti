@@ -3,7 +3,7 @@
 import { useRef } from "react";
 import { motion, useMotionValue, useSpring, useTransform } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { Hexagon, Sparkles } from "lucide-react";
+import { Command } from "lucide-react";
 
 export default function DigitalKTA({ 
   name, nim, email, angkatan 
@@ -17,8 +17,8 @@ export default function DigitalKTA({
   const mouseXSpring = useSpring(x, { stiffness: 300, damping: 30 });
   const mouseYSpring = useSpring(y, { stiffness: 300, damping: 30 });
 
-  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["15deg", "-15deg"]);
-  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-15deg", "15deg"]);
+  const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["10deg", "-10deg"]);
+  const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-10deg", "10deg"]);
   const glareX = useTransform(mouseXSpring, [-0.5, 0.5], ["100%", "0%"]);
   const glareY = useTransform(mouseYSpring, [-0.5, 0.5], ["100%", "0%"]);
 
@@ -42,7 +42,6 @@ export default function DigitalKTA({
     y.set(0);
   };
 
-  // The QR Code contains a JSON string or just the NIM for scanning
   const qrValue = JSON.stringify({ type: "himasti_kta", nim, name });
 
   return (
@@ -59,66 +58,67 @@ export default function DigitalKTA({
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="w-full relative aspect-[1.6/1] rounded-2xl overflow-hidden cursor-crosshair border border-slate-700 shadow-2xl transition-shadow duration-300 group-hover:shadow-[0_0_40px_rgba(14,165,233,0.3)] bg-gradient-to-br from-slate-900 to-black p-5"
+        className="w-full relative aspect-[1.6/1] rounded-xl overflow-hidden cursor-crosshair border border-slate-200 bg-white p-5 md:p-6 shadow-[0_8px_30px_rgb(0,0,0,0.04)] hover:shadow-[0_8px_40px_rgb(0,0,0,0.08)] transition-shadow duration-300 flex flex-col justify-between"
       >
-        {/* Hologram Glare Effect */}
+        {/* Subtle Glare - using strict white/gray instead of glowing neon */}
         <motion.div
-          className="pointer-events-none absolute inset-0 z-50 rounded-2xl"
+          className="pointer-events-none absolute inset-0 z-50 rounded-xl"
           style={{
-            background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%)",
+            background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.8) 0%, transparent 50%)",
             left: glareX,
             top: glareY,
             transform: "translate(-50%, -50%)",
             width: "200%",
             height: "200%",
-            mixBlendMode: "overlay"
+            mixBlendMode: "soft-light"
           }}
         />
 
-        {/* Cyberpunk Grid Background */}
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:16px_16px] pointer-events-none" style={{ transform: "translateZ(-10px)" }}></div>
-        
         {/* Top Header */}
-        <div className="flex justify-between items-start relative z-10" style={{ transform: "translateZ(30px)" }}>
+        <div className="flex justify-between items-start w-full relative z-10" style={{ transform: "translateZ(20px)" }}>
           <div className="flex items-center gap-2">
-            <Hexagon className="w-6 h-6 text-sky-400 fill-sky-400/20" />
-            <div className="font-black text-white tracking-tight uppercase leading-none">
-              HIMASTI
-              <span className="block text-[8px] text-sky-400 tracking-widest mt-0.5">MEMBER CARD</span>
+            <div className="w-8 h-8 bg-slate-900 text-white flex items-center justify-center rounded-md">
+              <Command className="w-4 h-4" />
+            </div>
+            <div>
+              <div className="font-bold text-slate-900 tracking-tight leading-none text-sm md:text-base">HIMASTI</div>
+              <div className="text-[10px] text-slate-500 font-mono tracking-widest mt-0.5 uppercase">Member Card</div>
             </div>
           </div>
-          <div className="bg-sky-500/10 border border-sky-500/30 px-2 py-0.5 rounded text-[9px] font-mono font-bold text-sky-400 flex items-center gap-1 shadow-[0_0_10px_rgba(14,165,233,0.2)]">
-            <Sparkles className="w-3 h-3" /> VERIFIED
+          <div className="px-2 py-1 bg-slate-100 border border-slate-200 rounded text-[10px] font-mono font-bold text-slate-600">
+            ACTIVE
           </div>
         </div>
 
         {/* Middle Content */}
-        <div className="mt-6 relative z-10 flex justify-between items-end" style={{ transform: "translateZ(50px)" }}>
-          <div>
-            <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest mb-1">NAMA KADER</div>
-            <div className="text-xl font-bold text-white leading-none tracking-tight">{name}</div>
+        <div className="flex gap-4 items-end justify-between w-full relative z-10 mt-6" style={{ transform: "translateZ(30px)" }}>
+          <div className="flex-1 min-w-0">
+            <div className="mb-4">
+              <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest mb-1">IDENTITAS</div>
+              <div className="text-xl md:text-2xl font-bold text-slate-900 leading-none truncate w-full">{name}</div>
+            </div>
             
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-6">
               <div>
-                <div className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mb-0.5">NIM</div>
-                <div className="text-sm font-mono font-bold text-sky-400">{nim}</div>
+                <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest mb-0.5">NIM</div>
+                <div className="text-sm font-mono font-bold text-slate-700">{nim}</div>
               </div>
               <div>
-                <div className="text-[9px] text-slate-400 font-mono uppercase tracking-widest mb-0.5">ANGKATAN</div>
-                <div className="text-sm font-mono font-bold text-sky-400">{angkatan}</div>
+                <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest mb-0.5">ANGKATAN</div>
+                <div className="text-sm font-mono font-bold text-slate-700">{angkatan}</div>
               </div>
             </div>
           </div>
 
-          <div className="p-1.5 bg-white rounded-lg shadow-[0_0_20px_rgba(255,255,255,0.2)]" style={{ transform: "translateZ(60px)" }}>
-            <QRCodeSVG value={qrValue} size={64} level="H" className="rounded-sm" />
+          <div className="p-2 border border-slate-200 rounded-lg bg-white shrink-0" style={{ transform: "translateZ(40px)" }}>
+            <QRCodeSVG value={qrValue} size={72} level="H" />
           </div>
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-4 left-5 right-5 flex justify-between items-end border-t border-slate-700/50 pt-2 z-10" style={{ transform: "translateZ(20px)" }}>
-          <div className="text-[8px] text-slate-500 font-mono">{email}</div>
-          <div className="text-[8px] text-slate-500 font-mono uppercase">ID-{nim.substring(0,6)}</div>
+        <div className="w-full flex flex-col md:flex-row justify-between items-start md:items-end border-t border-slate-100 pt-3 relative z-10 gap-2 mt-4" style={{ transform: "translateZ(10px)" }}>
+          <div className="text-[10px] text-slate-500 font-mono truncate w-full max-w-[200px]">{email}</div>
+          <div className="text-[10px] text-slate-400 font-mono uppercase shrink-0">ID-{nim.substring(0,8)}</div>
         </div>
       </motion.div>
     </div>
