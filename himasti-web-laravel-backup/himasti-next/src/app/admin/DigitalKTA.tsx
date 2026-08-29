@@ -83,7 +83,7 @@ export default function DigitalKTA({
       <div className={`flex justify-between items-start w-full relative z-10`} style={{ transform: "translateZ(30px)" }}>
         <div className="flex items-center gap-2 md:gap-3">
           <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-8 h-8 rounded-lg'} bg-white flex items-center justify-center shadow-sm p-1 overflow-hidden`}>
-            <Image src="/images/logo-himasti.png" alt="Logo HIMASTI" width={60} height={60} className="w-full h-full object-contain" />
+            <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={60} height={60} className="w-full h-full object-contain" />
           </div>
           <div>
             <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl md:text-3xl' : 'text-base'}`}>HIMASTI</div>
