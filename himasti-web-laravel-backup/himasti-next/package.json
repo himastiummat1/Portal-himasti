@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "prisma generate && next build",
+    "build": "npm install --prefer-offline && prisma generate && next build",
     "start": "next start",
     "lint": "eslint"
   },
@@ -15,6 +15,7 @@
     "cheerio": "^1.2.0",
     "framer-motion": "^13.1.1",
     "groq-sdk": "^1.6.0",
+    "html5-qrcode": "^2.3.8",
     "lucide-react": "^1.34.0",
     "next": "16.3.3",
     "next-auth": "^5.0.0-beta.32",
