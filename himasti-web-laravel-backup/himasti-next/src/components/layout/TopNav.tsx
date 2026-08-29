@@ -213,11 +213,11 @@ export default function TopNav({
                 </div>
               ))}
               
-              <div className="border-t border-slate-100 mt-2 pt-2 flex items-center gap-2 px-2">
-                <Link href="/admin/profil" onClick={() => setMobileMenuOpen(false)} className="flex-1 flex justify-center items-center gap-2 py-2 text-sm text-slate-600 bg-slate-50 rounded-lg">
-                  <User className="w-4 h-4" /> Profil
+              <div className="border-t border-slate-100 mt-2 pt-2 flex flex-col gap-2 px-2">
+                <Link href="/admin/profil" onClick={() => setMobileMenuOpen(false)} className="w-full flex justify-center items-center gap-2 py-3 text-sm font-bold text-slate-600 bg-slate-50 hover:bg-slate-100 rounded-xl transition-colors">
+                  <User className="w-4 h-4" /> Profil Saya
                 </Link>
-                <button onClick={() => signOut({ callbackUrl: "/login" })} className="flex-1 flex justify-center items-center gap-2 py-2 text-sm text-red-600 bg-red-50 rounded-lg">
+                <button onClick={() => signOut({ callbackUrl: "/login" })} className="w-full flex justify-center items-center gap-2 py-3 text-sm font-bold text-red-600 bg-red-50 hover:bg-red-100 rounded-xl transition-colors">
                   <LogOut className="w-4 h-4" /> Keluar
                 </button>
               </div>
