@@ -107,6 +107,25 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
+        
+        {/* Digital KTA (Moved to top for mobile visibility) */}
+        <div className="mb-6">
+          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-3xl p-6">
+            <h3 className="text-sm font-bold text-slate-800 mb-6 flex items-center gap-2">
+              <Shield className="w-4 h-4 text-slate-500" /> Kartu Tanda Anggota Digital
+            </h3>
+            <div className="max-w-2xl mx-auto">
+              <DigitalKTA 
+                name={userName}
+                nim={kaderData?.nim || "KADER-GUEST"}
+                email={session?.user?.email || ""}
+                angkatan={kaderData?.angkatan || new Date().getFullYear().toString()}
+              />
+            </div>
+            <p className="text-xs text-center text-slate-500 mt-6 font-medium">Klik kartu untuk memperbesar. Arahkan kursor untuk efek 3D hologram.</p>
+          </div>
+        </div>
+        
         {/* Kader Grid Features */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-2xl p-6">
@@ -318,20 +337,6 @@ export default async function AdminDashboard() {
 
         {/* Right Column (User & Logs) */}
         <div className="space-y-6">
-          
-          {/* Digital KTA */}
-          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-3xl p-6">
-            <h3 className="text-sm font-bold text-slate-800 mb-6 flex items-center gap-2">
-              <Shield className="w-4 h-4 text-slate-500" /> Kartu Tanda Anggota
-            </h3>
-            <DigitalKTA 
-              name={userName}
-              nim={kaderData?.nim || "KADER-GUEST"}
-              email={session?.user?.email || ""}
-              angkatan={kaderData?.angkatan || new Date().getFullYear().toString()}
-            />
-            <p className="text-xs text-center text-slate-500 mt-6 font-medium">Arahkan kursor untuk melihat efek 3D hologram.</p>
-          </div>
 
           {/* Dewa Kode Leaderboard */}
           <div className="bg-white border border-slate-200 rounded-3xl p-6 shadow-sm relative overflow-hidden">
