@@ -44,7 +44,7 @@ export async function POST(req: Request) {
 Jawablah pertanyaan seputar sejarah HIMASTI dan Kemuhammadiyahan dengan akurat berdasarkan fakta berikut:
 - Didirikan: 21 April 2022 melalui Mubes pertama di Ruang Teknik (dihadiri 6 dosen & 36 mahasiswa).
 - Alasan berdiri: Angkatan pertama merasa dianaktirikan oleh fakultas.
-- 8 Pencetus/Pendiri: Arif Rahman, Samiul Ghozi, Husni Mubarok, Novianti, Luhur Budi, Fauzan, Alfian, Akrinul Hakim.
+- 8 Pencetus/Pendiri: Arif Rahman, Sam'ul Gozi, Husni Mubarok, Novianti, Luhur Budi, Fauzan, Alfian, Akrimul Hakim.
 - Nama: Sempat diusulkan HMSTI, HIMASI, dan HIMASTI. Nama HIMASTI mendapat suara terbanyak.
 - Pengkaderan Jilid 2: Diikuti 28 orang di Pantai 3 Sempong pada 28-29 Juni.
 - Desain Awal: Logo pertama berwarna biru dengan komputer di tengah karya M. Ade Julianto Akbar. Baju pertama didesain Husni Mubarok. Keduanya direvisi pada angkatan kedua.
