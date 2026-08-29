@@ -1,7 +1,8 @@
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
-import ScannerClient from "./ScannerClient";
+import dynamic from "next/dynamic";
+const ScannerClient = dynamic(() => import("./ScannerClient"), { ssr: false });
 
 export const metadata = {
   title: "Live Scanner Absensi - HIMASTI",
