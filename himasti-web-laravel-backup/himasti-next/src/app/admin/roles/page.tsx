@@ -33,7 +33,11 @@ export default async function RolesPage() {
 
   const users = await prisma.user.findMany({
     include: {
-      roles: true,
+      roles: {
+        include: {
+          role: true
+        }
+      },
       data_kader: true
     },
     orderBy: { created_at: 'desc' }
