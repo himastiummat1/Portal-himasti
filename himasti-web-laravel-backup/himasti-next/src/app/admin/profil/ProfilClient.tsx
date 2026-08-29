@@ -66,9 +66,7 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
         {/* Left Column: Read-only Data */}
         <div className="col-span-1 space-y-4">
           <div className="bg-white border border-gray-200 p-6">
-            <div className="w-20 h-20 bg-gray-100 border border-gray-200 mx-auto flex items-center justify-center text-2xl font-mono font-bold mb-4">
-              {initialData.name.charAt(0)}
-            </div>
+            <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(initialData.name)}`} alt="Avatar" className="w-20 h-20 bg-gray-100 border border-gray-200 mx-auto mb-4" />
             <div className="text-center mb-6">
               <h3 className="font-bold text-gray-900">{initialData.name}</h3>
               <p className="text-xs font-mono text-gray-500 mt-1">{initialData.roles}</p>

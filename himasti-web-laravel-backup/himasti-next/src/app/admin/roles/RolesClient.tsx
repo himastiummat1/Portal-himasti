@@ -75,9 +75,7 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                   <tr key={u.id} className="hover:bg-gray-50/50 transition-colors">
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 flex items-center justify-center text-gray-500 font-bold shrink-0">
-                          {u.name.charAt(0).toUpperCase()}
-                        </div>
+                        <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(u.name)}`} alt="Avatar" className="w-10 h-10 rounded-full bg-gray-100 border border-gray-200 shrink-0" />
                         <div>
                           <div className="font-semibold text-gray-900">{u.name}</div>
                           <div className="text-gray-500 text-xs">{u.email}</div>

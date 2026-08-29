@@ -118,9 +118,7 @@ export default function KatalogKaryaClient({ records, isExecutive, userName }: {
                     {work.title}
                   </h3>
                   <div className="flex items-center gap-2 mt-2">
-                    <div className="w-5 h-5 bg-gradient-to-br from-slate-200 to-slate-300 rounded-full flex items-center justify-center text-[8px] font-bold text-slate-600">
-                      {work.student_name.charAt(0)}
-                    </div>
+                    <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(work.student_name)}`} alt="Avatar" className="w-5 h-5 rounded-full shadow-sm bg-slate-100" />
                     <p className="text-xs font-semibold text-slate-500 uppercase tracking-wider">{work.student_name}</p>
                   </div>
                   

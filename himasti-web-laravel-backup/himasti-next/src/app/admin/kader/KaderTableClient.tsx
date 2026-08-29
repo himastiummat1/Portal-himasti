@@ -174,9 +174,7 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
             {/* Content Modal */}
             <form onSubmit={handleUpdate} className="p-6 overflow-y-auto max-h-[70vh]">
               <div className="flex items-start gap-6 mb-8">
-                <div className="w-24 h-24 bg-gray-50 rounded-2xl border border-gray-200/50 flex flex-col items-center justify-center text-gray-900 shadow-sm shrink-0">
-                  <span className="text-3xl font-black">{selectedKader.nama.charAt(0)}</span>
-                </div>
+                <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(selectedKader.nama)}`} alt="Avatar" className="w-24 h-24 rounded-2xl border border-gray-200/50 shadow-sm shrink-0 bg-gray-50" />
                 <div className="space-y-1 w-full">
                   <h2 className="text-2xl font-bold text-gray-900">{selectedKader.nama}</h2>
                   <div className="flex flex-wrap gap-2 items-center mt-2">

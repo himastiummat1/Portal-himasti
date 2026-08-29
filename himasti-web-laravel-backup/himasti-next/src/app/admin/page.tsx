@@ -82,9 +82,7 @@ export default async function AdminDashboard() {
           <div className="absolute top-0 right-0 w-64 h-64 bg-gray-100/50 rounded-full blur-3xl -mr-20 -mt-20"></div>
           
           <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <div className="w-24 h-24 bg-gray-100 border-2 border-white shadow-sm rounded-full flex items-center justify-center text-gray-900 font-mono text-3xl font-bold shrink-0">
-              {userName.charAt(0)}
-            </div>
+            <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(userName)}`} alt="Avatar" className="w-24 h-24 bg-gray-100 border-2 border-white shadow-sm rounded-full shrink-0" />
             <div className="flex-1 text-center md:text-left space-y-4">
               <div>
                 <h2 className="text-2xl font-bold text-slate-800">{userName}</h2>
