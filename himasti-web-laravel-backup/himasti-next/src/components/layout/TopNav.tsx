@@ -1,3 +1,4 @@
+import Image from "next/image";
 "use client";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
@@ -59,7 +60,7 @@ export default function TopNav({
             
             <div className="flex items-center h-full" ref={navRef}>
               <Link href="/admin" className="font-bold text-lg text-slate-900 mr-8 tracking-tight flex items-center gap-2">
-                <div className="w-6 h-6 bg-slate-900 text-white rounded-md flex items-center justify-center text-xs">H</div>
+                <Image src="/images/logo-himasti.png" alt="Logo HIMASTI" width={24} height={24} className="w-6 h-6 object-contain" />
                 HIMASTI
               </Link>
               
