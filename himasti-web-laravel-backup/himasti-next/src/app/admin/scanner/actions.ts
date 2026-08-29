@@ -19,7 +19,7 @@ export async function scanKtaAbsen(meetingId: number, nim: string) {
     if (!meeting || !meeting.is_active) return { success: false, error: "Rapat tidak aktif atau tidak ditemukan." };
 
     // Check if already attended
-    const existing = await prisma.attendance.findFirst({
+    const existing = await prisma.meetingAttendance.findFirst({
       where: { meeting_id: meetingId, user_id: kader.user_id }
     });
 
@@ -27,7 +27,7 @@ export async function scanKtaAbsen(meetingId: number, nim: string) {
       return { success: false, error: "Kader ini sudah melakukan absensi sebelumnya." };
     }
 
-    await prisma.attendance.create({
+    await prisma.meetingAttendance.create({
       data: {
         meeting_id: meetingId,
         user_id: kader.user_id,

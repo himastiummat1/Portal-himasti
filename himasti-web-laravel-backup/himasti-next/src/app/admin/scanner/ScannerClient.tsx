@@ -48,7 +48,7 @@ export default function ScannerClient({ meetings }: { meetings: any[] }) {
               if (res.success) {
                 setScanResult({ status: 'success', msg: 'Absensi Berhasil!', name: res.name });
               } else {
-                setScanResult({ status: 'error', msg: res.error });
+                setScanResult({ status: 'error', msg: res.error || "Gagal memverifikasi KTA." });
               }
             } else {
               setScanResult({ status: 'error', msg: "QR Code tidak valid (Bukan KTA HIMASTI)." });
