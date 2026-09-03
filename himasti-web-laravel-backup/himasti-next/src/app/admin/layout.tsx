@@ -77,6 +77,14 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   }
   if (groupDivisi.links.length > 0) groups.push(groupDivisi);
 
+  // Group Keamanan & Tata Kelola Enterprise (Super Admin)
+  if (isSuperAdmin) {
+    const groupSecurity = { title: "Keamanan & Audit", links: [] as any[] };
+    groupSecurity.links.push({ href: "/admin/roles", label: "Hak Akses (RBAC)" });
+    groupSecurity.links.push({ href: "/admin/audit-logs", label: "Audit Logs" });
+    groups.push(groupSecurity);
+  }
+
 
   return (
     <div className="min-h-screen bg-[#f8fafc]  selection:bg-gray-200 selection:text-gray-900">

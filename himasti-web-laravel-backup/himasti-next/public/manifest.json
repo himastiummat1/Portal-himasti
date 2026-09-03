@@ -1,0 +1,36 @@
+{
+  "name": "Portal Digital HIMASTI UMMAT",
+  "short_name": "HIMASTI",
+  "description": "Sistem Informasi, Presensi Hardware FIDO2, dan Bank Modul IT HIMASTI",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0f172a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/logo_himasti.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "/images/logo_himasti.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Presensi FIDO2",
+      "url": "/absen",
+      "description": "Buka scanner absensi biometrik & offline"
+    },
+    {
+      "name": "Bank Modul IT",
+      "url": "/admin/modul",
+      "description": "Buka materi kurikulum perkuliahan"
+    }
+  ]
+}

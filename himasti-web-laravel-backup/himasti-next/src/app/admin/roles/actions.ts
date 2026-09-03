@@ -34,6 +34,17 @@ export async function updateUserRole(userId: number, newRoleId: number) {
     }
   });
 
+  // Enterprise Audit Logging
+  const { logAuditEvent } = await import("@/lib/audit-log");
+  await logAuditEvent({
+    userId: adminId,
+    userName: session.user?.name || "Admin",
+    action: "ASSIGN_ROLE",
+    targetResource: `user:${userId}`,
+    details: { targetUserId: userId, newRoleId },
+    status: "success"
+  });
+
   revalidatePath("/admin/roles");
   return { success: true };
 }

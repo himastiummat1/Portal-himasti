@@ -27,13 +27,23 @@ export async function addKeuangan(formData: FormData) {
   }
 
   try {
-    await prisma.keuangan.create({
+    const record = await prisma.keuangan.create({
       data: {
         tipe,
         nominal,
         tanggal: new Date(tanggalStr),
         keterangan,
       }
+    });
+
+    const { logAuditEvent } = await import("@/lib/audit-log");
+    await logAuditEvent({
+      userId,
+      userName: session.user?.name || "Bendahara",
+      action: "CREATE_KEUANGAN",
+      targetResource: `keuangan:${record.id}`,
+      details: { tipe, nominal, keterangan, tanggal: tanggalStr },
+      status: "success"
     });
 
     revalidatePath("/admin/keuangan");
@@ -77,6 +87,16 @@ export async function updateKeuangan(id: number, formData: FormData) {
       }
     });
 
+    const { logAuditEvent } = await import("@/lib/audit-log");
+    await logAuditEvent({
+      userId,
+      userName: session.user?.name || "Bendahara",
+      action: "UPDATE_KEUANGAN",
+      targetResource: `keuangan:${id}`,
+      details: { id, tipe, nominal, keterangan, tanggal: tanggalStr },
+      status: "success"
+    });
+
     revalidatePath("/admin/keuangan");
     return { success: true };
   } catch (error) {
@@ -95,6 +115,17 @@ export async function deleteKeuangan(id: number) {
 
   try {
     await prisma.keuangan.delete({ where: { id } });
+
+    const { logAuditEvent } = await import("@/lib/audit-log");
+    await logAuditEvent({
+      userId,
+      userName: session.user?.name || "Bendahara",
+      action: "DELETE_KEUANGAN",
+      targetResource: `keuangan:${id}`,
+      details: { deletedId: id },
+      status: "success"
+    });
+
     revalidatePath("/admin/keuangan");
     return { success: true };
   } catch (error) {

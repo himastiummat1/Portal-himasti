@@ -374,3 +374,21 @@ model OfflineSyncLog {
   @@map("offline_sync_logs")
 }
 
+model AuditLog {
+  id              Int       @id @default(autoincrement())
+  user_id         Int?
+  user_name       String?
+  action          String    // e.g. "UPDATE_KADER", "CREATE_KEUANGAN", "ASSIGN_ROLE", "SECURITY_ALERT"
+  target_resource String    // e.g. "kader:12", "keuangan:4", "role:super_admin"
+  details         String?   @db.Text
+  ip_address      String?
+  user_agent      String?
+  status          String    @default("success") // "success" | "denied" | "failed"
+  created_at      DateTime  @default(now())
+
+  @@index([user_id], map: "idx_audit_user_id")
+  @@index([action], map: "idx_audit_action")
+  @@map("audit_logs")
+}
+
+
