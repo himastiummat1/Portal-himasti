@@ -4,7 +4,7 @@ import Link from "next/link";
 import { 
   Users, FileText, Database, Shield, BookOpen, 
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
-  Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid
+  Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid, Cpu
 } from "lucide-react";
 import TerminalEasterEgg from "./TerminalEasterEgg";
 import HackerMode from "./HackerMode";
@@ -166,6 +166,11 @@ export default async function AdminDashboard() {
                 <Code className="w-6 h-6 text-slate-400 mx-auto mb-2 group-hover:text-gray-900 transition-colors" />
                 <span className="text-xs font-semibold text-slate-700">Dev Tools</span>
               </Link>
+              <Link href="/admin/mcp-hub" className="p-4 border border-violet-100 bg-violet-50/40 rounded-xl hover:bg-violet-50 hover:border-violet-300 transition-colors group text-center relative overflow-hidden">
+                <div className="absolute top-1.5 right-1.5 px-1.5 py-0.5 rounded-full bg-violet-600 text-white text-[8px] font-mono font-bold tracking-widest">2026</div>
+                <Cpu className="w-6 h-6 text-violet-600 mx-auto mb-2 group-hover:scale-110 transition-transform" />
+                <span className="text-xs font-bold text-slate-800">MCP & Prompts</span>
+              </Link>
             </div>
           </div>
 
@@ -320,6 +325,7 @@ export default async function AdminDashboard() {
                 { title: "Administrasi Persuratan", desc: "Sistem penomoran surat otomatis & arsip digital", href: "/admin/surat", reqSuper: false },
                 { title: "Manajemen Keuangan", desc: "Laporan kas, donasi, dan transparansi anggaran", href: "/admin/keuangan", reqSuper: false },
                 { title: "Bank Modul IT", desc: "Akses materi perkuliahan dan kurikulum himpunan", href: "/admin/modul", reqSuper: false },
+                { title: "MCP & Prompt Engineering Hub", desc: "Katalog Model Context Protocol dan System Prompts untuk AI Agents", href: "/admin/mcp-hub", reqSuper: false },
                 { title: "Manajemen Hak Akses (RBAC)", desc: "Pengaturan permissions dan delegasi peran", href: "/admin/roles", reqSuper: true },
                 { title: "Developer Tools", desc: "Utilitas ringan (JSON, Base64, Hash) untuk mempermudah coding", href: "/admin/devtools", reqSuper: false },
               ].map((mod, i) => {

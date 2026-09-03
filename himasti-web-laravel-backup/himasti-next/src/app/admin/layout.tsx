@@ -62,6 +62,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (canAccessArtikel) groupAkademik.links.push({ href: "/admin/artikel", label: "Artikel Web" });
   if (canAccessAkademik) {
     groupAkademik.links.push({ href: "/admin/modul", label: "Bank Modul" });
+    groupAkademik.links.push({ href: "/admin/mcp-hub", label: "MCP & Prompt Hub" });
     groupAkademik.links.push({ href: "/admin/devtools", label: "DevTools" });
     groupAkademik.links.push({ href: "/admin/karya", label: "Katalog Karya" });
     groupAkademik.links.push({ href: "/admin/lomba", label: "Info Lomba" });
