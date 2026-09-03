@@ -50,7 +50,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (canAccessKader) groupUtama.links.push({ href: "/admin/kader", label: "Data Kader" });
   if (canAccessKeuangan) groupUtama.links.push({ href: "/admin/keuangan", label: "Keuangan" });
   if (canAccessSurat) groupUtama.links.push({ href: "/admin/surat", label: "Surat" });
-  if (canAccessRapat) groupUtama.links.push({ href: "/admin/rapat", label: "Rapat & Notulensi" });
+  if (canAccessRapat) {
+    groupUtama.links.push({ href: "/admin/rapat", label: "Rapat & Notulensi" });
+    groupUtama.links.push({ href: "/absen", label: "Presensi & Biometrik" });
+    groupUtama.links.push({ href: "/admin/scanner", label: "Scanner KTA Panitia" });
+  }
   if (groupUtama.links.length > 0) groups.push(groupUtama);
 
   // Group Akademik

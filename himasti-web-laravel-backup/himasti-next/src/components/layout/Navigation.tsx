@@ -14,7 +14,8 @@ export function Navigation() {
   }
 
   const navLinks = [
-    { name: "Portal Admin", href: "/admin/kader" }, // Redirects them to the right place
+    { name: "Presensi & Scanner", href: "/absen" },
+    { name: "Portal Admin", href: "/admin/kader" },
     { name: "Beranda Publik", href: "/" },
   ];
 
