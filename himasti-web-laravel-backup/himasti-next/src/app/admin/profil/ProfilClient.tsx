@@ -685,12 +685,12 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
                 {/* Header */}
                 <div className="flex items-center justify-between pb-4 border-b border-white/10">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center font-black text-white text-xs">
+                    <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center font-black text-white text-xs shadow-md">
                       H
                     </div>
                     <div>
-                      <h4 className="text-xs font-bold tracking-wider uppercase">HIMASTI UMMAT</h4>
-                      <p className="text-[10px] text-slate-400 font-mono">Himpunan Mahasiswa Teknologi Informasi</p>
+                      <h4 className="text-xs font-bold tracking-wider uppercase text-white">HIMASTI UMMAT</h4>
+                      <p className="text-[10px] text-slate-400 font-mono">Himpunan Mahasiswa Sistem & Teknologi Informasi</p>
                     </div>
                   </div>
                   <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 font-bold">
@@ -701,14 +701,29 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
                 {/* Body with Avatar */}
                 <div className="flex items-center gap-4 py-5">
                   <div className="relative w-16 h-16 shrink-0">
+                    {previewStyle.frameId === "royal_gold" && (
+                      <div className="absolute -top-2 -right-1 z-20 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 p-0.5 rounded-full border border-white">
+                        <Crown className="w-2.5 h-2.5 fill-slate-950" />
+                      </div>
+                    )}
+                    {previewStyle.frameId === "cyber_neon" && (
+                      <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-400 to-pink-500 animate-spin [animation-duration:3s]" />
+                    )}
+                    {previewStyle.frameId === "matrix_emerald" && (
+                      <div className="absolute -inset-1 rounded-full bg-emerald-400/80 animate-pulse" />
+                    )}
                     <img 
                       src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(initialData.name)}`} 
                       alt="Avatar" 
-                      className="w-full h-full object-cover rounded-2xl bg-slate-900 border border-white/20 shadow-md"
+                      className={`relative z-10 w-full h-full object-cover rounded-full bg-slate-900 border-2 ${
+                        previewStyle.frameId === "matrix_emerald" ? "border-emerald-400" :
+                        previewStyle.frameId === "royal_gold" ? "border-amber-400" :
+                        previewStyle.frameId === "flame_phoenix" ? "border-orange-400" : "border-white/40"
+                      } shadow-md`}
                     />
                   </div>
                   <div>
-                    <h5 className="text-base font-black text-white leading-tight">{initialData.name}</h5>
+                    <h5 className={`text-base font-black leading-tight ${getNameClasses(previewStyle.nameEffectId)}`}>{initialData.name}</h5>
                     <div className="inline-flex items-center gap-1 mt-1 text-[11px] font-mono text-amber-300 font-bold">
                       <Star className="w-3 h-3 fill-amber-300" />
                       <span>{currentTitle.name}</span>

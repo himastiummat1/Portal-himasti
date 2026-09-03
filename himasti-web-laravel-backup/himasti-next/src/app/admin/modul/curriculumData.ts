@@ -381,7 +381,7 @@ Penggunaan utility-first CSS seperti Tailwind menghilangkan kebutuhan penulisan 
 \`\`\`html
 <div class="max-w-md mx-auto p-6 bg-white rounded-2xl shadow-lg border border-slate-100 flex items-center space-x-4">
   <div class="text-violet-600 font-bold text-lg">HIMASTI</div>
-  <p class="text-slate-500 text-sm">Portal Resmi Mahasiswa Teknologi Informasi</p>
+  <p class="text-slate-500 text-sm">Portal Resmi Mahasiswa Sistem & Teknologi Informasi</p>
 </div>
 \`\`\``
           },
