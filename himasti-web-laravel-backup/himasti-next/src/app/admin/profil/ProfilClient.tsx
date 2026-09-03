@@ -284,6 +284,19 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
           
           <div className={`p-5 sm:p-6 relative overflow-hidden transition-all duration-300 rounded-3xl ${getThemeClasses(previewStyle.themeId, isSuper)}`}>
             
+            {/* Animated Cyber & Holographic Ambient Background Layers */}
+            {isDarkCard && (
+              <>
+                <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-25 animate-grid-pan" />
+                <div className="pointer-events-none absolute inset-0 opacity-30 animate-holo-foil mix-blend-color-dodge bg-gradient-to-tr from-transparent via-cyan-500/20 to-transparent" />
+                <div className="pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-[0_0_12px_#22d3ee] animate-scan-sweep z-0" />
+                <div className="pointer-events-none absolute top-4 right-1/4 w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#22d3ee] animate-particle-1" />
+                <div className="pointer-events-none absolute bottom-8 left-1/4 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_8px_#f59e0b] animate-particle-2" />
+                <div className="absolute -top-12 -right-12 w-44 h-44 bg-cyan-500/15 rounded-full blur-3xl animate-cyber-pulse pointer-events-none" />
+                <div className="absolute -bottom-12 -left-12 w-44 h-44 bg-violet-600/20 rounded-full blur-3xl animate-cyber-pulse [animation-delay:1.5s] pointer-events-none" />
+              </>
+            )}
+
             {/* Super Admin Ambient Elements if Root */}
             {isSuper && (
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -648,6 +661,7 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
                   frameId={previewStyle.frameId}
                   title={currentTitle.name}
                   nameEffectId={previewStyle.nameEffectId}
+                  themeId={previewStyle.themeId}
                 />
               </div>
 

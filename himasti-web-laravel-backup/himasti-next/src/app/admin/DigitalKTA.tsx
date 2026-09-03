@@ -5,14 +5,15 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { Command, X, Star } from "lucide-react";
+import { Command, X, Star, Cpu, Wifi, Sparkles } from "lucide-react";
 import { CosmeticAvatar, getNameClasses } from "@/components/profile/CosmeticAvatar";
 
 export default function DigitalKTA({ 
   name, nim, email, angkatan,
   frameId = "none",
   title = "Kader Aktif",
-  nameEffectId = "plain"
+  nameEffectId = "plain",
+  themeId = "default"
 }: { 
   name: string; 
   nim: string; 
@@ -21,6 +22,7 @@ export default function DigitalKTA({
   frameId?: string;
   title?: string;
   nameEffectId?: string;
+  themeId?: string;
 }) {
   const [isZoomed, setIsZoomed] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -74,17 +76,12 @@ export default function DigitalKTA({
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null || e.beta === null) return;
       
-      // gamma is left/right tilt (-90 to 90)
-      // beta is front/back tilt (-180 to 180)
-      // We map these to our -0.5 to 0.5 scale
       let tiltX = e.gamma / 45; 
       let tiltY = (e.beta - 45) / 45; 
       
       tiltX = Math.max(-1, Math.min(1, tiltX));
       tiltY = Math.max(-1, Math.min(1, tiltY));
 
-      // Only apply gyroscope if we're on a mobile device (touch capable)
-      // This prevents desktop laptops with gyro from weird behaviors
       if (typeof window !== 'undefined' && ('ontouchstart' in window)) {
         x.set(tiltX * 0.5);
         y.set(tiltY * 0.5);
@@ -117,12 +114,101 @@ export default function DigitalKTA({
     };
   }, [isZoomed]);
 
+  const getThemeGlows = (tId: string) => {
+    switch (tId) {
+      case "emerald_matrix":
+        return {
+          glow1: "bg-emerald-500/30",
+          glow2: "bg-teal-500/25",
+          glow3: "bg-emerald-400/20",
+          laser: "via-emerald-400 shadow-[0_0_15px_#10b981]",
+          border: "border-emerald-500/50 shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:shadow-[0_0_60px_rgba(16,185,129,0.5)]",
+          accentColor: "text-emerald-300",
+          sparkColor: "bg-emerald-400 shadow-[0_0_8px_#10b981]"
+        };
+      case "cosmic_violet":
+        return {
+          glow1: "bg-purple-600/35",
+          glow2: "bg-pink-600/30",
+          glow3: "bg-indigo-500/25",
+          laser: "via-purple-400 shadow-[0_0_15px_#c084fc]",
+          border: "border-purple-500/50 shadow-[0_0_40px_rgba(168,85,247,0.3)] hover:shadow-[0_0_60px_rgba(168,85,247,0.5)]",
+          accentColor: "text-purple-300",
+          sparkColor: "bg-pink-400 shadow-[0_0_8px_#f472b6]"
+        };
+      case "cyber_city":
+        return {
+          glow1: "bg-cyan-500/35",
+          glow2: "bg-rose-500/30",
+          glow3: "bg-amber-400/20",
+          laser: "via-cyan-400 shadow-[0_0_15px_#22d3ee]",
+          border: "border-cyan-500/50 shadow-[0_0_40px_rgba(6,182,212,0.35)] hover:shadow-[0_0_60px_rgba(6,182,212,0.55)]",
+          accentColor: "text-cyan-300",
+          sparkColor: "bg-cyan-300 shadow-[0_0_8px_#22d3ee]"
+        };
+      case "dark_obsidian":
+        return {
+          glow1: "bg-slate-700/35",
+          glow2: "bg-indigo-950/45",
+          glow3: "bg-slate-600/20",
+          laser: "via-slate-300 shadow-[0_0_15px_#cbd5e1]",
+          border: "border-slate-700/70 shadow-[0_0_40px_rgba(148,163,184,0.2)] hover:shadow-[0_0_60px_rgba(148,163,184,0.35)]",
+          accentColor: "text-slate-300",
+          sparkColor: "bg-slate-200 shadow-[0_0_8px_#e2e8f0]"
+        };
+      default:
+        return {
+          glow1: "bg-cyan-500/25",
+          glow2: "bg-violet-600/30",
+          glow3: "bg-amber-400/15",
+          laser: "via-cyan-400 shadow-[0_0_15px_#22d3ee]",
+          border: "border-cyan-500/40 shadow-[0_0_35px_rgba(6,182,212,0.2)] hover:shadow-[0_0_55px_rgba(6,182,212,0.4)]",
+          accentColor: "text-cyan-300",
+          sparkColor: "bg-cyan-300 shadow-[0_0_8px_#22d3ee]"
+        };
+    }
+  };
+
+  const currentTheme = getThemeGlows(themeId);
+
   const CardContent = ({ zoomed = false }) => (
     <>
+      {/* 1. ANIMATED CYBER GRID PATTERN */}
+      <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-35 animate-grid-pan z-0" />
+
+      {/* 2. HOLOGRAPHIC IRIDESCENT FOIL SHIMMER */}
+      <div 
+        className="pointer-events-none absolute inset-0 opacity-40 animate-holo-foil mix-blend-color-dodge z-0"
+        style={{
+          background: "linear-gradient(135deg, rgba(6,182,212,0.35) 0%, rgba(168,85,247,0.3) 25%, rgba(244,63,94,0.3) 50%, rgba(251,191,36,0.35) 75%, rgba(16,185,129,0.35) 100%)"
+        }}
+      />
+
+      {/* 3. LIVING NEBULA & PLASMA AMBIENT GLOWS */}
+      <div className={`pointer-events-none absolute -top-16 -right-16 w-56 h-56 ${currentTheme.glow1} rounded-full blur-3xl animate-cyber-pulse z-0`} />
+      <div className={`pointer-events-none absolute -bottom-16 -left-16 w-56 h-56 ${currentTheme.glow2} rounded-full blur-3xl animate-cyber-pulse [animation-delay:1.8s] z-0`} />
+      <div className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 ${currentTheme.glow3} rounded-full blur-2xl animate-cyber-pulse [animation-delay:3s] z-0`} />
+
+      {/* 4. CONTINUOUS LASER SCANNER SWEEP BEAM */}
+      <div className={`pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent ${currentTheme.laser} to-transparent animate-scan-sweep z-10`} />
+
+      {/* 5. FLOATING CYBER PARTICLES / ENERGY SPARKS */}
+      <div className={`pointer-events-none absolute top-6 right-1/4 w-1.5 h-1.5 rounded-full ${currentTheme.sparkColor} animate-particle-1 z-1`} />
+      <div className="pointer-events-none absolute bottom-12 left-1/3 w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_10px_#e879f9] animate-particle-2 z-1" />
+      <div className="pointer-events-none absolute top-1/2 right-12 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_8px_#f59e0b] animate-particle-3 z-1" />
+
+      {/* 6. ROTATING HOLOGRAM WATERMARK EMBLEM */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 w-64 h-64 border border-cyan-400/10 rounded-full animate-holo-watermark flex items-center justify-center z-0">
+        <div className="w-52 h-52 border border-dashed border-violet-400/15 rounded-full flex items-center justify-center">
+          <div className="w-36 h-36 border border-dotted border-pink-400/20 rounded-full" />
+        </div>
+      </div>
+
+      {/* 7. INTERACTIVE MOUSE / GYROSCOPE GLARE */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-0 rounded-[inherit]"
         style={{
-          background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.1) 0%, transparent 60%)",
+          background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 60%)",
           left: glareX,
           top: glareY,
           transform: "translate(-50%, -50%)",
@@ -132,29 +218,64 @@ export default function DigitalKTA({
         }}
       />
 
+      {/* CARD CONTENT HEADER */}
       <div className={`flex justify-between items-start w-full relative z-10`} style={{ transform: "translateZ(30px)" }}>
         <div className="flex items-center gap-2 md:gap-3 min-w-0">
-          <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg'} bg-white flex items-center justify-center shadow-sm p-1 overflow-hidden shrink-0`}>
+          <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg'} bg-white flex items-center justify-center shadow-md p-1 overflow-hidden shrink-0 border border-cyan-400/40`}>
             <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={60} height={60} className="w-full h-full object-contain" />
           </div>
           <div className="min-w-0">
-            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl md:text-3xl' : 'text-sm sm:text-base'}`}>HIMASTI UMMAT</div>
-            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[8px] sm:text-[10px] mt-0.5'} text-slate-400 font-mono tracking-normal sm:tracking-widest uppercase truncate max-w-[170px] sm:max-w-none`}>Himpunan Mahasiswa Sistem & Teknologi Informasi</div>
+            <div className={`font-black text-white tracking-tight leading-none flex items-center gap-1.5 ${zoomed ? 'text-xl md:text-3xl' : 'text-sm sm:text-base'}`}>
+              <span>HIMASTI UMMAT</span>
+              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_#22d3ee]" />
+            </div>
+            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[8px] sm:text-[10px] mt-0.5'} text-slate-400 font-mono tracking-normal sm:tracking-widest uppercase truncate max-w-[170px] sm:max-w-none`}>
+              Himpunan Mahasiswa Sistem & Teknologi Informasi
+            </div>
           </div>
         </div>
-        <div className={`px-2 py-1 bg-white/10 border border-white/20 rounded-md ${zoomed ? 'text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2' : 'text-[8px] sm:text-[9px] px-1.5 py-0.5 sm:px-2 sm:py-1'} font-mono font-bold text-white backdrop-blur-sm tracking-widest shrink-0 ml-2`}>
-          RESMI
+
+        {/* Live Animated Security Badge */}
+        <div className={`flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-emerald-950/80 border border-emerald-400/40 rounded-full ${zoomed ? 'text-xs md:text-sm px-3.5 py-1.5' : 'text-[8px] sm:text-[9px]'} font-mono font-bold text-emerald-300 backdrop-blur-md tracking-wider shadow-[0_0_12px_rgba(16,185,129,0.25)] shrink-0 ml-2`}>
+          <span className="relative flex h-1.5 w-1.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+          </span>
+          <span>RESMI • VERIFIED</span>
         </div>
       </div>
 
+      {/* CARD CONTENT BODY */}
       <div className={`flex ${zoomed ? 'flex-col md:flex-row mt-8 md:mt-auto md:mb-auto' : 'flex-row mt-3 sm:mt-6'} gap-3 sm:gap-4 items-start md:items-end justify-between w-full relative z-10`} style={{ transform: "translateZ(50px)" }}>
         <div className="flex-1 min-w-0 w-full pr-0 md:pr-4">
           <div className="mb-2 sm:mb-4 flex items-center gap-2.5 sm:gap-3 md:gap-5">
             <CosmeticAvatar name={name} frameId={frameId} size={zoomed ? "lg" : "sm"} />
+
+            {/* Smart Holographic IC Chip Graphic */}
+            <div className="w-8 h-6 sm:w-10 sm:h-7 rounded-md bg-gradient-to-br from-amber-200 via-amber-400 to-amber-600 p-0.5 shadow-md border border-amber-300/70 relative overflow-hidden shrink-0 hidden xs:block sm:block">
+              <div className="w-full h-full border border-amber-800/40 rounded-xs flex flex-col justify-between p-0.5">
+                <div className="flex justify-between h-1">
+                  <div className="w-1.5 border-r border-amber-900/40" />
+                  <div className="w-1.5 border-l border-amber-900/40" />
+                </div>
+                <div className="h-1.5 w-2.5 mx-auto rounded-xs bg-amber-300/60 border border-amber-800/50" />
+                <div className="flex justify-between h-1">
+                  <div className="w-1.5 border-r border-amber-900/40" />
+                  <div className="w-1.5 border-l border-amber-900/40" />
+                </div>
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/50 to-transparent -skew-x-12 animate-gold-sheen pointer-events-none" />
+            </div>
+
             <div className="flex-1 min-w-0">
-              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
-              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-base sm:text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, "dark_obsidian")} w-full`}>{name}</div>
-              <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 sm:px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] sm:text-[10px] md:text-xs font-mono font-bold truncate max-w-full">
+              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-cyan-300/80 font-mono uppercase tracking-widest flex items-center gap-1`}>
+                <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+                <span>IDENTITAS KADER</span>
+              </div>
+              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-base sm:text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, "dark_obsidian")} w-full`}>
+                {name}
+              </div>
+              <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 sm:px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] sm:text-[10px] md:text-xs font-mono font-bold truncate max-w-full shadow-[0_0_8px_rgba(245,158,11,0.2)]">
                 <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-300 text-amber-300 shrink-0" />
                 <span className="truncate">{title}</span>
               </div>
@@ -164,7 +285,7 @@ export default function DigitalKTA({
           <div className={`flex flex-wrap ${zoomed ? 'gap-8 md:gap-16 mt-6 md:mt-8' : 'gap-3 sm:gap-4 mt-1 sm:mt-2'}`}>
             <div>
               <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>NIM</div>
-              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold text-slate-200 truncate max-w-[120px]`}>{nim}</div>
+              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold text-cyan-200 truncate max-w-[120px]`}>{nim}</div>
             </div>
             <div>
               <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>ANGKATAN</div>
@@ -173,14 +294,32 @@ export default function DigitalKTA({
           </div>
         </div>
 
-        <div className={`p-1.5 sm:p-2 border border-white/10 bg-white shrink-0 shadow-2xl flex items-center justify-center ${zoomed ? 'p-3 md:p-5 rounded-xl md:rounded-2xl w-24 h-24 md:w-[200px] md:h-[200px] self-start md:self-end' : 'rounded-lg sm:rounded-xl w-14 h-14 sm:w-16 sm:h-16'}`} style={{ transform: "translateZ(60px)" }}>
+        {/* QR Code with High-Tech Corner Reticles & Scanning Laser */}
+        <div className={`relative p-1.5 sm:p-2 border border-cyan-400/40 bg-white shrink-0 shadow-2xl flex items-center justify-center rounded-lg sm:rounded-xl overflow-hidden ${zoomed ? 'p-3 md:p-5 rounded-xl md:rounded-2xl w-24 h-24 md:w-[200px] md:h-[200px] self-start md:self-end' : 'w-14 h-14 sm:w-16 sm:h-16'}`} style={{ transform: "translateZ(60px)" }}>
+          {/* Cyber Corner Reticles */}
+          <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-600 z-20 pointer-events-none" />
+          <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-600 z-20 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-600 z-20 pointer-events-none" />
+          <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-600 z-20 pointer-events-none" />
+          {/* Micro QR Scan Laser */}
+          <div className="absolute inset-x-0 h-[1.5px] bg-cyan-500 shadow-[0_0_8px_#06b6d4] animate-scan-sweep pointer-events-none z-10 opacity-70" />
           <QRCodeSVG value={qrValue} width="100%" height="100%" level="H" />
         </div>
       </div>
 
-      <div className={`w-full flex ${zoomed ? 'flex-col md:flex-row mt-6 md:mt-8 pt-4 md:pt-6 gap-3 md:gap-6' : 'flex-row mt-3 sm:mt-4 pt-2 sm:pt-3 gap-2'} justify-between items-start md:items-end border-t border-white/10 relative z-10`} style={{ transform: "translateZ(20px)" }}>
-        <div className={`${zoomed ? 'text-xs md:text-lg whitespace-normal break-all' : 'text-[8px] sm:text-[9px] truncate max-w-[160px] sm:max-w-[200px]'} text-slate-400 font-mono`}>{email}</div>
-        <div className={`${zoomed ? 'text-xs md:text-lg' : 'text-[8px] sm:text-[9px]'} text-slate-500 font-mono uppercase shrink-0`}>ID-{nim.substring(0,8)}</div>
+      {/* CARD CONTENT FOOTER */}
+      <div className={`w-full flex ${zoomed ? 'flex-col md:flex-row mt-6 md:mt-8 pt-4 md:pt-6 gap-3 md:gap-6' : 'flex-row mt-3 sm:mt-4 pt-2 sm:pt-3 gap-2'} justify-between items-start md:items-end border-t border-cyan-500/20 relative z-10`} style={{ transform: "translateZ(20px)" }}>
+        <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
+          <div className="flex items-center gap-1 text-[7px] sm:text-[8px] text-cyan-400 font-mono bg-cyan-950/60 border border-cyan-500/40 px-1.5 py-0.5 rounded shrink-0">
+            <Wifi className="w-2.5 h-2.5 text-cyan-400 animate-pulse shrink-0" />
+            <span>NFC</span>
+          </div>
+          <div className={`${zoomed ? 'text-xs md:text-lg whitespace-normal break-all' : 'text-[8px] sm:text-[9px] truncate max-w-[130px] sm:max-w-[200px]'} text-slate-400 font-mono`}>{email}</div>
+        </div>
+        <div className="flex items-center gap-1.5 shrink-0">
+          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
+          <div className={`${zoomed ? 'text-xs md:text-lg' : 'text-[8px] sm:text-[9px]'} text-cyan-300 font-mono uppercase font-bold tracking-wider`}>ID-{nim.substring(0,8)}</div>
+        </div>
       </div>
     </>
   );
@@ -203,7 +342,7 @@ export default function DigitalKTA({
             rotateY,
             transformStyle: "preserve-3d",
           }}
-          className="w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in border border-slate-800 bg-black p-4 sm:p-5 shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all duration-500 flex flex-col justify-between"
+          className={`w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in bg-slate-950 p-4 sm:p-5 transition-all duration-500 flex flex-col justify-between select-none ${currentTheme.border}`}
         >
           <CardContent zoomed={false} />
         </motion.div>
@@ -248,7 +387,7 @@ export default function DigitalKTA({
                     rotateY,
                     transformStyle: "preserve-3d",
                   }}
-                  className="w-full relative h-full md:h-auto aspect-auto md:aspect-[2/1] lg:aspect-[2.2/1] bg-black rounded-[2rem] p-6 md:p-14 shadow-[0_30px_100px_rgba(0,0,0,0.5)] flex flex-col justify-between border border-slate-800 overflow-y-auto overflow-x-hidden md:overflow-visible"
+                  className={`w-full relative h-full md:h-auto aspect-auto md:aspect-[2/1] lg:aspect-[2.2/1] bg-slate-950 rounded-[2rem] p-6 md:p-14 transition-all duration-500 flex flex-col justify-between overflow-y-auto overflow-x-hidden md:overflow-visible select-none ${currentTheme.border}`}
                 >
                   <CardContent zoomed={true} />
                 </motion.div>
