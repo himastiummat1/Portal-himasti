@@ -59,10 +59,20 @@ export default function TopNav({
           <div className="flex justify-between items-center h-14">
             
             <div className="flex items-center h-full" ref={navRef}>
-              <Link href="/admin" className="font-bold text-lg text-slate-900 mr-8 tracking-tight flex items-center gap-2">
-                <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={24} height={24} className="w-6 h-6 object-contain rounded-md" />
-                HIMASTI
-              </Link>
+              <div className="flex items-center gap-2 mr-8">
+                <Link href="/admin" className="font-bold text-lg text-slate-900 tracking-tight flex items-center gap-2">
+                  <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={24} height={24} className="w-6 h-6 object-contain rounded-md" />
+                  <span>HIMASTI</span>
+                </Link>
+                <Link
+                  href="/updates"
+                  className="px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200/80 hover:bg-cyan-100 transition-colors flex items-center gap-1 shadow-xs"
+                  title="Lihat Catatan Rilis & Pembaruan Sistem"
+                >
+                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+                  <span>v2.5</span>
+                </Link>
+              </div>
               
               {/* Desktop Menu */}
               <div className="hidden md:flex h-full space-x-1">

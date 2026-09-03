@@ -636,7 +636,12 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             <span className="w-2 h-2 rounded-full bg-blue-600" />
             <span>{t.footerRights}</span>
           </div>
-          <div className="flex items-center gap-5">
+          <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
+            <Link href="/updates" className="hover:text-slate-900 transition flex items-center gap-1 font-medium">
+              <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
+              Catatan Rilis
+            </Link>
+            <Link href="/privacy" className="hover:text-slate-900 transition font-medium">Kebijakan Privasi</Link>
             <Link href="/login" className="hover:text-slate-900 transition">{t.footerLogin}</Link>
             <Link href="/absen" className="text-blue-600 hover:underline transition font-semibold">{t.fidoNav}</Link>
             <a href="https://github.com/himastiummat1/Portal-himasti" target="_blank" rel="noreferrer" className="hover:text-slate-900 transition flex items-center gap-1">

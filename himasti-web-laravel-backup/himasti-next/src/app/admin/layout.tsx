@@ -43,6 +43,8 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // Group Organisasi (Global)
   const groupOrganisasi = { title: "Profil & Organisasi", links: [] as any[] };
   groupOrganisasi.links.push({ href: "/admin/adart", label: "AD/ART & Konstitusi" });
+  groupOrganisasi.links.push({ href: "/updates", label: "Catatan Rilis (v2.5)" });
+  groupOrganisasi.links.push({ href: "/privacy", label: "Kebijakan Privasi" });
   groups.push(groupOrganisasi);
 
   // Group Utama

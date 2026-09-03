@@ -5,8 +5,9 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { Command, X, Star, Cpu, Wifi, Sparkles } from "lucide-react";
+import { Command, X, Star, Cpu, Wifi, Sparkles, Smartphone, Download } from "lucide-react";
 import { CosmeticAvatar, getNameClasses } from "@/components/profile/CosmeticAvatar";
+import WalletPassModal from "./WalletPassModal";
 
 export default function DigitalKTA({ 
   name, nim, email, angkatan,
@@ -25,6 +26,7 @@ export default function DigitalKTA({
   themeId?: string;
 }) {
   const [isZoomed, setIsZoomed] = useState(false);
+  const [isWalletOpen, setIsWalletOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
   const zoomRef = useRef<HTMLDivElement>(null);
@@ -358,6 +360,53 @@ export default function DigitalKTA({
         </motion.div>
       </div>
 
+      {/* Wallet Pass Integration Action Buttons */}
+      <div className="mt-3 sm:mt-4 flex flex-wrap items-center justify-center gap-2 sm:gap-2.5">
+        {/* Apple Wallet Button */}
+        <button
+          type="button"
+          onClick={() => setIsWalletOpen(true)}
+          className="inline-flex items-center gap-2 px-3.5 py-2 bg-slate-950 hover:bg-slate-900 text-white text-xs font-semibold rounded-xl border border-slate-700 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <svg className="w-3.5 h-3.5 fill-current text-white shrink-0" viewBox="0 0 170 170">
+            <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.7-3.04-7.69-7.85-11.97-14.42-6.19-9.58-10.97-20.73-14.33-33.45-3.37-12.72-5.06-24.32-5.06-34.8 0-16.14 4.12-29.62 12.36-40.45 8.24-10.83 18.59-16.36 31.06-16.6 4.79 0 10.13 1.25 16.03 3.76 5.89 2.51 9.77 3.82 11.64 3.93 1.52-.11 5.54-1.47 12.06-4.1 6.52-2.63 12.08-3.79 16.68-3.48 12.92.76 23.36 5.48 31.33 14.16-11.2 6.84-16.67 16.27-16.42 28.29.25 9.57 3.97 17.65 11.16 24.23 7.19 6.58 15.82 10.22 25.88 10.92-2.39 7.5-5.34 15.17-8.86 23.01zm-32.32-108.5c0 6.84-2.58 13.43-7.75 19.77-6.2 7.4-13.71 11.75-22.52 11.05-.13-1.09-.2-2.07-.2-2.94 0-6.84 2.82-13.71 8.46-20.61 2.83-3.48 6.42-6.39 10.77-8.73 4.35-2.34 8.08-3.69 11.19-4.05.08 1.8.05 3.63.05 5.51z" />
+          </svg>
+          <span>Add to Apple Wallet</span>
+        </button>
+
+        {/* Google Wallet Button */}
+        <button
+          type="button"
+          onClick={() => setIsWalletOpen(true)}
+          className="inline-flex items-center gap-2 px-3.5 py-2 bg-white hover:bg-slate-50 text-slate-800 text-xs font-semibold rounded-xl border border-slate-300 shadow-sm transition-all hover:scale-[1.02] active:scale-[0.98]"
+        >
+          <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_6px_#3b82f6]" />
+          <span>Save to Google Wallet</span>
+        </button>
+
+        {/* Direct Download .pkpass */}
+        <a
+          href={`/api/kta/wallet?format=pkpass&nim=${encodeURIComponent(nim)}`}
+          download={`HIMASTI-KTA-${nim}.pkpass`}
+          className="inline-flex items-center gap-1.5 px-3 py-2 bg-cyan-50 hover:bg-cyan-100 text-cyan-800 text-xs font-semibold rounded-xl border border-cyan-200 transition-all"
+          title="Download file .pkpass langsung"
+        >
+          <Download className="w-3.5 h-3.5 text-cyan-700" />
+          <span>Unduh .pkpass</span>
+        </a>
+      </div>
+
+      {/* Wallet Pass Modal */}
+      <WalletPassModal
+        isOpen={isWalletOpen}
+        onClose={() => setIsWalletOpen(false)}
+        name={name}
+        nim={nim}
+        angkatan={angkatan}
+        title={title}
+        email={email}
+      />
+
       {mounted && createPortal(
         <AnimatePresence>
           {isZoomed && (
@@ -374,12 +423,22 @@ export default function DigitalKTA({
                 className="relative z-10 w-full max-w-6xl perspective-1000 flex items-center justify-center h-full max-h-[90vh] md:max-h-none"
                 style={{ perspective: "2000px" }}
               >
-                <button 
-                  onClick={() => setIsZoomed(false)}
-                  className="absolute -top-12 md:-top-16 right-0 w-10 h-10 md:w-12 md:h-12 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black shadow-2xl transition-all duration-300 z-[9999] cursor-pointer"
-                >
-                  <X className="w-5 h-5 md:w-6 md:h-6" />
-                </button>
+                <div className="absolute -top-12 md:-top-16 right-0 flex items-center gap-2 z-[9999]">
+                  <button
+                    type="button"
+                    onClick={() => setIsWalletOpen(true)}
+                    className="px-4 py-2 bg-slate-900/90 border border-slate-700 text-white rounded-full text-xs font-semibold flex items-center gap-1.5 shadow-xl hover:bg-slate-800 transition-all"
+                  >
+                    <Smartphone className="w-3.5 h-3.5 text-cyan-400" />
+                    <span>Dompet Digital</span>
+                  </button>
+                  <button 
+                    onClick={() => setIsZoomed(false)}
+                    className="w-10 h-10 md:w-12 md:h-12 bg-white/10 border border-white/20 text-white rounded-full flex items-center justify-center hover:bg-white hover:text-black shadow-2xl transition-all duration-300 cursor-pointer"
+                  >
+                    <X className="w-5 h-5 md:w-6 md:h-6" />
+                  </button>
+                </div>
 
                 <motion.div
                   ref={zoomRef}
