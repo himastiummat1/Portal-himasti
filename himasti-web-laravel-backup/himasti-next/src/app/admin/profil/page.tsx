@@ -37,6 +37,22 @@ export default async function ProfilPage() {
 
   const isSuperAdmin = (user.roles || []).some(r => r && r.role && r.role.name === 'super_admin');
 
+  const baseOwned = ["none", "kader", "default", "plain"];
+  let parsedOwned: string[] = [];
+  try {
+    parsedOwned = JSON.parse(user.data_kader?.owned_cosmetics || "[]");
+  } catch (e) {
+    parsedOwned = [];
+  }
+  const currentlyEquipped = [
+    user.data_kader?.custom_frame,
+    user.data_kader?.custom_title,
+    user.data_kader?.custom_theme,
+    user.data_kader?.custom_name_effect
+  ].filter(Boolean) as string[];
+
+  const allOwned = Array.from(new Set([...baseOwned, ...parsedOwned, ...currentlyEquipped]));
+
   const profileData = {
     id: user.id,
     name: user.name,
@@ -53,7 +69,8 @@ export default async function ProfilPage() {
     custom_title: user.data_kader?.custom_title || "kader",
     custom_theme: user.data_kader?.custom_theme || "default",
     custom_name_effect: user.data_kader?.custom_name_effect || "plain",
-    solved_challenges: user.data_kader?.solved_challenges ? JSON.parse(user.data_kader.solved_challenges) : []
+    solved_challenges: user.data_kader?.solved_challenges ? JSON.parse(user.data_kader.solved_challenges) : [],
+    owned_cosmetics: allOwned
   };
 
   return <ProfilClient initialData={profileData} />;

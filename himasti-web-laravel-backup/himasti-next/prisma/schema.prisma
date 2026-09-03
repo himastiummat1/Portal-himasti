@@ -50,6 +50,7 @@ model DataKader {
   custom_theme      String?   @default("default")
   custom_name_effect String?  @default("plain")
   solved_challenges String?   @default("[]")
+  owned_cosmetics   String?   @default("[]")
   deleted_at        DateTime?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt

@@ -85,6 +85,149 @@ export async function changePassword(formData: FormData) {
   }
 }
 
+export async function buyCosmetic(
+  itemId: string,
+  category: "frame" | "title" | "theme" | "nameEffect"
+) {
+  try {
+    const userId = await requireAuth();
+
+    const kader = await prisma.dataKader.findFirst({
+      where: { user_id: userId },
+      include: { user: { include: { roles: { include: { role: true } } } } }
+    });
+    if (!kader) {
+      return { success: false, error: "Profil kader tidak ditemukan." };
+    }
+
+    const isSuperAdmin = (kader.user?.roles || []).some(r => r?.role?.name === "super_admin");
+
+    const { FRAMES, TITLES, THEMES, NAME_EFFECTS } = await import("@/lib/profileCustomization");
+    const allCosmetics = [...FRAMES, ...TITLES, ...THEMES, ...NAME_EFFECTS];
+    const item = allCosmetics.find(c => c.id === itemId);
+
+    if (!item) {
+      return { success: false, error: "Item kosmetik tidak ditemukan." };
+    }
+
+    let owned: string[] = [];
+    try {
+      owned = JSON.parse(kader.owned_cosmetics || "[]");
+    } catch (e) {
+      owned = [];
+    }
+
+    // Default free items
+    const freeItems = ["none", "kader", "default", "plain"];
+    if (item.minXp === 0 || freeItems.includes(item.id)) {
+      if (!owned.includes(item.id)) owned.push(item.id);
+      return { success: true, newXp: kader.xp ?? 50, ownedCosmetics: owned };
+    }
+
+    // If already owned
+    if (owned.includes(item.id)) {
+      return { success: true, newXp: kader.xp ?? 50, ownedCosmetics: owned, alreadyOwned: true };
+    }
+
+    const currentXp = kader.xp ?? 50;
+    if (!isSuperAdmin && currentXp < item.minXp) {
+      return {
+        success: false,
+        error: `XP Anda tidak mencukupi! Butuh ${item.minXp} XP, saat ini Anda memiliki ${currentXp} XP.`
+      };
+    }
+
+    const price = isSuperAdmin ? 0 : item.minXp;
+    const newXp = Math.max(0, currentXp - price);
+    if (!owned.includes(item.id)) {
+      owned.push(item.id);
+    }
+
+    // Deduct XP in database, save owned list, and auto-equip!
+    await prisma.dataKader.update({
+      where: { id: kader.id },
+      data: {
+        xp: newXp,
+        owned_cosmetics: JSON.stringify(owned),
+        ...(category === "frame" ? { custom_frame: item.id } : {}),
+        ...(category === "title" ? { custom_title: item.id } : {}),
+        ...(category === "theme" ? { custom_theme: item.id } : {}),
+        ...(category === "nameEffect" ? { custom_name_effect: item.id } : {})
+      }
+    });
+
+    revalidatePath("/admin/profil");
+    revalidatePath("/admin/kader");
+    revalidatePath("/admin");
+
+    return {
+      success: true,
+      newXp,
+      ownedCosmetics: owned,
+      message: `Berhasil membeli dan memasang ${item.name} seharga ${price} XP!`
+    };
+  } catch (error: any) {
+    console.error("Buy cosmetic error:", error);
+    return { success: false, error: "Gagal memproses pembelian item." };
+  }
+}
+
+export async function equipCosmetic(
+  itemId: string,
+  category: "frame" | "title" | "theme" | "nameEffect"
+) {
+  try {
+    const userId = await requireAuth();
+
+    const kader = await prisma.dataKader.findFirst({
+      where: { user_id: userId },
+      include: { user: { include: { roles: { include: { role: true } } } } }
+    });
+    if (!kader) {
+      return { success: false, error: "Profil kader tidak ditemukan." };
+    }
+
+    const isSuperAdmin = (kader.user?.roles || []).some(r => r?.role?.name === "super_admin");
+
+    let owned: string[] = [];
+    try {
+      owned = JSON.parse(kader.owned_cosmetics || "[]");
+    } catch (e) {
+      owned = [];
+    }
+
+    const freeItems = ["none", "kader", "default", "plain"];
+    const isCurrentlyEquipped = (
+      kader.custom_frame === itemId ||
+      kader.custom_title === itemId ||
+      kader.custom_theme === itemId ||
+      kader.custom_name_effect === itemId
+    );
+
+    if (!isSuperAdmin && !freeItems.includes(itemId) && !isCurrentlyEquipped && !owned.includes(itemId)) {
+      return { success: false, error: "Item belum dimiliki. Silakan beli terlebih dahulu." };
+    }
+
+    await prisma.dataKader.update({
+      where: { id: kader.id },
+      data: {
+        ...(category === "frame" ? { custom_frame: itemId } : {}),
+        ...(category === "title" ? { custom_title: itemId } : {}),
+        ...(category === "theme" ? { custom_theme: itemId } : {}),
+        ...(category === "nameEffect" ? { custom_name_effect: itemId } : {})
+      }
+    });
+
+    revalidatePath("/admin/profil");
+    revalidatePath("/admin/kader");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Equip cosmetic error:", error);
+    return { success: false, error: "Gagal memasang item." };
+  }
+}
+
 export async function saveCustomization(data: {
   frameId?: string;
   titleId?: string;
@@ -97,39 +240,6 @@ export async function saveCustomization(data: {
     const kader = await prisma.dataKader.findFirst({ where: { user_id: userId } });
     if (!kader) {
       return { success: false, error: "Profil kader tidak ditemukan." };
-    }
-
-    const currentXp = kader.xp || 50;
-
-    // Server-side validation of XP unlock
-    const { FRAMES, TITLES, THEMES, NAME_EFFECTS } = await import("@/lib/profileCustomization");
-    
-    if (data.frameId) {
-      const item = FRAMES.find(f => f.id === data.frameId);
-      if (item && currentXp < item.minXp) {
-        return { success: false, error: `XP belum mencukupi untuk bingkai '${item.name}'.` };
-      }
-    }
-
-    if (data.titleId) {
-      const item = TITLES.find(t => t.id === data.titleId);
-      if (item && currentXp < item.minXp) {
-        return { success: false, error: `XP belum mencukupi untuk gelar '${item.name}'.` };
-      }
-    }
-
-    if (data.themeId) {
-      const item = THEMES.find(t => t.id === data.themeId);
-      if (item && currentXp < item.minXp) {
-        return { success: false, error: `XP belum mencukupi untuk tema '${item.name}'.` };
-      }
-    }
-
-    if (data.nameEffectId) {
-      const item = NAME_EFFECTS.find(n => n.id === data.nameEffectId);
-      if (item && currentXp < item.minXp) {
-        return { success: false, error: `XP belum mencukupi untuk efek '${item.name}'.` };
-      }
     }
 
     await prisma.dataKader.update({
