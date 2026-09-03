@@ -20,27 +20,44 @@ export async function updateKader(userId: number, formData: FormData) {
   const jenis_kelamin = formData.get("jenis_kelamin") as string;
   const role_name = formData.get("role_name") as string;
 
+  const custom_frame = formData.get("custom_frame") as string | null;
+  const custom_title = formData.get("custom_title") as string | null;
+  const custom_theme = formData.get("custom_theme") as string | null;
+  const custom_name_effect = formData.get("custom_name_effect") as string | null;
+  const xp_raw = formData.get("xp") as string | null;
+
   try {
+    const session = await auth();
+    const currentActorId = parseInt(session?.user?.id || "0");
+    const actorRoles = await prisma.modelHasRole.findMany({ where: { model_id: currentActorId }, include: { role: true } });
+    const isActorSuperAdmin = actorRoles.some(r => r.role.name === "super_admin");
+
     // 1. Update Email in User table (Sync Login)
     if (email) {
       await prisma.user.update({ where: { id: userId }, data: { email } });
     }
 
-    // 2. Update No HP in DataKader table
-    if (no_hp) {
-      const kader = await prisma.dataKader.findFirst({ where: { user_id: userId } });
-      if (kader) {
-        await prisma.dataKader.update({ where: { id: kader.id }, data: { no_hp, ...(jenis_kelamin && { jenis_kelamin }) } });
+    // 2. Update DataKader table (No HP, Gender, and Super Admin Customization)
+    const kader = await prisma.dataKader.findFirst({ where: { user_id: userId } });
+    if (kader) {
+      const updateData: any = {
+        ...(no_hp ? { no_hp } : {}),
+        ...(jenis_kelamin ? { jenis_kelamin } : {})
+      };
+
+      if (isActorSuperAdmin) {
+        if (custom_frame !== null && custom_frame !== undefined) updateData.custom_frame = custom_frame;
+        if (custom_title !== null && custom_title !== undefined) updateData.custom_title = custom_title;
+        if (custom_theme !== null && custom_theme !== undefined) updateData.custom_theme = custom_theme;
+        if (custom_name_effect !== null && custom_name_effect !== undefined) updateData.custom_name_effect = custom_name_effect;
+        if (xp_raw !== null && xp_raw !== undefined && !isNaN(parseInt(xp_raw))) updateData.xp = parseInt(xp_raw);
       }
+
+      await prisma.dataKader.update({ where: { id: kader.id }, data: updateData });
     }
 
     // 3. Update Role (Prevent Privilege Escalation)
     if (role_name) {
-      const session = await auth();
-      const currentActorId = parseInt(session?.user?.id || "0");
-      const actorRoles = await prisma.modelHasRole.findMany({ where: { model_id: currentActorId }, include: { role: true } });
-      const isActorSuperAdmin = actorRoles.some(r => r.role.name === "super_admin");
-
       if (role_name === "super_admin" && !isActorSuperAdmin) {
         return { success: false, error: "Akses Ditolak: Hanya Super Admin yang dapat menunjuk akun Super Admin." };
       }

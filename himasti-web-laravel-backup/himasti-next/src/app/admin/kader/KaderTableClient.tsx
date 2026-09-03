@@ -1,10 +1,17 @@
 "use client";
 import { useState, useTransition } from "react";
-import { Search, FileSpreadsheet, Eye, X, Download, Edit2, Trash2, CheckCircle2 } from "lucide-react";
+import { Search, FileSpreadsheet, Eye, X, Download, Edit2, Trash2, CheckCircle2, Crown, Star, Palette, Zap, Sparkles } from "lucide-react";
 import { updateKader, deleteKader, impersonateUser } from "./actions";
 import { LogIn } from "lucide-react";
+import { FRAMES, TITLES, THEMES, NAME_EFFECTS } from "@/lib/profileCustomization";
 
-export default function KaderTableClient({ kaders }: { kaders: any[] }) {
+export default function KaderTableClient({ 
+  kaders,
+  isSuperAdmin = false
+}: { 
+  kaders: any[];
+  isSuperAdmin?: boolean;
+}) {
   const [search, setSearch] = useState("");
   const [selectedKader, setSelectedKader] = useState<any | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -112,34 +119,49 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
                 <th className="px-6 py-4 font-medium">Mahasiswa</th>
                 <th className="px-6 py-4 font-medium">NIM</th>
                 <th className="px-6 py-4 font-medium">Angkatan</th>
+                <th className="px-6 py-4 font-medium">Gelar & XP</th>
                 <th className="px-6 py-4 font-medium">Role</th>
                 <th className="px-6 py-4 font-medium text-right">Aksi</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-100">
-              {filtered.map((k) => (
-                <tr key={k.id} className="hover:bg-gray-50/50 transition-colors">
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="font-semibold text-gray-900">{k.nama}</div>
-                    <div className="text-gray-500 text-xs mt-0.5">{k.email}</div>
-                  </td>
-                  <td className="px-6 py-4 font-mono">{k.nim}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{k.angkatan}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-900 border border-gray-100">
-                      {k.role.replace(/_/g, ' ').toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-right">
-                    <button 
-                      onClick={() => { setSelectedKader(k); setIsEditing(false); }}
-                      className="text-gray-900 hover:text-gray-900 font-medium text-xs px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors inline-flex items-center gap-1"
-                    >
-                      <Eye className="w-3.5 h-3.5" /> Lihat Berkas
-                    </button>
-                  </td>
-                </tr>
-              ))}
+              {filtered.map((k) => {
+                const titleObj = TITLES.find(t => t.id === k.custom_title) || TITLES[0];
+                return (
+                  <tr key={k.id} className="hover:bg-gray-50/50 transition-colors">
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="font-semibold text-gray-900">{k.nama}</div>
+                      <div className="text-gray-500 text-xs mt-0.5">{k.email}</div>
+                    </td>
+                    <td className="px-6 py-4 font-mono">{k.nim}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">{k.angkatan}</td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex flex-col gap-1">
+                        <span className="inline-flex items-center gap-1 text-[11px] font-mono text-amber-700 font-bold bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md w-fit">
+                          <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                          {titleObj.name}
+                        </span>
+                        <span className="text-[10px] font-mono text-slate-500 font-semibold">
+                          {k.xp ?? 50} XP
+                        </span>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-xs font-medium bg-gray-50 text-gray-900 border border-gray-100">
+                        {k.role.replace(/_/g, ' ').toUpperCase()}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button 
+                        onClick={() => { setSelectedKader(k); setIsEditing(false); }}
+                        className="text-gray-900 hover:text-gray-900 font-medium text-xs px-3 py-1.5 rounded-lg hover:bg-gray-50 transition-colors inline-flex items-center gap-1"
+                      >
+                        <Eye className="w-3.5 h-3.5" /> Lihat Berkas
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         </div>
@@ -222,6 +244,131 @@ export default function KaderTableClient({ kaders }: { kaders: any[] }) {
                   <div className="text-gray-900 font-medium uppercase">{selectedKader.role.replace(/_/g, ' ')}</div>
                 </div>
               </div>
+
+              {/* Profil & Gaya Kustomisasi Overview (View Mode) */}
+              {!isEditing && (
+                <div className="mt-6 p-4 rounded-xl bg-slate-50 border border-slate-200/80 space-y-3">
+                  <h4 className="text-xs font-bold text-slate-700 uppercase tracking-wider flex items-center gap-1.5">
+                    <Sparkles className="w-3.5 h-3.5 text-amber-500" /> Kustomisasi Gaya & Poin XP
+                  </h4>
+                  <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+                    <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                      <span className="text-[10px] text-slate-400 block font-medium">GELAR</span>
+                      <span className="font-bold text-slate-800">
+                        {TITLES.find(t => t.id === selectedKader.custom_title)?.name || "Kader Biasa"}
+                      </span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                      <span className="text-[10px] text-slate-400 block font-medium">BINGKAI</span>
+                      <span className="font-bold text-slate-800">
+                        {FRAMES.find(f => f.id === selectedKader.custom_frame)?.name || "Klasik"}
+                      </span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                      <span className="text-[10px] text-slate-400 block font-medium">TEMA KARTU</span>
+                      <span className="font-bold text-slate-800">
+                        {THEMES.find(th => th.id === selectedKader.custom_theme)?.name || "Default"}
+                      </span>
+                    </div>
+                    <div className="bg-white p-2.5 rounded-lg border border-slate-200">
+                      <span className="text-[10px] text-slate-400 block font-medium">TOTAL POIN</span>
+                      <span className="font-bold text-amber-600 font-mono">
+                        {selectedKader.xp ?? 50} XP
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Super Admin Override: Customization Studio Panel */}
+              {isEditing && isSuperAdmin && (
+                <div className="bg-gradient-to-br from-amber-500/10 via-violet-500/10 to-cyan-500/10 border-2 border-amber-400/50 rounded-2xl p-5 mt-6 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2 text-amber-700 font-bold text-xs uppercase tracking-widest">
+                      <Crown className="w-4 h-4 text-amber-500 fill-amber-500" />
+                      Hak Otoritas Super Admin: Anugerah Gelar & Tema
+                    </div>
+                    <span className="text-[10px] font-mono bg-amber-200/80 text-amber-900 px-2 py-0.5 rounded font-bold">
+                      ROOT PRIVILEGE
+                    </span>
+                  </div>
+                  <p className="text-xs text-slate-600 leading-relaxed">
+                    Sebagai <strong>Super Admin</strong>, Anda memiliki wewenang mutlak untuk memberikan tema profil khusus, gelar kehormatan, dan bingkai avatar kepada kader ini (baik anggota maupun pengurus/admin lainnya), serta menetapkan saldo poin XP mereka secara instan.
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    {/* 1. Bingkai Avatar */}
+                    <div>
+                      <label className="text-xs font-bold text-slate-700 block mb-1">Bingkai Avatar (Frame)</label>
+                      <select 
+                        name="custom_frame"
+                        defaultValue={selectedKader.custom_frame || "none"}
+                        className="w-full border border-slate-200 p-2.5 rounded-lg text-xs bg-white text-slate-800 font-medium focus:ring-2 focus:ring-amber-500 outline-none shadow-sm"
+                      >
+                        {FRAMES.map(f => (
+                          <option key={f.id} value={f.id}>{f.name} ({f.minXp} XP)</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* 2. Gelar Kehormatan */}
+                    <div>
+                      <label className="text-xs font-bold text-slate-700 block mb-1">Gelar Kehormatan (Title)</label>
+                      <select 
+                        name="custom_title"
+                        defaultValue={selectedKader.custom_title || "kader"}
+                        className="w-full border border-slate-200 p-2.5 rounded-lg text-xs bg-white text-slate-800 font-medium focus:ring-2 focus:ring-amber-500 outline-none shadow-sm"
+                      >
+                        {TITLES.map(t => (
+                          <option key={t.id} value={t.id}>{t.name} ({t.minXp} XP)</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* 3. Tema Kartu Profil */}
+                    <div>
+                      <label className="text-xs font-bold text-slate-700 block mb-1">Tema Kartu Profil (Theme)</label>
+                      <select 
+                        name="custom_theme"
+                        defaultValue={selectedKader.custom_theme || "default"}
+                        className="w-full border border-slate-200 p-2.5 rounded-lg text-xs bg-white text-slate-800 font-medium focus:ring-2 focus:ring-amber-500 outline-none shadow-sm"
+                      >
+                        {THEMES.map(th => (
+                          <option key={th.id} value={th.id}>{th.name} ({th.minXp} XP)</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* 4. Efek Tipografi Nama */}
+                    <div>
+                      <label className="text-xs font-bold text-slate-700 block mb-1">Efek Tipografi Nama</label>
+                      <select 
+                        name="custom_name_effect"
+                        defaultValue={selectedKader.custom_name_effect || "plain"}
+                        className="w-full border border-slate-200 p-2.5 rounded-lg text-xs bg-white text-slate-800 font-medium focus:ring-2 focus:ring-amber-500 outline-none shadow-sm"
+                      >
+                        {NAME_EFFECTS.map(ne => (
+                          <option key={ne.id} value={ne.id}>{ne.name} ({ne.minXp} XP)</option>
+                        ))}
+                      </select>
+                    </div>
+
+                    {/* 5. Set Poin XP */}
+                    <div className="sm:col-span-2">
+                      <label className="text-xs font-bold text-slate-700 block mb-1">Tetapkan Total Poin XP Kader</label>
+                      <input 
+                        type="number" 
+                        name="xp" 
+                        defaultValue={selectedKader.xp ?? 50} 
+                        className="w-full border border-slate-200 p-2.5 rounded-lg text-xs bg-white text-slate-800 font-mono font-bold focus:ring-2 focus:ring-amber-500 outline-none shadow-sm" 
+                      />
+                      <span className="text-[10px] text-slate-500 mt-1 block">
+                        Super Admin dapat menambahkan atau menetapkan poin XP kader ini secara langsung tanpa perlu menyelesaikan challenge.
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              )}
 
               {isEditing && (
                 <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 mt-8">

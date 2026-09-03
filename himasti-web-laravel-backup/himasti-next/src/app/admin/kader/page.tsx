@@ -44,6 +44,8 @@ export default async function DataKaderPage() {
     orderBy: { created_at: 'desc' }
   });
 
+  const isSuperAdmin = userRoles.some(r => r.role.name === "super_admin");
+
   const kaders = rawData.map(k => ({
     id: k.id,
     user_id: k.user_id,
@@ -56,7 +58,12 @@ export default async function DataKaderPage() {
     role: k.user.roles[0]?.role.name || "kader",
     asal_sekolah: (k as any).asal_sekolah,
     hobi: (k as any).hobi,
-    alamat: (k as any).alamat_sekarang
+    alamat: (k as any).alamat_sekarang,
+    xp: k.xp ?? 50,
+    custom_frame: k.custom_frame || "none",
+    custom_title: k.custom_title || "kader",
+    custom_theme: k.custom_theme || "default",
+    custom_name_effect: k.custom_name_effect || "plain"
   }));
 
   return (
@@ -72,7 +79,7 @@ export default async function DataKaderPage() {
         <p className="text-gray-500 mt-1">Pangkalan data utama seluruh anggota Himpunan Mahasiswa.</p>
       </div>
 
-      <KaderTableClient kaders={kaders} />
+      <KaderTableClient kaders={kaders} isSuperAdmin={isSuperAdmin} />
     </div>
   );
 }
