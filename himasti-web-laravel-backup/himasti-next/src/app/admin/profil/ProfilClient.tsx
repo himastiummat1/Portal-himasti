@@ -148,7 +148,7 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
   const isDarkCard = isSuper || previewStyle.themeId !== "default";
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500 pb-12">
+    <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500 pb-12" suppressHydrationWarning>
       {/* Header with User Level & XP Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
