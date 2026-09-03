@@ -2,8 +2,7 @@ import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 import { redirect } from "next/navigation";
 import AbsenClient from "./AbsenClient";
-import OfflineAttendanceScanner from "@/components/OfflineAttendanceScanner";
-import PasskeyEnrollment from "@/components/PasskeyEnrollment";
+import AbsenTabs from "./AbsenTabs";
 import { ShieldCheck, Calendar, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 
@@ -70,14 +69,12 @@ export default async function AbsenPage({
             </p>
           </div>
 
-          <OfflineAttendanceScanner
+          <AbsenTabs
             meetingId={activeMeeting?.id || 1}
-            title={activeMeeting?.title || "Rapat Koordinasi & Kegiatan HIMASTI"}
+            meetingTitle={activeMeeting?.title || "Rapat Koordinasi & Kegiatan HIMASTI"}
             currentUserId={userId}
             currentUserName={session.user.name || "Kader HIMASTI"}
           />
-
-          <PasskeyEnrollment />
         </div>
       </div>
     );

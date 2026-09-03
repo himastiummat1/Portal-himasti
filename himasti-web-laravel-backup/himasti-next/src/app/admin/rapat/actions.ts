@@ -112,20 +112,25 @@ export async function uploadNotulensi(formData: FormData) {
 }
 
 export async function getAttendance(meetingId: number) {
-  const session = await auth();
-  if (!session?.user?.id) return [];
+  try {
+    const session = await auth();
+    if (!session?.user?.id) return [];
 
-  const attendances = await prisma.meetingAttendance.findMany({
-    where: { meeting_id: meetingId },
-    include: { user: { select: { id: true, name: true, email: true } } },
-    orderBy: { waktu_hadir: 'asc' }
-  });
+    const attendances = await prisma.meetingAttendance.findMany({
+      where: { meeting_id: meetingId },
+      include: { user: { select: { id: true, name: true, email: true } } },
+      orderBy: { waktu_hadir: 'asc' }
+    });
 
-  return attendances.map(a => ({
-    id: a.id,
-    userName: a.user.name,
-    userEmail: a.user.email,
-    waktuHadir: a.waktu_hadir.toISOString(),
-    status: a.status_kehadiran
-  }));
+    return attendances.map(a => ({
+      id: a.id,
+      userName: a.user.name,
+      userEmail: a.user.email,
+      waktuHadir: a.waktu_hadir.toISOString(),
+      status: a.status_kehadiran
+    }));
+  } catch (err) {
+    console.error("Error in getAttendance:", err);
+    return [];
+  }
 }

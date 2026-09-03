@@ -8,16 +8,16 @@ if (!databaseUrl) {
   throw new Error("CRITICAL SECURITY ERROR: DATABASE_URL is not set in environment variables.");
 }
 
-// Gunakan port 5432 session mode yang stabil untuk prepared statements dan anti-timeout
-if (databaseUrl.includes(':6543')) {
-  databaseUrl = databaseUrl.replace(':6543', ':5432').replace('?pgbouncer=true', '');
+// Jika menggunakan Supabase port 6543, pastikan pgbouncer=true aktif agar mode transaksi jalan lancar
+if (databaseUrl.includes(':6543') && !databaseUrl.includes('pgbouncer=true')) {
+  const separator = databaseUrl.includes('?') ? '&' : '?';
+  databaseUrl = `${databaseUrl}${separator}pgbouncer=true`;
 }
 
-// Pastikan connection pooling diatur ketat (connection_limit=5&pool_timeout=30)
-// agar tidak melebihi kuota pooler Supabase saat hot reload Next.js
-const separator = databaseUrl.includes('?') ? '&' : '?';
+// Konfigurasi pool connection agar tahan lonjakan query concurrent
+const sep = databaseUrl.includes('?') ? '&' : '?';
 if (!databaseUrl.includes('connection_limit=')) {
-  databaseUrl = `${databaseUrl}${separator}connection_limit=5&pool_timeout=30`;
+  databaseUrl = `${databaseUrl}${sep}connection_limit=15&pool_timeout=30`;
 }
 
 export const prisma =
