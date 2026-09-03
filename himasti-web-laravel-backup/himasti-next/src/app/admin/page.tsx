@@ -33,12 +33,23 @@ export default async function AdminDashboard() {
   }
 
   // Real-time calculation: Live Dewa Kode Leaderboard by XP from PostgreSQL
-  const topCoders = await prisma.dataKader.findMany({
-    where: { deleted_at: null },
-    orderBy: { xp: 'desc' },
-    take: 5,
-    include: { user: true }
-  });
+  let topCoders: any[] = [];
+  try {
+    topCoders = await prisma.dataKader.findMany({
+      where: { deleted_at: null },
+      orderBy: { xp: 'desc' },
+      take: 5,
+      include: { user: true }
+    });
+  } catch (e) {
+    console.warn("Retrying topCoders query with fallback:", e);
+    topCoders = await prisma.dataKader.findMany({
+      where: { deleted_at: null },
+      orderBy: { id: 'asc' },
+      take: 5,
+      include: { user: true }
+    });
+  }
 
   const { TITLES } = await import("@/lib/profileCustomization");
 
