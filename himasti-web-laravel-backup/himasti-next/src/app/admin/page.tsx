@@ -10,6 +10,7 @@ import TerminalEasterEgg from "./TerminalEasterEgg";
 import HackerMode from "./HackerMode";
 import { katalogKarya } from "@/lib/karyaData";
 import DigitalKTA from "./DigitalKTA";
+import SuperAdminPeekModal from "./SuperAdminPeekModal";
 
 export default async function AdminDashboard() {
   const session = await auth();
@@ -66,15 +67,35 @@ export default async function AdminDashboard() {
   });
 
 
+  // Fetch Super Admin for the VIP Architect Peek Showcase
+  const superAdminRole = await prisma.modelHasRole.findFirst({
+    where: { role: { name: 'super_admin' } },
+    include: {
+      user: {
+        include: { data_kader: true }
+      }
+    }
+  });
+
+  const superAdminData = {
+    name: superAdminRole?.user?.name || "M N DAFFA (The Architect)",
+    email: superAdminRole?.user?.email || "architect@himasti.ac.id",
+    nim: superAdminRole?.user?.data_kader?.nim || "ARCHITECT-001",
+    angkatan: superAdminRole?.user?.data_kader?.angkatan || "2022"
+  };
+
   const isPengurus = userRoles.some(r => r !== 'kader');
 
   if (!isPengurus) {
     return (
       <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
-        {/* Kader Header */}
-        <div className="border-b border-slate-200/60 pb-6">
-          <h1 className="text-3xl font-semibold text-slate-800 tracking-tight">Portal Anggota</h1>
-          <p className="text-sm text-slate-500 mt-1">Selamat datang di Ekosistem Digital HIMASTI v2.0</p>
+        {/* Kader Header with Architect Peek Trigger */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200/60 pb-6">
+          <div>
+            <h1 className="text-3xl font-semibold text-slate-800 tracking-tight">Portal Anggota</h1>
+            <p className="text-sm text-slate-500 mt-1">Selamat datang di Ekosistem Digital HIMASTI v2.0</p>
+          </div>
+          <SuperAdminPeekModal adminData={superAdminData} />
         </div>
 
         {/* Big Profile Card */}
@@ -254,7 +275,8 @@ export default async function AdminDashboard() {
             <p className="text-sm text-slate-500 mt-1">Sistem Informasi HIMASTI v2.0 • Diotorisasi sebagai <span className="font-mono text-xs bg-slate-50/50 text-slate-800 px-1.5 py-0.5 rounded-2xl border border-slate-200/60">{userRoles[0] ? userRoles[0].replace(/_/g, ' ') : 'KADER'}</span></p>
           </div>
         </div>
-        <div className="flex gap-3">
+        <div className="flex flex-wrap items-center gap-3">
+          <SuperAdminPeekModal adminData={superAdminData} />
           <Link href="/admin/kader" className="px-4 py-2 bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-xl text-sm font-medium hover:bg-slate-50/50 transition-colors">Lihat Kader</Link>
           {isSuperAdmin && (
             <button className="px-4 py-2 bg-gray-900 hover:bg-gray-800 text-white rounded-xl text-sm font-medium transition-colors">Pengaturan Sistem</button>
