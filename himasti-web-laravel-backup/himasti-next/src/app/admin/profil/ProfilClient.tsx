@@ -149,35 +149,6 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
 
   return (
     <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500 pb-12">
-      {/* Dynamic Keyframes for Animations */}
-      <style>{`
-        @keyframes cyberScan {
-          0% { transform: translateY(-10px); opacity: 0; }
-          20% { opacity: 1; }
-          80% { opacity: 1; }
-          100% { transform: translateY(320px); opacity: 0; }
-        }
-        @keyframes neonPulseGlow {
-          0%, 100% { box-shadow: 0 0 20px rgba(129, 140, 248, 0.35), 0 0 40px rgba(56, 189, 248, 0.2); }
-          50% { box-shadow: 0 0 35px rgba(244, 63, 94, 0.45), 0 0 60px rgba(129, 140, 248, 0.35); }
-        }
-        @keyframes holoShine {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-        .animate-cyber-laser {
-          animation: cyberScan 3.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-        }
-        .animate-neon-pulse {
-          animation: neonPulseGlow 4s ease-in-out infinite;
-        }
-        .animate-holo-text {
-          background-size: 200% auto;
-          animation: holoShine 4s linear infinite;
-        }
-      `}</style>
-
       {/* Header with User Level & XP Banner */}
       <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
         <div>
@@ -245,8 +216,8 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
           }`}
         >
           <Palette className="w-4 h-4 text-violet-600" />
-          <span>🎨 Studio Gaya & Toko XP</span>
-          <span className="px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-mono font-bold">BARU</span>
+          <span>Studio Gaya & Toko XP</span>
+          <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-mono font-bold tracking-wide">BARU</span>
         </button>
 
         <button
@@ -274,7 +245,7 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
             {/* Super Admin Ambient Elements if Root */}
             {isSuper && (
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 animate-laser-spin shadow-[0_0_20px_#22d3ee]" />
+                <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 shadow-[0_0_15px_#22d3ee]" />
                 <div className="absolute -top-12 -right-12 w-36 h-36 bg-rose-500/20 rounded-full blur-3xl" />
                 <div className="absolute -bottom-12 -left-12 w-36 h-36 bg-cyan-500/20 rounded-full blur-3xl" />
               </div>
