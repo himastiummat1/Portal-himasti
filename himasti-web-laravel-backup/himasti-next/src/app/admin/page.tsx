@@ -12,6 +12,9 @@ import { katalogKarya } from "@/lib/karyaData";
 import DigitalKTA from "./DigitalKTA";
 import SuperAdminPeekModal from "./SuperAdminPeekModal";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export default async function AdminDashboard() {
   const session = await auth();
   const userName = session?.user?.name || "Kader";
@@ -29,8 +32,20 @@ export default async function AdminDashboard() {
     });
   }
 
-  const creatorCounts = katalogKarya.reduce((acc, curr) => {
-    acc[curr.creator] = (acc[curr.creator] || 0) + 1;
+  // Real-time calculation: Combine database student projects + catalog
+  const dbProjects = await prisma.studentProject.findMany({
+    select: { student_name: true }
+  });
+
+  const allProjects = [
+    ...katalogKarya.map(k => ({ creator: k.creator })),
+    ...dbProjects.map(p => ({ creator: p.student_name }))
+  ];
+
+  const creatorCounts = allProjects.reduce((acc, curr) => {
+    if (curr.creator) {
+      acc[curr.creator] = (acc[curr.creator] || 0) + 1;
+    }
     return acc;
   }, {} as Record<string, number>);
 
