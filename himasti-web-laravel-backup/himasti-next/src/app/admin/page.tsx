@@ -32,36 +32,32 @@ export default async function AdminDashboard() {
     });
   }
 
-  // Real-time calculation: Combine database student projects + catalog
-  const dbProjects = await prisma.studentProject.findMany({
-    select: { student_name: true }
+  // Real-time calculation: Live Dewa Kode Leaderboard by XP from PostgreSQL
+  const topCoders = await prisma.dataKader.findMany({
+    where: { deleted_at: null },
+    orderBy: { xp: 'desc' },
+    take: 5,
+    include: { user: true }
   });
 
-  const allProjects = [
-    ...katalogKarya.map(k => ({ creator: k.creator })),
-    ...dbProjects.map(p => ({ creator: p.student_name }))
-  ];
+  const { TITLES } = await import("@/lib/profileCustomization");
 
-  const creatorCounts = allProjects.reduce((acc, curr) => {
-    if (curr.creator) {
-      acc[curr.creator] = (acc[curr.creator] || 0) + 1;
-    }
-    return acc;
-  }, {} as Record<string, number>);
+  const dynamicLeaderboard = topCoders.map((k, index) => {
+    const titleObj = TITLES.find(t => t.id === k.custom_title) || TITLES[0];
+    let icon = "✨";
+    if (index === 0) icon = "👑";
+    else if (index === 1) icon = "🔥";
+    else if (index === 2) icon = "⚔️";
+    else if (index === 3) icon = "⚡";
 
-  const dynamicLeaderboard = Object.entries(creatorCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 4)
-    .map((entry, index) => {
-       const [name, count] = entry;
-       let role = "Member";
-       let icon = "✨";
-       if (index === 0) { role = "The Architect"; icon = "👑"; }
-       else if (index === 1) { role = "Code Ninja"; icon = "🔥"; }
-       else if (index === 2) { role = "Bug Hunter"; icon = "⚔️"; }
-       
-       return { name, role, score: count.toString(), icon };
-    });
+    return {
+      name: k.user.name,
+      role: titleObj.name,
+      score: `${k.xp ?? 50}`,
+      icon,
+      frame: k.custom_frame || "none"
+    };
+  });
 
   const isSuperAdmin = userRoles.includes('super_admin');
   
@@ -241,7 +237,7 @@ export default async function AdminDashboard() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-800">Dewa Kode HIMASTI</h3>
-                <p className="text-sm text-slate-500">Kreator Teraktif (Katalog Karya)</p>
+                <p className="text-sm text-slate-500">Peringkat Kader Teraktif (Arena Koding)</p>
               </div>
             </div>
             
@@ -259,7 +255,7 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-slate-800">{p.score}</p>
-                    <p className="text-[10px] text-slate-500">Karya</p>
+                    <p className="text-[10px] text-slate-500">Poin XP</p>
                   </div>
                 </div>
               ))}
@@ -397,7 +393,7 @@ export default async function AdminDashboard() {
               </div>
               <div>
                 <h3 className="text-lg font-bold text-slate-800">Dewa Kode HIMASTI</h3>
-                <p className="text-sm text-slate-500">Kreator Teraktif (Katalog Karya)</p>
+                <p className="text-sm text-slate-500">Peringkat Kader Teraktif (Arena Koding)</p>
               </div>
             </div>
             
@@ -415,7 +411,7 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="text-right">
                     <p className="text-sm font-bold text-slate-800">{p.score}</p>
-                    <p className="text-[10px] text-slate-500">Karya</p>
+                    <p className="text-[10px] text-slate-500">Poin XP</p>
                   </div>
                 </div>
               ))}

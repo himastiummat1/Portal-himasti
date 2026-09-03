@@ -47,7 +47,13 @@ export default async function ProfilPage() {
     jenis_kelamin: user.data_kader?.jenis_kelamin || "",
     status_kaderisasi: user.data_kader?.status_kaderisasi || "-",
     roles: roleNames || "KADER",
-    isSuperAdmin
+    isSuperAdmin,
+    xp: user.data_kader?.xp ?? 50,
+    custom_frame: user.data_kader?.custom_frame || "none",
+    custom_title: user.data_kader?.custom_title || "kader",
+    custom_theme: user.data_kader?.custom_theme || "default",
+    custom_name_effect: user.data_kader?.custom_name_effect || "plain",
+    solved_challenges: user.data_kader?.solved_challenges ? JSON.parse(user.data_kader.solved_challenges) : []
   };
 
   return <ProfilClient initialData={profileData} />;

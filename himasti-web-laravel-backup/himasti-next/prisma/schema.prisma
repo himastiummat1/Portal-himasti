@@ -44,6 +44,12 @@ model DataKader {
   skills            String?
   no_hp             String?
   jenis_kelamin     String?
+  xp                Int?      @default(50)
+  custom_frame      String?   @default("none")
+  custom_title      String?   @default("kader")
+  custom_theme      String?   @default("default")
+  custom_name_effect String?  @default("plain")
+  solved_challenges String?   @default("[]")
   deleted_at        DateTime?
   created_at        DateTime? @default(now())
   updated_at        DateTime? @updatedAt

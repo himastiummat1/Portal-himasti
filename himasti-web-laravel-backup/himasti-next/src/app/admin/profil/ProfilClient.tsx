@@ -2,7 +2,7 @@
 
 import { useState, useTransition, useEffect } from "react";
 import Link from "next/link";
-import { updateProfil, changePassword } from "./actions";
+import { updateProfil, changePassword, saveCustomization } from "./actions";
 import { 
   User, Lock, Save, AlertCircle, CheckCircle2, Crown, Shield, 
   Terminal, Sparkles, Zap, Cpu, Palette, Trophy, Check, 
@@ -26,6 +26,12 @@ type ProfileData = {
   status_kaderisasi: string;
   roles: string;
   isSuperAdmin?: boolean;
+  xp?: number;
+  custom_frame?: string;
+  custom_title?: string;
+  custom_theme?: string;
+  custom_name_effect?: string;
+  solved_challenges?: string[];
 };
 
 export default function ProfilClient({ initialData }: { initialData: ProfileData }) {
@@ -35,39 +41,35 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
   const [activeMainTab, setActiveMainTab] = useState<"edit" | "studio" | "kta">("edit");
   const [cosmeticCategory, setCosmeticCategory] = useState<"frame" | "title" | "theme" | "nameEffect">("frame");
 
-  // User XP from Arena Koding + 50 Base XP for active membership
-  const [userXp, setUserXp] = useState<number>(50);
-  const [solvedCount, setSolvedCount] = useState<number>(0);
+  // User XP and Solved challenges from PostgreSQL Database
+  const [userXp, setUserXp] = useState<number>(initialData.xp ?? 50);
+  const [solvedCount, setSolvedCount] = useState<number>(initialData.solved_challenges?.length || 0);
 
-  // Equipped Customization State
-  const [equippedStyle, setEquippedStyle] = useState<UserCustomization>(DEFAULT_CUSTOMIZATION);
-  const [previewStyle, setPreviewStyle] = useState<UserCustomization>(DEFAULT_CUSTOMIZATION);
+  // Equipped Customization State from PostgreSQL Database
+  const initialCustom: UserCustomization = {
+    frameId: initialData.custom_frame || "none",
+    titleId: initialData.custom_title || "kader",
+    themeId: initialData.custom_theme || "default",
+    nameEffectId: initialData.custom_name_effect || "plain"
+  };
+
+  const [equippedStyle, setEquippedStyle] = useState<UserCustomization>(initialCustom);
+  const [previewStyle, setPreviewStyle] = useState<UserCustomization>(initialCustom);
 
   const isSuper = initialData.isSuperAdmin;
 
-  // Load XP & Equipped Customization from localStorage
+  // Sync with client-side cache as backup
   useEffect(() => {
     try {
-      // 1. Calculate XP from solved challenges
       const savedSolved = localStorage.getItem("himasti_solved_challenges");
       if (savedSolved) {
         const parsed = JSON.parse(savedSolved);
-        setSolvedCount(parsed.length);
-        const earnedXp = challengesData
-          .filter(c => parsed.includes(c.id))
-          .reduce((acc, curr) => acc + curr.xp, 0);
-        setUserXp(50 + earnedXp); // 50 Base + Solved Challenges
-      }
-
-      // 2. Load equipped customization
-      const savedCustom = localStorage.getItem("himasti_user_customization");
-      if (savedCustom) {
-        const parsed = JSON.parse(savedCustom);
-        setEquippedStyle(parsed);
-        setPreviewStyle(parsed);
+        if (parsed.length > solvedCount) {
+          setSolvedCount(parsed.length);
+        }
       }
     } catch (e) {}
-  }, []);
+  }, [solvedCount]);
 
   const triggerSparks = () => {
     try {
@@ -96,6 +98,14 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
     setEquippedStyle(updated);
     localStorage.setItem("himasti_user_customization", JSON.stringify(updated));
     triggerSparks();
+
+    // Persist to PostgreSQL Database!
+    saveCustomization({
+      ...(category === "frame" ? { frameId: itemId } : {}),
+      ...(category === "title" ? { titleId: itemId } : {}),
+      ...(category === "theme" ? { themeId: itemId } : {}),
+      ...(category === "nameEffect" ? { nameEffectId: itemId } : {})
+    });
   };
 
   const handleUpdateProfile = (e: React.FormEvent<HTMLFormElement>) => {

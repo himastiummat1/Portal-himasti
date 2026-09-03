@@ -84,3 +84,70 @@ export async function changePassword(formData: FormData) {
     return { success: false, error: "Gagal mengubah password." };
   }
 }
+
+export async function saveCustomization(data: {
+  frameId?: string;
+  titleId?: string;
+  themeId?: string;
+  nameEffectId?: string;
+}) {
+  try {
+    const userId = await requireAuth();
+
+    const kader = await prisma.dataKader.findFirst({ where: { user_id: userId } });
+    if (!kader) {
+      return { success: false, error: "Profil kader tidak ditemukan." };
+    }
+
+    const currentXp = kader.xp || 50;
+
+    // Server-side validation of XP unlock
+    const { FRAMES, TITLES, THEMES, NAME_EFFECTS } = await import("@/lib/profileCustomization");
+    
+    if (data.frameId) {
+      const item = FRAMES.find(f => f.id === data.frameId);
+      if (item && currentXp < item.minXp) {
+        return { success: false, error: `XP belum mencukupi untuk bingkai '${item.name}'.` };
+      }
+    }
+
+    if (data.titleId) {
+      const item = TITLES.find(t => t.id === data.titleId);
+      if (item && currentXp < item.minXp) {
+        return { success: false, error: `XP belum mencukupi untuk gelar '${item.name}'.` };
+      }
+    }
+
+    if (data.themeId) {
+      const item = THEMES.find(t => t.id === data.themeId);
+      if (item && currentXp < item.minXp) {
+        return { success: false, error: `XP belum mencukupi untuk tema '${item.name}'.` };
+      }
+    }
+
+    if (data.nameEffectId) {
+      const item = NAME_EFFECTS.find(n => n.id === data.nameEffectId);
+      if (item && currentXp < item.minXp) {
+        return { success: false, error: `XP belum mencukupi untuk efek '${item.name}'.` };
+      }
+    }
+
+    await prisma.dataKader.update({
+      where: { id: kader.id },
+      data: {
+        ...(data.frameId ? { custom_frame: data.frameId } : {}),
+        ...(data.titleId ? { custom_title: data.titleId } : {}),
+        ...(data.themeId ? { custom_theme: data.themeId } : {}),
+        ...(data.nameEffectId ? { custom_name_effect: data.nameEffectId } : {})
+      }
+    });
+
+    revalidatePath("/admin/profil");
+    revalidatePath("/admin/kader");
+    revalidatePath("/admin");
+    return { success: true };
+  } catch (error: any) {
+    console.error("Save customization error:", error);
+    return { success: false, error: "Gagal menyimpan kustomisasi ke server." };
+  }
+}

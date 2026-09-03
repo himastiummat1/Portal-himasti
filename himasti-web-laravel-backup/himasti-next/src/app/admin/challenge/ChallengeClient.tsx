@@ -8,6 +8,7 @@ import {
   Layers, Check, Eye, EyeOff, BookOpen, Clock
 } from "lucide-react";
 import { challengesData, Challenge, TestCase } from "./challengesData";
+import { submitSolvedChallenge } from "./actions";
 
 interface TestResult {
   passed: boolean;
@@ -18,15 +19,21 @@ interface TestResult {
   isHidden?: boolean;
 }
 
-export default function ChallengeClient() {
+export default function ChallengeClient({ 
+  initialXp = 50, 
+  initialSolved = [] 
+}: { 
+  initialXp?: number; 
+  initialSolved?: string[] 
+}) {
   const [selectedChallenge, setSelectedChallenge] = useState<Challenge>(challengesData[0]);
   const [code, setCode] = useState<string>(challengesData[0].starterCode);
   const [activeTab, setActiveTab] = useState<"description" | "hint" | "sandbox">("description");
   const [consoleOutput, setConsoleOutput] = useState<string[]>([]);
   const [testResults, setTestResults] = useState<TestResult[] | null>(null);
   const [isRunning, setIsRunning] = useState<boolean>(false);
-  const [solvedIds, setSolvedIds] = useState<string[]>([]);
-  const [totalXp, setTotalXp] = useState<number>(0);
+  const [solvedIds, setSolvedIds] = useState<string[]>(initialSolved);
+  const [totalXp, setTotalXp] = useState<number>(initialXp);
   const [showHint, setShowHint] = useState<boolean>(false);
   const [sandboxCode, setSandboxCode] = useState<string>(`// HIMASTI JavaScript Sandbox
 // Tulis dan eksperimen kode JavaScript sesukamu di sini!
@@ -146,6 +153,13 @@ console.log("Total penjumlahan:", total);
           const newXp = totalXp + selectedChallenge.xp;
           setTotalXp(newXp);
           localStorage.setItem("himasti_solved_challenges", JSON.stringify(newSolved));
+          
+          // Persist to PostgreSQL Database!
+          submitSolvedChallenge(selectedChallenge.id).then(res => {
+            if (res.success && res.totalXp) {
+              setTotalXp(res.totalXp);
+            }
+          });
         }
       }
     } catch (syntaxErr: any) {
