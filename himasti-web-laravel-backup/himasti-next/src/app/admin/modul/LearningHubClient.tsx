@@ -27,11 +27,14 @@ interface SemesterTrack {
   courses: Course[];
 }
 
-function formatMarkdown(content: string) {
-  if (!content) return "";
+function formatMarkdown(rawContent: string) {
+  if (!rawContent) return "";
+
+  // Completely strip all asterisks (*) to eliminate AI-generated markdown look
+  const cleanContent = rawContent.replace(/\*/g, "");
 
   // Split content by double newlines into clean semantic blocks
-  const blocks = content.split(/\n\n+/);
+  const blocks = cleanContent.split(/\n\n+/);
   
   return blocks.map((block) => {
     const trimmed = block.trim();
@@ -69,7 +72,6 @@ function formatMarkdown(content: string) {
         const itemText = line
           .replace(/^\s*-\s+/, "")
           .replace(/^\s*\d+\.\s+/, "")
-          .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
           .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-md bg-slate-100 text-violet-700 font-mono text-xs border border-slate-200">$1</code>');
         return `<li class="my-1.5 leading-relaxed">${itemText}</li>`;
       }).join("");
@@ -78,8 +80,6 @@ function formatMarkdown(content: string) {
 
     // Regular Paragraph
     const parsedText = trimmed
-      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
-      .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700">$1</em>')
       .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-md bg-slate-100 text-violet-700 font-mono text-xs border border-slate-200">$1</code>')
       .replace(/\n/g, '<br/>');
 
@@ -193,14 +193,14 @@ export default function LearningHubClient({ userName }: { userName: string }) {
 
 Banyak mahasiswa IT saat ini masih terjebak di pola lama: membuka ChatGPT atau Gemini di peramban web, mengetik potongan kode terisolasi, lalu menyalinnya bolak-balik secara manual. Pola ini sangat lambat dan membuat mahasiswa bingung ketika proyek mulai kompleks.
 
-## Perbedaan Mendasar: Web Chat vs. AI Agent
-1. **Web Chat (Pasif):** Hanya menerima prompt teks dan mengeluarkan teks. AI tidak bisa melihat repositori proyek Anda, tidak bisa menjalankan perintah terminal, dan tidak tahu apakah kodenya menghasilkan error saat dikompilasi.
-2. **AI Coding Agent (Aktif & Otonom):** Memiliki **siklus loop: Observe ➔ Plan ➔ Tool Execution ➔ Verify**. Agent membaca struktur folder langsung, mengedit file spesifik menggunakan *diff*, menjalankan kompilasi (*typecheck* / *test*), dan otomatis memperbaiki diri jika terjadi *syntax error*.
+## Perbedaan Mendasar: Web Chat vs AI Agent
+1. Web Chat (Pasif): Hanya menerima prompt teks dan mengeluarkan teks. AI tidak bisa melihat repositori proyek Anda, tidak bisa menjalankan perintah terminal, dan tidak tahu apakah kodenya menghasilkan error saat dikompilasi.
+2. AI Coding Agent (Aktif dan Otonom): Memiliki siklus loop: Observe, Plan, Tool Execution, dan Verify. Agent membaca struktur folder langsung, mengedit file spesifik menggunakan diff, menjalankan kompilasi typecheck atau unit test, dan otomatis memperbaiki diri jika terjadi error sintaks.
 
 ## Alat-Alat Utama Agentic Era:
-- **Cursor & Windsurf:** IDE modern bertenaga agen yang mampu membaca seluruh basis kode.
-- **Claude Code & Google Antigravity:** CLI Agent yang bisa mengendalikan terminal, git, dan sub-agent otonom.
-- **Model Context Protocol (MCP):** Standar protokol terbuka yang menghubungkan LLM ke database, filesystem, dan server lokal.`
+- Cursor dan Windsurf: IDE modern bertenaga agen yang mampu membaca seluruh basis kode.
+- Claude Code dan Google Antigravity: CLI Agent yang bisa mengendalikan terminal, git, dan sub-agent otonom.
+- Model Context Protocol (MCP): Standar protokol terbuka yang menghubungkan LLM ke database, filesystem, dan server lokal.`
             },
             {
               title: "BAB 2: Anatomi IDE AI Agents (Cursor, Claude Code, Antigravity)",
@@ -208,13 +208,13 @@ Banyak mahasiswa IT saat ini masih terjebak di pola lama: membuka ChatGPT atau G
 
 Bagaimana sebuah agen AI bisa mengedit ratusan baris kode tanpa merusak keseluruhan aplikasi?
 
-## 1. Tool Groups (Senjata Utama AI Agent)
-Sebuah agen AI modern dilengkapi dengan 3 kelompok perkakas (*tooling*):
-- **Read Tools:** Ripgrep (pencarian teks kilat), fd/find (pencarian nama file), view_file (membaca isi file).
-- **Write Tools:** replace_file_content (mengedit baris tertentu dengan presisi), write_to_file (membuat file baru).
-- **Execution Tools:** run_command (menjalankan terminal bash, git status, npx tsc, npm run build).
+## 1. Kelompok Alat Utama (Tool Groups)
+Sebuah agen AI modern dilengkapi dengan 3 kelompok perkakas kerja:
+- Read Tools: Ripgrep untuk pencarian teks kilat, fd untuk pencarian nama file, dan view_file untuk membaca isi file secara presisi.
+- Write Tools: replace_file_content untuk mengedit baris tertentu dengan presisi, dan write_to_file untuk membuat file baru.
+- Execution Tools: run_command untuk menjalankan terminal bash, git status, npx tsc, dan npm run build.
 
-## 2. Loop Verifikasi Otomatis (Anti-Halusinasi)
+## 2. Loop Verifikasi Otomatis
 Programmer yang cerdas tidak percaya begitu saja pada output AI. Kita melatih agen untuk selalu menjalankan:
 \`\`\`bash
 # Verifikasi typecheck sebelum commit
@@ -229,8 +229,8 @@ Jika perintah verifikasi di atas menghasilkan error, agen akan secara otomatis m
 Model Context Protocol (MCP) adalah standar protokol terbuka yang diperkenalkan oleh Anthropic untuk memecahkan masalah integrasi AI.
 
 ## Kenapa MCP Dibutuhkan?
-Sebelum ada MCP, jika Anda ingin AI Anda membaca database PostgreSQL atau file lokal, Anda harus mengekspor data ke format CSV/JSON dan mengunggahnya manual ke jendela chat.
-Dengan MCP, database lokal Anda berjalan sebagai **MCP Server** yang aman:
+Sebelum ada MCP, jika Anda ingin AI Anda membaca database PostgreSQL atau file lokal, Anda harus mengekspor data ke format CSV atau JSON dan mengunggahnya manual ke jendela chat.
+Dengan MCP, database lokal Anda berjalan sebagai MCP Server yang aman:
 \`\`\`json
 {
   "mcpServers": {
@@ -247,18 +247,18 @@ AI Agent kini bisa mengecek nama tabel, tipe data kolom, dan foreign key secara 
               title: "BAB 4: Menyusun Agent Rules (AGENTS.md & .cursorrules)",
               content: `# BAB 4: Merancang Instruksi Agen Berkualitas Tinggi
 
-AI Agent akan bekerja sesuai dengan batasan aturan (*constraints*) yang Anda berikan. Tanpa aturan, AI cenderung menghasilkan kode spaghetti atau teknologi kadaluarsa.
+AI Agent akan bekerja sesuai dengan batasan aturan yang Anda berikan. Tanpa aturan, AI cenderung menghasilkan kode berantakan atau memakai teknologi lama.
 
 ## File Panduan Konteks:
-- **AGENTS.md:** Digunakan oleh agen modern (seperti Antigravity dan Claude Code) untuk membaca arsitektur dan larangan teknis.
-- **.cursorrules:** Digunakan oleh Cursor IDE untuk mendikte standar kode setiap kali membuka proyek.
+- AGENTS.md: Digunakan oleh agen modern (seperti Antigravity dan Claude Code) untuk membaca arsitektur dan larangan teknis.
+- .cursorrules: Digunakan oleh Cursor IDE untuk mendikte standar kode setiap kali membuka proyek.
 
-## Contoh Aturan Tegas (Negative Constraints):
+## Contoh Aturan Tegas:
 \`\`\`markdown
 # Aturan Rekayasa Next.js 16:
-1. Utamakan React Server Components (RSC). DILARANG menggunakan "use client" kecuali ada event listener browser.
-2. DILARANG menggunakan useEffect untuk sinkronisasi state data fetching.
-3. Seluruh mutasi database WAJIB menggunakan Server Actions dengan validasi skema Zod.
+1. Utamakan React Server Components (RSC). Dilarang menggunakan use client kecuali ada event listener browser.
+2. Dilarang menggunakan useEffect untuk sinkronisasi state data fetching.
+3. Seluruh mutasi database wajib menggunakan Server Actions dengan validasi skema Zod.
 \`\`\`
 Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produksi!`
             }
@@ -299,10 +299,10 @@ else:
 Setiap bahasa pemrograman memiliki cara untuk menyimpan data di dalam memori komputer menggunakan variabel.
 
 ## Tipe Data Standar
-- **Integer:** Bilangan bulat (contoh: 1, 42, -5)
-- **Float:** Bilangan desimal (contoh: 3.14, 0.5)
-- **String:** Rangkaian teks (contoh: "HIMASTI UMMAT")
-- **Boolean:** Nilai kebenaran (True atau False)` 
+- Integer: Bilangan bulat (contoh: 1, 42, -5)
+- Float: Bilangan desimal (contoh: 3.14, 0.5)
+- String: Rangkaian teks (contoh: "HIMASTI UMMAT")
+- Boolean: Nilai kebenaran (True atau False)` 
             }
           ]
         },

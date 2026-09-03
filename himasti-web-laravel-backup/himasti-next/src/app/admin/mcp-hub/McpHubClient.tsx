@@ -611,7 +611,7 @@ export default function McpHubClient() {
                 Apa itu Model Context Protocol (MCP) & AI Agents?
               </h2>
               <p className="text-slate-600 text-sm sm:text-base mt-2 leading-relaxed">
-                Di tahun 2026, Large Language Model (LLM) tidak lagi hanya menjadi *chatbot* pasif. Melalui standar terbuka <strong>Model Context Protocol (MCP)</strong> dari Anthropic, AI kini bisa diberikan <em>alat bantu nyata (tools)</em> untuk membaca database lokal, terminal, dan file source code Anda secara aman.
+                Di tahun 2026, Large Language Model (LLM) tidak lagi hanya menjadi chatbot pasif. Melalui standar terbuka <strong>Model Context Protocol (MCP)</strong> dari Anthropic, AI kini bisa diberikan <em>alat bantu nyata (tools)</em> untuk membaca database lokal, terminal, dan file source code Anda secara aman.
               </p>
             </div>
 
