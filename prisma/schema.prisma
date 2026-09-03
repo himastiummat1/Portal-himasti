@@ -9,14 +9,19 @@ datasource db {
 /// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model absensis {
-  id               BigInt    @id @default(autoincrement())
-  event_id         BigInt
-  user_id          BigInt
-  waktu_hadir      DateTime  @db.Timestamp(0)
-  status_kehadiran String    @default("hadir") @db.VarChar(255)
-  catatan          String?   @db.VarChar(255)
-  created_at       DateTime? @db.Timestamp(0)
-  updated_at       DateTime? @db.Timestamp(0)
+  id                  BigInt    @id @default(autoincrement())
+  event_id            BigInt
+  user_id             BigInt
+  waktu_hadir         DateTime  @db.Timestamp(0)
+  status_kehadiran    String    @default("hadir") @db.VarChar(255)
+  catatan             String?   @db.VarChar(255)
+  verification_method String    @default("standard") @db.VarChar(50)
+  hardware_proof      String?   @db.Text
+  device_info         String?   @db.VarChar(255)
+  is_offline_sync     Boolean   @default(false)
+  synced_at           DateTime? @db.Timestamp(0)
+  created_at          DateTime? @db.Timestamp(0)
+  updated_at          DateTime? @db.Timestamp(0)
 }
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
@@ -349,4 +354,33 @@ model users {
   deleted_at        DateTime? @db.Timestamp(0)
   created_at        DateTime? @db.Timestamp(0)
   updated_at        DateTime? @db.Timestamp(0)
+}
+
+/// WebAuthn / Passkeys hardware-grade physical credentials for zero-joki attendance
+model webauthn_credentials {
+  id            BigInt    @id @default(autoincrement())
+  user_id       BigInt
+  credential_id String    @unique @db.VarChar(512)
+  public_key    String    @db.Text
+  counter       BigInt    @default(0)
+  device_type   String?   @db.VarChar(50)
+  backed_up     Boolean   @default(false)
+  transports    String?   @db.VarChar(255)
+  device_name   String?   @db.VarChar(255)
+  aaguid        String?   @db.VarChar(64)
+  created_at    DateTime? @default(now()) @db.Timestamp(0)
+  last_used_at  DateTime? @db.Timestamp(0)
+
+  @@index([user_id], map: "webauthn_credentials_user_id_index")
+}
+
+/// Offline synchronization log for P2P Mesh and aula network resilience
+model offline_sync_logs {
+  id              BigInt    @id @default(autoincrement())
+  batch_id        String    @db.VarChar(100)
+  device_id       String    @db.VarChar(100)
+  total_records   Int       @default(0)
+  synced_records  Int       @default(0)
+  status          String    @default("success") @db.VarChar(50)
+  synced_at       DateTime  @default(now()) @db.Timestamp(0)
 }
