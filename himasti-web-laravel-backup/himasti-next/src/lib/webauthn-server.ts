@@ -49,12 +49,12 @@ export async function getRegistrationOptionsForUser(userId: number, email: strin
     userID: userId.toString(),
     userName: email,
     userDisplayName: name,
+    timeout: 30000,
     attestationType: 'none',
     excludeCredentials,
     authenticatorSelection: {
       residentKey: 'preferred',
       userVerification: 'preferred',
-      authenticatorAttachment: 'platform', // Chip fisik perangkat HP (Fingerprint/FaceID/Knox)
     },
   })
 
@@ -155,7 +155,8 @@ export async function getAuthenticationOptionsForAttendance(userId?: number) {
 
   const options = await generateAuthenticationOptions({
     rpID,
-    userVerification: 'required',
+    timeout: 15000,
+    userVerification: 'preferred',
     allowCredentials,
   })
 

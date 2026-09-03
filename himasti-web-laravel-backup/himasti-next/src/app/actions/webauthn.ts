@@ -73,6 +73,19 @@ export async function getAttendanceOptionsAction() {
 
   const userId = parseInt(session.user.id)
 
+  // Cek apakah user sudah mendaftarkan perangkat fisik/biometrik
+  const userCredentials = await prisma.webAuthnCredential.findMany({
+    where: { user_id: userId },
+    select: { id: true },
+  })
+
+  if (userCredentials.length === 0) {
+    return {
+      error: 'Anda belum mendaftarkan sidik jari/perangkat fisik pada akun ini. Silakan gulir ke bawah dan klik "Tautkan Perangkat Biometrik Baru" terlebih dahulu.',
+      notEnrolled: true,
+    }
+  }
+
   try {
     const options = await getAuthenticationOptionsForAttendance(userId)
     return { success: true, options }
