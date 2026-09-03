@@ -74,10 +74,18 @@ export async function getAttendanceOptionsAction() {
   const userId = parseInt(session.user.id)
 
   // Cek apakah user sudah mendaftarkan perangkat fisik/biometrik
-  const userCredentials = await prisma.webAuthnCredential.findMany({
-    where: { user_id: userId },
-    select: { id: true },
-  })
+  let userCredentials: { id: number }[] = []
+  try {
+    userCredentials = await prisma.webAuthnCredential.findMany({
+      where: { user_id: userId },
+      select: { id: true },
+    })
+  } catch (err: any) {
+    console.error('getAttendanceOptionsAction DB check error:', err)
+    return {
+      error: 'Koneksi database sedang sibuk. Silakan ulangi dalam beberapa detik.',
+    }
+  }
 
   if (userCredentials.length === 0) {
     return {
