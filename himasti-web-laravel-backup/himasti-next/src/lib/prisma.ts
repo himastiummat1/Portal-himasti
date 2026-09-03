@@ -2,7 +2,11 @@ import { PrismaClient } from "@prisma/client";
 
 const globalForPrisma = globalThis as unknown as { prisma?: PrismaClient };
 
-let databaseUrl = process.env.DATABASE_URL || "postgresql://postgres.fitijhdpptnlslvbfxbl:HimastiUmmat@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres";
+let databaseUrl = process.env.DATABASE_URL;
+
+if (!databaseUrl) {
+  throw new Error("CRITICAL SECURITY ERROR: DATABASE_URL is not set in environment variables.");
+}
 
 // Gunakan port 5432 session mode yang stabil untuk prepared statements dan anti-timeout
 if (databaseUrl.includes(':6543')) {

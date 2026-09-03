@@ -1,11 +1,19 @@
+require("dotenv").config({ path: ".env.local" });
+require("dotenv").config({ path: ".env" });
+
 const { Client } = require("pg");
 
-const connectionString = "postgresql://postgres.fitijhdpptnlslvbfxbl:HimastiUmmat@aws-0-ap-southeast-1.pooler.supabase.com:5432/postgres";
+const connectionString = process.env.DIRECT_URL || process.env.DATABASE_URL;
+
+if (!connectionString) {
+  console.error("Error: DIRECT_URL or DATABASE_URL not found in .env files.");
+  process.exit(1);
+}
 
 async function main() {
   const client = new Client({ connectionString });
   await client.connect();
-  console.log("Connected to Supabase PostgreSQL!");
+  console.log("Connected to PostgreSQL database!");
 
   await client.query(`
     CREATE TABLE IF NOT EXISTS webauthn_credentials (
@@ -48,7 +56,7 @@ async function main() {
     ALTER TABLE absensis ADD COLUMN IF NOT EXISTS synced_at TIMESTAMP;
   `);
 
-  console.log("SUCCESS: webauthn_credentials & audit columns created safely without touching existing data!");
+  console.log("SUCCESS: webauthn_credentials & audit columns verified safely without data loss!");
   await client.end();
 }
 

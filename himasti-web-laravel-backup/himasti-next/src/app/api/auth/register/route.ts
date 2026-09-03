@@ -11,8 +11,12 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Semua kolom wajib diisi" }, { status: 400 });
     }
 
-    // Validasi Kode Rahasia (Case Insensitive & Abaikan Tanda Baca/Spasi)
-    const VALID_CODE = process.env.REGISTRATION_CODE || "JIWA AKTIF JIWA KREATIF LUAR BIASA";
+    // Validasi Kode Rahasia (Diambil dari environment variable aman)
+    const VALID_CODE = process.env.REGISTRATION_CODE;
+    if (!VALID_CODE) {
+      return NextResponse.json({ error: "Pendaftaran sedang ditutup sementara oleh pengurus." }, { status: 503 });
+    }
+
     const cleanInput = secret_code.toUpperCase().replace(/[^A-Z]/g, '');
     const cleanValid = VALID_CODE.toUpperCase().replace(/[^A-Z]/g, '');
     
