@@ -4,13 +4,15 @@ import Link from "next/link";
 import { 
   Users, FileText, Database, Shield, BookOpen, 
   Megaphone, CreditCard, Activity, ArrowRight, GitPullRequest, Search, CheckCircle2,
-  Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid, Cpu
+  Calendar, Info, Trophy, ExternalLink, Code, LayoutGrid, Cpu, Star, Palette, Zap
 } from "lucide-react";
 import TerminalEasterEgg from "./TerminalEasterEgg";
 import HackerMode from "./HackerMode";
 import { katalogKarya } from "@/lib/karyaData";
 import DigitalKTA from "./DigitalKTA";
 import SuperAdminPeekModal from "./SuperAdminPeekModal";
+import { CosmeticAvatar, getThemeClasses, getNameClasses } from "@/components/profile/CosmeticAvatar";
+import { TITLES, FRAMES, THEMES } from "@/lib/profileCustomization";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -108,6 +110,14 @@ export default async function AdminDashboard() {
 
   const isPengurus = userRoles.some(r => r !== 'kader');
 
+  const userFrame = kaderData?.custom_frame || "none";
+  const userTitleId = kaderData?.custom_title || "kader";
+  const userThemeId = kaderData?.custom_theme || "default";
+  const userNameEffect = kaderData?.custom_name_effect || "plain";
+  const userXp = kaderData?.xp ?? 50;
+  const userTitle = TITLES.find(t => t.id === userTitleId) || TITLES[0];
+  const isDarkCard = isSuperAdmin || userThemeId !== "default";
+
   if (!isPengurus) {
     return (
       <div className="max-w-5xl mx-auto space-y-8 animate-in fade-in duration-500 pb-12">
@@ -120,36 +130,57 @@ export default async function AdminDashboard() {
           <SuperAdminPeekModal adminData={superAdminData} />
         </div>
 
-        {/* Big Profile Card */}
-        <div className="bg-gray-50 from-white/90 to-slate-50/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.05)] border border-gray-100/60 rounded-3xl p-8 relative overflow-hidden group">
-          <div className="absolute top-0 right-0 w-64 h-64 bg-gray-100/50 rounded-full blur-3xl -mr-20 -mt-20"></div>
+        {/* Big Profile Card with Live Theme, Frame, Name Effect, and Title */}
+        <div className={`rounded-3xl p-6 sm:p-8 relative overflow-hidden transition-all ${getThemeClasses(userThemeId, isSuperAdmin)}`}>
+          <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
           
-          <div className="relative z-10 flex flex-col md:flex-row gap-8 items-center md:items-start">
-            <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(userName)}`} alt="Avatar" className="w-24 h-24 bg-gray-100 border-2 border-white shadow-sm rounded-full shrink-0" />
-            <div className="flex-1 text-center md:text-left space-y-4">
-              <div>
-                <h2 className="text-2xl font-bold text-slate-800">{userName}</h2>
-                <div className="flex items-center justify-center md:justify-start gap-2 mt-1">
-                  <span className="font-mono text-xs bg-gray-50 text-gray-900 px-2 py-0.5 rounded-full border border-gray-200 flex items-center gap-1 font-bold">
-                    <CheckCircle2 className="w-3 h-3" /> Kader Aktif
-                  </span>
-                  <span className="text-slate-400 text-xs font-mono">{session?.user?.email}</span>
+          <div className="relative z-10 flex flex-col md:flex-row gap-6 sm:gap-8 items-center md:items-start">
+            <CosmeticAvatar 
+              name={userName} 
+              frameId={userFrame} 
+              size="lg" 
+            />
+            <div className="flex-1 text-center md:text-left space-y-4 w-full">
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
+                <div>
+                  <h2 className={`text-2xl sm:text-3xl font-extrabold ${getNameClasses(userNameEffect, isSuperAdmin, userThemeId)}`}>
+                    {userName}
+                  </h2>
+                  <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-2">
+                    <span className="inline-flex items-center gap-1 font-mono text-xs bg-amber-500/20 text-amber-300 border border-amber-500/30 px-2.5 py-0.5 rounded-full font-bold">
+                      <Star className="w-3 h-3 fill-amber-400 text-amber-400" />
+                      {userTitle.name}
+                    </span>
+                    <span className="inline-flex items-center gap-1 font-mono text-xs bg-violet-500/20 text-violet-300 border border-violet-500/30 px-2.5 py-0.5 rounded-full font-bold">
+                      <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
+                      {userXp} XP
+                    </span>
+                    <span className={`text-xs font-mono ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>{session?.user?.email}</span>
+                  </div>
                 </div>
+
+                <Link 
+                  href="/admin/profil" 
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 w-fit mx-auto md:mx-0"
+                >
+                  <Palette className="w-3.5 h-3.5" />
+                  <span>Ubah Gaya & Gelar</span>
+                </Link>
               </div>
-              <div className="grid grid-cols-2 gap-4 pt-4 border-t border-slate-200/50">
+
+              <div className={`grid grid-cols-2 gap-4 pt-4 border-t ${isDarkCard ? 'border-white/10' : 'border-slate-200/60'}`}>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">NIM Mahasiswa</span>
-                  <p className="font-mono text-slate-800 font-medium">{kaderData?.nim || "Belum Update"}</p>
+                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>NIM Mahasiswa</span>
+                  <p className={`font-mono font-bold ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>{kaderData?.nim || "Belum Update"}</p>
                 </div>
                 <div>
-                  <span className="text-[10px] uppercase font-bold text-slate-400 tracking-wider">Tahun Angkatan</span>
-                  <p className="font-mono text-slate-800 font-medium">{kaderData?.angkatan || "Belum Update"}</p>
+                  <span className={`text-[10px] uppercase font-bold tracking-wider ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>Tahun Angkatan</span>
+                  <p className={`font-mono font-bold ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>{kaderData?.angkatan || "Belum Update"}</p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
         
         {/* Digital KTA (Moved to top for mobile visibility) */}
         <div className="mb-6">
@@ -163,6 +194,9 @@ export default async function AdminDashboard() {
                 nim={kaderData?.nim || "KADER-GUEST"}
                 email={session?.user?.email || ""}
                 angkatan={kaderData?.angkatan || new Date().getFullYear().toString()}
+                frameId={userFrame}
+                title={userTitle.name}
+                nameEffectId={userNameEffect}
               />
             </div>
             <p className="text-xs text-center text-slate-500 mt-6 font-medium">Klik kartu untuk memperbesar. Arahkan kursor untuk efek 3D hologram.</p>

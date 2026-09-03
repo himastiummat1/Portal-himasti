@@ -116,3 +116,149 @@ body {
 .animate-grid-pan {
   animation: panGrid 4s linear infinite;
 }
+
+/* ==========================================================================
+   THEMATIC GAMIFICATION ANIMATIONS (Matching each cosmetic name)
+   ========================================================================== */
+
+/* 1. CYBERPUNK LASER */
+@keyframes laserSpin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes laserPulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(6, 182, 212, 0.9)) drop-shadow(0 0 14px rgba(236, 72, 153, 0.6)); }
+  50% { filter: drop-shadow(0 0 12px rgba(6, 182, 212, 1)) drop-shadow(0 0 22px rgba(236, 72, 153, 0.9)); }
+}
+.animate-laser-spin {
+  animation: laserSpin 2.5s linear infinite;
+}
+.animate-laser-pulse {
+  animation: laserPulse 2s ease-in-out infinite;
+}
+
+/* 2. MATRIX HACKER */
+@keyframes matrixGlitch {
+  0%, 90%, 100% { transform: translate(0, 0); opacity: 1; }
+  92% { transform: translate(-2px, 1px); opacity: 0.85; }
+  94% { transform: translate(2px, -1px); opacity: 0.95; }
+  96% { transform: translate(-1px, 2px); opacity: 0.9; }
+}
+@keyframes matrixPhosphor {
+  0%, 100% { box-shadow: 0 0 10px rgba(16, 185, 129, 0.6), inset 0 0 8px rgba(16, 185, 129, 0.4); }
+  50% { box-shadow: 0 0 22px rgba(16, 185, 129, 0.95), inset 0 0 14px rgba(16, 185, 129, 0.7); }
+}
+.animate-matrix-glitch {
+  animation: matrixGlitch 3s ease infinite;
+}
+.animate-matrix-phosphor {
+  animation: matrixPhosphor 1.8s ease-in-out infinite;
+}
+
+/* 3. HIMASTI ROYAL GOLD */
+@keyframes crownFloat {
+  0%, 100% { transform: translateY(0px) rotate(0deg) scale(1); }
+  50% { transform: translateY(-4px) rotate(3deg) scale(1.08); }
+}
+@keyframes royalShimmer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes goldGlint {
+  0%, 100% { opacity: 0.4; transform: scale(0.8) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.2) rotate(45deg); filter: drop-shadow(0 0 8px #fbbf24); }
+}
+.animate-crown-float {
+  animation: crownFloat 2.5s ease-in-out infinite;
+}
+.animate-royal-shimmer {
+  animation: royalShimmer 6s linear infinite;
+}
+.animate-gold-glint {
+  animation: goldGlint 2s ease-in-out infinite;
+}
+
+/* 4. COSMIC NEBULA */
+@keyframes nebulaSwirl {
+  0% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(180deg) scale(1.05); }
+  100% { transform: rotate(360deg) scale(1); }
+}
+@keyframes starOrbit {
+  0% { transform: rotate(0deg) translateX(36px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(36px) rotate(-360deg); }
+}
+@keyframes starOrbitCounter {
+  0% { transform: rotate(360deg) translateX(34px) rotate(-360deg); }
+  100% { transform: rotate(0deg) translateX(34px) rotate(0deg); }
+}
+.animate-nebula-swirl {
+  animation: nebulaSwirl 8s linear infinite;
+}
+.animate-star-orbit {
+  animation: starOrbit 4s linear infinite;
+}
+.animate-star-orbit-counter {
+  animation: starOrbitCounter 5.5s linear infinite;
+}
+
+/* 5. API PHOENIX */
+@keyframes phoenixFlame {
+  0%, 100% {
+    transform: scale(1) translateY(0);
+    filter: drop-shadow(0 0 10px rgba(249, 115, 22, 0.8)) drop-shadow(0 -4px 12px rgba(239, 68, 68, 0.9));
+  }
+  50% {
+    transform: scale(1.06) translateY(-2px);
+    filter: drop-shadow(0 0 18px rgba(245, 158, 11, 1)) drop-shadow(0 -8px 20px rgba(220, 38, 38, 0.95));
+  }
+}
+@keyframes emberRise {
+  0% { transform: translateY(0) scale(1); opacity: 0.9; }
+  50% { transform: translateY(-10px) translateX(3px) scale(0.8); opacity: 0.6; }
+  100% { transform: translateY(-20px) translateX(-2px) scale(0.3); opacity: 0; }
+}
+.animate-phoenix-flame {
+  animation: phoenixFlame 1.4s ease-in-out infinite;
+}
+.animate-ember-1 {
+  animation: emberRise 1.6s ease-out infinite;
+}
+.animate-ember-2 {
+  animation: emberRise 2s ease-out 0.6s infinite;
+}
+
+/* 6. NAME TYPOGRAPHY EFFECTS */
+@keyframes holoTextFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+.animate-holo-text {
+  background-size: 200% auto;
+  animation: holoTextFlow 3s linear infinite;
+}
+
+@keyframes goldSheenSweep {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+.animate-gold-sheen {
+  background-size: 200% auto;
+  animation: goldSheenSweep 3.5s ease-in-out infinite;
+}
+
+@keyframes neonHumPulse {
+  0%, 100% {
+    text-shadow: 0 0 4px #22d3ee, 0 0 12px #06b6d4, 0 0 24px #0891b2;
+    opacity: 1;
+  }
+  50% {
+    text-shadow: 0 0 8px #38bdf8, 0 0 18px #0ea5e9, 0 0 35px #0284c7;
+    opacity: 0.95;
+  }
+}
+.animate-neon-pulse-text {
+  animation: neonHumPulse 2s ease-in-out infinite;
+}
+

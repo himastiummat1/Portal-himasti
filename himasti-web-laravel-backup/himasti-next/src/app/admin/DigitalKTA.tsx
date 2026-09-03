@@ -5,12 +5,22 @@ import { useRef, useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { motion, useMotionValue, useSpring, useTransform, AnimatePresence } from "framer-motion";
 import { QRCodeSVG } from "qrcode.react";
-import { Command, X } from "lucide-react";
+import { Command, X, Star } from "lucide-react";
+import { CosmeticAvatar, getNameClasses } from "@/components/profile/CosmeticAvatar";
 
 export default function DigitalKTA({ 
-  name, nim, email, angkatan 
+  name, nim, email, angkatan,
+  frameId = "none",
+  title = "Kader Aktif",
+  nameEffectId = "plain"
 }: { 
-  name: string, nim: string, email: string, angkatan: string 
+  name: string; 
+  nim: string; 
+  email: string; 
+  angkatan: string;
+  frameId?: string;
+  title?: string;
+  nameEffectId?: string;
 }) {
   const [isZoomed, setIsZoomed] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -128,22 +138,26 @@ export default function DigitalKTA({
             <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={60} height={60} className="w-full h-full object-contain" />
           </div>
           <div>
-            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl md:text-3xl' : 'text-base'}`}>HIMASTI</div>
-            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[10px] mt-0.5'} text-slate-400 font-mono tracking-widest uppercase`}>Member Card</div>
+            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl md:text-3xl' : 'text-base'}`}>HIMASTI UMMAT</div>
+            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[10px] mt-0.5'} text-slate-400 font-mono tracking-widest uppercase`}>Himpunan Mahasiswa Sistem & Teknologi Informasi</div>
           </div>
         </div>
         <div className={`px-2 py-1 bg-white/10 border border-white/20 rounded-md ${zoomed ? 'text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2' : 'text-[9px] px-2 py-1'} font-mono font-bold text-white backdrop-blur-sm tracking-widest`}>
-          VERIFIED
+          RESMI
         </div>
       </div>
 
       <div className={`flex ${zoomed ? 'flex-col md:flex-row mt-8 md:mt-auto md:mb-auto' : 'flex-row mt-6'} gap-6 md:gap-4 items-start md:items-end justify-between w-full relative z-10`} style={{ transform: "translateZ(50px)" }}>
         <div className="flex-1 min-w-0 w-full pr-0 md:pr-4">
           <div className="mb-4 flex items-center gap-3 md:gap-5">
-            <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(nim)}`} alt="Avatar" className={`rounded-lg md:rounded-2xl shadow-lg bg-white/5 border border-white/10 shrink-0 ${zoomed ? 'w-16 h-16 md:w-24 md:h-24' : 'w-10 h-10'}`} />
+            <CosmeticAvatar name={name} frameId={frameId} size={zoomed ? "lg" : "sm"} />
             <div className="flex-1 min-w-0">
               <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
-              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-lg truncate leading-tight'} font-bold text-white w-full`}>{name}</div>
+              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, "dark_obsidian")} w-full`}>{name}</div>
+              <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] md:text-xs font-mono font-bold">
+                <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-300 text-amber-300" />
+                <span>{title}</span>
+              </div>
             </div>
           </div>
           

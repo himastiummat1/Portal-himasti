@@ -14,6 +14,7 @@ import {
   UserCustomization, DEFAULT_CUSTOMIZATION, CosmeticItem 
 } from "@/lib/profileCustomization";
 import { challengesData } from "../challenge/challengesData";
+import { CosmeticAvatar, getThemeClasses, getNameClasses } from "@/components/profile/CosmeticAvatar";
 
 type ProfileData = {
   id: number;
@@ -144,39 +145,6 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
   const currentTheme = THEMES.find(t => t.id === previewStyle.themeId) || THEMES[0];
   const currentNameEffect = NAME_EFFECTS.find(n => n.id === previewStyle.nameEffectId) || NAME_EFFECTS[0];
 
-  // Card theme classes
-  const getThemeClasses = (themeId: string) => {
-    if (isSuper && themeId === "default") {
-      return "bg-slate-900 text-white border border-slate-700 shadow-2xl animate-neon-pulse";
-    }
-    switch (themeId) {
-      case "dark_obsidian":
-        return "bg-slate-950 text-white border border-slate-800 shadow-2xl";
-      case "cyber_city":
-        return "bg-gradient-to-b from-slate-900 via-indigo-950 to-slate-950 text-white border border-cyan-500/40 shadow-2xl ring-1 ring-cyan-500/20";
-      case "emerald_matrix":
-        return "bg-gradient-to-b from-slate-950 via-emerald-950/70 to-slate-950 text-emerald-100 border border-emerald-500/40 shadow-2xl ring-1 ring-emerald-500/20";
-      case "cosmic_violet":
-        return "bg-gradient-to-b from-slate-950 via-purple-950/70 to-slate-950 text-purple-100 border border-purple-500/40 shadow-2xl ring-1 ring-purple-500/20";
-      default:
-        return "bg-white border border-gray-200 text-gray-900 shadow-sm";
-    }
-  };
-
-  // Name Typography classes
-  const getNameClasses = (effectId: string) => {
-    switch (effectId) {
-      case "holo_grad":
-        return "bg-gradient-to-r from-cyan-400 via-pink-400 to-amber-300 bg-clip-text text-transparent font-extrabold animate-holo-text";
-      case "gold_shimmer":
-        return "bg-gradient-to-r from-amber-300 via-yellow-400 to-amber-200 bg-clip-text text-transparent font-extrabold";
-      case "neon_blue":
-        return "text-cyan-400 font-extrabold drop-shadow-[0_0_10px_rgba(34,211,238,0.8)]";
-      default:
-        return isSuper || previewStyle.themeId !== "default" ? "text-white font-extrabold" : "text-gray-900 font-bold";
-    }
-  };
-
   const isDarkCard = isSuper || previewStyle.themeId !== "default";
 
   return (
@@ -301,12 +269,12 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
         {/* LEFT COLUMN: LIVE PREVIEW PROFILE CARD (1 Col) */}
         <div className="col-span-1 space-y-4">
           
-          <div className={`p-6 relative overflow-hidden transition-all duration-300 rounded-3xl ${getThemeClasses(previewStyle.themeId)}`}>
+          <div className={`p-6 relative overflow-hidden transition-all duration-300 rounded-3xl ${getThemeClasses(previewStyle.themeId, isSuper)}`}>
             
             {/* Super Admin Ambient Elements if Root */}
             {isSuper && (
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
-                <div className="w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 animate-cyber-laser shadow-[0_0_20px_#22d3ee]" />
+                <div className="w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 animate-laser-spin shadow-[0_0_20px_#22d3ee]" />
                 <div className="absolute -top-12 -right-12 w-36 h-36 bg-rose-500/20 rounded-full blur-3xl" />
                 <div className="absolute -bottom-12 -left-12 w-36 h-36 bg-cyan-500/20 rounded-full blur-3xl" />
               </div>
@@ -317,60 +285,15 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
               
               <div 
                 onClick={triggerSparks}
-                className="relative w-24 h-24 mb-4 cursor-pointer group/avatar"
+                className="cursor-pointer group/avatar mb-4"
                 title="Klik avatar untuk percikan spark ⚡"
               >
-                {/* 1. Cyber Neon Frame */}
-                {previewStyle.frameId === "cyber_neon" && (
-                  <>
-                    <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-spin [animation-duration:3s] blur-sm opacity-80" />
-                    <div className="absolute -inset-1.5 rounded-full bg-gradient-to-r from-cyan-400 via-purple-500 to-pink-500 animate-spin [animation-duration:3s]" />
-                  </>
-                )}
-
-                {/* 2. Matrix Emerald Frame */}
-                {previewStyle.frameId === "matrix_emerald" && (
-                  <div className="absolute -inset-2 rounded-full bg-emerald-500/40 blur-md animate-pulse shadow-[0_0_25px_#10b981]" />
-                )}
-
-                {/* 3. Royal Gold Frame with Crown */}
-                {previewStyle.frameId === "royal_gold" && (
-                  <>
-                    <div className="absolute -inset-2 rounded-full bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-500 animate-spin [animation-duration:4s] blur-sm opacity-90" />
-                    <div className="absolute -top-3 -right-2 z-20 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 p-1 rounded-full shadow-lg border-2 border-white animate-bounce [animation-duration:2s]">
-                      <Crown className="w-3.5 h-3.5 fill-slate-950" />
-                    </div>
-                  </>
-                )}
-
-                {/* 4. Cosmic Nebula Frame */}
-                {previewStyle.frameId === "cosmic_nebula" && (
-                  <>
-                    <div className="absolute -inset-2.5 rounded-full bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 animate-spin [animation-duration:5s] blur-md opacity-90" />
-                    <div className="absolute -inset-1.5 rounded-full border border-purple-300/60" />
-                  </>
-                )}
-
-                {/* 5. Flame Phoenix Frame */}
-                {previewStyle.frameId === "flame_phoenix" && (
-                  <div className="absolute -inset-2 rounded-full bg-gradient-to-t from-red-600 via-orange-500 to-amber-400 blur-sm animate-pulse" />
-                )}
-
-                {/* Inner Avatar Image */}
-                <img 
-                  src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(initialData.name)}`} 
-                  alt="Avatar" 
-                  className={`relative z-10 w-full h-full object-cover rounded-full bg-slate-950 transition-transform group-hover/avatar:scale-105 active:scale-95 border-2 ${
-                    previewStyle.frameId === "matrix_emerald" ? "border-emerald-400" :
-                    previewStyle.frameId === "flame_phoenix" ? "border-amber-400" :
-                    previewStyle.frameId === "none" ? "border-slate-300" : "border-white"
-                  }`} 
-                />
+                <CosmeticAvatar name={initialData.name} frameId={previewStyle.frameId} size="lg" />
               </div>
 
               {/* Name & Custom Title */}
               <div className="text-center mb-6">
-                <h3 className={`text-lg leading-tight ${getNameClasses(previewStyle.nameEffectId)}`}>
+                <h3 className={`text-lg leading-tight ${getNameClasses(previewStyle.nameEffectId, isSuper, previewStyle.themeId)}`}>
                   {initialData.name}
                 </h3>
                 
@@ -710,30 +633,9 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
 
                 {/* Body with Avatar */}
                 <div className="flex items-center gap-4 py-5">
-                  <div className="relative w-16 h-16 shrink-0">
-                    {previewStyle.frameId === "royal_gold" && (
-                      <div className="absolute -top-2 -right-1 z-20 bg-gradient-to-r from-amber-400 to-yellow-500 text-slate-950 p-0.5 rounded-full border border-white">
-                        <Crown className="w-2.5 h-2.5 fill-slate-950" />
-                      </div>
-                    )}
-                    {previewStyle.frameId === "cyber_neon" && (
-                      <div className="absolute -inset-1 rounded-full bg-gradient-to-r from-cyan-400 to-pink-500 animate-spin [animation-duration:3s]" />
-                    )}
-                    {previewStyle.frameId === "matrix_emerald" && (
-                      <div className="absolute -inset-1 rounded-full bg-emerald-400/80 animate-pulse" />
-                    )}
-                    <img 
-                      src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(initialData.name)}`} 
-                      alt="Avatar" 
-                      className={`relative z-10 w-full h-full object-cover rounded-full bg-slate-900 border-2 ${
-                        previewStyle.frameId === "matrix_emerald" ? "border-emerald-400" :
-                        previewStyle.frameId === "royal_gold" ? "border-amber-400" :
-                        previewStyle.frameId === "flame_phoenix" ? "border-orange-400" : "border-white/40"
-                      } shadow-md`}
-                    />
-                  </div>
+                  <CosmeticAvatar name={initialData.name} frameId={previewStyle.frameId} size="md" />
                   <div>
-                    <h5 className={`text-base font-black leading-tight ${getNameClasses(previewStyle.nameEffectId)}`}>{initialData.name}</h5>
+                    <h5 className={`text-base font-black leading-tight ${getNameClasses(previewStyle.nameEffectId, isSuper, "dark_obsidian")}`}>{initialData.name}</h5>
                     <div className="inline-flex items-center gap-1 mt-1 text-[11px] font-mono text-amber-300 font-bold">
                       <Star className="w-3 h-3 fill-amber-300" />
                       <span>{currentTitle.name}</span>
