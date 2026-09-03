@@ -50,7 +50,12 @@ export default function PasskeyEnrollment() {
     try {
       const optRes = await getRegistrationOptionsAction()
       if (optRes.error || !optRes.options) {
-        throw new Error(optRes.error || 'Gagal memulai pendaftaran perangkat.')
+        setStatusMessage({
+          type: 'error',
+          text: optRes.error || 'Gagal memulai pendaftaran perangkat.',
+        })
+        setLoading(false)
+        return
       }
 
       const regResponse = await startRegistration(optRes.options)
@@ -59,7 +64,12 @@ export default function PasskeyEnrollment() {
       const verifyRes = await verifyRegistrationAction(regResponse, name)
 
       if (verifyRes.error) {
-        throw new Error(verifyRes.error)
+        setStatusMessage({
+          type: 'error',
+          text: verifyRes.error,
+        })
+        setLoading(false)
+        return
       }
 
       setStatusMessage({
@@ -92,7 +102,7 @@ export default function PasskeyEnrollment() {
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+    <div id="passkey-enrollment" className="bg-white dark:bg-slate-800 rounded-2xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
       <div className="flex items-start justify-between mb-4">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center">

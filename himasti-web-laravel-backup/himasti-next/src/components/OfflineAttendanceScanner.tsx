@@ -84,7 +84,12 @@ export default function OfflineAttendanceScanner({
       if (isOnline) {
         const optsRes = await getAttendanceOptionsAction()
         if (optsRes.error || !optsRes.options) {
-          throw new Error(optsRes.error || 'Gagal membuat sesi presensi.')
+          setResult({
+            success: false,
+            message: optsRes.error || 'Gagal membuat sesi presensi.',
+          })
+          setLoading(false)
+          return
         }
 
         const authResponse = await startAuthentication(optsRes.options)
@@ -98,7 +103,12 @@ export default function OfflineAttendanceScanner({
         })
 
         if (submitRes.error) {
-          throw new Error(submitRes.error)
+          setResult({
+            success: false,
+            message: submitRes.error,
+          })
+          setLoading(false)
+          return
         }
 
         setResult({
@@ -259,6 +269,15 @@ export default function OfflineAttendanceScanner({
           )}
           <div>
             <p className="font-semibold">{result.message}</p>
+            {!result.success && result.message.includes('belum mendaftarkan') && (
+              <button
+                type="button"
+                onClick={() => document.getElementById('passkey-enrollment')?.scrollIntoView({ behavior: 'smooth' })}
+                className="mt-2.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm transition"
+              >
+                <span>👇 Klik di Sini untuk Tautkan Perangkat</span>
+              </button>
+            )}
             {result.timestamp && (
               <p className="text-xs mt-1 opacity-80 flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" /> Waktu: {result.timestamp}
