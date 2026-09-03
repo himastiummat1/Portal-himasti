@@ -4,14 +4,50 @@ import { useState } from "react";
 import { 
   Map, BookOpen, Code2, Terminal, Database, Sparkles, 
   Layout, Server, Cpu, FileCode2, ChevronRight, Search, CheckCircle2,
-  X, AlignLeft, BookMarked, PlayCircle, ArrowLeft
+  X, AlignLeft, BookMarked, PlayCircle, ArrowLeft, Bot, Flame
 } from "lucide-react";
+
+interface Chapter {
+  title: string;
+  content: string;
+}
+
+interface Course {
+  title: string;
+  badge?: string;
+  isRecommended?: boolean;
+  chapters: Chapter[];
+}
+
+interface SemesterTrack {
+  semester: string;
+  isRecommended?: boolean;
+  courses: Course[];
+}
 
 export default function LearningHubClient({ userName }: { userName: string }) {
   const [activeTab, setActiveTab] = useState<"roadmap" | "materi" | "cheat" | "vidyax">("roadmap");
-  const [activeCourse, setActiveCourse] = useState<any>(null);
+  const [activeCourse, setActiveCourse] = useState<Course | null>(null);
+  const [activeChapterIndex, setActiveChapterIndex] = useState<number>(0);
 
-    const roadmaps = [
+  const roadmaps = [
+    {
+      id: "ai-agent",
+      link: "/admin/mcp-hub",
+      title: "AI Agentic Software Engineer (2026 Recommended)",
+      isRecommended: true,
+      icon: <Cpu className="w-8 h-8 text-violet-600" />,
+      desc: "JALUR PALING DIBURU INDUSTRI 2026: Kuasai orkestrasi AI Agents, Model Context Protocol (MCP), Context Engineering, dan Autonomous Dev Workflows.",
+      steps: [
+        "1. Mindset Shift: Dari pengetik sintaks manual menjadi AI System Orchestrator",
+        "2. Modern Tooling: Terminal CLI, Git Flow, & Agentic IDE (Cursor, Claude Code, Antigravity)",
+        "3. Context Engineering: Menyusun AGENTS.md, .cursorrules, & System Prompt XML",
+        "4. Tool Integration: Memasang Model Context Protocol (MCP) Database & Filesystem",
+        "5. Automated Verification: Continuous Typecheck (tsc), Linter, & Test-Driven Verification",
+        "6. Multi-Agent Loops: Sub-agents, task decomposition, & swarm architecture",
+        "7. Critical Review: Mencegah halusinasi kode & memvalidasi keamanan aplikasi"
+      ]
+    },
     {
       id: "frontend",
       link: "https://roadmap.sh/frontend",
@@ -78,7 +114,95 @@ export default function LearningHubClient({ userName }: { userName: string }) {
     }
   ];
 
-  const materis = [
+  const materis: SemesterTrack[] = [
+    {
+      semester: "Kurikulum Khusus • AI Agentic Era 2026",
+      isRecommended: true,
+      courses: [
+        {
+          title: "AI Agentic Engineering & Model Context Protocol (MCP)",
+          badge: "🔥 SANGAT DIREKOMENDASIKAN KABID RISET",
+          isRecommended: true,
+          chapters: [
+            {
+              title: "BAB 1: Revolusi Agentic AI — Mengapa Web Chat Mulai Ketinggalan Zaman?",
+              content: `# BAB 1: Dari Chatbot Pasif ke AI Agent Otonom
+
+Banyak mahasiswa IT saat ini masih terjebak di pola lama: membuka ChatGPT atau Gemini di peramban web, mengetik potongan kode terisolasi, lalu menyalinnya bolak-balik secara manual. Pola ini sangat lambat dan membuat mahasiswa bingung ketika proyek mulai kompleks.
+
+## Perbedaan Mendasar: Web Chat vs. AI Agent
+1. **Web Chat (Pasif):** Hanya menerima prompt teks dan mengeluarkan teks. AI tidak bisa melihat repositori proyek Anda, tidak bisa menjalankan perintah terminal, dan tidak tahu apakah kodenya menghasilkan error saat dikompilasi.
+2. **AI Coding Agent (Aktif & Otonom):** Memiliki **siklus loop: Observe ➔ Plan ➔ Tool Execution ➔ Verify**. Agent membaca struktur folder langsung, mengedit file spesifik menggunakan *diff*, menjalankan kompilasi (*typecheck* / *test*), dan otomatis memperbaiki diri jika terjadi *syntax error*.
+
+## Alat-Alat Utama Agentic Era:
+- **Cursor & Windsurf:** IDE modern bertenaga agen yang mampu membaca seluruh basis kode.
+- **Claude Code & Google Antigravity:** CLI Agent yang bisa mengendalikan terminal, git, dan sub-agent otonom.
+- **Model Context Protocol (MCP):** Standar protokol terbuka yang menghubungkan LLM ke database, filesystem, dan server lokal.`
+            },
+            {
+              title: "BAB 2: Anatomi IDE AI Agents (Cursor, Claude Code, Antigravity)",
+              content: `# BAB 2: Anatomi dan Cara Kerja AI Coding Agent
+
+Bagaimana sebuah agen AI bisa mengedit ratusan baris kode tanpa merusak keseluruhan aplikasi?
+
+## 1. Tool Groups (Senjata Utama AI Agent)
+Sebuah agen AI modern dilengkapi dengan 3 kelompok perkakas (*tooling*):
+- **Read Tools:** Ripgrep (pencarian teks kilat), fd/find (pencarian nama file), view_file (membaca isi file).
+- **Write Tools:** replace_file_content (mengedit baris tertentu dengan presisi), write_to_file (membuat file baru).
+- **Execution Tools:** run_command (menjalankan terminal bash, git status, npx tsc, npm run build).
+
+## 2. Loop Verifikasi Otomatis (Anti-Halusinasi)
+Programmer yang cerdas tidak percaya begitu saja pada output AI. Kita melatih agen untuk selalu menjalankan:
+\`\`\`bash
+# Verifikasi typecheck sebelum commit
+npx tsc --noEmit
+\`\`\`
+Jika perintah verifikasi di atas menghasilkan error, agen akan secara otomatis membaca pesan error tersebut dan memperbaikinya sampai exit code menjadi 0.`
+            },
+            {
+              title: "BAB 3: Model Context Protocol (MCP) — Standar Terbuka Industri",
+              content: `# BAB 3: Memahami Model Context Protocol (MCP)
+
+Model Context Protocol (MCP) adalah standar protokol terbuka yang diperkenalkan oleh Anthropic untuk memecahkan masalah integrasi AI.
+
+## Kenapa MCP Dibutuhkan?
+Sebelum ada MCP, jika Anda ingin AI Anda membaca database PostgreSQL atau file lokal, Anda harus mengekspor data ke format CSV/JSON dan mengunggahnya manual ke jendela chat.
+Dengan MCP, database lokal Anda berjalan sebagai **MCP Server** yang aman:
+\`\`\`json
+{
+  "mcpServers": {
+    "postgres": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://user:pass@localhost:5432/db"]
+    }
+  }
+}
+\`\`\`
+AI Agent kini bisa mengecek nama tabel, tipe data kolom, dan foreign key secara instan tanpa perlu Anda ketik berulang-ulang.`
+            },
+            {
+              title: "BAB 4: Menyusun Agent Rules (AGENTS.md & .cursorrules)",
+              content: `# BAB 4: Merancang Instruksi Agen Berkualitas Tinggi
+
+AI Agent akan bekerja sesuai dengan batasan aturan (*constraints*) yang Anda berikan. Tanpa aturan, AI cenderung menghasilkan kode spaghetti atau teknologi kadaluarsa.
+
+## File Panduan Konteks:
+- **AGENTS.md:** Digunakan oleh agen modern (seperti Antigravity dan Claude Code) untuk membaca arsitektur dan larangan teknis.
+- **.cursorrules:** Digunakan oleh Cursor IDE untuk mendikte standar kode setiap kali membuka proyek.
+
+## Contoh Aturan Tegas (Negative Constraints):
+\`\`\`markdown
+# Aturan Rekayasa Next.js 16:
+1. Utamakan React Server Components (RSC). DILARANG menggunakan "use client" kecuali ada event listener browser.
+2. DILARANG menggunakan useEffect untuk sinkronisasi state data fetching.
+3. Seluruh mutasi database WAJIB menggunakan Server Actions dengan validasi skema Zod.
+\`\`\`
+Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produksi!`
+            }
+          ]
+        }
+      ]
+    },
     { 
       semester: "Semester 1", 
       courses: [
@@ -104,6 +228,11 @@ export default function LearningHubClient({ userName }: { userName: string }) {
 
   const cheatsheets = [
     {
+      title: "Agentic MCP & AI CLI Quickstart (2026)",
+      lang: "BASH",
+      code: "# 1. Install & Test PostgreSQL MCP Server\nnpx -y @modelcontextprotocol/server-postgres postgresql://user:pass@localhost:5432/db\n\n# 2. Run Typecheck Verification for Next.js\nnpx tsc --noEmit\n\n# 3. Quick Git Sync for Autonomous Agents\ngit add . && git commit -m \"feat: agentic workflow implementation\" && git push origin main"
+    },
+    {
       title: "Git Workflow Master",
       lang: "BASH",
       code: "git add .\ngit commit -m \"feat: added new awesome feature\"\ngit push origin main\n\n# Reset branch ke remote (BAHAYA)\ngit fetch origin\ngit reset --hard origin/main"
@@ -114,6 +243,8 @@ export default function LearningHubClient({ userName }: { userName: string }) {
       code: "version: '3.8'\nservices:\n  db:\n    image: postgres:15-alpine\n    environment:\n      POSTGRES_USER: root\n      POSTGRES_PASSWORD: pwd\n    ports:\n      - '5432:5432'"
     }
   ];
+
+  const currentChapter = activeCourse?.chapters?.[activeChapterIndex] || activeCourse?.chapters?.[0];
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto relative min-h-screen">
@@ -135,40 +266,68 @@ export default function LearningHubClient({ userName }: { userName: string }) {
           { id: "roadmap", label: "Role Roadmap", icon: <Map className="w-4 h-4" /> },
           { id: "materi", label: "Bank Modul IT", icon: <BookOpen className="w-4 h-4" /> },
           { id: "cheat", label: "Cheat Sheets", icon: <Terminal className="w-4 h-4" /> },
-          { id: "vidyax", label: "Vidyax (Eksperimental)", icon: <Code2 className="w-4 h-4" /> }
+          { id: "vidyax", label: "Vidyax (Karya M N DAFFA)", icon: <Code2 className="w-4 h-4" /> }
         ].map(tab => (
           <button
             key={tab.id}
-            onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
+            onClick={() => {
+              setActiveTab(tab.id as any);
+              setActiveCourse(null);
+            }}
+            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
               activeTab === tab.id 
-                ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
-                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
+                ? "bg-white text-slate-900 shadow-sm border border-slate-200/80" 
+                : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50"
             }`}
           >
-            {tab.icon} {tab.label}
+            {tab.icon}
+            <span>{tab.label}</span>
           </button>
         ))}
       </div>
 
-      {/* TAB CONTENT: ROADMAP (Keep original but modernized) */}
+      {/* TAB CONTENT: ROADMAP */}
       {activeTab === "roadmap" && (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 animate-in slide-in-from-bottom-4 duration-300">
           {roadmaps.map(rm => (
-            <div key={rm.id} className="bg-white rounded-3xl p-8 border border-slate-200 shadow-sm group hover:border-slate-300 transition-colors">
+            <div 
+              key={rm.id} 
+              className={`rounded-3xl p-8 border transition-all ${
+                rm.isRecommended 
+                  ? "bg-gradient-to-b from-violet-50/50 to-white border-violet-300 shadow-md ring-2 ring-violet-500/20" 
+                  : "bg-white border-slate-200 shadow-sm hover:border-slate-300"
+              }`}
+            >
+              {rm.isRecommended && (
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] sm:text-[11px] font-mono font-bold shadow-sm animate-pulse mb-4">
+                  <Flame className="w-3.5 h-3.5 fill-white" />
+                  <span>SANGAT DIREKOMENDASIKAN (KABID RISET 2026)</span>
+                </div>
+              )}
+
               <div className="flex items-start justify-between mb-6">
-                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-100">{rm.icon}</div>
-                <a href={rm.link} target="_blank" rel="noreferrer" className="text-xs font-bold bg-slate-900 text-white px-4 py-2 rounded-full hover:bg-slate-800 transition-colors flex items-center gap-1">
-                  Lihat Peta Utuh <ChevronRight className="w-3 h-3" />
+                <div className={`p-4 rounded-2xl border ${rm.isRecommended ? "bg-violet-100/70 border-violet-200" : "bg-slate-50 border-slate-100"}`}>
+                  {rm.icon}
+                </div>
+                <a 
+                  href={rm.link} 
+                  target={rm.link.startsWith("http") ? "_blank" : undefined}
+                  rel={rm.link.startsWith("http") ? "noreferrer" : undefined} 
+                  className={`text-xs font-bold px-4 py-2 rounded-full transition-colors flex items-center gap-1 ${
+                    rm.isRecommended ? "bg-violet-900 text-white hover:bg-violet-800 shadow-sm" : "bg-slate-900 text-white hover:bg-slate-800"
+                  }`}
+                >
+                  Lihat Modul & Tools <ChevronRight className="w-3 h-3" />
                 </a>
               </div>
+
               <h3 className="text-2xl font-bold text-slate-800 tracking-tight">{rm.title}</h3>
               <p className="text-sm text-slate-500 mt-2 mb-6 leading-relaxed">{rm.desc}</p>
               
               <div className="space-y-3">
                 {rm.steps.map((step, i) => (
                   <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
-                    <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0" />
+                    <CheckCircle2 className={`w-5 h-5 shrink-0 ${rm.isRecommended ? "text-violet-600" : "text-emerald-500"}`} />
                     <span className="text-sm font-medium text-slate-700">{step}</span>
                   </div>
                 ))}
@@ -198,28 +357,69 @@ export default function LearningHubClient({ userName }: { userName: string }) {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {materis.map((smt, idx) => (
-                  <div key={idx} className="bg-white border border-slate-200 rounded-3xl overflow-hidden shadow-sm">
-                    <div className="bg-slate-50 px-6 py-5 border-b border-slate-200 flex justify-between items-center">
-                      <span className="font-bold text-slate-800 tracking-tight">{smt.semester}</span>
-                      <span className="text-xs bg-slate-200 text-slate-700 font-bold px-3 py-1 rounded-full">{smt.courses.length} Kursus</span>
+                  <div 
+                    key={idx} 
+                    className={`rounded-3xl overflow-hidden shadow-sm border ${
+                      smt.isRecommended 
+                        ? "bg-gradient-to-b from-violet-50/40 to-white border-violet-300 md:col-span-2 ring-1 ring-violet-500/20" 
+                        : "bg-white border-slate-200"
+                    }`}
+                  >
+                    <div className={`px-6 py-5 border-b flex flex-wrap justify-between items-center gap-2 ${
+                      smt.isRecommended ? "bg-violet-950 text-white border-violet-900" : "bg-slate-50 border-slate-200"
+                    }`}>
+                      <div className="flex items-center gap-2">
+                        {smt.isRecommended && <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />}
+                        <span className={`font-bold tracking-tight ${smt.isRecommended ? "text-white" : "text-slate-800"}`}>
+                          {smt.semester}
+                        </span>
+                      </div>
+                      <span className={`text-xs font-bold px-3 py-1 rounded-full ${
+                        smt.isRecommended ? "bg-violet-800 text-violet-200" : "bg-slate-200 text-slate-700"
+                      }`}>
+                        {smt.courses.length} Kursus
+                      </span>
                     </div>
+
                     <div className="divide-y divide-slate-100 p-2">
                       {smt.courses.map((course, i) => (
                         <button 
                           key={i} 
-                          onClick={() => setActiveCourse(course)}
-                          className="w-full flex justify-between items-center p-4 hover:bg-slate-50 rounded-xl transition-colors group text-left"
+                          onClick={() => {
+                            setActiveCourse(course);
+                            setActiveChapterIndex(0);
+                          }}
+                          className={`w-full flex justify-between items-center p-4 rounded-2xl transition-all group text-left ${
+                            course.isRecommended 
+                              ? "hover:bg-violet-50/80 border border-violet-100 bg-violet-50/20 my-1" 
+                              : "hover:bg-slate-50"
+                          }`}
                         >
                           <div className="flex items-center gap-4">
-                            <div className="p-3 bg-slate-100 text-slate-900 rounded-xl group-hover:bg-slate-900 group-hover:text-white transition-colors">
+                            <div className={`p-3 rounded-xl transition-colors ${
+                              course.isRecommended 
+                                ? "bg-violet-600 text-white" 
+                                : "bg-slate-100 text-slate-900 group-hover:bg-slate-900 group-hover:text-white"
+                            }`}>
                               <BookMarked className="w-5 h-5" />
                             </div>
                             <div>
-                              <h4 className="text-sm font-bold text-slate-800 group-hover:text-slate-900 transition-colors">{course.title}</h4>
-                              <p className="text-xs text-slate-500 mt-1">{course.chapters?.length || 0} BAB Tersedia</p>
+                              <div className="flex flex-wrap items-center gap-2">
+                                <h4 className="text-sm font-bold text-slate-800 group-hover:text-slate-900 transition-colors">
+                                  {course.title}
+                                </h4>
+                                {course.isRecommended && (
+                                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-white text-[10px] font-mono font-bold tracking-wider">
+                                    DIREKOMENDASIKAN
+                                  </span>
+                                )}
+                              </div>
+                              <p className="text-xs text-slate-500 mt-1">{course.chapters?.length || 0} BAB Tersedia • Klik untuk membaca</p>
                             </div>
                           </div>
-                          <ChevronRight className="w-5 h-5 text-slate-300 group-hover:text-slate-900 transition-colors" />
+                          <ChevronRight className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${
+                            course.isRecommended ? "text-violet-600" : "text-slate-300 group-hover:text-slate-900"
+                          }`} />
                         </button>
                       ))}
                     </div>
@@ -234,19 +434,38 @@ export default function LearningHubClient({ userName }: { userName: string }) {
               {/* Sidebar Chapters */}
               <div className="w-full md:w-80 border-r border-slate-200 bg-slate-50 flex flex-col h-full shrink-0">
                 <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-white shrink-0">
-                  <button onClick={() => setActiveCourse(null)} className="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors">
+                  <button 
+                    onClick={() => setActiveCourse(null)} 
+                    className="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors"
+                  >
                     <ArrowLeft className="w-4 h-4" /> Kembali
                   </button>
-                  <div className="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold">H</div>
+                  <div className="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold text-xs font-mono">H</div>
                 </div>
-                <div className="p-6 overflow-y-auto grow">
-                  <h3 className="font-black text-xl text-slate-800 tracking-tight leading-tight mb-6">{activeCourse.title}</h3>
-                  <div className="space-y-2">
+                <div className="p-5 overflow-y-auto grow space-y-4">
+                  <div>
+                    {activeCourse.badge && (
+                      <span className="text-[10px] font-mono font-bold text-violet-700 bg-violet-100 px-2.5 py-0.5 rounded-full block w-fit mb-2">
+                        {activeCourse.badge}
+                      </span>
+                    )}
+                    <h3 className="font-black text-lg text-slate-800 tracking-tight leading-tight">{activeCourse.title}</h3>
+                  </div>
+
+                  <div className="space-y-1.5">
                     {activeCourse.chapters && activeCourse.chapters.length > 0 ? (
                       activeCourse.chapters.map((chap: any, idx: number) => (
-                        <button key={idx} className="w-full text-left p-3 rounded-xl bg-white border border-slate-200 shadow-sm hover:border-slate-400 transition-colors flex items-center gap-3">
-                          <PlayCircle className="w-4 h-4 text-slate-400 shrink-0" />
-                          <span className="text-sm font-semibold text-slate-700">{chap.title}</span>
+                        <button 
+                          key={idx} 
+                          onClick={() => setActiveChapterIndex(idx)}
+                          className={`w-full text-left p-3 rounded-xl border shadow-sm transition-colors flex items-center gap-3 ${
+                            activeChapterIndex === idx 
+                              ? "bg-slate-900 text-white border-slate-900" 
+                              : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
+                          }`}
+                        >
+                          <PlayCircle className={`w-4 h-4 shrink-0 ${activeChapterIndex === idx ? "text-amber-400" : "text-slate-400"}`} />
+                          <span className="text-xs sm:text-sm font-semibold leading-snug">{chap.title}</span>
                         </button>
                       ))
                     ) : (
@@ -258,20 +477,23 @@ export default function LearningHubClient({ userName }: { userName: string }) {
 
               {/* Reader Content Area */}
               <div className="flex-1 bg-white overflow-y-auto p-6 md:p-12 relative">
-                {activeCourse.chapters && activeCourse.chapters.length > 0 ? (
+                {currentChapter ? (
                   <div className="max-w-3xl mx-auto prose prose-slate prose-headings:tracking-tight prose-a:text-sky-600 prose-pre:bg-slate-900 prose-pre:text-slate-50">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold tracking-widest mb-8">
-                      <Sparkles className="w-3 h-3" /> BAB 1 AKTIF
+                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-violet-100 text-violet-800 rounded-full text-xs font-bold tracking-widest mb-8">
+                      <Sparkles className="w-3 h-3 text-amber-500" /> {currentChapter.title}
                     </span>
                     <div dangerouslySetInnerHTML={{ 
-                      __html: activeCourse.chapters[0].content
+                      __html: currentChapter.content
                         .replace(/&/g, '&amp;')
                         .replace(/</g, '&lt;')
                         .replace(/>/g, '&gt;')
                         .replace(/"/g, '&quot;')
                         .replace(/'/g, '&#039;')
-                        .replace(/```python([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-green-400 font-mono text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
-                        .replace(/```([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/```python([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/```json([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-cyan-400 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/```bash([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-950 text-amber-300 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/```markdown([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-slate-200 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/```([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
                         .replace(/\n/g, '<br/>')
                     }} />
                   </div>
@@ -283,35 +505,28 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                   </div>
                 )}
               </div>
+
             </div>
           )}
+
         </div>
       )}
 
-      {/* (KEEP CHEATSHEET & VIDYAX AS THEY WERE, BUT WITH SLATE COLORS - ALREADY DONE ABOVE) */}
-      
+      {/* TAB CONTENT: CHEAT SHEETS */}
       {activeTab === "cheat" && (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-          <div className="flex justify-between items-end mb-6">
-            <div>
-              <h2 className="text-xl font-bold text-slate-800 tracking-tight">Gudang Snippet & Cheat Sheet</h2>
-              <p className="text-sm text-slate-500">Salin kode-kode esensial yang sering terlupakan dengan cepat.</p>
-            </div>
-          </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {cheatsheets.map((cheat, idx) => (
-              <div key={idx} className="bg-slate-900 rounded-3xl overflow-hidden shadow-sm border border-slate-800 flex flex-col">
-                <div className="flex justify-between items-center px-6 py-4 bg-slate-950 border-b border-slate-800">
-                  <div className="flex items-center gap-2">
-                    <Terminal className="w-4 h-4 text-slate-400" />
-                    <span className="text-sm font-bold text-white">{cheat.title}</span>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {cheatsheets.map((cs, idx) => (
+              <div key={idx} className="bg-slate-900 rounded-3xl p-6 text-white border border-slate-800 shadow-xl overflow-hidden flex flex-col justify-between">
+                <div>
+                  <div className="flex justify-between items-center mb-4">
+                    <span className="text-xs font-mono font-bold text-slate-400 px-3 py-1 bg-slate-800 rounded-full">{cs.lang}</span>
+                    <Terminal className="w-4 h-4 text-slate-500" />
                   </div>
-                  <span className="text-[10px] font-mono text-sky-400 font-bold uppercase tracking-wider bg-sky-900/30 px-3 py-1 rounded-full">
-                    {cheat.lang}
-                  </span>
+                  <h3 className="text-lg font-bold text-white mb-4 tracking-tight">{cs.title}</h3>
                 </div>
-                <div className="p-6 overflow-x-auto text-sm font-mono text-emerald-400 leading-relaxed whitespace-pre-wrap break-words">
-                  {cheat.code}
+                <div className="bg-slate-950 p-4 rounded-2xl border border-slate-800/80 font-mono text-xs text-emerald-400 overflow-x-auto">
+                  <pre>{cs.code}</pre>
                 </div>
               </div>
             ))}
@@ -319,6 +534,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
         </div>
       )}
 
+      {/* TAB CONTENT: VIDYAX (KARYA MANDIRI M N DAFFA) */}
       {activeTab === "vidyax" && (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
           <div className="bg-slate-900 rounded-3xl p-5 sm:p-8 md:p-12 text-white shadow-xl relative overflow-hidden border border-slate-800">
@@ -375,21 +591,29 @@ export default function LearningHubClient({ userName }: { userName: string }) {
               <div className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shadow-inner">
                 <div className="px-4 py-2.5 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
                   <span className="flex items-center gap-2">
-                    <Terminal className="w-3.5 h-3.5 text-rose-400" /> main.vdx
+                    <FileCode2 className="w-4 h-4 text-rose-400" />
+                    main.vdx
                   </span>
                   <span className="text-[10px] text-slate-500">Vidyax v0.1.0-alpha</span>
                 </div>
-                <div className="p-4 overflow-x-auto text-xs font-mono text-emerald-400 leading-relaxed whitespace-pre">
+                <pre className="p-4 sm:p-6 text-xs sm:text-sm font-mono text-slate-200 overflow-x-auto leading-relaxed whitespace-pre max-w-full">
 {`// Vidyax AI-First Language Sample
-agent SwarmCore {
-  prompt = "Analisis arsitektur sistem HIMASTI"
-  model  = "llama-3-fast"
-  
-  on_response(res) {
-    emit("event_ready", res.summary)
-  }
+swarm CodeArchitect {
+    agent planner {
+        role: "Architecture Director"
+        task: "Design database schema & security bounds"
+    }
+
+    agent executor {
+        role: "Core Builder"
+        execute: parallel
+    }
+}
+
+fn main() {
+    print("Vidyax Swarm initialized successfully.")
 }`}
-                </div>
+                </pre>
               </div>
 
             </div>
