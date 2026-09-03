@@ -263,7 +263,17 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                     <span className="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-700 rounded-full text-xs font-bold tracking-widest mb-8">
                       <Sparkles className="w-3 h-3" /> BAB 1 AKTIF
                     </span>
-                    <div dangerouslySetInnerHTML={{ __html: activeCourse.chapters[0].content.replace(/\n/g, '<br/>').replace(/```python/g, '<pre class="p-4 rounded-xl bg-slate-900 text-green-400 font-mono text-sm mt-4 overflow-x-auto">').replace(/```/g, '</pre>') }} />
+                    <div dangerouslySetInnerHTML={{ 
+                      __html: activeCourse.chapters[0].content
+                        .replace(/&/g, '&amp;')
+                        .replace(/</g, '&lt;')
+                        .replace(/>/g, '&gt;')
+                        .replace(/"/g, '&quot;')
+                        .replace(/'/g, '&#039;')
+                        .replace(/```python([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-green-400 font-mono text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/```([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
+                        .replace(/\n/g, '<br/>')
+                    }} />
                   </div>
                 ) : (
                   <div className="h-full flex flex-col items-center justify-center text-slate-400">
