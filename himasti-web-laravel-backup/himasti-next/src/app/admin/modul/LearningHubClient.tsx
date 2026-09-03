@@ -206,6 +206,14 @@ export default function LearningHubClient({ userName }: { userName: string }) {
           <h1 className="text-3xl font-black text-slate-800 tracking-tight">Akademi Digital</h1>
           <p className="text-slate-500 mt-2 text-sm max-w-xl">Pusat sumber daya pembelajaran, kurikulum, dan standardisasi keilmuan IT untuk seluruh kader HIMASTI.</p>
         </div>
+
+        <Link
+          href="/admin/challenge"
+          className="px-5 py-2.5 rounded-2xl bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-bold shadow-md shadow-violet-200 flex items-center gap-2 transition-all active:scale-95 shrink-0"
+        >
+          <Code2 className="w-4 h-4 text-amber-300" />
+          <span>⚡ Arena Koding & Sandbox (LeetCode) →</span>
+        </Link>
       </div>
 
       {/* TABS (Mobile Friendly Scrollable) */}

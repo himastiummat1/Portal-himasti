@@ -61,6 +61,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   const groupAkademik = { title: "Akademik & Publikasi", links: [] as any[] };
   if (canAccessArtikel) groupAkademik.links.push({ href: "/admin/artikel", label: "Artikel Web" });
   if (canAccessAkademik) {
+    groupAkademik.links.push({ href: "/admin/challenge", label: "Arena Koding (LeetCode)" });
     groupAkademik.links.push({ href: "/admin/modul", label: "Bank Modul" });
     groupAkademik.links.push({ href: "/admin/mcp-hub", label: "MCP & Prompt Hub" });
     groupAkademik.links.push({ href: "/admin/devtools", label: "DevTools" });
