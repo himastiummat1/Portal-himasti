@@ -21,18 +21,25 @@ export async function logAuditEvent(params: AuditEventParams) {
       ? JSON.stringify(params.details) 
       : params.details || null;
 
-    await prisma.auditLog.create({
-      data: {
-        user_id: params.userId || null,
-        user_name: params.userName || "System",
-        action: params.action,
-        target_resource: params.targetResource,
-        details: detailsString,
-        ip_address: params.ipAddress || null,
-        user_agent: params.userAgent ? params.userAgent.slice(0, 255) : null,
-        status: params.status || "success",
-      }
-    });
+    if ((prisma as any).auditLog?.create) {
+      await (prisma as any).auditLog.create({
+        data: {
+          user_id: params.userId || null,
+          user_name: params.userName || "System",
+          action: params.action,
+          target_resource: params.targetResource,
+          details: detailsString,
+          ip_address: params.ipAddress || null,
+          user_agent: params.userAgent ? params.userAgent.slice(0, 255) : null,
+          status: params.status || "success",
+        }
+      });
+    } else {
+      await prisma.$executeRaw`
+        INSERT INTO audit_logs (user_id, user_name, action, target_resource, details, ip_address, user_agent, status, created_at)
+        VALUES (${params.userId || null}, ${params.userName || "System"}, ${params.action}, ${params.targetResource}, ${detailsString}, ${params.ipAddress || null}, ${params.userAgent ? params.userAgent.slice(0, 255) : null}, ${params.status || "success"}, NOW())
+      `;
+    }
   } catch (error) {
     // Audit logging failure must never crash user actions
     console.error("[EnterpriseAuditLog] Failed to persist audit record:", error);

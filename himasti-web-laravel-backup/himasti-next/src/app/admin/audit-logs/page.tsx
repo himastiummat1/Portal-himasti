@@ -32,10 +32,24 @@ export default async function AuditLogsPage() {
     );
   }
 
-  const logs = await prisma.auditLog.findMany({
-    orderBy: { created_at: 'desc' },
-    take: 100
-  });
+  let logs: any[] = [];
+  try {
+    if ((prisma as any).auditLog?.findMany) {
+      logs = await (prisma as any).auditLog.findMany({
+        orderBy: { created_at: 'desc' },
+        take: 100
+      });
+    } else {
+      logs = await prisma.$queryRaw<any[]>`
+        SELECT id, user_id, user_name, action, target_resource, details, ip_address, user_agent, status, created_at
+        FROM audit_logs
+        ORDER BY created_at DESC
+        LIMIT 100
+      `;
+    }
+  } catch (err) {
+    console.error("[AuditLogs] Error fetching audit logs:", err);
+  }
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 pb-12 animate-in fade-in duration-300">
