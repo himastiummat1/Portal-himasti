@@ -1,10 +1,12 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { 
   Map, BookOpen, Code2, Terminal, Database, Sparkles, 
   Layout, Server, Cpu, FileCode2, ChevronRight, Search, CheckCircle2,
-  X, AlignLeft, BookMarked, PlayCircle, ArrowLeft, Bot, Flame
+  X, AlignLeft, BookMarked, PlayCircle, ArrowLeft, Bot, Flame,
+  ChevronLeft, ExternalLink, List, FileText
 } from "lucide-react";
 
 interface Chapter {
@@ -25,10 +27,61 @@ interface SemesterTrack {
   courses: Course[];
 }
 
+function formatMarkdown(content: string) {
+  if (!content) return "";
+  
+  // Extract code blocks first
+  const codeBlocks: string[] = [];
+  let formatted = content.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
+    const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
+    codeBlocks.push(
+      `<div class="my-5 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shadow-lg">
+        <div class="px-4 py-2 bg-slate-900 border-b border-slate-800 text-[11px] font-mono text-slate-400 flex justify-between items-center">
+          <span class="font-bold text-cyan-400">${lang ? lang.toUpperCase() : "TERMINAL / CODE"}</span>
+          <span class="text-slate-500">HIMASTI Engine</span>
+        </div>
+        <pre class="p-4 text-xs sm:text-sm font-mono text-emerald-400 overflow-x-auto leading-relaxed"><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
+      </div>`
+    );
+    return placeholder;
+  });
+
+  // Headers
+  formatted = formatted
+    .replace(/^# (.*$)/gim, '<h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mt-6 mb-3 tracking-tight">$1</h1>')
+    .replace(/^## (.*$)/gim, '<h2 class="text-lg sm:text-xl font-bold text-slate-800 mt-6 mb-2 tracking-tight pb-1.5 border-b border-slate-200">$1</h2>')
+    .replace(/^### (.*$)/gim, '<h3 class="text-base sm:text-lg font-bold text-slate-800 mt-4 mb-2">$1</h3>');
+
+  // Bold & Italic
+  formatted = formatted
+    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700">$1</em>');
+
+  // Inline code
+  formatted = formatted.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-md bg-slate-100 text-violet-700 font-mono text-xs border border-slate-200">$1</code>');
+
+  // Unordered lists
+  formatted = formatted.replace(/^\s*-\s+(.*$)/gim, '<li class="ml-4 list-disc text-slate-700 my-1.5 leading-relaxed">$1</li>');
+
+  // Numbered lists
+  formatted = formatted.replace(/^\s*(\d+)\.\s+(.*$)/gim, '<li class="ml-4 list-decimal text-slate-700 my-1.5 leading-relaxed"><strong class="text-slate-900">$1.</strong> $2</li>');
+
+  // Paragraphs
+  formatted = formatted.replace(/\n\n/g, '</p><p class="text-sm sm:text-base text-slate-600 leading-relaxed my-3">');
+
+  // Restore code blocks
+  codeBlocks.forEach((block, idx) => {
+    formatted = formatted.replace(`__CODE_BLOCK_${idx}__`, block);
+  });
+
+  return `<p class="text-sm sm:text-base text-slate-600 leading-relaxed my-3">${formatted}</p>`;
+}
+
 export default function LearningHubClient({ userName }: { userName: string }) {
   const [activeTab, setActiveTab] = useState<"roadmap" | "materi" | "cheat" | "vidyax">("roadmap");
   const [activeCourse, setActiveCourse] = useState<Course | null>(null);
   const [activeChapterIndex, setActiveChapterIndex] = useState<number>(0);
+  const [mobileTab, setMobileTab] = useState<"list" | "content">("content");
 
   const roadmaps = [
     {
@@ -209,8 +262,38 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
         { 
           title: "Algoritma & Pemrograman Dasar", 
           chapters: [
-            { title: "BAB 1: Pengantar Algoritma", content: "# Pengantar Algoritma\n\nAlgoritma adalah urutan langkah-langkah logis untuk memecahkan suatu masalah. Di sini kita akan mempelajari konsep dasar logika pemrograman, tipe data, dan kontrol alur (if/else, loops).\n\n```python\n# Contoh Algoritma Dasar (Python)\nprint('Hello HIMASTI!')\n```" },
-            { title: "BAB 2: Variabel & Tipe Data", content: "# Variabel & Tipe Data\n\nSetiap bahasa pemrograman memiliki cara untuk menyimpan data di dalam memori komputer. Kita menyebutnya variabel." }
+            { 
+              title: "BAB 1: Pengantar Algoritma", 
+              content: `# BAB 1: Pengantar Algoritma
+
+Algoritma adalah urutan langkah-langkah logis dan terstruktur untuk memecahkan suatu masalah secara komputasi.
+
+## Konsep Dasar
+1. Input: Data yang dimasukkan ke dalam program.
+2. Proses: Langkah perhitungan atau percabangan logika.
+3. Output: Hasil keluaran yang diinginkan.
+
+\`\`\`python
+# Contoh Algoritma Sederhana Menentukan Bilangan Genap/Ganjil
+angka = int(input("Masukkan angka: "))
+if angka % 2 == 0:
+    print(f"{angka} adalah bilangan Genap")
+else:
+    print(f"{angka} adalah bilangan Ganjil")
+\`\`\`` 
+            },
+            { 
+              title: "BAB 2: Variabel & Tipe Data", 
+              content: `# BAB 2: Variabel dan Tipe Data
+
+Setiap bahasa pemrograman memiliki cara untuk menyimpan data di dalam memori komputer menggunakan variabel.
+
+## Tipe Data Standar
+- **Integer:** Bilangan bulat (contoh: 1, 42, -5)
+- **Float:** Bilangan desimal (contoh: 3.14, 0.5)
+- **String:** Rangkaian teks (contoh: "HIMASTI UMMAT")
+- **Boolean:** Nilai kebenaran (True atau False)` 
+            }
           ]
         },
         { title: "Pengantar Teknologi Informasi", chapters: [] },
@@ -245,6 +328,16 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
   ];
 
   const currentChapter = activeCourse?.chapters?.[activeChapterIndex] || activeCourse?.chapters?.[0];
+
+  const openAiCourse = () => {
+    setActiveTab("materi");
+    const aiCourse = materis[0]?.courses?.[0];
+    if (aiCourse) {
+      setActiveCourse(aiCourse);
+      setActiveChapterIndex(0);
+      setMobileTab("content");
+    }
+  };
 
   return (
     <div className="space-y-6 max-w-6xl mx-auto relative min-h-screen">
@@ -292,16 +385,16 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
           {roadmaps.map(rm => (
             <div 
               key={rm.id} 
-              className={`rounded-3xl p-8 border transition-all ${
+              className={`rounded-3xl p-6 sm:p-8 border transition-all ${
                 rm.isRecommended 
-                  ? "bg-gradient-to-b from-violet-50/50 to-white border-violet-300 shadow-md ring-2 ring-violet-500/20" 
+                  ? "bg-gradient-to-b from-violet-50/60 to-white border-violet-300 shadow-md ring-2 ring-violet-500/20" 
                   : "bg-white border-slate-200 shadow-sm hover:border-slate-300"
               }`}
             >
               {rm.isRecommended && (
                 <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-gradient-to-r from-amber-500 to-rose-500 text-white text-[10px] sm:text-[11px] font-mono font-bold shadow-sm animate-pulse mb-4">
                   <Flame className="w-3.5 h-3.5 fill-white" />
-                  <span>SANGAT DIREKOMENDASIKAN (KABID RISET 2026)</span>
+                  <span>SANGAT DIREKOMENDASIKAN KABID RISET (2026)</span>
                 </div>
               )}
 
@@ -309,26 +402,51 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
                 <div className={`p-4 rounded-2xl border ${rm.isRecommended ? "bg-violet-100/70 border-violet-200" : "bg-slate-50 border-slate-100"}`}>
                   {rm.icon}
                 </div>
-                <a 
-                  href={rm.link} 
-                  target={rm.link.startsWith("http") ? "_blank" : undefined}
-                  rel={rm.link.startsWith("http") ? "noreferrer" : undefined} 
-                  className={`text-xs font-bold px-4 py-2 rounded-full transition-colors flex items-center gap-1 ${
-                    rm.isRecommended ? "bg-violet-900 text-white hover:bg-violet-800 shadow-sm" : "bg-slate-900 text-white hover:bg-slate-800"
-                  }`}
-                >
-                  Lihat Modul & Tools <ChevronRight className="w-3 h-3" />
-                </a>
+                {rm.isRecommended ? (
+                  <div className="flex flex-wrap gap-2">
+                    <button
+                      onClick={openAiCourse}
+                      className="text-xs font-bold px-4 py-2 rounded-full bg-violet-900 text-white hover:bg-violet-800 transition-colors flex items-center gap-1.5 shadow-sm active:scale-95"
+                    >
+                      <BookOpen className="w-3.5 h-3.5" />
+                      <span>Baca Modul</span>
+                    </button>
+                    <Link
+                      href="/admin/mcp-hub"
+                      className="text-xs font-bold px-3.5 py-2 rounded-full bg-white text-slate-800 hover:bg-slate-100 border border-slate-200 transition-colors flex items-center gap-1"
+                    >
+                      <span>MCP Hub</span>
+                      <ExternalLink className="w-3 h-3" />
+                    </Link>
+                  </div>
+                ) : (
+                  <a 
+                    href={rm.link} 
+                    target="_blank" 
+                    rel="noreferrer" 
+                    className="text-xs font-bold bg-slate-900 text-white px-4 py-2 rounded-full hover:bg-slate-800 transition-colors flex items-center gap-1"
+                  >
+                    Lihat Peta Utuh <ChevronRight className="w-3 h-3" />
+                  </a>
+                )}
               </div>
 
-              <h3 className="text-2xl font-bold text-slate-800 tracking-tight">{rm.title}</h3>
-              <p className="text-sm text-slate-500 mt-2 mb-6 leading-relaxed">{rm.desc}</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-slate-800 tracking-tight">{rm.title}</h3>
+              <p className="text-xs sm:text-sm text-slate-500 mt-2 mb-6 leading-relaxed">{rm.desc}</p>
               
-              <div className="space-y-3">
+              <div className="space-y-2.5">
                 {rm.steps.map((step, i) => (
-                  <div key={i} className="flex items-center gap-3 p-3 rounded-xl hover:bg-slate-50 transition-colors border border-transparent hover:border-slate-100">
+                  <div 
+                    key={i} 
+                    onClick={rm.isRecommended ? openAiCourse : undefined}
+                    className={`flex items-center gap-3 p-3 rounded-xl transition-colors border ${
+                      rm.isRecommended 
+                        ? "cursor-pointer hover:bg-violet-100/60 border-violet-100/80 bg-white" 
+                        : "hover:bg-slate-50 border-transparent hover:border-slate-100"
+                    }`}
+                  >
                     <CheckCircle2 className={`w-5 h-5 shrink-0 ${rm.isRecommended ? "text-violet-600" : "text-emerald-500"}`} />
-                    <span className="text-sm font-medium text-slate-700">{step}</span>
+                    <span className="text-xs sm:text-sm font-medium text-slate-700">{step}</span>
                   </div>
                 ))}
               </div>
@@ -347,7 +465,7 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
               <div className="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
                 <div>
                   <h2 className="text-xl font-bold text-slate-800 tracking-tight">Katalog Modul Interaktif</h2>
-                  <p className="text-sm text-slate-500">Akses bacaan teknis dan modul kuliah secara langsung.</p>
+                  <p className="text-sm text-slate-500">Pilih modul di bawah untuk mulai membaca materi secara interaktif.</p>
                 </div>
                 <div className="relative w-full sm:w-72">
                   <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
@@ -385,11 +503,13 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
                       {smt.courses.map((course, i) => (
                         <button 
                           key={i} 
+                          type="button"
                           onClick={() => {
                             setActiveCourse(course);
                             setActiveChapterIndex(0);
+                            setMobileTab("content");
                           }}
-                          className={`w-full flex justify-between items-center p-4 rounded-2xl transition-all group text-left ${
+                          className={`w-full flex justify-between items-center p-4 rounded-2xl transition-all group text-left cursor-pointer ${
                             course.isRecommended 
                               ? "hover:bg-violet-50/80 border border-violet-100 bg-violet-50/20 my-1" 
                               : "hover:bg-slate-50"
@@ -417,9 +537,12 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
                               <p className="text-xs text-slate-500 mt-1">{course.chapters?.length || 0} BAB Tersedia • Klik untuk membaca</p>
                             </div>
                           </div>
-                          <ChevronRight className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${
-                            course.isRecommended ? "text-violet-600" : "text-slate-300 group-hover:text-slate-900"
-                          }`} />
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-bold text-violet-600 hidden sm:inline">Buka Modul</span>
+                            <ChevronRight className={`w-5 h-5 transition-transform group-hover:translate-x-1 ${
+                              course.isRecommended ? "text-violet-600" : "text-slate-300 group-hover:text-slate-900"
+                            }`} />
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -428,82 +551,184 @@ Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produk
               </div>
             </>
           ) : (
-            // Reader Mode
-            <div className="fixed inset-0 z-50 bg-white flex flex-col md:flex-row overflow-hidden animate-in zoom-in-95 duration-200">
+            // Dedicated Responsive Reader Mode
+            <div className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden animate-in fade-in duration-200">
               
-              {/* Sidebar Chapters */}
-              <div className="w-full md:w-80 border-r border-slate-200 bg-slate-50 flex flex-col h-full shrink-0">
-                <div className="p-4 border-b border-slate-200 flex items-center justify-between bg-white shrink-0">
+              {/* Reader Top Bar */}
+              <div className="p-4 sm:p-5 border-b border-slate-200 bg-slate-900 text-white flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-3">
                   <button 
+                    type="button"
                     onClick={() => setActiveCourse(null)} 
-                    className="flex items-center gap-2 text-sm font-bold text-slate-600 hover:text-slate-900 transition-colors"
+                    className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all active:scale-95 border border-slate-700"
                   >
-                    <ArrowLeft className="w-4 h-4" /> Kembali
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>Kembali ke Katalog</span>
                   </button>
-                  <div className="w-8 h-8 bg-slate-900 text-white rounded-lg flex items-center justify-center font-bold text-xs font-mono">H</div>
+                  <div className="hidden sm:block text-xs font-mono text-slate-400 border-l border-slate-800 pl-3">
+                    {activeCourse.title}
+                  </div>
                 </div>
-                <div className="p-5 overflow-y-auto grow space-y-4">
+
+                {/* Mobile Segmented Toggle */}
+                <div className="flex md:hidden bg-slate-800 p-1 rounded-xl text-xs font-bold">
+                  <button
+                    type="button"
+                    onClick={() => setMobileTab("list")}
+                    className={`px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5 ${
+                      mobileTab === "list" ? "bg-white text-slate-900" : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    <List className="w-3.5 h-3.5" />
+                    <span>Daftar BAB ({activeCourse.chapters?.length || 0})</span>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setMobileTab("content")}
+                    className={`px-3 py-1 rounded-lg transition-colors flex items-center gap-1.5 ${
+                      mobileTab === "content" ? "bg-white text-slate-900" : "text-slate-400 hover:text-white"
+                    }`}
+                  >
+                    <FileText className="w-3.5 h-3.5" />
+                    <span>Isi Materi</span>
+                  </button>
+                </div>
+              </div>
+
+              {/* Reader Body Grid (Sidebar on Desktop, Tabbed on Mobile) */}
+              <div className="flex flex-col md:flex-row min-h-[550px]">
+                
+                {/* Chapters Sidebar */}
+                <div className={`w-full md:w-80 border-r border-slate-200 bg-slate-50 p-5 space-y-4 shrink-0 ${
+                  mobileTab === "list" ? "block" : "hidden md:block"
+                }`}>
                   <div>
                     {activeCourse.badge && (
                       <span className="text-[10px] font-mono font-bold text-violet-700 bg-violet-100 px-2.5 py-0.5 rounded-full block w-fit mb-2">
                         {activeCourse.badge}
                       </span>
                     )}
-                    <h3 className="font-black text-lg text-slate-800 tracking-tight leading-tight">{activeCourse.title}</h3>
+                    <h3 className="font-extrabold text-base text-slate-800 tracking-tight leading-snug">
+                      Daftar BAB Kursus
+                    </h3>
+                    <p className="text-xs text-slate-500 mt-1">Pilih BAB untuk membuka materinya:</p>
                   </div>
 
-                  <div className="space-y-1.5">
+                  <div className="space-y-2">
                     {activeCourse.chapters && activeCourse.chapters.length > 0 ? (
-                      activeCourse.chapters.map((chap: any, idx: number) => (
+                      activeCourse.chapters.map((chap: Chapter, idx: number) => (
                         <button 
                           key={idx} 
-                          onClick={() => setActiveChapterIndex(idx)}
-                          className={`w-full text-left p-3 rounded-xl border shadow-sm transition-colors flex items-center gap-3 ${
+                          type="button"
+                          onClick={() => {
+                            setActiveChapterIndex(idx);
+                            setMobileTab("content");
+                          }}
+                          className={`w-full text-left p-3.5 rounded-2xl border shadow-sm transition-all flex items-start gap-3 cursor-pointer ${
                             activeChapterIndex === idx 
-                              ? "bg-slate-900 text-white border-slate-900" 
-                              : "bg-white text-slate-700 border-slate-200 hover:border-slate-400"
+                              ? "bg-slate-900 text-white border-slate-900 shadow-md ring-2 ring-violet-500/30" 
+                              : "bg-white text-slate-700 border-slate-200 hover:border-slate-300 hover:bg-slate-100/60"
                           }`}
                         >
-                          <PlayCircle className={`w-4 h-4 shrink-0 ${activeChapterIndex === idx ? "text-amber-400" : "text-slate-400"}`} />
-                          <span className="text-xs sm:text-sm font-semibold leading-snug">{chap.title}</span>
+                          <PlayCircle className={`w-4 h-4 shrink-0 mt-0.5 ${
+                            activeChapterIndex === idx ? "text-amber-400" : "text-slate-400"
+                          }`} />
+                          <div className="flex-1">
+                            <span className="text-xs font-bold leading-tight block">{chap.title}</span>
+                            <span className={`text-[10px] mt-0.5 block ${
+                              activeChapterIndex === idx ? "text-slate-300" : "text-slate-400"
+                            }`}>
+                              Klik untuk membaca
+                            </span>
+                          </div>
                         </button>
                       ))
                     ) : (
-                      <div className="text-sm text-slate-400 font-mono p-4 border border-dashed border-slate-300 rounded-xl bg-slate-100/50">Materi belum diunggah.</div>
+                      <div className="text-xs text-slate-400 font-mono p-4 border border-dashed border-slate-300 rounded-2xl bg-slate-100/50">
+                        Materi belum diunggah.
+                      </div>
                     )}
                   </div>
                 </div>
-              </div>
 
-              {/* Reader Content Area */}
-              <div className="flex-1 bg-white overflow-y-auto p-6 md:p-12 relative">
-                {currentChapter ? (
-                  <div className="max-w-3xl mx-auto prose prose-slate prose-headings:tracking-tight prose-a:text-sky-600 prose-pre:bg-slate-900 prose-pre:text-slate-50">
-                    <span className="inline-flex items-center gap-2 px-3 py-1 bg-violet-100 text-violet-800 rounded-full text-xs font-bold tracking-widest mb-8">
-                      <Sparkles className="w-3 h-3 text-amber-500" /> {currentChapter.title}
-                    </span>
-                    <div dangerouslySetInnerHTML={{ 
-                      __html: currentChapter.content
-                        .replace(/&/g, '&amp;')
-                        .replace(/</g, '&lt;')
-                        .replace(/>/g, '&gt;')
-                        .replace(/"/g, '&quot;')
-                        .replace(/'/g, '&#039;')
-                        .replace(/```python([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-emerald-400 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
-                        .replace(/```json([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-cyan-400 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
-                        .replace(/```bash([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-950 text-amber-300 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
-                        .replace(/```markdown([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-slate-200 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
-                        .replace(/```([\s\S]*?)```/g, '<pre class="p-4 rounded-xl bg-slate-900 text-slate-100 font-mono text-xs sm:text-sm mt-4 overflow-x-auto"><code>$1</code></pre>')
-                        .replace(/\n/g, '<br/>')
-                    }} />
-                  </div>
-                ) : (
-                  <div className="h-full flex flex-col items-center justify-center text-slate-400">
-                    <BookOpen className="w-16 h-16 mb-4 text-slate-200" />
-                    <p className="font-semibold text-slate-500">Materi Sedang Disusun</p>
-                    <p className="text-sm mt-2 max-w-sm text-center">Tim Akademik HIMASTI sedang menyiapkan kurikulum dan modul untuk mata kuliah ini.</p>
-                  </div>
-                )}
+                {/* Main Content Area */}
+                <div className={`flex-1 p-6 sm:p-10 lg:p-12 overflow-y-auto ${
+                  mobileTab === "content" ? "block" : "hidden md:block"
+                }`}>
+                  {currentChapter ? (
+                    <div className="max-w-3xl mx-auto space-y-6">
+                      
+                      {/* Chapter Tag Header */}
+                      <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-200">
+                        <span className="inline-flex items-center gap-2 px-3.5 py-1 bg-violet-100 text-violet-800 rounded-full text-xs font-bold tracking-wider">
+                          <Sparkles className="w-3.5 h-3.5 text-amber-500" />
+                          <span>BAB {activeChapterIndex + 1} DARI {activeCourse.chapters.length}</span>
+                        </span>
+
+                        <span className="text-xs font-mono text-slate-400">
+                          Mode Pembaca Interaktif HIMASTI
+                        </span>
+                      </div>
+
+                      {/* Rendered HTML Markdown */}
+                      <div 
+                        className="prose prose-slate max-w-none text-slate-700"
+                        dangerouslySetInnerHTML={{ __html: formatMarkdown(currentChapter.content) }} 
+                      />
+
+                      {/* Chapter Bottom Navigation Bar */}
+                      <div className="pt-8 mt-8 border-t border-slate-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <button
+                          type="button"
+                          disabled={activeChapterIndex === 0}
+                          onClick={() => {
+                            if (activeChapterIndex > 0) {
+                              setActiveChapterIndex(activeChapterIndex - 1);
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }
+                          }}
+                          className="w-full sm:w-auto px-4 py-2.5 rounded-xl border border-slate-200 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-colors flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          <ChevronLeft className="w-4 h-4" />
+                          <span>Bab Sebelumnya</span>
+                        </button>
+
+                        <Link
+                          href="/admin/mcp-hub"
+                          className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-violet-100 text-violet-800 hover:bg-violet-200 text-xs font-bold transition-colors flex items-center justify-center gap-1.5"
+                        >
+                          <Cpu className="w-4 h-4 text-violet-600" />
+                          <span>Praktek di MCP & Prompt Hub</span>
+                        </Link>
+
+                        <button
+                          type="button"
+                          disabled={activeChapterIndex >= (activeCourse.chapters?.length || 1) - 1}
+                          onClick={() => {
+                            if (activeChapterIndex < (activeCourse.chapters?.length || 1) - 1) {
+                              setActiveChapterIndex(activeChapterIndex + 1);
+                              window.scrollTo({ top: 0, behavior: "smooth" });
+                            }
+                          }}
+                          className="w-full sm:w-auto px-4 py-2.5 rounded-xl bg-slate-900 text-white hover:bg-slate-800 transition-colors text-xs font-bold flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                        >
+                          <span>Bab Selanjutnya</span>
+                          <ChevronRight className="w-4 h-4" />
+                        </button>
+                      </div>
+
+                    </div>
+                  ) : (
+                    <div className="py-24 flex flex-col items-center justify-center text-slate-400 text-center">
+                      <BookOpen className="w-16 h-16 mb-4 text-slate-200" />
+                      <p className="font-bold text-slate-600">Pilih BAB di Samping</p>
+                      <p className="text-xs text-slate-400 mt-1 max-w-xs">
+                        Silakan klik salah satu bab pada daftar untuk mulai membaca materi teknis.
+                      </p>
+                    </div>
+                  )}
+                </div>
+
               </div>
 
             </div>
