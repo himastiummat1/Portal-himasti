@@ -1,6 +1,21 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, Send, Terminal, Loader2, Globe, Building2, Users, ShieldCheck, Sparkles, Cpu, Activity } from 'lucide-react';
+import {
+  Bot,
+  Send,
+  Terminal,
+  Loader2,
+  Globe,
+  Building2,
+  Users,
+  ShieldCheck,
+  Sparkles,
+  ArrowRight,
+  ExternalLink,
+  ChevronRight,
+  Radio,
+  Fingerprint
+} from 'lucide-react';
 import Link from 'next/link';
 import CompetitionMarquee from './CompetitionMarquee';
 import BrutalistCore from '@/components/ui/BrutalistCore';
@@ -10,72 +25,78 @@ type Lang = 'id' | 'en' | 'ar';
 
 const translations = {
   id: {
-    login: "Masuk",
-    heroTitle: "HIMASTI",
-    heroDesc: "Portal Ekosistem Digital HIMASTI adalah platform terdedikasi Anda untuk berkolaborasi. Orkestrasikan berbagai divisi dan program kerja secara paralel dalam satu ruang independen.",
-    startBtn: "Mulai Akses",
-    aiPrompt: "Tanyakan sesuatu ke AI HIMASTI...",
-    demoLimit: "Batas percakapan demo (5/5) telah tercapai. Silakan Login untuk akses penuh.",
-    demoLeft: "Sisa Percakapan Demo",
-    histTitle: "Jejak Langkah Organisasi",
-    histDesc: "HIMASTI didirikan pada 21 April 2022 oleh 8 orang mahasiswa perintis melalui Mubes Pertama. Kami lahir dari tekad untuk membangun wadah independen bagi mahasiswa Sistem dan Teknologi Informasi di Universitas Muhammadiyah Mataram.",
-    divTitle: "Modul Divisi",
-    divDesc: "Infrastruktur utama yang menggerakkan ekosistem himpunan.",
+    login: "Masuk Portal",
+    heroBadge: "Antigravity Autonomous Platform • HIMASTI UMMAT",
+    heroTitle: "Satu Ekosistem. Tanpa Batas.",
+    heroDesc: "Orkestrasikan masa depan Sistem & Teknologi Informasi. Platform otonom terpadu untuk kolaborasi 18 modul divisi, presensi hardware anti-joki FIDO2, dan ekosistem AI cerdas.",
+    startBtn: "Mulai Akses Portal",
+    presensiBtn: "Presensi Biometrik",
+    aiPrompt: "Tanyakan sesuatu ke AI Neural HIMASTI...",
+    demoLimit: "Batas percakapan demo (5/5) tercapai. Silakan masuk untuk akses tanpa batas.",
+    demoLeft: "Sisa Kuota Demo",
+    histTitle: "Jejak Langkah Arsitektur",
+    histDesc: "HIMASTI didirikan pada 21 April 2022 oleh 8 orang mahasiswa perintis melalui Mubes Pertama di Universitas Muhammadiyah Mataram. Kami lahir dari tekad mandiri untuk memimpin transformasi teknologi digital kampus.",
+    divTitle: "Modul Divisi & Kepanitiaan",
+    divDesc: "Infrastruktur otonom yang menggerakkan seluruh program kerja dan kaderisasi himpunan.",
     divs: [
-      { name: 'Kemuhammadiyahan', desc: 'Menanamkan nilai-nilai Islam dan moral Kemuhammadiyahan di lingkungan mahasiswa IT.' },
-      { name: 'Kaderisasi', desc: 'Membentuk jiwa kepemimpinan, soliditas, dan regenerasi kepengurusan himpunan.' },
-      { name: 'Penelitian & Pengembangan', desc: 'Fokus pada kajian akademik, riset teknologi, dan pengembangan kurikulum (Litbang).' },
-      { name: 'Media & Komunikasi', desc: 'Mengelola desain visual, dokumentasi, dan infrastruktur digital HIMASTI.' },
-      { name: 'Hubungan Masyarakat', desc: 'Menjalin relasi dan kerja sama dengan pihak rektorat, ormawa lain, dan eksternal.' },
-      { name: 'Kewirausahaan', desc: 'Membangun kemandirian finansial organisasi melalui unit usaha dan merchandise.' },
-      { name: 'Minat dan Bakat', desc: 'Mewadahi dan menyalurkan potensi mahasiswa di bidang olahraga, seni, dan e-sports.' },
-      { name: 'Aksi dan Advokasi', desc: 'Menampung aspirasi mahasiswa dan mengawal isu-isu kebijakan strategis kampus.' }
+      { name: 'Kemuhammadiyahan', desc: 'Menanamkan nilai-nilai Islam dan moral peradaban di lingkungan mahasiswa teknologi.' },
+      { name: 'Kaderisasi & SDM', desc: 'Membentuk kepemimpinan tangguh, soliditas kader, dan regenerasi kepengurusan otonom.' },
+      { name: 'Litbang & Riset', desc: 'Fokus pada kajian akademik, riset teknologi masa depan, dan open-source curriculum.' },
+      { name: 'Media & Komunikasi', desc: 'Mengelola desain visual, siaran digital, dokumentasi multimedia, dan branding himpunan.' },
+      { name: 'Hubungan Masyarakat', desc: 'Menjalin kolaborasi strategis dengan rektorat, industri teknologi, dan organisasi luar kampus.' },
+      { name: 'Kewirausahaan & Danus', desc: 'Membangun kemandirian finansial ekosistem melalui unit bisnis dan official merchandise.' },
+      { name: 'Minat & Bakat', desc: 'Mewadahi kompetisi dan potensi mahasiswa di bidang e-sports, riset kreatif, dan inovasi.' },
+      { name: 'Aksi & Advokasi', desc: 'Menampung aspirasi mahasiswa dan mengawal kebijakan strategis kampus secara konstruktif.' }
     ]
   },
   en: {
-    login: "Login",
-    heroTitle: "HIMASTI",
-    heroDesc: "The HIMASTI Digital Ecosystem Portal is your dedicated platform for collaboration. Orchestrate various divisions and work programs in parallel within an independent space.",
-    startBtn: "Get Started",
-    aiPrompt: "Ask the HIMASTI AI something...",
-    demoLimit: "Demo conversation limit (5/5) reached. Please Login for full access.",
-    demoLeft: "Demo Chats Left",
-    histTitle: "Our History",
-    histDesc: "HIMASTI was established on April 21, 2022, by 8 pioneering students during the First Grand Assembly. We were born out of a determination to build an independent platform for Information Systems and Technology students at Universitas Muhammadiyah Mataram.",
+    login: "Portal Access",
+    heroBadge: "Antigravity Autonomous Platform • HIMASTI UMMAT",
+    heroTitle: "One Ecosystem. Zero Limits.",
+    heroDesc: "Orchestrate the future of Information Systems & Technology. An autonomous unified platform for 18 division modules, hardware-grade FIDO2 attendance, and intelligent AI kernel.",
+    startBtn: "Launch Ecosystem",
+    presensiBtn: "Biometric Attendance",
+    aiPrompt: "Ask HIMASTI Neural AI anything...",
+    demoLimit: "Demo conversation limit (5/5) reached. Please sign in for unlimited access.",
+    demoLeft: "Demo Queries Remaining",
+    histTitle: "Architectural Heritage",
+    histDesc: "HIMASTI was founded on April 21, 2022, by 8 pioneering students through the First Grand Assembly at Universitas Muhammadiyah Mataram. Born to lead digital transformation.",
     divTitle: "Division Modules",
-    divDesc: "The core infrastructure driving the organization's ecosystem.",
+    divDesc: "Autonomous infrastructure driving work programs and cadre development.",
     divs: [
-      { name: 'Muhammadiyah Values', desc: 'Instilling Islamic values and Muhammadiyah morals within the IT student environment.' },
-      { name: 'Cadreization', desc: 'Shaping leadership, solidarity, and the regeneration of the association\'s management.' },
-      { name: 'Research & Development', desc: 'Focusing on academic studies, technological research, and curriculum development.' },
-      { name: 'Media & Communication', desc: 'Managing visual design, documentation, and HIMASTI\'s digital infrastructure.' },
-      { name: 'Public Relations', desc: 'Building relations and partnerships with the rectorate, other student orgs, and external parties.' },
-      { name: 'Entrepreneurship', desc: 'Building financial independence through business units and merchandise.' },
-      { name: 'Talent & Interests', desc: 'Facilitating student potential in sports, arts, and e-sports.' },
-      { name: 'Action & Advocacy', desc: 'Accommodating student aspirations and overseeing strategic campus policies.' }
+      { name: 'Muhammadiyah Values', desc: 'Instilling ethical foundations and Islamic principles in the tech community.' },
+      { name: 'Cadre & Leadership', desc: 'Shaping future tech leaders, organizational solidarity, and autonomous management.' },
+      { name: 'R&D Innovation', desc: 'Focusing on cutting-edge research, tech benchmarking, and open-source curriculums.' },
+      { name: 'Media & Communication', desc: 'Managing multimedia design, digital broadcasting, and cyber presence.' },
+      { name: 'Public Relations', desc: 'Orchestrating strategic external partnerships with tech industries and institutions.' },
+      { name: 'Entrepreneurship', desc: 'Building financial autonomy through digital business units and merchandise.' },
+      { name: 'Talent & Esports', desc: 'Channeling student competitive potential in esports, creative media, and arts.' },
+      { name: 'Advocacy & Action', desc: 'Voicing student aspirations and constructive strategic policy development.' }
     ]
   },
   ar: {
-    login: "تسجيل الدخول",
-    heroTitle: "هيمساتي",
-    heroDesc: "بوابة النظام البيئي الرقمي لهيمساتي هي منصتك المخصصة للتعاون. نظّم مختلف الأقسام وبرامج العمل بشكل متوازٍ في مساحة مستقلة.",
-    startBtn: "ابدأ الآن",
-    aiPrompt: "اسأل ذكاء هيمساتي الاصطناعي...",
+    login: "دخول البوابة",
+    heroBadge: "منصة هيمساتي المستقلة للتقنية المتقدمة",
+    heroTitle: "نظام بيئي واحد. بلا حدود.",
+    heroDesc: "قم بتوجيه مستقبل نظم وتكنولوجيا المعلومات. منصة مستقلة وموحدة لـ 18 وحدة تنظيمية، وحضور بيومتري آمن ضد التزوير، وذكاء اصطناعي تفاعلي متقدم.",
+    startBtn: "دخول النظام",
+    presensiBtn: "تسجيل الحضور البيومتري",
+    aiPrompt: "اسأل ذكاء هيمساتي العصبي...",
     demoLimit: "تم الوصول إلى الحد الأقصى للمحادثات (٥/٥). يرجى تسجيل الدخول للوصول الكامل.",
     demoLeft: "المحادثات المتبقية",
-    histTitle: "تاريخنا",
-    histDesc: "تأسست هيمساتي في ٢١ أبريل ٢٠٢٢ على يد ٨ طلاب رواد خلال الجمعية الكبرى الأولى. وُلدنا من رحم التصميم على بناء منصة مستقلة لطلاب نظم وتكنولوجيا المعلومات في جامعة محمدية ماتارام.",
-    divTitle: "وحدات الأقسام",
-    divDesc: "البنية التحتية الأساسية التي تحرك المنظمة.",
+    histTitle: "أصولنا التاريخية",
+    histDesc: "تأسست هيمساتي في ٢١ أبريل ٢٠٢٢ على يد ٨ طلاب رواد خلال الجمعية الكبرى الأولى في جامعة محمدية ماتارام، لقيادة التحول الرقمي.",
+    divTitle: "الوحدات التنظيمية",
+    divDesc: "البنية التحتية المستقلة التي تدير برامج العمل وإعداد الكوادر.",
     divs: [
-      { name: 'قيم المحمدية', desc: 'غرس القيم الإسلامية والأخلاق المحمدية في بيئة طلاب تكنولوجيا المعلومات.' },
-      { name: 'التأطير والتكوين', desc: 'تشكيل القيادة والتضامن وتجديد إدارة الجمعية.' },
-      { name: 'البحث والتطوير', desc: 'التركيز على الدراسات الأكاديمية والبحوث التكنولوجية وتطوير المناهج.' },
-      { name: 'الإعلام والاتصال', desc: 'إدارة التصميم المرئي والتوثيق والبنية التحتية الرقمية.' },
-      { name: 'العلاقات العامة', desc: 'بناء العلاقات والشراكات مع إدارة الجامعة والمنظمات الأخرى.' },
-      { name: 'ريادة الأعمال', desc: 'بناء الاستقلال المالي للمنظمة من خلال الوحدات التجارية.' },
-      { name: 'المواهب والاهتمامات', desc: 'استيعاب إمكانات الطلاب في الرياضة والفنون والرياضات الإلكترونية.' },
-      { name: 'العمل والمناصرة', desc: 'استيعاب طموحات الطلاب والإشراف على سياسات الحرم الجامعي الاستراتيجية.' }
+      { name: 'قيم المحمدية', desc: 'غرس المبادئ الأخلاقية والقيم الإسلامية في بيئة طلاب التقنية.' },
+      { name: 'إعداد الكوادر', desc: 'بناء القيادة والعمل الجماعي والتجديد المستمر للجمعية.' },
+      { name: 'البحث والتطوير', desc: 'التركيز على الأبحاث الأكاديمية والتقنيات الحديثة والمناهج المفتوحة.' },
+      { name: 'الإعلام والاتصال', desc: 'إدارة التصاميم الرقمية والتوثيق والمنظومة الإعلامية.' },
+      { name: 'العلاقات العامة', desc: 'بناء الشراكات مع قطاع التقنية والجامعات والمؤسسات الخارجية.' },
+      { name: 'ريادة الأعمال', desc: 'تحقيق الاستقلال المالي للمنظمة عبر الوحدات التجارية.' },
+      { name: 'المواهب والرياضة', desc: 'رعاية إمكانات الطلاب في الرياضات الإلكترونية والمشاريع الإبداعية.' },
+      { name: 'المناصرة والدفاع', desc: 'تبني تطلعات الطلاب والسياسات الجامعية البناءة.' }
     ]
   }
 };
@@ -114,7 +135,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   const [isLoading, setIsLoading] = useState(false);
   const [chatCount, setChatCount] = useState(0);
   const [messages, setMessages] = useState<{ role: 'user' | 'bot', text: string }[]>([
-    { role: 'bot', text: lang === 'en' ? 'Hello! I am the HIMASTI AI. How can I help you today?' : lang === 'ar' ? 'مرحباً! أنا ذكاء هيمساتي الاصطناعي. كيف يمكنني مساعدتك؟' : 'Halo! Saya AI Asisten HIMASTI. Ada yang bisa saya bantu tentang organisasi atau kampus?' }
+    { role: 'bot', text: lang === 'en' ? 'Hello! I am the HIMASTI AI. How can I help you today?' : lang === 'ar' ? 'مرحباً! أنا ذكاء هيمساتي الاصطناعي. كيف يمكنني مساعدتك؟' : 'Halo! Saya AI Asisten HIMASTI. Tanyakan apa saja tentang kurikulum, kegiatan, atau organisasi kami.' }
   ]);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -122,18 +143,16 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
     setMessages(prev => {
       const newArr = [...prev];
       if (newArr.length > 0 && newArr[0].role === 'bot' && prev.length === 1) {
-        newArr[0] = { ...newArr[0], text: lang === 'en' ? 'Hello! I am the HIMASTI AI. How can I help you today?' : lang === 'ar' ? 'مرحباً! أنا ذكاء هيمساتي الاصطناعي. كيف يمكنني مساعدتك؟' : 'Halo! Saya AI Asisten HIMASTI. Ada yang bisa saya bantu tentang organisasi atau kampus?' };
+        newArr[0] = { ...newArr[0], text: lang === 'en' ? 'Hello! I am the HIMASTI AI. How can I help you today?' : lang === 'ar' ? 'مرحباً! أنا ذكاء هيمساتي الاصطناعي. كيف يمكنني مساعدتك؟' : 'Halo! Saya AI Asisten HIMASTI. Tanyakan apa saja tentang kurikulum, kegiatan, atau organisasi kami.' };
       }
       return newArr;
     });
   }, [lang]);
 
-
   useEffect(() => {
     const saved = localStorage.getItem('himasti_chat_count_v4');
     if (saved) setChatCount(parseInt(saved));
   }, []);
-
 
   const handleSend = async (e: React.FormEvent | React.PointerEvent) => {
     e.preventDefault();
@@ -165,124 +184,198 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   };
 
   return (
-    <div className={`w-full min-h-screen bg-slate-50 text-slate-900 font-sans selection:bg-slate-200 selection:text-slate-900 ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div className={`w-full min-h-screen bg-[#030712] text-slate-100 font-sans selection:bg-cyan-500/30 selection:text-cyan-200 relative overflow-x-hidden ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       
-      {/* Navbar Minimalist */}
-      <nav className="absolute top-0 w-full p-4 sm:p-6 flex justify-between items-center z-20">
-        <div className="flex items-center gap-2">
-          <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 sm:w-10 sm:h-10 object-contain rounded-lg shadow-sm" />
-          <span className="text-slate-900 font-bold text-lg sm:text-xl tracking-tighter">HIMASTI</span>
-        </div>
-        <div className="flex items-center gap-2 sm:gap-4">
-          <div className="relative">
-            <button onClick={() => setLangOpen(!langOpen)} className="p-2 bg-slate-50 border border-slate-200 rounded-lg hover:bg-slate-100 transition-colors text-slate-500">
-              <Globe className="w-4 h-4 sm:w-5 sm:h-5" />
-            </button>
-            {langOpen && (
-              <div className="absolute right-0 mt-2 w-32 bg-white border border-slate-200 shadow-xl rounded-xl overflow-hidden z-50 text-xs sm:text-sm">
-                <button onClick={() => { changeLang('id'); setLangOpen(false); }} className={`block w-full text-left px-4 py-2 hover:bg-slate-50 ${lang === 'id' ? 'font-bold text-slate-900 bg-slate-50' : 'text-slate-500'}`}>🇮🇩 Indonesia</button>
-                <button onClick={() => { changeLang('en'); setLangOpen(false); }} className={`block w-full text-left px-4 py-2 hover:bg-slate-50 ${lang === 'en' ? 'font-bold text-slate-900 bg-slate-50' : 'text-slate-500'}`}>🇬🇧 English</button>
-                <button onClick={() => { changeLang('ar'); setLangOpen(false); }} className={`block w-full text-left px-4 py-2 hover:bg-slate-50 ${lang === 'ar' ? 'font-bold text-slate-900 bg-slate-50' : 'text-slate-500'}`}>🇸🇦 عربي</button>
-              </div>
-            )}
+      {/* Background Starfield & Subtle Matrix Grid */}
+      <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(14,165,233,0.15),rgba(255,255,255,0))] -z-10" />
+      <div className="fixed inset-0 pointer-events-none bg-[linear-gradient(to_right,#ffffff05_1px,transparent_1px),linear-gradient(to_bottom,#ffffff05_1px,transparent_1px)] bg-[size:40px_40px] -z-10" />
+
+      {/* Floating Antigravity Glass Navbar */}
+      <header className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-5xl z-50">
+        <nav className="backdrop-blur-2xl bg-slate-950/70 border border-white/10 rounded-full px-4 sm:px-6 py-3 shadow-[0_12px_40px_rgba(0,0,0,0.6)] flex justify-between items-center transition-all">
+          <div className="flex items-center gap-3">
+            <div className="relative flex items-center justify-center">
+              <div className="absolute w-8 h-8 rounded-full bg-cyan-500/30 animate-ping opacity-60 pointer-events-none" />
+              <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 object-contain rounded-full border border-cyan-500/40 relative z-10 shadow-sm" />
+            </div>
+            <span className="font-extrabold text-base sm:text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-cyan-300 bg-clip-text text-transparent">
+              HIMASTI
+            </span>
           </div>
-          <Link href="/login" className="px-4 py-2 bg-slate-900 text-white text-xs sm:text-sm font-medium rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap">
-            {t.login}
-          </Link>
-        </div>
-      </nav>
+
+          <div className="hidden md:flex items-center gap-6 text-xs font-medium text-slate-400">
+            <a href="#divisions" className="hover:text-white transition-colors">Divisi</a>
+            <Link href="/absen" className="hover:text-cyan-300 transition-colors flex items-center gap-1">
+              <Fingerprint className="w-3.5 h-3.5 text-cyan-400" /> Presensi FIDO2
+            </Link>
+            <Link href="/admin/kader" className="hover:text-white transition-colors">Portal Admin</Link>
+          </div>
+
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Language Switcher */}
+            <div className="relative">
+              <button 
+                onClick={() => setLangOpen(!langOpen)} 
+                className="p-2 bg-white/[0.04] border border-white/10 rounded-full hover:bg-white/[0.08] transition text-slate-300 flex items-center gap-1.5 text-xs font-mono"
+              >
+                <Globe className="w-3.5 h-3.5 text-cyan-400" />
+                <span className="hidden sm:inline uppercase">{lang}</span>
+              </button>
+              {langOpen && (
+                <div className="absolute right-0 mt-2 w-36 bg-slate-900/95 backdrop-blur-xl border border-white/10 shadow-2xl rounded-2xl overflow-hidden z-50 text-xs py-1">
+                  <button onClick={() => { changeLang('id'); setLangOpen(false); }} className={`block w-full text-left px-3.5 py-2 hover:bg-white/10 ${lang === 'id' ? 'font-bold text-cyan-400 bg-white/[0.05]' : 'text-slate-300'}`}>🇮🇩 Indonesia</button>
+                  <button onClick={() => { changeLang('en'); setLangOpen(false); }} className={`block w-full text-left px-3.5 py-2 hover:bg-white/10 ${lang === 'en' ? 'font-bold text-cyan-400 bg-white/[0.05]' : 'text-slate-300'}`}>🇬🇧 English</button>
+                  <button onClick={() => { changeLang('ar'); setLangOpen(false); }} className={`block w-full text-left px-3.5 py-2 hover:bg-white/10 ${lang === 'ar' ? 'font-bold text-cyan-400 bg-white/[0.05]' : 'text-slate-300'}`}>🇸🇦 عربي</button>
+                </div>
+              )}
+            </div>
+
+            {/* CTA Login Button */}
+            <Link 
+              href="/login" 
+              className="px-4 py-2 rounded-full bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white text-xs font-bold shadow-[0_0_20px_rgba(6,182,212,0.3)] transition transform active:scale-95 whitespace-nowrap"
+            >
+              {t.login}
+            </Link>
+          </div>
+        </nav>
+      </header>
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-40 pb-28 max-w-5xl mx-auto gap-8 md:gap-12">
+      <section className="relative w-full min-h-[100dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-36 pb-20 max-w-5xl mx-auto gap-8 md:gap-12">
         
+        {/* Luminous Core Reactor */}
         <BrutalistCore />
-        { /* Left Typography */ }
-        <div className="flex flex-col items-center justify-center z-10 w-full min-h-[300px]">
+
+        {/* Hero Typography & Badges */}
+        <div className="flex flex-col items-center justify-center z-10 w-full">
+          
+          {/* Antigravity Pill Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyan-950/40 border border-cyan-500/30 text-cyan-300 text-xs font-mono tracking-wider shadow-[0_0_25px_rgba(6,182,212,0.15)] mb-6 animate-pulse">
+            <Sparkles className="w-3.5 h-3.5 text-cyan-400" />
+            <span>{t.heroBadge}</span>
+          </div>
+
           <AiRobotAnimation />
-          <p className="text-lg md:text-xl text-slate-500 max-w-2xl mb-10 leading-relaxed mx-auto mt-4">
+
+          {/* Majestic Hero Headline */}
+          <h1 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight leading-[1.08] max-w-4xl mt-2 mb-5">
+            <span className="bg-gradient-to-b from-white via-slate-100 to-slate-400 bg-clip-text text-transparent block">
+              {t.heroTitle}
+            </span>
+          </h1>
+
+          <p className="text-base sm:text-lg md:text-xl text-slate-400 max-w-2xl mb-8 leading-relaxed mx-auto">
             {t.heroDesc}
           </p>
-          <Link href="/login" className="px-8 py-4 bg-slate-900 text-white rounded-full font-medium hover:bg-slate-800 transition-colors flex items-center gap-2 group">
-            {t.startBtn}
-            <span className="group-hover:translate-x-1 transition-transform">→</span>
-          </Link>
+
+          {/* Antigravity Dual Action Buttons */}
+          <div className="flex flex-col sm:flex-row items-center gap-3.5 z-20">
+            <Link 
+              href="/login" 
+              className="w-full sm:w-auto px-8 py-4 bg-gradient-to-r from-blue-600 via-indigo-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 text-white rounded-full font-bold text-sm sm:text-base shadow-[0_0_35px_rgba(56,189,248,0.35)] hover:shadow-[0_0_45px_rgba(56,189,248,0.5)] transition-all flex items-center justify-center gap-2 group"
+            >
+              <span>{t.startBtn}</span>
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+
+            <Link 
+              href="/absen" 
+              className="w-full sm:w-auto px-7 py-4 rounded-full backdrop-blur-xl bg-white/[0.04] hover:bg-white/[0.08] border border-white/10 hover:border-cyan-500/40 text-slate-200 text-sm sm:text-base font-semibold transition flex items-center justify-center gap-2"
+            >
+              <Fingerprint className="w-4 h-4 text-cyan-400" />
+              <span>{t.presensiBtn}</span>
+            </Link>
+          </div>
         </div>
 
-        {/* Right AI Terminal (Unchanged functionally) */}
-        <div className="w-full max-w-2xl relative z-40">
-          <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl overflow-hidden flex flex-col h-[400px] sm:h-[500px] w-full">
-             <div className="bg-slate-50 px-4 py-3 border-b border-slate-200 flex items-center justify-between shrink-0">
-                <div className="flex items-center gap-2">
-                  <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-slate-300"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
+        {/* Antigravity Cyber Terminal / AI Console */}
+        <div className="w-full max-w-2xl relative z-40 mt-4">
+          <div className="backdrop-blur-2xl bg-slate-900/80 border border-white/10 rounded-3xl shadow-[0_0_60px_rgba(0,0,0,0.8),inset_0_1px_0_rgba(255,255,255,0.1)] overflow-hidden flex flex-col h-[420px] sm:h-[480px] w-full text-left">
+             
+             {/* Terminal Header */}
+             <div className="bg-slate-950/80 px-5 py-3.5 border-b border-white/10 flex items-center justify-between shrink-0">
+                <div className="flex items-center gap-3">
+                  <div className="flex gap-2">
+                    <div className="w-3 h-3 rounded-full bg-rose-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-amber-500/80"></div>
+                    <div className="w-3 h-3 rounded-full bg-emerald-500/80"></div>
                   </div>
-                  <div className={`${isRTL ? 'mr-4' : 'ml-4'} text-xs font-mono text-slate-500 flex items-center gap-2`}>
-                    <Terminal className="w-3 h-3"/> {lang === "en" ? "HIMASTI_AI_CORE_v2.0" : lang === "ar" ? "نظام_هيمساتي_للذكاء_الاصطناعي" : "HIMASTI_AI_CORE_v2.0"}
+                  <div className={`${isRTL ? 'mr-4' : 'ml-4'} text-xs font-mono text-cyan-400 flex items-center gap-2 tracking-wide`}>
+                    <Terminal className="w-3.5 h-3.5 text-cyan-400"/>
+                    <span>HIMASTI_NEURAL_KERNEL_v2.4</span>
                   </div>
                 </div>
-                <Bot className="w-5 h-5 text-slate-900" />
+                <div className="flex items-center gap-2 text-xs font-mono text-emerald-400 bg-emerald-950/40 px-2.5 py-0.5 rounded-full border border-emerald-800/40">
+                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                  <span>ONLINE</span>
+                </div>
              </div>
-             <div className="flex-1 p-4 overflow-y-auto bg-slate-50/50 space-y-4">
+
+             {/* Terminal Chat Stream */}
+             <div className="flex-1 p-5 overflow-y-auto bg-slate-950/40 space-y-4 font-sans text-sm">
                 {messages.map((msg, idx) => (
                   <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                    <div className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-sm ${msg.role === 'user' ? 'bg-slate-900 text-white rounded-tr-sm' : 'bg-white border border-slate-200 text-slate-800 rounded-tl-sm shadow-sm'}`}>
+                    <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-xs sm:text-sm leading-relaxed ${
+                      msg.role === 'user' 
+                        ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-tr-sm shadow-md' 
+                        : 'bg-white/[0.04] border border-white/10 text-slate-200 rounded-tl-sm backdrop-blur-md'
+                    }`}>
                       {msg.text}
                     </div>
                   </div>
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
-                    <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-2.5 shadow-sm flex items-center gap-2">
-                      <Loader2 className="w-4 h-4 animate-spin text-slate-900" />
-                      <span className="text-xs text-slate-500">{lang === "en" ? "AI is thinking..." : lang === "ar" ? "الذكاء الاصطناعي يفكر..." : "AI sedang berpikir..."}</span>
+                    <div className="bg-white/[0.04] border border-white/10 rounded-2xl rounded-tl-sm px-4 py-3 text-xs text-slate-400 flex items-center gap-2">
+                      <Loader2 className="w-4 h-4 animate-spin text-cyan-400" />
+                      <span className="font-mono text-xs">{lang === "en" ? "Processing neural response..." : lang === "ar" ? "جاري معالجة الاستجابة..." : "Memproses respon neural..."}</span>
                     </div>
                   </div>
                 )}
                 <div ref={chatEndRef} />
              </div>
-             <div className="p-3 bg-white border-t border-slate-200 shrink-0">
+
+             {/* Terminal Prompt Bar */}
+             <div className="p-3 bg-slate-950/90 border-t border-white/10 shrink-0">
                {chatCount >= 5 ? (
-                 <div className="text-center p-2 text-xs font-medium text-red-500 bg-red-50 rounded-lg">
+                 <div className="text-center p-3 text-xs font-mono text-rose-400 bg-rose-950/30 border border-rose-900/40 rounded-xl">
                    {t.demoLimit}
                  </div>
                ) : (
                  <form onSubmit={handleSend} className="flex items-center gap-2 w-full relative z-50">
-                   <input
-                     type="text"
-                     value={input}
-                     onChange={(e) => setInput(e.target.value)}
-                     disabled={isLoading}
-                     placeholder={t.aiPrompt}
-                     className="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-4 h-12 text-sm outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all disabled:opacity-50 relative z-50"
-                     dir={isRTL ? 'rtl' : 'ltr'}
-                   />
+                   <div className="relative flex-1">
+                     <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-cyan-400 font-mono text-xs pointer-events-none">$&gt;</span>
+                     <input
+                       type="text"
+                       value={input}
+                       onChange={(e) => setInput(e.target.value)}
+                       disabled={isLoading}
+                       placeholder={t.aiPrompt}
+                       className="w-full bg-slate-900 border border-white/10 rounded-xl pl-8 pr-4 h-11 text-xs sm:text-sm text-slate-100 placeholder-slate-500 outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all disabled:opacity-50"
+                       dir={isRTL ? 'rtl' : 'ltr'}
+                     />
+                   </div>
                    <button 
                      type="submit" 
                      disabled={!input.trim() || isLoading}
-                     onPointerDown={(e) => {
-                       // Fire immediately on mobile touch to prevent keyboard dismiss swallowing the click
-                       if (input.trim() && !isLoading) {
-                         e.preventDefault();
-                         handleSend(e);
-                       }
-                     }}
-                     className="w-12 h-12 bg-slate-900 text-white rounded-xl hover:bg-slate-800 disabled:opacity-50 transition-colors flex items-center justify-center shrink-0 cursor-pointer touch-manipulation relative z-50"
+                     className="w-11 h-11 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-500 hover:to-cyan-500 text-white rounded-xl disabled:opacity-40 transition-colors flex items-center justify-center shrink-0 cursor-pointer shadow-md"
                    >
-                     <Send className={`w-5 h-5 ${isRTL ? 'rotate-180' : ''}`} />
+                     <Send className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
                  </form>
                )}
-               <div className="text-center mt-2 text-[10px] text-slate-400 font-medium">{t.demoLeft}: {5 - chatCount}/5</div>
+               <div className="text-center mt-2 text-[10px] text-slate-500 font-mono">
+                 {t.demoLeft}: {5 - chatCount}/5 • Powered by Groq Llama-3 Fast Inference
+               </div>
              </div>
           </div>
         </div>
       </section>
 
-      {/* Antigravity Metrics Bento Bar */}
-      <section className="relative w-full py-16 px-6 bg-[#090d16] text-white overflow-hidden border-y border-slate-800">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-900/30 via-slate-950 to-slate-950 pointer-events-none" />
+      {/* Antigravity Live Metrics Bento Bar */}
+      <section className="relative w-full py-16 px-6 bg-[#060913] text-white overflow-hidden border-y border-white/5">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent pointer-events-none" />
         <div className="max-w-5xl mx-auto relative z-10">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-2.5">
@@ -300,8 +393,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-blue-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] hover:border-cyan-500/40 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-black tracking-tight text-white group-hover:text-cyan-400 transition-colors">
                 33+
               </div>
               <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
@@ -312,8 +405,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-indigo-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-indigo-400 transition-colors">
+            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] hover:border-indigo-500/40 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-black tracking-tight text-white group-hover:text-indigo-400 transition-colors">
                 8
               </div>
               <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
@@ -324,8 +417,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-cyan-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] hover:border-blue-500/40 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-black tracking-tight text-white group-hover:text-blue-400 transition-colors">
                 124+
               </div>
               <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
@@ -336,8 +429,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               </div>
             </div>
 
-            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-emerald-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-400 transition-colors">
+            <div className="p-6 rounded-3xl bg-white/[0.02] border border-white/[0.08] hover:border-emerald-500/40 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-black tracking-tight text-emerald-400 transition-colors">
                 99.9%
               </div>
               <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
@@ -351,73 +444,85 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         </div>
       </section>
 
-      {/* History Section (NEW Content) */}
-      <section className="w-full py-24 px-6 bg-slate-50 border-y border-slate-100">
-        <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-12 items-center">
+      {/* Marquee Ticker */}
+      <CompetitionMarquee competitions={competitions || []} />
+
+      {/* History & Architectural Pillar */}
+      <section className="w-full py-24 px-6 bg-[#030712] relative">
+        <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
           <div className="flex-1">
-            <h2 className="text-3xl font-medium tracking-tight text-slate-900 mb-4">{t.histTitle}</h2>
-            <p className="text-slate-500 leading-relaxed text-lg">
+            <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-2">Heritage • 2022</span>
+            <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-white mb-4">{t.histTitle}</h2>
+            <p className="text-slate-400 leading-relaxed text-base sm:text-lg">
               {t.histDesc}
             </p>
           </div>
-          <div className="grid grid-cols-2 gap-4 flex-1">
-             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
-                <Building2 className="w-8 h-8 mx-auto text-slate-900 mb-2" />
-                <div className="text-2xl font-bold text-slate-900">2022</div>
-                <div className="text-xs text-slate-500 uppercase tracking-wider">Tahun Berdiri</div>
+          <div className="grid grid-cols-2 gap-4 flex-1 w-full">
+             <div className="bg-white/[0.03] p-7 rounded-3xl border border-white/10 shadow-lg text-center backdrop-blur-md hover:border-cyan-500/30 transition">
+                <Building2 className="w-8 h-8 mx-auto text-cyan-400 mb-2" />
+                <div className="text-3xl font-extrabold text-white font-mono">2022</div>
+                <div className="text-xs text-slate-400 uppercase tracking-wider mt-1">Tahun Berdiri</div>
              </div>
-             <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
-                <Users className="w-8 h-8 mx-auto text-slate-900 mb-2" />
-                <div className="text-2xl font-bold text-slate-900">8</div>
-                <div className="text-xs text-slate-500 uppercase tracking-wider">Pencetus</div>
+             <div className="bg-white/[0.03] p-7 rounded-3xl border border-white/10 shadow-lg text-center backdrop-blur-md hover:border-indigo-500/30 transition">
+                <Users className="w-8 h-8 mx-auto text-indigo-400 mb-2" />
+                <div className="text-3xl font-extrabold text-white font-mono">8</div>
+                <div className="text-xs text-slate-400 uppercase tracking-wider mt-1">Pionir Mubes</div>
              </div>
           </div>
         </div>
       </section>
 
-      {/* Marquee */}
-      <div className="border-b border-slate-100 bg-white py-4">
-        <CompetitionMarquee competitions={competitions || []} />
-      </div>
-
-      {/* Divisions Section */}
-      <section id="divisions" className="w-full py-24 px-6 bg-white">
-        <div className="max-w-4xl mx-auto">
+      {/* Divisions Bento Grid Section */}
+      <section id="divisions" className="w-full py-24 px-6 bg-[#050811] relative border-t border-white/5">
+        <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className="text-3xl font-medium tracking-tight mb-4 text-slate-900">{t.divTitle}</h2>
-            <p className="text-slate-500 text-lg">{t.divDesc}</p>
+            <span className="text-xs font-mono text-cyan-400 uppercase tracking-widest block mb-2">Infrastructure Modules</span>
+            <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-white">{t.divTitle}</h2>
+            <p className="text-slate-400 text-base max-w-xl mx-auto">{t.divDesc}</p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full max-w-4xl mx-auto">
-            {t.divs.map((divisi, i) => (
-              <div key={i} className="group flex flex-col items-start bg-white border border-slate-200 rounded-2xl p-6 hover:shadow-md transition-shadow duration-300 w-full text-left">
-                <div className="flex items-center gap-4 mb-4">
-                  <div className="flex items-center justify-center w-12 h-12 bg-slate-50 rounded-xl border border-slate-100 group-hover:bg-slate-50 transition-colors">
-                    <svg className="w-5 h-5 text-slate-900" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                      <path strokeLinecap="round" strokeLinejoin="round" d={divIcons[i]} />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-5xl mx-auto">
+            {t.divs.map((d, index) => (
+              <div 
+                key={index} 
+                className="group p-6 rounded-3xl bg-white/[0.02] border border-white/[0.07] hover:border-cyan-500/40 hover:bg-white/[0.04] backdrop-blur-md transition-all duration-300 hover:-translate-y-1"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 rounded-2xl bg-cyan-950/50 border border-cyan-500/30 text-cyan-400 flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform">
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d={divIcons[index]} />
                     </svg>
                   </div>
-                  <h3 className="text-lg font-medium text-slate-900 leading-tight">{divisi.name}</h3>
+                  <div>
+                    <h3 className="text-lg font-bold text-white group-hover:text-cyan-300 transition-colors mb-1.5 flex items-center gap-2">
+                      <span>{d.name}</span>
+                      <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-cyan-400" />
+                    </h3>
+                    <p className="text-slate-400 text-xs sm:text-sm leading-relaxed">{d.desc}</p>
+                  </div>
                 </div>
-                <p className="text-slate-500 leading-relaxed text-sm">{divisi.desc}</p>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="w-full py-12 px-6 bg-slate-50 border-t border-slate-100">
-        <div className="max-w-6xl mx-auto flex flex-col items-center justify-center gap-4 text-center">
-          <div className="font-medium tracking-tight text-slate-900">
-            HIMASTI Portal
+      {/* Antigravity Footer */}
+      <footer className="w-full py-12 px-6 bg-[#02050b] border-t border-white/5 text-slate-500 text-xs font-mono">
+        <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-cyan-400" />
+            <span className="text-slate-400">© 2026 HIMASTI Universitas Muhammadiyah Mataram. All Rights Reserved.</span>
           </div>
-          <p className="text-sm text-slate-400">
-            &copy; {new Date().getFullYear()} HIMASTI Digital Ecosystem. All rights reserved.
-          </p>
+          <div className="flex items-center gap-4">
+            <Link href="/login" className="text-slate-400 hover:text-white transition">Masuk</Link>
+            <Link href="/absen" className="text-cyan-400 hover:text-cyan-300 transition">Presensi FIDO2</Link>
+            <a href="https://github.com/himastiummat1/Portal-himasti" target="_blank" rel="noreferrer" className="text-slate-400 hover:text-white transition flex items-center gap-1">
+              GitHub <ExternalLink className="w-3 h-3" />
+            </a>
+          </div>
         </div>
       </footer>
-      
     </div>
   );
 }
