@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { Bot, Send, Terminal, Loader2, Globe, Building2, Users } from 'lucide-react';
+import { Bot, Send, Terminal, Loader2, Globe, Building2, Users, ShieldCheck, Sparkles, Cpu, Activity } from 'lucide-react';
 import Link from 'next/link';
 import CompetitionMarquee from './CompetitionMarquee';
 import BrutalistCore from '@/components/ui/BrutalistCore';
@@ -276,6 +276,77 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                )}
                <div className="text-center mt-2 text-[10px] text-slate-400 font-medium">{t.demoLeft}: {5 - chatCount}/5</div>
              </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Antigravity Metrics Bento Bar */}
+      <section className="relative w-full py-16 px-6 bg-[#090d16] text-white overflow-hidden border-y border-slate-800">
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_var(--tw-gradient-stops))] from-blue-900/30 via-slate-950 to-slate-950 pointer-events-none" />
+        <div className="max-w-5xl mx-auto relative z-10">
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+            <div className="flex items-center gap-2.5">
+              <span className="relative flex h-2.5 w-2.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+              </span>
+              <span className="text-xs font-mono tracking-widest text-slate-400 uppercase">
+                HIMASTI Autonomous Ecosystem • Live Metrics
+              </span>
+            </div>
+            <div className="text-xs font-mono text-cyan-400 flex items-center gap-1.5 bg-cyan-950/60 px-3 py-1 rounded-full border border-cyan-800/50">
+              <ShieldCheck className="w-3.5 h-3.5 text-cyan-400" /> FIDO2 Biometric & Zero-Internet Mesh
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-blue-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-blue-400 transition-colors">
+                33+
+              </div>
+              <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
+                Kader Aktif
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                Terverifikasi Sistem
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-indigo-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-indigo-400 transition-colors">
+                8
+              </div>
+              <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
+                Divisi Kerja
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                Paralel & Otonom
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-cyan-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white group-hover:text-cyan-400 transition-colors">
+                124+
+              </div>
+              <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
+                Modul IT
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                Kurikulum Terbuka
+              </div>
+            </div>
+
+            <div className="p-6 rounded-2xl bg-white/[0.04] border border-white/10 hover:border-emerald-500/50 backdrop-blur-md transition-all group hover:-translate-y-0.5">
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-400 transition-colors">
+                99.9%
+              </div>
+              <div className="text-xs font-semibold text-slate-300 mt-1.5 uppercase tracking-wider">
+                Uptime Presensi
+              </div>
+              <div className="text-[11px] text-slate-500 mt-0.5 font-mono">
+                Anti-Joki Hardware
+              </div>
+            </div>
           </div>
         </div>
       </section>

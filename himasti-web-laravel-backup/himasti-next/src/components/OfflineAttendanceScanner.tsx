@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import confetti from 'canvas-confetti'
 import { startAuthentication } from '@simplewebauthn/browser'
 import {
   getAttendanceOptionsAction,
@@ -111,6 +112,17 @@ export default function OfflineAttendanceScanner({
           return
         }
 
+        // Micro-Interactions: Haptic Feedback + Confetti Celebration
+        if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+          navigator.vibrate([60, 40, 120])
+        }
+        confetti({
+          particleCount: 80,
+          spread: 70,
+          origin: { y: 0.6 },
+          colors: ['#2563eb', '#10b981', '#6366f1', '#f59e0b'],
+        })
+
         setResult({
           success: true,
           message: submitRes.message || 'Presensi berhasil diverifikasi oleh chip keamanan HP!',
@@ -132,6 +144,17 @@ export default function OfflineAttendanceScanner({
         })
 
         await loadPendingRecords()
+
+        // Haptic feedback for offline saving
+        if (typeof window !== 'undefined' && 'vibrate' in navigator) {
+          navigator.vibrate([80])
+        }
+        confetti({
+          particleCount: 40,
+          spread: 50,
+          origin: { y: 0.6 },
+          colors: ['#f59e0b', '#10b981'],
+        })
 
         setResult({
           success: true,
