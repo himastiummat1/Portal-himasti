@@ -29,6 +29,7 @@ model User {
 
   // Spatie Roles
   roles             ModelHasRole[]
+  webauthn_creds    WebAuthnCredential[]
 
   @@map("users")
 }
@@ -252,10 +253,15 @@ model Absensi {
   user_id           Int
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   waktu_hadir       DateTime
-  status_kehadiran  String    @default("hadir") // hadir, izin, sakit, alfa
-  catatan           String?
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @updatedAt
+  status_kehadiran    String    @default("hadir") // hadir, izin, sakit, alfa
+  catatan             String?
+  verification_method String    @default("standard")
+  hardware_proof      String?   @db.Text
+  device_info         String?
+  is_offline_sync     Boolean   @default(false)
+  synced_at           DateTime?
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @updatedAt
 
   @@index([event_id], map: "idx_absensi_event_id")
   @@index([user_id], map: "idx_absensi_user_id")
@@ -321,13 +327,50 @@ model MeetingAttendance {
   user_id           Int
   user              User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
   waktu_hadir       DateTime  @default(now())
-  status_kehadiran  String    @default("hadir")
-  latitude_scan     Float?
-  longitude_scan    Float?
-  created_at        DateTime? @default(now())
-  updated_at        DateTime? @updatedAt
+  status_kehadiran    String    @default("hadir")
+  latitude_scan       Float?
+  longitude_scan      Float?
+  verification_method String    @default("standard")
+  hardware_proof      String?   @db.Text
+  device_info         String?
+  is_offline_sync     Boolean   @default(false)
+  synced_at           DateTime?
+  created_at          DateTime? @default(now())
+  updated_at          DateTime? @updatedAt
 
   @@unique([meeting_id, user_id])
   @@index([user_id], map: "idx_meetingatt_user_id")
   @@map("meeting_attendances")
 }
+
+model WebAuthnCredential {
+  id            Int       @id @default(autoincrement())
+  user_id       Int
+  user          User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  credential_id String    @unique
+  public_key    String    @db.Text
+  counter       BigInt    @default(0)
+  device_type   String?
+  backed_up     Boolean   @default(false)
+  transports    String?
+  device_name   String?
+  aaguid        String?
+  created_at    DateTime? @default(now())
+  last_used_at  DateTime?
+
+  @@index([user_id], map: "idx_webauthn_user_id")
+  @@map("webauthn_credentials")
+}
+
+model OfflineSyncLog {
+  id              Int       @id @default(autoincrement())
+  batch_id        String
+  device_id       String
+  total_records   Int       @default(0)
+  synced_records  Int       @default(0)
+  status          String    @default("success")
+  synced_at       DateTime  @default(now())
+
+  @@map("offline_sync_logs")
+}
+
