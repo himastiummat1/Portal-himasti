@@ -288,12 +288,18 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
             {isDarkCard && (
               <>
                 <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-25 animate-grid-pan" />
-                <div className="pointer-events-none absolute inset-0 opacity-30 animate-holo-foil mix-blend-color-dodge bg-gradient-to-tr from-transparent via-cyan-500/20 to-transparent" />
+                <div className="pointer-events-none absolute inset-0 opacity-25 animate-holo-foil bg-gradient-to-tr from-transparent via-cyan-500/20 to-transparent" />
                 <div className="pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-[0_0_12px_#22d3ee] animate-scan-sweep z-0" />
                 <div className="pointer-events-none absolute top-4 right-1/4 w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#22d3ee] animate-particle-1" />
                 <div className="pointer-events-none absolute bottom-8 left-1/4 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_8px_#f59e0b] animate-particle-2" />
-                <div className="absolute -top-12 -right-12 w-44 h-44 bg-cyan-500/15 rounded-full blur-3xl animate-cyber-pulse pointer-events-none" />
-                <div className="absolute -bottom-12 -left-12 w-44 h-44 bg-violet-600/20 rounded-full blur-3xl animate-cyber-pulse [animation-delay:1.5s] pointer-events-none" />
+                <div 
+                  className="absolute -top-12 -right-12 w-44 h-44 rounded-full animate-cyber-pulse pointer-events-none" 
+                  style={{ background: "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)" }}
+                />
+                <div 
+                  className="absolute -bottom-12 -left-12 w-44 h-44 rounded-full animate-cyber-pulse [animation-delay:1.5s] pointer-events-none" 
+                  style={{ background: "radial-gradient(circle, rgba(139,92,246,0.2) 0%, transparent 70%)" }}
+                />
               </>
             )}
 
@@ -301,8 +307,14 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
             {isSuper && (
               <div className="absolute inset-0 pointer-events-none overflow-hidden">
                 <div className="absolute top-0 inset-x-0 h-0.5 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-80 shadow-[0_0_15px_#22d3ee]" />
-                <div className="absolute -top-12 -right-12 w-36 h-36 bg-rose-500/20 rounded-full blur-3xl" />
-                <div className="absolute -bottom-12 -left-12 w-36 h-36 bg-cyan-500/20 rounded-full blur-3xl" />
+                <div 
+                  className="absolute -top-12 -right-12 w-36 h-36 rounded-full" 
+                  style={{ background: "radial-gradient(circle, rgba(244,63,94,0.2) 0%, transparent 70%)" }}
+                />
+                <div 
+                  className="absolute -bottom-12 -left-12 w-36 h-36 rounded-full" 
+                  style={{ background: "radial-gradient(circle, rgba(6,182,212,0.2) 0%, transparent 70%)" }}
+                />
               </div>
             )}
 

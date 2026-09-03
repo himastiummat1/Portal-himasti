@@ -298,61 +298,64 @@ body {
   will-change: text-shadow;
 }
 
-/* 7. HIGH-TECH HOLOGRAPHIC CARD ANIMATIONS */
+/* 7. HIGH-TECH HOLOGRAPHIC CARD ANIMATIONS (GPU OPTIMIZED) */
 @keyframes laserScanSweep {
   0% {
-    top: -8%;
+    top: -6%;
     opacity: 0;
   }
-  12% {
-    opacity: 0.95;
+  15% {
+    opacity: 0.9;
   }
-  88% {
-    opacity: 0.95;
+  85% {
+    opacity: 0.9;
   }
   100% {
-    top: 108%;
+    top: 106%;
     opacity: 0;
   }
 }
 .animate-scan-sweep {
-  animation: laserScanSweep 3.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  animation: laserScanSweep 3.6s cubic-bezier(0.4, 0, 0.2, 1) infinite;
   will-change: top, opacity;
+  transform: translateZ(0);
 }
 
 @keyframes holoFoilFlow {
   0% {
     background-position: 0% 0%;
-    opacity: 0.45;
+    opacity: 0.3;
   }
   50% {
     background-position: 100% 100%;
-    opacity: 0.75;
+    opacity: 0.55;
   }
   100% {
     background-position: 0% 0%;
-    opacity: 0.45;
+    opacity: 0.3;
   }
 }
 .animate-holo-foil {
-  background-size: 250% 250%;
-  animation: holoFoilFlow 5s ease-in-out infinite;
+  background-size: 200% 200%;
+  animation: holoFoilFlow 6s ease-in-out infinite;
   will-change: background-position, opacity;
+  transform: translateZ(0);
 }
 
 @keyframes cyberPulse {
   0%, 100% {
-    opacity: 0.35;
-    transform: scale(1);
+    opacity: 0.4;
+    transform: scale3d(1, 1, 1);
   }
   50% {
     opacity: 0.75;
-    transform: scale(1.1);
+    transform: scale3d(1.08, 1.08, 1);
   }
 }
 .animate-cyber-pulse {
-  animation: cyberPulse 3.5s ease-in-out infinite;
+  animation: cyberPulse 4s ease-in-out infinite;
   will-change: opacity, transform;
+  transform: translateZ(0);
 }
 
 @keyframes borderNeonFlow {
@@ -368,66 +371,71 @@ body {
 }
 .animate-border-neon {
   background-size: 200% 200%;
-  animation: borderNeonFlow 4s linear infinite;
+  animation: borderNeonFlow 4.5s linear infinite;
   will-change: background-position;
+  transform: translateZ(0);
 }
 
 @keyframes particleFloat1 {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
     opacity: 0.3;
   }
   50% {
-    transform: translate(14px, -16px) scale(1.3);
-    opacity: 0.95;
+    transform: translate3d(12px, -14px, 0) scale3d(1.25, 1.25, 1);
+    opacity: 0.9;
   }
 }
 @keyframes particleFloat2 {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
     opacity: 0.3;
   }
   50% {
-    transform: translate(-14px, 14px) scale(1.2);
-    opacity: 0.9;
+    transform: translate3d(-12px, 12px, 0) scale3d(1.2, 1.2, 1);
+    opacity: 0.85;
   }
 }
 @keyframes particleFloat3 {
   0%, 100% {
-    transform: translate(0, 0) scale(1);
+    transform: translate3d(0, 0, 0) scale3d(1, 1, 1);
     opacity: 0.4;
   }
   50% {
-    transform: translate(12px, 10px) scale(1.15);
+    transform: translate3d(10px, 8px, 0) scale3d(1.15, 1.15, 1);
     opacity: 0.85;
   }
 }
 .animate-particle-1 {
   animation: particleFloat1 4.5s ease-in-out infinite;
   will-change: transform, opacity;
+  transform: translateZ(0);
 }
 .animate-particle-2 {
   animation: particleFloat2 6s ease-in-out infinite 0.8s;
   will-change: transform, opacity;
+  transform: translateZ(0);
 }
 .animate-particle-3 {
   animation: particleFloat3 5s ease-in-out infinite 1.8s;
   will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 @keyframes holoWatermarkPulse {
   0%, 100% {
-    transform: translate(-50%, -50%) rotate(0deg) scale(1);
+    transform: translate3d(-50%, -50%, 0) rotate(0deg) scale3d(1, 1, 1);
     opacity: 0.05;
   }
   50% {
-    transform: translate(-50%, -50%) rotate(180deg) scale(1.08);
+    transform: translate3d(-50%, -50%, 0) rotate(180deg) scale3d(1.06, 1.06, 1);
     opacity: 0.12;
   }
 }
 .animate-holo-watermark {
-  animation: holoWatermarkPulse 18s linear infinite;
+  animation: holoWatermarkPulse 20s linear infinite;
   will-change: transform, opacity;
+  transform: translateZ(0);
 }
 
 

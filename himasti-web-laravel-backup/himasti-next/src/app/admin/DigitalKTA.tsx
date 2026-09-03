@@ -32,8 +32,8 @@ export default function DigitalKTA({
   const x = useMotionValue(0);
   const y = useMotionValue(0);
 
-  const mouseXSpring = useSpring(x, { stiffness: 150, damping: 20 });
-  const mouseYSpring = useSpring(y, { stiffness: 150, damping: 20 });
+  const mouseXSpring = useSpring(x, { stiffness: 100, damping: 25, mass: 0.5 });
+  const mouseYSpring = useSpring(y, { stiffness: 100, damping: 25, mass: 0.5 });
 
   const rotateX = useTransform(mouseYSpring, [-0.5, 0.5], ["12deg", "-12deg"]);
   const rotateY = useTransform(mouseXSpring, [-0.5, 0.5], ["-12deg", "12deg"]);
@@ -71,10 +71,14 @@ export default function DigitalKTA({
     y.set(0);
   };
 
-  // Add Device Orientation (Gyroscope) support for Android/Mobile
+  // Throttled Gyroscope support for mobile (~30fps limit to avoid JS main thread saturation)
   useEffect(() => {
+    let lastTiltTime = 0;
     const handleOrientation = (e: DeviceOrientationEvent) => {
       if (e.gamma === null || e.beta === null) return;
+      const now = performance.now();
+      if (now - lastTiltTime < 33) return; // limit to ~30Hz update rate
+      lastTiltTime = now;
       
       let tiltX = e.gamma / 45; 
       let tiltY = (e.beta - 45) / 45; 
@@ -83,13 +87,13 @@ export default function DigitalKTA({
       tiltY = Math.max(-1, Math.min(1, tiltY));
 
       if (typeof window !== 'undefined' && ('ontouchstart' in window)) {
-        x.set(tiltX * 0.5);
-        y.set(tiltY * 0.5);
+        x.set(tiltX * 0.4);
+        y.set(tiltY * 0.4);
       }
     };
 
     if (typeof window !== 'undefined' && window.DeviceOrientationEvent) {
-      window.addEventListener("deviceorientation", handleOrientation);
+      window.addEventListener("deviceorientation", handleOrientation, { passive: true });
     }
     return () => {
       if (typeof window !== 'undefined') {
@@ -118,53 +122,53 @@ export default function DigitalKTA({
     switch (tId) {
       case "emerald_matrix":
         return {
-          glow1: "bg-emerald-500/30",
-          glow2: "bg-teal-500/25",
-          glow3: "bg-emerald-400/20",
-          laser: "via-emerald-400 shadow-[0_0_15px_#10b981]",
-          border: "border-emerald-500/50 shadow-[0_0_40px_rgba(16,185,129,0.3)] hover:shadow-[0_0_60px_rgba(16,185,129,0.5)]",
+          radial1: "radial-gradient(circle, rgba(16,185,129,0.3) 0%, rgba(16,185,129,0.08) 40%, transparent 70%)",
+          radial2: "radial-gradient(circle, rgba(20,184,166,0.25) 0%, transparent 70%)",
+          radial3: "radial-gradient(circle, rgba(52,211,153,0.18) 0%, transparent 70%)",
+          laser: "via-emerald-400 shadow-[0_0_12px_#10b981]",
+          border: "border-emerald-500/50 shadow-[0_0_35px_rgba(16,185,129,0.25)] hover:shadow-[0_0_50px_rgba(16,185,129,0.4)]",
           accentColor: "text-emerald-300",
-          sparkColor: "bg-emerald-400 shadow-[0_0_8px_#10b981]"
+          sparkColor: "bg-emerald-400 shadow-[0_0_6px_#10b981]"
         };
       case "cosmic_violet":
         return {
-          glow1: "bg-purple-600/35",
-          glow2: "bg-pink-600/30",
-          glow3: "bg-indigo-500/25",
-          laser: "via-purple-400 shadow-[0_0_15px_#c084fc]",
-          border: "border-purple-500/50 shadow-[0_0_40px_rgba(168,85,247,0.3)] hover:shadow-[0_0_60px_rgba(168,85,247,0.5)]",
+          radial1: "radial-gradient(circle, rgba(168,85,247,0.3) 0%, rgba(147,51,234,0.08) 40%, transparent 70%)",
+          radial2: "radial-gradient(circle, rgba(236,72,153,0.25) 0%, transparent 70%)",
+          radial3: "radial-gradient(circle, rgba(99,102,241,0.2) 0%, transparent 70%)",
+          laser: "via-purple-400 shadow-[0_0_12px_#c084fc]",
+          border: "border-purple-500/50 shadow-[0_0_35px_rgba(168,85,247,0.25)] hover:shadow-[0_0_50px_rgba(168,85,247,0.4)]",
           accentColor: "text-purple-300",
-          sparkColor: "bg-pink-400 shadow-[0_0_8px_#f472b6]"
+          sparkColor: "bg-pink-400 shadow-[0_0_6px_#f472b6]"
         };
       case "cyber_city":
         return {
-          glow1: "bg-cyan-500/35",
-          glow2: "bg-rose-500/30",
-          glow3: "bg-amber-400/20",
-          laser: "via-cyan-400 shadow-[0_0_15px_#22d3ee]",
-          border: "border-cyan-500/50 shadow-[0_0_40px_rgba(6,182,212,0.35)] hover:shadow-[0_0_60px_rgba(6,182,212,0.55)]",
+          radial1: "radial-gradient(circle, rgba(6,182,212,0.3) 0%, rgba(6,182,212,0.08) 40%, transparent 70%)",
+          radial2: "radial-gradient(circle, rgba(244,63,94,0.25) 0%, transparent 70%)",
+          radial3: "radial-gradient(circle, rgba(251,191,36,0.18) 0%, transparent 70%)",
+          laser: "via-cyan-400 shadow-[0_0_12px_#22d3ee]",
+          border: "border-cyan-500/50 shadow-[0_0_35px_rgba(6,182,212,0.25)] hover:shadow-[0_0_50px_rgba(6,182,212,0.4)]",
           accentColor: "text-cyan-300",
-          sparkColor: "bg-cyan-300 shadow-[0_0_8px_#22d3ee]"
+          sparkColor: "bg-cyan-300 shadow-[0_0_6px_#22d3ee]"
         };
       case "dark_obsidian":
         return {
-          glow1: "bg-slate-700/35",
-          glow2: "bg-indigo-950/45",
-          glow3: "bg-slate-600/20",
-          laser: "via-slate-300 shadow-[0_0_15px_#cbd5e1]",
-          border: "border-slate-700/70 shadow-[0_0_40px_rgba(148,163,184,0.2)] hover:shadow-[0_0_60px_rgba(148,163,184,0.35)]",
+          radial1: "radial-gradient(circle, rgba(100,116,139,0.25) 0%, transparent 70%)",
+          radial2: "radial-gradient(circle, rgba(49,46,129,0.3) 0%, transparent 70%)",
+          radial3: "radial-gradient(circle, rgba(148,163,184,0.15) 0%, transparent 70%)",
+          laser: "via-slate-300 shadow-[0_0_12px_#cbd5e1]",
+          border: "border-slate-700/70 shadow-[0_0_30px_rgba(148,163,184,0.15)] hover:shadow-[0_0_45px_rgba(148,163,184,0.3)]",
           accentColor: "text-slate-300",
-          sparkColor: "bg-slate-200 shadow-[0_0_8px_#e2e8f0]"
+          sparkColor: "bg-slate-200 shadow-[0_0_6px_#e2e8f0]"
         };
       default:
         return {
-          glow1: "bg-cyan-500/25",
-          glow2: "bg-violet-600/30",
-          glow3: "bg-amber-400/15",
-          laser: "via-cyan-400 shadow-[0_0_15px_#22d3ee]",
-          border: "border-cyan-500/40 shadow-[0_0_35px_rgba(6,182,212,0.2)] hover:shadow-[0_0_55px_rgba(6,182,212,0.4)]",
+          radial1: "radial-gradient(circle, rgba(6,182,212,0.25) 0%, rgba(6,182,212,0.08) 40%, transparent 70%)",
+          radial2: "radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%)",
+          radial3: "radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)",
+          laser: "via-cyan-400 shadow-[0_0_12px_#22d3ee]",
+          border: "border-cyan-500/40 shadow-[0_0_30px_rgba(6,182,212,0.2)] hover:shadow-[0_0_45px_rgba(6,182,212,0.35)]",
           accentColor: "text-cyan-300",
-          sparkColor: "bg-cyan-300 shadow-[0_0_8px_#22d3ee]"
+          sparkColor: "bg-cyan-300 shadow-[0_0_6px_#22d3ee]"
         };
     }
   };
@@ -174,47 +178,53 @@ export default function DigitalKTA({
   const CardContent = ({ zoomed = false }) => (
     <>
       {/* 1. ANIMATED CYBER GRID PATTERN */}
-      <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-35 animate-grid-pan z-0" />
+      <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-30 animate-grid-pan z-0" />
 
-      {/* 2. HOLOGRAPHIC IRIDESCENT FOIL SHIMMER */}
+      {/* 2. HOLOGRAPHIC IRIDESCENT FOIL SHIMMER (HARDWARE ACCELERATED) */}
       <div 
-        className="pointer-events-none absolute inset-0 opacity-40 animate-holo-foil mix-blend-color-dodge z-0"
+        className="pointer-events-none absolute inset-0 opacity-30 animate-holo-foil z-0"
         style={{
-          background: "linear-gradient(135deg, rgba(6,182,212,0.35) 0%, rgba(168,85,247,0.3) 25%, rgba(244,63,94,0.3) 50%, rgba(251,191,36,0.35) 75%, rgba(16,185,129,0.35) 100%)"
+          background: "linear-gradient(135deg, rgba(6,182,212,0.25) 0%, rgba(168,85,247,0.2) 25%, rgba(244,63,94,0.2) 50%, rgba(251,191,36,0.25) 75%, rgba(16,185,129,0.25) 100%)"
         }}
       />
 
-      {/* 3. LIVING NEBULA & PLASMA AMBIENT GLOWS */}
-      <div className={`pointer-events-none absolute -top-16 -right-16 w-56 h-56 ${currentTheme.glow1} rounded-full blur-3xl animate-cyber-pulse z-0`} />
-      <div className={`pointer-events-none absolute -bottom-16 -left-16 w-56 h-56 ${currentTheme.glow2} rounded-full blur-3xl animate-cyber-pulse [animation-delay:1.8s] z-0`} />
-      <div className={`pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 ${currentTheme.glow3} rounded-full blur-2xl animate-cyber-pulse [animation-delay:3s] z-0`} />
+      {/* 3. LIGHTWEIGHT LIVING NEBULA & PLASMA AMBIENT GLOWS (0px Gaussian Blur - Pure GPU Radial Gradient) */}
+      <div 
+        className="pointer-events-none absolute -top-14 -right-14 w-52 h-52 rounded-full animate-cyber-pulse z-0" 
+        style={{ background: currentTheme.radial1 }}
+      />
+      <div 
+        className="pointer-events-none absolute -bottom-14 -left-14 w-52 h-52 rounded-full animate-cyber-pulse [animation-delay:1.8s] z-0" 
+        style={{ background: currentTheme.radial2 }}
+      />
+      <div 
+        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full animate-cyber-pulse [animation-delay:3s] z-0" 
+        style={{ background: currentTheme.radial3 }}
+      />
 
       {/* 4. CONTINUOUS LASER SCANNER SWEEP BEAM */}
       <div className={`pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent ${currentTheme.laser} to-transparent animate-scan-sweep z-10`} />
 
       {/* 5. FLOATING CYBER PARTICLES / ENERGY SPARKS */}
       <div className={`pointer-events-none absolute top-6 right-1/4 w-1.5 h-1.5 rounded-full ${currentTheme.sparkColor} animate-particle-1 z-1`} />
-      <div className="pointer-events-none absolute bottom-12 left-1/3 w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_10px_#e879f9] animate-particle-2 z-1" />
-      <div className="pointer-events-none absolute top-1/2 right-12 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_8px_#f59e0b] animate-particle-3 z-1" />
+      <div className="pointer-events-none absolute bottom-12 left-1/3 w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_8px_#e879f9] animate-particle-2 z-1" />
+      <div className="pointer-events-none absolute top-1/2 right-12 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#f59e0b] animate-particle-3 z-1" />
 
       {/* 6. ROTATING HOLOGRAM WATERMARK EMBLEM */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 w-64 h-64 border border-cyan-400/10 rounded-full animate-holo-watermark flex items-center justify-center z-0">
-        <div className="w-52 h-52 border border-dashed border-violet-400/15 rounded-full flex items-center justify-center">
-          <div className="w-36 h-36 border border-dotted border-pink-400/20 rounded-full" />
-        </div>
+      <div className="pointer-events-none absolute top-1/2 left-1/2 w-56 h-56 border border-cyan-400/10 rounded-full animate-holo-watermark flex items-center justify-center z-0">
+        <div className="w-44 h-44 border border-dashed border-violet-400/15 rounded-full" />
       </div>
 
       {/* 7. INTERACTIVE MOUSE / GYROSCOPE GLARE */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-0 rounded-[inherit]"
         style={{
-          background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.18) 0%, transparent 60%)",
+          background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 60%)",
           left: glareX,
           top: glareY,
           transform: "translate(-50%, -50%)",
           width: "200%",
           height: "200%",
-          mixBlendMode: "screen"
         }}
       />
 
@@ -236,7 +246,7 @@ export default function DigitalKTA({
         </div>
 
         {/* Live Animated Security Badge */}
-        <div className={`flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-emerald-950/80 border border-emerald-400/40 rounded-full ${zoomed ? 'text-xs md:text-sm px-3.5 py-1.5' : 'text-[8px] sm:text-[9px]'} font-mono font-bold text-emerald-300 backdrop-blur-md tracking-wider shadow-[0_0_12px_rgba(16,185,129,0.25)] shrink-0 ml-2`}>
+        <div className={`flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-emerald-950/90 border border-emerald-400/40 rounded-full ${zoomed ? 'text-xs md:text-sm px-3.5 py-1.5' : 'text-[8px] sm:text-[9px]'} font-mono font-bold text-emerald-300 tracking-wider shadow-[0_0_12px_rgba(16,185,129,0.25)] shrink-0 ml-2`}>
           <span className="relative flex h-1.5 w-1.5">
             <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
             <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>

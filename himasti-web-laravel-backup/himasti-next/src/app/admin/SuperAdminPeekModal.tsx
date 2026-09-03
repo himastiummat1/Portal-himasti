@@ -132,8 +132,14 @@ export default function SuperAdminPeekModal({ adminData }: SuperAdminPeekProps) 
             {/* Scanning Laser Beam (Contained) */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
               <div className="w-full h-1 bg-gradient-to-r from-transparent via-cyan-400 to-transparent opacity-75 animate-modal-laser shadow-[0_0_20px_#22d3ee]" />
-              <div className="absolute -top-20 -right-20 w-52 h-52 bg-rose-500/15 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -bottom-20 -left-20 w-52 h-52 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none" />
+              <div 
+                className="absolute -top-20 -right-20 w-52 h-52 rounded-full pointer-events-none" 
+                style={{ background: "radial-gradient(circle, rgba(244,63,94,0.18) 0%, transparent 70%)" }}
+              />
+              <div 
+                className="absolute -bottom-20 -left-20 w-52 h-52 rounded-full pointer-events-none" 
+                style={{ background: "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)" }}
+              />
             </div>
 
             {/* Sticky Modal Header Bar */}
