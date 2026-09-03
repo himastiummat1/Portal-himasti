@@ -9,23 +9,7 @@ import {
   ChevronLeft, ExternalLink, List, FileText
 } from "lucide-react";
 
-interface Chapter {
-  title: string;
-  content: string;
-}
-
-interface Course {
-  title: string;
-  badge?: string;
-  isRecommended?: boolean;
-  chapters: Chapter[];
-}
-
-interface SemesterTrack {
-  semester: string;
-  isRecommended?: boolean;
-  courses: Course[];
-}
+import { curriculumData, Chapter, Course, SemesterTrack } from "./curriculumData";
 
 function formatMarkdown(rawContent: string) {
   if (!rawContent) return "";
@@ -177,147 +161,8 @@ export default function LearningHubClient({ userName }: { userName: string }) {
     }
   ];
 
-  const materis: SemesterTrack[] = [
-    {
-      semester: "Kurikulum Khusus • AI Agentic Era 2026",
-      isRecommended: true,
-      courses: [
-        {
-          title: "AI Agentic Engineering & Model Context Protocol (MCP)",
-          badge: "🔥 SANGAT DIREKOMENDASIKAN KABID RISET",
-          isRecommended: true,
-          chapters: [
-            {
-              title: "BAB 1: Revolusi Agentic AI — Mengapa Web Chat Mulai Ketinggalan Zaman?",
-              content: `# BAB 1: Dari Chatbot Pasif ke AI Agent Otonom
-
-Banyak mahasiswa IT saat ini masih terjebak di pola lama: membuka ChatGPT atau Gemini di peramban web, mengetik potongan kode terisolasi, lalu menyalinnya bolak-balik secara manual. Pola ini sangat lambat dan membuat mahasiswa bingung ketika proyek mulai kompleks.
-
-## Perbedaan Mendasar: Web Chat vs AI Agent
-1. Web Chat (Pasif): Hanya menerima prompt teks dan mengeluarkan teks. AI tidak bisa melihat repositori proyek Anda, tidak bisa menjalankan perintah terminal, dan tidak tahu apakah kodenya menghasilkan error saat dikompilasi.
-2. AI Coding Agent (Aktif dan Otonom): Memiliki siklus loop: Observe, Plan, Tool Execution, dan Verify. Agent membaca struktur folder langsung, mengedit file spesifik menggunakan diff, menjalankan kompilasi typecheck atau unit test, dan otomatis memperbaiki diri jika terjadi error sintaks.
-
-## Alat-Alat Utama Agentic Era:
-- Cursor dan Windsurf: IDE modern bertenaga agen yang mampu membaca seluruh basis kode.
-- Claude Code dan Google Antigravity: CLI Agent yang bisa mengendalikan terminal, git, dan sub-agent otonom.
-- Model Context Protocol (MCP): Standar protokol terbuka yang menghubungkan LLM ke database, filesystem, dan server lokal.`
-            },
-            {
-              title: "BAB 2: Anatomi IDE AI Agents (Cursor, Claude Code, Antigravity)",
-              content: `# BAB 2: Anatomi dan Cara Kerja AI Coding Agent
-
-Bagaimana sebuah agen AI bisa mengedit ratusan baris kode tanpa merusak keseluruhan aplikasi?
-
-## 1. Kelompok Alat Utama (Tool Groups)
-Sebuah agen AI modern dilengkapi dengan 3 kelompok perkakas kerja:
-- Read Tools: Ripgrep untuk pencarian teks kilat, fd untuk pencarian nama file, dan view_file untuk membaca isi file secara presisi.
-- Write Tools: replace_file_content untuk mengedit baris tertentu dengan presisi, dan write_to_file untuk membuat file baru.
-- Execution Tools: run_command untuk menjalankan terminal bash, git status, npx tsc, dan npm run build.
-
-## 2. Loop Verifikasi Otomatis
-Programmer yang cerdas tidak percaya begitu saja pada output AI. Kita melatih agen untuk selalu menjalankan:
-\`\`\`bash
-# Verifikasi typecheck sebelum commit
-npx tsc --noEmit
-\`\`\`
-Jika perintah verifikasi di atas menghasilkan error, agen akan secara otomatis membaca pesan error tersebut dan memperbaikinya sampai exit code menjadi 0.`
-            },
-            {
-              title: "BAB 3: Model Context Protocol (MCP) — Standar Terbuka Industri",
-              content: `# BAB 3: Memahami Model Context Protocol (MCP)
-
-Model Context Protocol (MCP) adalah standar protokol terbuka yang diperkenalkan oleh Anthropic untuk memecahkan masalah integrasi AI.
-
-## Kenapa MCP Dibutuhkan?
-Sebelum ada MCP, jika Anda ingin AI Anda membaca database PostgreSQL atau file lokal, Anda harus mengekspor data ke format CSV atau JSON dan mengunggahnya manual ke jendela chat.
-Dengan MCP, database lokal Anda berjalan sebagai MCP Server yang aman:
-\`\`\`json
-{
-  "mcpServers": {
-    "postgres": {
-      "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-postgres", "postgresql://user:pass@localhost:5432/db"]
-    }
-  }
-}
-\`\`\`
-AI Agent kini bisa mengecek nama tabel, tipe data kolom, dan foreign key secara instan tanpa perlu Anda ketik berulang-ulang.`
-            },
-            {
-              title: "BAB 4: Menyusun Agent Rules (AGENTS.md & .cursorrules)",
-              content: `# BAB 4: Merancang Instruksi Agen Berkualitas Tinggi
-
-AI Agent akan bekerja sesuai dengan batasan aturan yang Anda berikan. Tanpa aturan, AI cenderung menghasilkan kode berantakan atau memakai teknologi lama.
-
-## File Panduan Konteks:
-- AGENTS.md: Digunakan oleh agen modern (seperti Antigravity dan Claude Code) untuk membaca arsitektur dan larangan teknis.
-- .cursorrules: Digunakan oleh Cursor IDE untuk mendikte standar kode setiap kali membuka proyek.
-
-## Contoh Aturan Tegas:
-\`\`\`markdown
-# Aturan Rekayasa Next.js 16:
-1. Utamakan React Server Components (RSC). Dilarang menggunakan use client kecuali ada event listener browser.
-2. Dilarang menggunakan useEffect untuk sinkronisasi state data fetching.
-3. Seluruh mutasi database wajib menggunakan Server Actions dengan validasi skema Zod.
-\`\`\`
-Dengan aturan ini, kode yang dihasilkan agen dijamin rapi, aman, dan siap produksi!`
-            }
-          ]
-        }
-      ]
-    },
-    { 
-      semester: "Semester 1", 
-      courses: [
-        { 
-          title: "Algoritma & Pemrograman Dasar", 
-          chapters: [
-            { 
-              title: "BAB 1: Pengantar Algoritma", 
-              content: `# BAB 1: Pengantar Algoritma
-
-Algoritma adalah urutan langkah-langkah logis dan terstruktur untuk memecahkan suatu masalah secara komputasi.
-
-## Konsep Dasar
-1. Input: Data yang dimasukkan ke dalam program.
-2. Proses: Langkah perhitungan atau percabangan logika.
-3. Output: Hasil keluaran yang diinginkan.
-
-\`\`\`python
-# Contoh Algoritma Sederhana Menentukan Bilangan Genap/Ganjil
-angka = int(input("Masukkan angka: "))
-if angka % 2 == 0:
-    print(f"{angka} adalah bilangan Genap")
-else:
-    print(f"{angka} adalah bilangan Ganjil")
-\`\`\`` 
-            },
-            { 
-              title: "BAB 2: Variabel & Tipe Data", 
-              content: `# BAB 2: Variabel dan Tipe Data
-
-Setiap bahasa pemrograman memiliki cara untuk menyimpan data di dalam memori komputer menggunakan variabel.
-
-## Tipe Data Standar
-- Integer: Bilangan bulat (contoh: 1, 42, -5)
-- Float: Bilangan desimal (contoh: 3.14, 0.5)
-- String: Rangkaian teks (contoh: "HIMASTI UMMAT")
-- Boolean: Nilai kebenaran (True atau False)` 
-            }
-          ]
-        },
-        { title: "Pengantar Teknologi Informasi", chapters: [] },
-        { title: "Matematika Diskrit", chapters: [] }
-      ] 
-    },
-    { 
-      semester: "Semester 3", 
-      courses: [
-        { title: "Pemrograman Berorientasi Objek", chapters: [] },
-        { title: "Basis Data Dasar", chapters: [] }
-      ] 
-    }
-  ];
+  const [searchModul, setSearchModul] = useState("");
+  const materis: SemesterTrack[] = curriculumData;
 
   const cheatsheets = [
     {
@@ -474,17 +319,63 @@ Setiap bahasa pemrograman memiliki cara untuk menyimpan data di dalam memori kom
             <>
               <div className="flex flex-col md:flex-row justify-between items-end mb-6 gap-4">
                 <div>
-                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">Katalog Modul Interaktif</h2>
-                  <p className="text-sm text-slate-500">Pilih modul di bawah untuk mulai membaca materi secara interaktif.</p>
+                  <h2 className="text-xl font-bold text-slate-800 tracking-tight">Katalog Modul Interaktif (Semester 1 s/d 7)</h2>
+                  <p className="text-sm text-slate-500">Pilih modul di bawah untuk mulai membaca materi perkuliahan secara interaktif.</p>
                 </div>
-                <div className="relative w-full sm:w-72">
-                  <Search className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" />
-                  <input type="text" placeholder="Cari modul..." className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-4 py-2.5 text-sm focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all shadow-sm" />
+                <div className="relative w-full sm:w-80">
+                  <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                  <input 
+                    type="text" 
+                    value={searchModul}
+                    onChange={(e) => setSearchModul(e.target.value)}
+                    placeholder="Cari modul atau topik (misal: PBO, SQL, Docker)..." 
+                    className="w-full bg-white border border-slate-200 rounded-xl pl-10 pr-8 py-2.5 text-xs sm:text-sm focus:outline-none focus:border-slate-900 focus:ring-1 focus:ring-slate-900 transition-all shadow-sm" 
+                  />
+                  {searchModul && (
+                    <button 
+                      type="button" 
+                      onClick={() => setSearchModul("")}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-slate-400 hover:text-slate-700"
+                    >
+                      ✕
+                    </button>
+                  )}
                 </div>
               </div>
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {materis.map((smt, idx) => (
+                {(() => {
+                  const filteredMateris = materis.map(smt => {
+                    if (!searchModul.trim()) return smt;
+                    const q = searchModul.toLowerCase();
+                    const matchingCourses = smt.courses.filter(c => 
+                      c.title.toLowerCase().includes(q) || 
+                      c.chapters.some(ch => ch.title.toLowerCase().includes(q)) ||
+                      smt.semester.toLowerCase().includes(q)
+                    );
+                    return { ...smt, courses: matchingCourses };
+                  }).filter(smt => smt.courses.length > 0);
+
+                  if (filteredMateris.length === 0) {
+                    return (
+                      <div className="col-span-full py-16 text-center bg-white rounded-3xl border border-dashed border-slate-200 p-8">
+                        <BookOpen className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                        <h4 className="text-base font-bold text-slate-700">Modul Tidak Ditemukan</h4>
+                        <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+                          Tidak ada modul yang cocok dengan kata kunci &quot;{searchModul}&quot;.
+                        </p>
+                        <button
+                          type="button"
+                          onClick={() => setSearchModul("")}
+                          className="mt-4 px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-bold hover:bg-slate-800 transition-colors"
+                        >
+                          Tampilkan Semua Modul
+                        </button>
+                      </div>
+                    );
+                  }
+
+                  return filteredMateris.map((smt, idx) => (
                   <div 
                     key={idx} 
                     className={`rounded-3xl overflow-hidden shadow-sm border ${
@@ -557,7 +448,8 @@ Setiap bahasa pemrograman memiliki cara untuk menyimpan data di dalam memori kom
                       ))}
                     </div>
                   </div>
-                ))}
+                ));
+                })()}
               </div>
             </>
           ) : (
