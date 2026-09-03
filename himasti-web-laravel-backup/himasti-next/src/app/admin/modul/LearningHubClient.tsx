@@ -29,52 +29,62 @@ interface SemesterTrack {
 
 function formatMarkdown(content: string) {
   if (!content) return "";
+
+  // Split content by double newlines into clean semantic blocks
+  const blocks = content.split(/\n\n+/);
   
-  // Extract code blocks first
-  const codeBlocks: string[] = [];
-  let formatted = content.replace(/```([a-zA-Z0-9_-]*)\n([\s\S]*?)```/g, (_, lang, code) => {
-    const placeholder = `__CODE_BLOCK_${codeBlocks.length}__`;
-    codeBlocks.push(
-      `<div class="my-5 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shadow-lg">
+  return blocks.map((block) => {
+    const trimmed = block.trim();
+    if (!trimmed) return "";
+
+    // Code blocks
+    if (trimmed.startsWith("```")) {
+      const match = trimmed.match(/^```([a-zA-Z0-9_-]*)\n([\s\S]*?)```$/);
+      const lang = match ? match[1] : "";
+      const code = match ? match[2] : trimmed.replace(/```/g, "");
+      return `<div class="my-5 rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shadow-lg">
         <div class="px-4 py-2 bg-slate-900 border-b border-slate-800 text-[11px] font-mono text-slate-400 flex justify-between items-center">
           <span class="font-bold text-cyan-400">${lang ? lang.toUpperCase() : "TERMINAL / CODE"}</span>
           <span class="text-slate-500">HIMASTI Engine</span>
         </div>
-        <pre class="p-4 text-xs sm:text-sm font-mono text-emerald-400 overflow-x-auto leading-relaxed"><code>${code.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
-      </div>`
-    );
-    return placeholder;
-  });
+        <pre class="p-4 text-xs sm:text-sm font-mono text-emerald-400 overflow-x-auto leading-relaxed"><code>${code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')}</code></pre>
+      </div>`;
+    }
 
-  // Headers
-  formatted = formatted
-    .replace(/^# (.*$)/gim, '<h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mt-6 mb-3 tracking-tight">$1</h1>')
-    .replace(/^## (.*$)/gim, '<h2 class="text-lg sm:text-xl font-bold text-slate-800 mt-6 mb-2 tracking-tight pb-1.5 border-b border-slate-200">$1</h2>')
-    .replace(/^### (.*$)/gim, '<h3 class="text-base sm:text-lg font-bold text-slate-800 mt-4 mb-2">$1</h3>');
+    // Headers
+    if (trimmed.startsWith("# ")) {
+      return `<h1 class="text-xl sm:text-2xl md:text-3xl font-black text-slate-900 mt-6 mb-3 tracking-tight">${trimmed.substring(2)}</h1>`;
+    }
+    if (trimmed.startsWith("## ")) {
+      return `<h2 class="text-lg sm:text-xl font-bold text-slate-800 mt-6 mb-2 tracking-tight pb-1.5 border-b border-slate-200">${trimmed.substring(3)}</h2>`;
+    }
+    if (trimmed.startsWith("### ")) {
+      return `<h3 class="text-base sm:text-lg font-bold text-slate-800 mt-4 mb-2">${trimmed.substring(4)}</h3>`;
+    }
 
-  // Bold & Italic
-  formatted = formatted
-    .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
-    .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700">$1</em>');
+    // List items
+    if (trimmed.includes("\n- ") || trimmed.startsWith("- ") || trimmed.includes("\n1. ") || /^\d+\.\s/.test(trimmed)) {
+      const lines = trimmed.split("\n");
+      const listItems = lines.map(line => {
+        const itemText = line
+          .replace(/^\s*-\s+/, "")
+          .replace(/^\s*\d+\.\s+/, "")
+          .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+          .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-md bg-slate-100 text-violet-700 font-mono text-xs border border-slate-200">$1</code>');
+        return `<li class="my-1.5 leading-relaxed">${itemText}</li>`;
+      }).join("");
+      return `<ul class="list-disc ml-5 my-3 text-slate-700 space-y-1">${listItems}</ul>`;
+    }
 
-  // Inline code
-  formatted = formatted.replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-md bg-slate-100 text-violet-700 font-mono text-xs border border-slate-200">$1</code>');
+    // Regular Paragraph
+    const parsedText = trimmed
+      .replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-slate-900">$1</strong>')
+      .replace(/\*(.*?)\*/g, '<em class="italic text-slate-700">$1</em>')
+      .replace(/`([^`]+)`/g, '<code class="px-1.5 py-0.5 rounded-md bg-slate-100 text-violet-700 font-mono text-xs border border-slate-200">$1</code>')
+      .replace(/\n/g, '<br/>');
 
-  // Unordered lists
-  formatted = formatted.replace(/^\s*-\s+(.*$)/gim, '<li class="ml-4 list-disc text-slate-700 my-1.5 leading-relaxed">$1</li>');
-
-  // Numbered lists
-  formatted = formatted.replace(/^\s*(\d+)\.\s+(.*$)/gim, '<li class="ml-4 list-decimal text-slate-700 my-1.5 leading-relaxed"><strong class="text-slate-900">$1.</strong> $2</li>');
-
-  // Paragraphs
-  formatted = formatted.replace(/\n\n/g, '</p><p class="text-sm sm:text-base text-slate-600 leading-relaxed my-3">');
-
-  // Restore code blocks
-  codeBlocks.forEach((block, idx) => {
-    formatted = formatted.replace(`__CODE_BLOCK_${idx}__`, block);
-  });
-
-  return `<p class="text-sm sm:text-base text-slate-600 leading-relaxed my-3">${formatted}</p>`;
+    return `<p class="text-sm sm:text-base text-slate-600 leading-relaxed my-3">${parsedText}</p>`;
+  }).join("\n");
 }
 
 export default function LearningHubClient({ userName }: { userName: string }) {
