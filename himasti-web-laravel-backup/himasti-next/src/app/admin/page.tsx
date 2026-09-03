@@ -243,7 +243,14 @@ export default async function AdminDashboard() {
         <div className="flex items-center gap-6">
           
           <div>
-            <h1 className="text-3xl font-semibold text-slate-800 tracking-tight">Portal Dasbor</h1>
+            <h1 className="text-3xl font-semibold text-slate-800 tracking-tight flex items-center gap-3">
+              <span>Portal Dasbor</span>
+              {isSuperAdmin && (
+                <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-bold bg-gradient-to-r from-violet-600 via-rose-500 to-amber-500 text-white shadow-sm animate-pulse">
+                  👑 SYSTEM ARCHITECT
+                </span>
+              )}
+            </h1>
             <p className="text-sm text-slate-500 mt-1">Sistem Informasi HIMASTI v2.0 • Diotorisasi sebagai <span className="font-mono text-xs bg-slate-50/50 text-slate-800 px-1.5 py-0.5 rounded-2xl border border-slate-200/60">{userRoles[0] ? userRoles[0].replace(/_/g, ' ') : 'KADER'}</span></p>
           </div>
         </div>

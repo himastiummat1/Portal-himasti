@@ -35,6 +35,8 @@ export default async function ProfilPage() {
     .map(r => r.role.name.replace(/_/g, ' ').toUpperCase())
     .join(', ');
 
+  const isSuperAdmin = (user.roles || []).some(r => r && r.role && r.role.name === 'super_admin');
+
   const profileData = {
     id: user.id,
     name: user.name,
@@ -44,7 +46,8 @@ export default async function ProfilPage() {
     no_hp: user.data_kader?.no_hp || "",
     jenis_kelamin: user.data_kader?.jenis_kelamin || "",
     status_kaderisasi: user.data_kader?.status_kaderisasi || "-",
-    roles: roleNames || "KADER"
+    roles: roleNames || "KADER",
+    isSuperAdmin
   };
 
   return <ProfilClient initialData={profileData} />;
