@@ -11,8 +11,8 @@ import HackerMode from "./HackerMode";
 import { katalogKarya } from "@/lib/karyaData";
 import DigitalKTA from "./DigitalKTA";
 import SuperAdminPeekModal from "./SuperAdminPeekModal";
-import { CosmeticAvatar, getThemeClasses, getNameClasses } from "@/components/profile/CosmeticAvatar";
-import { TITLES, FRAMES, THEMES } from "@/lib/profileCustomization";
+import { CosmeticAvatar } from "@/components/profile/CosmeticAvatar";
+import { TITLES, FRAMES, THEMES, getThemeClasses, getNameClasses } from "@/lib/profileCustomization";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

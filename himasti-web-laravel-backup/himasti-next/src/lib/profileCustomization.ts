@@ -190,3 +190,41 @@ export const NAME_EFFECTS: CosmeticItem[] = [
     badge: "200 XP"
   }
 ];
+
+/**
+ * Card theme CSS classes based on themeId
+ */
+export function getThemeClasses(themeId: string = "default", isSuper: boolean = false): string {
+  if (isSuper && themeId === "default") {
+    return "bg-slate-950 text-white border-2 border-violet-500/40 shadow-2xl ring-1 ring-violet-500/20";
+  }
+  switch (themeId) {
+    case "dark_obsidian":
+      return "bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white border border-slate-700/80 shadow-2xl";
+    case "cyber_city":
+      return "bg-gradient-to-br from-slate-950 via-indigo-950 to-slate-950 text-white border-2 border-cyan-500/50 shadow-[0_0_30px_rgba(6,182,212,0.15)] ring-1 ring-cyan-500/30";
+    case "emerald_matrix":
+      return "bg-gradient-to-b from-slate-950 via-emerald-950/80 to-slate-950 text-emerald-100 border-2 border-emerald-500/50 shadow-[0_0_30px_rgba(16,185,129,0.15)] ring-1 ring-emerald-500/30 font-mono";
+    case "cosmic_violet":
+      return "bg-gradient-to-br from-slate-950 via-purple-950/80 to-slate-950 text-purple-100 border-2 border-purple-500/50 shadow-[0_0_30px_rgba(168,85,247,0.15)] ring-1 ring-purple-500/30";
+    default:
+      return "bg-white border border-slate-200/80 text-slate-900 shadow-sm";
+  }
+}
+
+/**
+ * Name typography CSS classes based on effectId
+ */
+export function getNameClasses(effectId: string = "plain", isSuper: boolean = false, themeId: string = "default"): string {
+  switch (effectId) {
+    case "holo_grad":
+      return "bg-gradient-to-r from-cyan-400 via-pink-400 to-amber-300 bg-clip-text text-transparent font-extrabold animate-holo-text";
+    case "gold_shimmer":
+      return "bg-gradient-to-r from-amber-300 via-yellow-200 to-amber-400 bg-clip-text text-transparent font-extrabold animate-gold-sheen";
+    case "neon_blue":
+      return "text-cyan-300 font-extrabold animate-neon-pulse-text";
+    default:
+      return (isSuper || themeId !== "default") ? "text-white font-extrabold" : "text-slate-900 font-bold";
+  }
+}
+
