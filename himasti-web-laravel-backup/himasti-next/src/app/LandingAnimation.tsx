@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
+import { motion } from 'framer-motion';
 import {
   Bot,
   Send,
@@ -19,6 +20,7 @@ import Link from 'next/link';
 import CompetitionMarquee from './CompetitionMarquee';
 import BrutalistCore from '@/components/ui/BrutalistCore';
 import AiRobotAnimation from '@/components/ui/AiRobotAnimation';
+import AnimatedCounter from '@/components/ui/AnimatedCounter';
 
 type Lang = 'id' | 'en' | 'ar';
 
@@ -185,11 +187,37 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   return (
     <div className={`w-full min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 relative overflow-x-hidden ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
       
+      {/* CSS-Only Lightweight Animations */}
+      <style>{`
+        @keyframes gentleBreathe {
+          0%, 100% { transform: translateY(0px); }
+          50% { transform: translateY(-6px); }
+        }
+        @keyframes shimmerGlow {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+        }
+        .animate-gentle-float {
+          animation: gentleBreathe 6s ease-in-out infinite;
+          will-change: transform;
+        }
+        .animate-shimmer-badge {
+          background: linear-gradient(90deg, rgba(239, 246, 255, 1) 0%, rgba(219, 234, 254, 0.8) 50%, rgba(239, 246, 255, 1) 100%);
+          background-size: 200% 100%;
+          animation: shimmerGlow 4s linear infinite;
+        }
+      `}</style>
+
       {/* Subtle Dot Matrix Canvas */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] -z-10" />
 
       {/* Floating Crisp Glass Navbar */}
-      <header className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-5xl z-50">
+      <motion.header 
+        initial={{ y: -40, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
+        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-5xl z-50"
+      >
         <nav className="backdrop-blur-xl bg-white/85 border border-slate-200/80 rounded-full px-5 py-3 shadow-[0_4px_25px_rgba(0,0,0,0.06)] flex justify-between items-center transition-all">
           <div className="flex items-center gap-2.5">
             <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 object-contain rounded-full border border-slate-200 shadow-sm" />
@@ -211,7 +239,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             <div className="relative">
               <button 
                 onClick={() => setLangOpen(!langOpen)} 
-                className="p-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full transition text-slate-600 flex items-center gap-1.5 text-xs font-mono"
+                className="p-2 bg-slate-50 hover:bg-slate-100 border border-slate-200 rounded-full transition text-slate-600 flex items-center gap-1.5 text-xs font-mono active:scale-95"
               >
                 <Globe className="w-3.5 h-3.5 text-blue-600" />
                 <span className="hidden sm:inline uppercase">{lang}</span>
@@ -234,7 +262,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             </Link>
           </div>
         </nav>
-      </header>
+      </motion.header>
 
       {/* Hero Section */}
       <section className="relative w-full min-h-[92dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-36 pb-16 max-w-5xl mx-auto gap-8">
@@ -245,28 +273,49 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         {/* Hero Content */}
         <div className="flex flex-col items-center justify-center z-10 w-full">
           
-          {/* Crisp Badge */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-50 border border-blue-200/70 text-blue-700 text-xs font-medium tracking-wide shadow-sm mb-6">
-            <Sparkles className="w-3.5 h-3.5 text-blue-600" />
+          {/* Animated Shimmer Badge */}
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5 }}
+            className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full animate-shimmer-badge border border-blue-200/80 text-blue-700 text-xs font-semibold tracking-wide shadow-sm mb-6 cursor-default"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
             <span>{t.heroBadge}</span>
-          </div>
+          </motion.div>
 
+          {/* Interactive HIMASTI Particle Text */}
           <AiRobotAnimation />
 
-          {/* Clean Headline */}
-          <h1 className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-slate-900 max-w-4xl mt-2 mb-5">
+          {/* Clean Headline with Fade-in */}
+          <motion.h1 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-slate-900 max-w-4xl mt-2 mb-5"
+          >
             {t.heroTitle}
-          </h1>
+          </motion.h1>
 
-          <p className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mb-8 leading-relaxed mx-auto font-normal">
+          <motion.p 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mb-8 leading-relaxed mx-auto font-normal"
+          >
             {t.heroDesc}
-          </p>
+          </motion.p>
 
-          {/* Clean Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center gap-3.5 z-20">
+          {/* Clean Animated Action Buttons */}
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="flex flex-col sm:flex-row items-center gap-3.5 z-20"
+          >
             <Link 
               href="/login" 
-              className="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-sm sm:text-base shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group"
+              className="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-sm sm:text-base shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group active:scale-95"
             >
               <span>{t.startBtn}</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
@@ -274,25 +323,30 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
             <Link 
               href="/absen" 
-              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm sm:text-base font-semibold shadow-sm hover:shadow transition flex items-center justify-center gap-2"
+              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm sm:text-base font-semibold shadow-sm hover:shadow transition flex items-center justify-center gap-2 active:scale-95"
             >
               <Fingerprint className="w-4 h-4 text-blue-600" />
               <span>{t.presensiBtn}</span>
             </Link>
-          </div>
+          </motion.div>
         </div>
 
-        {/* Clean Light AI Assistant Terminal */}
-        <div className="w-full max-w-2xl relative z-40 mt-4">
+        {/* Clean Floating AI Assistant Terminal */}
+        <motion.div 
+          initial={{ opacity: 0, y: 25 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.4 }}
+          className="w-full max-w-2xl relative z-40 mt-4 animate-gentle-float"
+        >
           <div className="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden flex flex-col h-[400px] sm:h-[460px] w-full text-left">
              
              {/* Window Bar */}
              <div className="bg-slate-50 px-5 py-3 border-b border-slate-200 flex items-center justify-between shrink-0">
                 <div className="flex items-center gap-3">
                   <div className="flex gap-1.5">
-                    <div className="w-3 h-3 rounded-full bg-slate-300"></div>
-                    <div className="w-3 h-3 rounded-full bg-slate-300"></div>
-                    <div className="w-3 h-3 rounded-full bg-slate-300"></div>
+                    <div className="w-3 h-3 rounded-full bg-rose-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-amber-400"></div>
+                    <div className="w-3 h-3 rounded-full bg-emerald-400"></div>
                   </div>
                   <div className={`${isRTL ? 'mr-3' : 'ml-3'} text-xs font-mono text-slate-600 flex items-center gap-2 font-medium`}>
                     <Terminal className="w-3.5 h-3.5 text-blue-600"/>
@@ -308,7 +362,13 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
              {/* Chat Stream */}
              <div className="flex-1 p-5 overflow-y-auto bg-slate-50/50 space-y-4 font-sans text-sm">
                 {messages.map((msg, idx) => (
-                  <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                  <motion.div 
+                    initial={{ opacity: 0, y: 8 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.3 }}
+                    key={idx} 
+                    className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
+                  >
                     <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-xs sm:text-sm leading-relaxed ${
                       msg.role === 'user' 
                         ? 'bg-slate-900 text-white rounded-tr-sm shadow-sm' 
@@ -316,7 +376,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                     }`}>
                       {msg.text}
                     </div>
-                  </div>
+                  </motion.div>
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
@@ -349,7 +409,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                    <button 
                      type="submit" 
                      disabled={!input.trim() || isLoading}
-                     className="w-11 h-11 bg-slate-900 hover:bg-slate-800 text-white rounded-xl disabled:opacity-30 transition-colors flex items-center justify-center shrink-0 shadow-sm"
+                     className="w-11 h-11 bg-slate-900 hover:bg-slate-800 text-white rounded-xl disabled:opacity-30 transition-colors flex items-center justify-center shrink-0 shadow-sm active:scale-95"
                    >
                      <Send className={`w-4 h-4 ${isRTL ? 'rotate-180' : ''}`} />
                    </button>
@@ -360,28 +420,41 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                </div>
              </div>
           </div>
-        </div>
+        </motion.div>
       </section>
 
-      {/* Clean Bento Metrics Bar */}
+      {/* Clean Bento Metrics Bar with Animated Counters */}
       <section className="relative w-full py-16 px-6 bg-slate-50/80 border-y border-slate-200/80">
         <div className="max-w-5xl mx-auto">
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
+          <motion.div 
+            initial={{ opacity: 0, y: 15 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8"
+          >
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
               <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
                 Ekosistem Digital HIMASTI • Statistik Terkini
               </span>
             </div>
-            <div className="text-xs font-semibold text-blue-700 flex items-center gap-1.5 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60">
+            <div className="text-xs font-semibold text-blue-700 flex items-center gap-1.5 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 shadow-sm">
               <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> Presensi Biometrik & Sinkronisasi Aula
             </div>
-          </div>
+          </motion.div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow transition-all group">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.1 }}
+              whileHover={{ y: -4 }}
+              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
+            >
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-                33+
+                <AnimatedCounter end={33} suffix="+" />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
                 Kader Aktif
@@ -389,11 +462,18 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-[11px] text-slate-400 mt-0.5">
                 Terverifikasi Sistem
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow transition-all group">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.2 }}
+              whileHover={{ y: -4 }}
+              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
+            >
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-                8
+                <AnimatedCounter end={8} />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
                 Divisi Kerja
@@ -401,11 +481,18 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-[11px] text-slate-400 mt-0.5">
                 Paralel & Otonom
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow transition-all group">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.3 }}
+              whileHover={{ y: -4 }}
+              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
+            >
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-                124+
+                <AnimatedCounter end={124} suffix="+" />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
                 Modul IT
@@ -413,11 +500,18 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-[11px] text-slate-400 mt-0.5">
                 Bank Materi Terbuka
               </div>
-            </div>
+            </motion.div>
 
-            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-slate-300 shadow-sm hover:shadow transition-all group">
+            <motion.div 
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.4, delay: 0.4 }}
+              whileHover={{ y: -4 }}
+              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
+            >
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-600">
-                99.9%
+                <AnimatedCounter end={99.9} decimals={1} suffix="%" />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
                 Uptime Presensi
@@ -425,7 +519,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-[11px] text-slate-400 mt-0.5">
                 Anti-Joki Hardware
               </div>
-            </div>
+            </motion.div>
           </div>
         </div>
       </section>
@@ -433,45 +527,82 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       {/* Marquee Ticker */}
       <CompetitionMarquee competitions={competitions || []} />
 
-      {/* History Section */}
+      {/* History Section with Entrance Animation */}
       <section className="w-full py-24 px-6 bg-white border-b border-slate-100">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
-          <div className="flex-1">
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="flex-1"
+          >
             <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-2">Sejarah Singkat</span>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4">{t.histTitle}</h2>
             <p className="text-slate-600 leading-relaxed text-base sm:text-lg">
               {t.histDesc}
             </p>
-          </div>
+          </motion.div>
+
           <div className="grid grid-cols-2 gap-4 flex-1 w-full">
-             <div className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center">
+             <motion.div 
+               initial={{ opacity: 0, scale: 0.95 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.5, delay: 0.1 }}
+               whileHover={{ y: -3 }}
+               className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center"
+             >
                 <Building2 className="w-8 h-8 mx-auto text-slate-900 mb-2" />
-                <div className="text-3xl font-extrabold text-slate-900">2022</div>
+                <div className="text-3xl font-extrabold text-slate-900">
+                  <AnimatedCounter end={2022} duration={1200} />
+                </div>
                 <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">Tahun Berdiri</div>
-             </div>
-             <div className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center">
+             </motion.div>
+
+             <motion.div 
+               initial={{ opacity: 0, scale: 0.95 }}
+               whileInView={{ opacity: 1, scale: 1 }}
+               viewport={{ once: true }}
+               transition={{ duration: 0.5, delay: 0.2 }}
+               whileHover={{ y: -3 }}
+               className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center"
+             >
                 <Users className="w-8 h-8 mx-auto text-slate-900 mb-2" />
-                <div className="text-3xl font-extrabold text-slate-900">8</div>
+                <div className="text-3xl font-extrabold text-slate-900">
+                  <AnimatedCounter end={8} duration={1200} />
+                </div>
                 <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">Pionir Mubes</div>
-             </div>
+             </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Divisions Section */}
+      {/* Divisions Section with Staggered Entrance */}
       <section id="divisions" className="w-full py-24 px-6 bg-slate-50/50 border-b border-slate-100">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-16"
+          >
             <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-2">Struktur Organisasi</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-slate-900">{t.divTitle}</h2>
             <p className="text-slate-600 text-base max-w-xl mx-auto">{t.divDesc}</p>
-          </div>
+          </motion.div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-5xl mx-auto">
             {t.divs.map((d, index) => (
-              <div 
-                key={index} 
-                className="group p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-200 hover:shadow-md transition-all duration-200"
+              <motion.div 
+                key={index}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.4, delay: index * 0.05 }}
+                whileHover={{ y: -4 }}
+                className="group p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-200 hover:shadow-md transition-all duration-200 cursor-default"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
@@ -487,7 +618,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                     <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">{d.desc}</p>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         </div>
