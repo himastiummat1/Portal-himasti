@@ -35,10 +35,30 @@ const translations = {
     aiPrompt: "Tanyakan sesuatu tentang kurikulum, divisi, atau kampus...",
     demoLimit: "Batas percakapan demo (5/5) tercapai. Silakan login untuk akses tanpa batas.",
     demoLeft: "Sisa Kuota Demo",
+    histBadge: "Sejarah Singkat",
     histTitle: "Jejak Langkah Organisasi",
     histDesc: "HIMASTI didirikan pada 21 April 2022 oleh 8 orang mahasiswa perintis melalui Mubes Pertama di Universitas Muhammadiyah Mataram. Kami lahir dari tekad mandiri untuk memimpin transformasi teknologi digital kampus.",
+    histYearLabel: "Tahun Berdiri",
+    histPioneersLabel: "Pionir Mubes",
+    divBadge: "Struktur Organisasi",
     divTitle: "Modul Divisi & Kepanitiaan",
     divDesc: "Infrastruktur utama yang menggerakkan seluruh program kerja, riset, dan kaderisasi himpunan.",
+    statsHeader: "Ekosistem Digital HIMASTI • Statistik Terkini",
+    statsBadge: "Presensi Biometrik & Sinkronisasi Aula",
+    statsKader: "Kader Aktif",
+    statsKaderSub: "Terverifikasi Sistem",
+    statsDivisi: "Divisi Kerja",
+    statsDivisiSub: "Paralel & Otonom",
+    statsModul: "Modul IT",
+    statsModulSub: "Bank Materi Terbuka",
+    statsUptime: "Uptime Presensi",
+    statsUptimeSub: "Anti-Joki Hardware",
+    fidoNav: "Presensi FIDO2",
+    navDivisions: "Divisi",
+    footerRights: "© 2026 HIMASTI Universitas Muhammadiyah Mataram. Hak cipta dilindungi.",
+    footerLogin: "Masuk",
+    aiThinking: "AI sedang berpikir...",
+    aiReady: "Siap Membantu",
     divs: [
       { name: 'Kemuhammadiyahan', desc: 'Menanamkan nilai-nilai Islam dan moral peradaban di lingkungan mahasiswa teknologi.' },
       { name: 'Kaderisasi & SDM', desc: 'Membentuk kepemimpinan tangguh, soliditas kader, dan regenerasi kepengurusan himpunan.' },
@@ -60,10 +80,30 @@ const translations = {
     aiPrompt: "Ask anything about curriculum, divisions, or campus...",
     demoLimit: "Demo conversation limit (5/5) reached. Please sign in for full access.",
     demoLeft: "Demo Queries Remaining",
+    histBadge: "Brief History",
     histTitle: "Organizational Heritage",
     histDesc: "HIMASTI was founded on April 21, 2022, by 8 pioneering students through the First Grand Assembly at Universitas Muhammadiyah Mataram. Dedicated to digital transformation.",
+    histYearLabel: "Founded Year",
+    histPioneersLabel: "Assembly Pioneers",
+    divBadge: "Organization Structure",
     divTitle: "Division Modules",
     divDesc: "Core infrastructure driving work programs, research, and cadre development.",
+    statsHeader: "HIMASTI Digital Ecosystem • Live Statistics",
+    statsBadge: "Biometric Attendance & Hall Sync",
+    statsKader: "Active Cadres",
+    statsKaderSub: "System Verified",
+    statsDivisi: "Divisions",
+    statsDivisiSub: "Parallel & Autonomous",
+    statsModul: "IT Modules",
+    statsModulSub: "Open Courseware",
+    statsUptime: "Attendance Uptime",
+    statsUptimeSub: "Anti-Fraud Hardware",
+    fidoNav: "FIDO2 Presence",
+    navDivisions: "Divisions",
+    footerRights: "© 2026 HIMASTI Universitas Muhammadiyah Mataram. All rights reserved.",
+    footerLogin: "Sign In",
+    aiThinking: "AI is thinking...",
+    aiReady: "Ready to assist",
     divs: [
       { name: 'Muhammadiyah Values', desc: 'Instilling ethical foundations and Islamic principles in the tech community.' },
       { name: 'Cadre & Leadership', desc: 'Shaping future tech leaders, organizational solidarity, and management regeneration.' },
@@ -85,10 +125,30 @@ const translations = {
     aiPrompt: "اسأل عن المناهج أو الأنشطة أو المنظمة...",
     demoLimit: "تم الوصول إلى الحد الأقصى للمحادثات (٥/٥). يرجى تسجيل الدخول للوصول الكامل.",
     demoLeft: "المحادثات المتبقية",
+    histBadge: "التاريخ والتأسيس",
     histTitle: "أصولنا التاريخية",
     histDesc: "تأسست هيمساتي في ٢١ أبريل ٢٠٢٢ على يد ٨ طلاب رواد خلال الجمعية الكبرى الأولى في جامعة محمدية ماتارام لقيادة التحول التقني.",
+    histYearLabel: "سنة التأسيس",
+    histPioneersLabel: "الرواد المؤسسون",
+    divBadge: "الهيكل التنظيمي",
     divTitle: "الوحدات التنظيمية",
     divDesc: "البنية التحتية الأساسية التي تقود برامج العمل وإعداد الكوادر.",
+    statsHeader: "المنظومة الرقمية لهيمساتي • إحصائيات حية",
+    statsBadge: "حضور بيومتري ومزامنة القاعة",
+    statsKader: "الكوادر النشطة",
+    statsKaderSub: "تم التحقق من النظام",
+    statsDivisi: "وحدات العمل",
+    statsDivisiSub: "متوازية ومستقلة",
+    statsModul: "وحدات تقنية",
+    statsModulSub: "مناهج تعليمية مفتوحة",
+    statsUptime: "استمرارية الحضور",
+    statsUptimeSub: "حماية الأجهزة ضد التزوير",
+    fidoNav: "حضور FIDO2",
+    navDivisions: "الأقسام",
+    footerRights: "© 2026 هيمساتي - جامعة محمدية ماتارام. جميع الحقوق محفوظة.",
+    footerLogin: "تسجيل الدخول",
+    aiThinking: "الذكاء الاصطناعي يفكر...",
+    aiReady: "جاهز للمساعدة",
     divs: [
       { name: 'قيم المحمدية', desc: 'غرس المبادئ الأخلاقية والقيم الإسلامية في بيئة طلاب التقنية.' },
       { name: 'إعداد الكوادر', desc: 'بناء القيادة والعمل الجماعي والتجديد المستمر للجمعية.' },
@@ -136,7 +196,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
   const [isLoading, setIsLoading] = useState(false);
   const [chatCount, setChatCount] = useState(0);
   const [messages, setMessages] = useState<{ role: 'user' | 'bot', text: string }[]>([
-    { role: 'bot', text: lang === 'en' ? 'Hello! I am the HIMASTI AI Assistant. How can I assist you with programs or academics today?' : lang === 'ar' ? 'مرحباً! أنا مساعد هيمساتي الذكي. كيف يمكنني مساعدتك اليوم؟' : 'Halo! Saya Asisten Cerdas HIMASTI. Ada yang bisa saya bantu seputar organisasi, kurikulum, atau kegiatan?' }
+    { 
+      role: 'bot', 
+      text: lang === 'en' 
+        ? 'Hello! I am the HIMASTI AI Assistant. How can I assist you with programs or academics today?' 
+        : lang === 'ar' 
+        ? 'مرحباً! أنا مساعد هيمساتي الذكي. كيف يمكنني مساعدتك اليوم بخصوص الأنشطة أو المقررات؟' 
+        : 'Halo! Saya Asisten Cerdas HIMASTI. Ada yang bisa saya bantu seputar organisasi, kurikulum, atau kegiatan?' 
+    }
   ]);
   const chatEndRef = useRef<HTMLDivElement>(null);
 
@@ -144,7 +211,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
     setMessages(prev => {
       const newArr = [...prev];
       if (newArr.length > 0 && newArr[0].role === 'bot' && prev.length === 1) {
-        newArr[0] = { ...newArr[0], text: lang === 'en' ? 'Hello! I am the HIMASTI AI Assistant. How can I assist you with programs or academics today?' : lang === 'ar' ? 'مرحباً! أنا مساعد هيمساتي الذكي. كيف يمكنني مساعدتك اليوم؟' : 'Halo! Saya Asisten Cerdas HIMASTI. Ada yang bisa saya bantu seputar organisasi, kurikulum, atau kegiatan?' };
+        newArr[0] = { 
+          ...newArr[0], 
+          text: lang === 'en' 
+            ? 'Hello! I am the HIMASTI AI Assistant. How can I assist you with programs or academics today?' 
+            : lang === 'ar' 
+            ? 'مرحباً! أنا مساعد هيمساتي الذكي. كيف يمكنني مساعدتك اليوم بخصوص الأنشطة أو المقررات؟' 
+            : 'Halo! Saya Asisten Cerdas HIMASTI. Ada yang bisa saya bantu seputar organisasi, kurikulum, atau kegiatan?' 
+        };
       }
       return newArr;
     });
@@ -178,20 +252,30 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       setChatCount(newCount);
       localStorage.setItem('himasti_chat_count_v4', newCount.toString());
     } catch (err) {
-      setMessages(prev => [...prev, { role: 'bot', text: 'Maaf, koneksi ke server AI terputus.' }]);
+      setMessages(prev => [...prev, { 
+        role: 'bot', 
+        text: lang === 'en' 
+          ? 'Sorry, connection to AI server timed out.' 
+          : lang === 'ar' 
+          ? 'عذراً، انقطع الاتصال بخادم الذكاء الاصطناعي.' 
+          : 'Maaf, koneksi ke server AI terputus.' 
+      }]);
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className={`w-full min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 relative overflow-x-hidden ${isRTL ? 'dir-rtl' : ''}`} dir={isRTL ? 'rtl' : 'ltr'}>
+    <div 
+      className={`w-full min-h-screen bg-white text-slate-900 font-sans selection:bg-blue-100 selection:text-blue-900 relative overflow-x-hidden ${isRTL ? 'dir-rtl' : ''}`} 
+      dir={isRTL ? 'rtl' : 'ltr'}
+    >
       
-      {/* CSS-Only Lightweight Animations */}
+      {/* CSS-Only Lightweight GPU Animations */}
       <style>{`
         @keyframes gentleBreathe {
           0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-6px); }
+          50% { transform: translateY(-4px); }
         }
         @keyframes shimmerGlow {
           0% { background-position: -200% 0; }
@@ -211,13 +295,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       {/* Subtle Dot Matrix Canvas */}
       <div className="fixed inset-0 pointer-events-none bg-[radial-gradient(#e2e8f0_1px,transparent_1px)] [background-size:24px_24px] -z-10" />
 
-      {/* Floating Crisp Glass Navbar */}
-      <motion.header 
-        initial={{ y: -40, opacity: 0 }}
-        animate={{ y: 0, opacity: 1 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="fixed top-4 sm:top-6 left-1/2 -translate-x-1/2 w-[94%] max-w-5xl z-50"
-      >
+      {/* Floating Crisp Glass Navbar (RTL-Safe Center Positioning) */}
+      <header className="fixed top-4 sm:top-6 inset-x-0 mx-auto w-[94%] max-w-5xl z-50">
         <nav className="backdrop-blur-xl bg-white/85 border border-slate-200/80 rounded-full px-5 py-3 shadow-[0_4px_25px_rgba(0,0,0,0.06)] flex justify-between items-center transition-all">
           <div className="flex items-center gap-2.5">
             <img src="/images/logo_himasti.jpg" alt="Logo HIMASTI" className="w-8 h-8 object-contain rounded-full border border-slate-200 shadow-sm" />
@@ -227,9 +306,9 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           </div>
 
           <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
-            <a href="#divisions" className="hover:text-blue-600 transition-colors">Divisi</a>
+            <a href="#divisions" className="hover:text-blue-600 transition-colors">{t.navDivisions}</a>
             <Link href="/absen" className="hover:text-blue-600 transition-colors flex items-center gap-1.5">
-              <Fingerprint className="w-3.5 h-3.5 text-blue-600" /> Presensi FIDO2
+              <Fingerprint className="w-3.5 h-3.5 text-blue-600" /> {t.fidoNav}
             </Link>
           </div>
 
@@ -244,7 +323,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                 <span className="hidden sm:inline uppercase">{lang}</span>
               </button>
               {langOpen && (
-                <div className="absolute right-0 mt-2 w-36 bg-white border border-slate-200 shadow-xl rounded-2xl overflow-hidden z-50 text-xs py-1">
+                <div className={`absolute ${isRTL ? 'left-0' : 'right-0'} mt-2 w-36 bg-white border border-slate-200 shadow-xl rounded-2xl overflow-hidden z-50 text-xs py-1`}>
                   <button onClick={() => { changeLang('id'); setLangOpen(false); }} className={`block w-full text-left px-3.5 py-2 hover:bg-slate-50 ${lang === 'id' ? 'font-bold text-blue-600 bg-blue-50/50' : 'text-slate-700'}`}>🇮🇩 Indonesia</button>
                   <button onClick={() => { changeLang('en'); setLangOpen(false); }} className={`block w-full text-left px-3.5 py-2 hover:bg-slate-50 ${lang === 'en' ? 'font-bold text-blue-600 bg-blue-50/50' : 'text-slate-700'}`}>🇬🇧 English</button>
                   <button onClick={() => { changeLang('ar'); setLangOpen(false); }} className={`block w-full text-left px-3.5 py-2 hover:bg-slate-50 ${lang === 'ar' ? 'font-bold text-blue-600 bg-blue-50/50' : 'text-slate-700'}`}>🇸🇦 عربي</button>
@@ -261,10 +340,10 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             </Link>
           </div>
         </nav>
-      </motion.header>
+      </header>
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-[92dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-36 pb-16 max-w-5xl mx-auto gap-8">
+      <section className="relative w-full min-h-[90dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-36 pb-16 max-w-5xl mx-auto gap-8">
         
         {/* Soft Ripple Reactor */}
         <BrutalistCore />
@@ -274,9 +353,9 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           
           {/* Animated Shimmer Badge */}
           <motion.div 
-            initial={{ opacity: 0, scale: 0.9 }}
+            initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.35 }}
             className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full animate-shimmer-badge border border-blue-200/80 text-blue-700 text-xs font-semibold tracking-wide shadow-sm mb-6 cursor-default"
           >
             <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
@@ -286,38 +365,38 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           {/* Interactive HIMASTI Particle Text */}
           <AiRobotAnimation />
 
-          {/* Clean Headline with Fade-in */}
+          {/* Clean Headline */}
           <motion.h1 
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.1 }}
+            transition={{ duration: 0.4 }}
             className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-slate-900 max-w-4xl mt-2 mb-5"
           >
             {t.heroTitle}
           </motion.h1>
 
           <motion.p 
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+            transition={{ duration: 0.4, delay: 0.05 }}
             className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mb-8 leading-relaxed mx-auto font-normal"
           >
             {t.heroDesc}
           </motion.p>
 
-          {/* Clean Animated Action Buttons */}
+          {/* Action Buttons */}
           <motion.div 
-            initial={{ opacity: 0, y: 15 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
+            transition={{ duration: 0.4, delay: 0.1 }}
             className="flex flex-col sm:flex-row items-center gap-3.5 z-20"
           >
             <Link 
               href="/login" 
-              className="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-sm sm:text-base shadow-sm hover:shadow-md transition-all flex items-center justify-center gap-2 group active:scale-95"
+              className="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-sm sm:text-base shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 group active:scale-95"
             >
               <span>{t.startBtn}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
             </Link>
 
             <Link 
@@ -330,13 +409,8 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           </motion.div>
         </div>
 
-        {/* Clean Floating AI Assistant Terminal */}
-        <motion.div 
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.7, delay: 0.4 }}
-          className="w-full max-w-2xl relative z-40 mt-4 animate-gentle-float"
-        >
+        {/* Floating AI Assistant Terminal */}
+        <div className="w-full max-w-2xl relative z-40 mt-4 animate-gentle-float">
           <div className="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden flex flex-col h-[400px] sm:h-[460px] w-full text-left">
              
              {/* Window Bar */}
@@ -354,17 +428,14 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                 </div>
                 <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-700 bg-emerald-50 px-2.5 py-0.5 rounded-full border border-emerald-200">
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span>Siap Membantu</span>
+                  <span>{t.aiReady}</span>
                 </div>
              </div>
 
              {/* Chat Stream */}
              <div className="flex-1 p-5 overflow-y-auto bg-slate-50/50 space-y-4 font-sans text-sm">
                 {messages.map((msg, idx) => (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 8 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.3 }}
+                  <div 
                     key={idx} 
                     className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
@@ -375,13 +446,13 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                     }`}>
                       {msg.text}
                     </div>
-                  </motion.div>
+                  </div>
                 ))}
                 {isLoading && (
                   <div className="flex justify-start">
                     <div className="bg-white border border-slate-200 rounded-2xl rounded-tl-sm px-4 py-2.5 text-xs text-slate-500 flex items-center gap-2 shadow-sm">
                       <Loader2 className="w-4 h-4 animate-spin text-blue-600" />
-                      <span>{lang === "en" ? "AI is thinking..." : lang === "ar" ? "الذكاء الاصطناعي يفكر..." : "AI sedang berpikir..."}</span>
+                      <span>{t.aiThinking}</span>
                     </div>
                   </div>
                 )}
@@ -419,106 +490,72 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                </div>
              </div>
           </div>
-        </motion.div>
+        </div>
       </section>
 
-      {/* Clean Bento Metrics Bar with Animated Counters */}
+      {/* Bento Metrics Bar with Animated Counters */}
       <section className="relative w-full py-16 px-6 bg-slate-50/80 border-y border-slate-200/80">
         <div className="max-w-5xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8"
-          >
+          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div className="flex items-center gap-2.5">
               <span className="w-2.5 h-2.5 rounded-full bg-blue-600 animate-pulse" />
               <span className="text-xs font-bold tracking-wider text-slate-500 uppercase">
-                Ekosistem Digital HIMASTI • Statistik Terkini
+                {t.statsHeader}
               </span>
             </div>
             <div className="text-xs font-semibold text-blue-700 flex items-center gap-1.5 bg-blue-50 px-3 py-1 rounded-full border border-blue-200/60 shadow-sm">
-              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> Presensi Biometrik & Sinkronisasi Aula
+              <ShieldCheck className="w-3.5 h-3.5 text-blue-600" /> {t.statsBadge}
             </div>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.1 }}
-              whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
-            >
+            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 <AnimatedCounter end={33} suffix="+" />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
-                Kader Aktif
+                {t.statsKader}
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">
-                Terverifikasi Sistem
+                {t.statsKaderSub}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.2 }}
-              whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
-            >
+            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 <AnimatedCounter end={8} />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
-                Divisi Kerja
+                {t.statsDivisi}
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">
-                Paralel & Otonom
+                {t.statsDivisiSub}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.3 }}
-              whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
-            >
+            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 <AnimatedCounter end={124} suffix="+" />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
-                Modul IT
+                {t.statsModul}
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">
-                Bank Materi Terbuka
+                {t.statsModulSub}
               </div>
-            </motion.div>
+            </div>
 
-            <motion.div 
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.4, delay: 0.4 }}
-              whileHover={{ y: -4 }}
-              className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow-md transition-all group"
-            >
+            <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-600">
                 <AnimatedCounter end={99.9} decimals={1} suffix="%" />
               </div>
               <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
-                Uptime Presensi
+                {t.statsUptime}
               </div>
               <div className="text-[11px] text-slate-400 mt-0.5">
-                Anti-Joki Hardware
+                {t.statsUptimeSub}
               </div>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
@@ -526,82 +563,51 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       {/* Marquee Ticker */}
       <CompetitionMarquee competitions={competitions || []} />
 
-      {/* History Section with Entrance Animation */}
+      {/* History Section */}
       <section className="w-full py-24 px-6 bg-white border-b border-slate-100">
         <div className="max-w-5xl mx-auto flex flex-col md:flex-row gap-12 items-center">
-          <motion.div 
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="flex-1"
-          >
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-2">Sejarah Singkat</span>
+          <div className="flex-1">
+            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-2">{t.histBadge}</span>
             <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 mb-4">{t.histTitle}</h2>
             <p className="text-slate-600 leading-relaxed text-base sm:text-lg">
               {t.histDesc}
             </p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-2 gap-4 flex-1 w-full">
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.5, delay: 0.1 }}
-               whileHover={{ y: -3 }}
-               className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center"
-             >
+             <div className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center hover:-translate-y-1 transition-transform">
                 <Building2 className="w-8 h-8 mx-auto text-slate-900 mb-2" />
                 <div className="text-3xl font-extrabold text-slate-900">
-                  <AnimatedCounter end={2022} duration={1200} />
+                  <AnimatedCounter end={2022} duration={1000} />
                 </div>
-                <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">Tahun Berdiri</div>
-             </motion.div>
+                <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">{t.histYearLabel}</div>
+             </div>
 
-             <motion.div 
-               initial={{ opacity: 0, scale: 0.95 }}
-               whileInView={{ opacity: 1, scale: 1 }}
-               viewport={{ once: true }}
-               transition={{ duration: 0.5, delay: 0.2 }}
-               whileHover={{ y: -3 }}
-               className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center"
-             >
+             <div className="bg-slate-50 p-7 rounded-2xl border border-slate-200/80 shadow-sm text-center hover:-translate-y-1 transition-transform">
                 <Users className="w-8 h-8 mx-auto text-slate-900 mb-2" />
                 <div className="text-3xl font-extrabold text-slate-900">
-                  <AnimatedCounter end={8} duration={1200} />
+                  <AnimatedCounter end={8} duration={1000} />
                 </div>
-                <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">Pionir Mubes</div>
-             </motion.div>
+                <div className="text-xs text-slate-500 uppercase tracking-wider mt-1">{t.histPioneersLabel}</div>
+             </div>
           </div>
         </div>
       </section>
 
-      {/* Divisions Section with Staggered Entrance */}
+      {/* Divisions Section */}
       <section id="divisions" className="w-full py-24 px-6 bg-slate-50/50 border-b border-slate-100">
         <div className="max-w-5xl mx-auto">
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-16"
-          >
-            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-2">Struktur Organisasi</span>
+          <div className="text-center mb-16">
+            <span className="text-xs font-bold text-blue-600 uppercase tracking-wider block mb-2">{t.divBadge}</span>
             <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-3 text-slate-900">{t.divTitle}</h2>
             <p className="text-slate-600 text-base max-w-xl mx-auto">{t.divDesc}</p>
-          </motion.div>
+          </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full max-w-5xl mx-auto">
             {t.divs.map((d, index) => (
-              <motion.div 
+              <div 
                 key={index}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -4 }}
-                className="group p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-200 hover:shadow-md transition-all duration-200 cursor-default"
+                className="group p-6 rounded-2xl bg-white border border-slate-200/80 hover:border-blue-200 hover:shadow-md transition-all duration-200 cursor-default hover:-translate-y-1"
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-100 text-blue-600 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
@@ -612,12 +618,12 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                   <div>
                     <h3 className="text-lg font-bold text-slate-900 group-hover:text-blue-600 transition-colors mb-1.5 flex items-center gap-2">
                       <span>{d.name}</span>
-                      <ChevronRight className="w-4 h-4 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all text-blue-600" />
+                      <ChevronRight className={`w-4 h-4 opacity-0 group-hover:opacity-100 transition-all text-blue-600 ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
                     </h3>
                     <p className="text-slate-600 text-xs sm:text-sm leading-relaxed">{d.desc}</p>
                   </div>
                 </div>
-              </motion.div>
+              </div>
             ))}
           </div>
         </div>
@@ -628,11 +634,11 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
         <div className="max-w-5xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-blue-600" />
-            <span>© 2026 HIMASTI Universitas Muhammadiyah Mataram. Hak cipta dilindungi.</span>
+            <span>{t.footerRights}</span>
           </div>
           <div className="flex items-center gap-5">
-            <Link href="/login" className="hover:text-slate-900 transition">Masuk</Link>
-            <Link href="/absen" className="text-blue-600 hover:underline transition font-semibold">Presensi FIDO2</Link>
+            <Link href="/login" className="hover:text-slate-900 transition">{t.footerLogin}</Link>
+            <Link href="/absen" className="text-blue-600 hover:underline transition font-semibold">{t.fidoNav}</Link>
             <a href="https://github.com/himastiummat1/Portal-himasti" target="_blank" rel="noreferrer" className="hover:text-slate-900 transition flex items-center gap-1">
               GitHub <ExternalLink className="w-3 h-3" />
             </a>

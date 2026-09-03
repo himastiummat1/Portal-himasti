@@ -129,8 +129,8 @@ export default function LearningHubClient({ userName }: { userName: string }) {
         </div>
       </div>
 
-      {/* TABS */}
-      <div className="flex overflow-x-auto hide-scrollbar gap-2 p-1.5 bg-slate-200/50 rounded-2xl w-fit border border-slate-200">
+      {/* TABS (Mobile Friendly Scrollable) */}
+      <div className="flex overflow-x-auto gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit max-w-full border border-slate-200 shrink-0 touch-pan-x">
         {[
           { id: "roadmap", label: "Role Roadmap", icon: <Map className="w-4 h-4" /> },
           { id: "materi", label: "Bank Modul IT", icon: <BookOpen className="w-4 h-4" /> },
@@ -140,10 +140,10 @@ export default function LearningHubClient({ userName }: { userName: string }) {
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all ${
+            className={`flex items-center gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
               activeTab === tab.id 
                 ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
-                : "text-slate-500 hover:text-slate-700 hover:bg-slate-200/50"
+                : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
             }`}
           >
             {tab.icon} {tab.label}
@@ -321,23 +321,77 @@ export default function LearningHubClient({ userName }: { userName: string }) {
 
       {activeTab === "vidyax" && (
         <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-300">
-          <div className="bg-slate-900 rounded-3xl p-8 md:p-12 text-white shadow-xl relative overflow-hidden border border-slate-800">
-            <div className="absolute -right-20 -top-20 w-96 h-96 bg-rose-500/20 blur-3xl rounded-full"></div>
-            <div className="relative z-10 flex flex-col md:flex-row gap-12 items-center">
-              <div className="flex-1 space-y-6">
-                <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-rose-500/10 text-rose-400 border border-rose-500/20 rounded-full text-xs font-mono font-bold tracking-widest">
-                  <Sparkles className="w-3 h-3" /> MAHKOTA HIMASTI
+          <div className="bg-slate-900 rounded-3xl p-5 sm:p-8 md:p-12 text-white shadow-xl relative overflow-hidden border border-slate-800">
+            {/* Background Ambient Glow (Contained) */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none">
+              <div className="absolute -right-10 -top-10 w-72 sm:w-96 h-72 sm:h-96 bg-rose-500/20 blur-3xl rounded-full"></div>
+            </div>
+
+            <div className="relative z-10 space-y-6">
+              <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-rose-500/15 text-rose-400 border border-rose-500/30 rounded-full text-xs font-mono font-bold tracking-widest">
+                <Sparkles className="w-3 h-3" /> PROYEK RISET HIMASTI
+              </div>
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                <div>
+                  <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">Vidyax</h2>
+                  <p className="text-xs sm:text-sm font-mono text-rose-400 mt-1">Experimental AI-First Programming Language</p>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black tracking-tight">Vidyax</h2>
-                <p className="text-slate-400 text-lg leading-relaxed">
-                  Sebuah proyek eksperimental <strong className="text-white">AI-first</strong> hasil rancangan <strong className="text-rose-400">M N DAFFA</strong> yang dibangun secara kolaboratif bersama Kecerdasan Buatan (AI). Proyek ini mendemonstrasikan kekuatan kolaborasi manusia-mesin dalam menciptakan arsitektur bahasa pemrograman yang mendukung orkestrasi <em>LLM</em>.
-                </p>
-                <div className="flex gap-4">
-                  <a href="https://github.com/Vidyax-Lang/Vidyax" target="_blank" className="px-6 py-3 bg-white text-slate-900 font-bold rounded-xl hover:bg-slate-200 transition-colors shadow-sm">
-                    GitHub Repo
-                  </a>
+                <a 
+                  href="https://github.com/Vidyax-Lang/Vidyax" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white hover:bg-slate-100 text-slate-900 font-bold rounded-xl transition-all shadow-md active:scale-95 text-xs sm:text-sm w-full sm:w-auto shrink-0"
+                >
+                  <Code2 className="w-4 h-4 text-slate-900" />
+                  <span>Lihat di GitHub</span>
+                </a>
+              </div>
+
+              <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
+                Sebuah proyek eksperimental <strong className="text-white">AI-first</strong> hasil riset dan rekayasa perangkat lunak mandiri yang dibangun secara kolaboratif bersama Kecerdasan Buatan (AI). Proyek ini mendemonstrasikan kekuatan kolaborasi manusia-mesin dalam menciptakan arsitektur bahasa pemrograman yang mendukung orkestrasi <em>LLM</em>.
+              </p>
+
+              {/* Architecture Pillars Grid */}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
+                  <div className="text-xs font-mono font-bold text-rose-400 uppercase tracking-wider mb-1">01 • Syntax</div>
+                  <h4 className="text-sm font-bold text-white mb-1">LLM-Native AST</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Struktur sintaks dirancang agar mudah di-parse dan di-generate oleh model kecerdasan buatan.</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
+                  <div className="text-xs font-mono font-bold text-cyan-400 uppercase tracking-wider mb-1">02 • Runtime</div>
+                  <h4 className="text-sm font-bold text-white mb-1">Swarm Agents</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Mendukung eksekusi paralel multi-agent otonom dalam satu runtime terpadu.</p>
+                </div>
+                <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
+                  <div className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-1">03 • Open Source</div>
+                  <h4 className="text-sm font-bold text-white mb-1">Karya Mahasiswa</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Dikelola secara terbuka untuk pembelajaran kompilator dan perancangan bahasa IT.</p>
                 </div>
               </div>
+
+              {/* Code Snippet Box (Responsive) */}
+              <div className="rounded-2xl bg-slate-950 border border-slate-800 overflow-hidden shadow-inner">
+                <div className="px-4 py-2.5 bg-slate-900/80 border-b border-slate-800 flex items-center justify-between text-xs font-mono text-slate-400">
+                  <span className="flex items-center gap-2">
+                    <Terminal className="w-3.5 h-3.5 text-rose-400" /> main.vdx
+                  </span>
+                  <span className="text-[10px] text-slate-500">Vidyax v0.1.0-alpha</span>
+                </div>
+                <div className="p-4 overflow-x-auto text-xs font-mono text-emerald-400 leading-relaxed whitespace-pre">
+{`// Vidyax AI-First Language Sample
+agent SwarmCore {
+  prompt = "Analisis arsitektur sistem HIMASTI"
+  model  = "llama-3-fast"
+  
+  on_response(res) {
+    emit("event_ready", res.summary)
+  }
+}`}
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
