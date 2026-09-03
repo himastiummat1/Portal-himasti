@@ -14,8 +14,8 @@ export default async function KlubPage() {
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
   
-  // Hanya Pengurus Inti & Kabid R&D (Daffa/Tes) yang bisa mengubah data Klub
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid")) || session.user?.name?.includes("tes") || session.user?.name?.includes("DAFFA");
+  // Hanya Pengurus Inti & Kabid yang bisa mengubah data Klub
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid"));
 
   const data = await prisma.klub.findMany({ orderBy: { created_at: 'desc' } });
 

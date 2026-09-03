@@ -13,7 +13,7 @@ export async function updateUserRole(userId: number, newRoleId: number) {
   const adminRoleIds = adminRoles.map(r => r.role_id);
   const adminRoleNames = await prisma.role.findMany({ where: { id: { in: adminRoleIds } } });
   
-  if (!adminRoleNames.some(r => r.name === "super_admin") && !session.user?.name?.includes("tes") && !session.user?.name?.includes("DAFFA")) {
+  if (!adminRoleNames.some(r => r.name === "super_admin")) {
     throw new Error("Hanya Super Admin yang dapat mengubah role");
   }
 

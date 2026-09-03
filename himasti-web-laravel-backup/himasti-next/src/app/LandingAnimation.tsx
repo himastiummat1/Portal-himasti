@@ -231,7 +231,6 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             <Link href="/absen" className="hover:text-blue-600 transition-colors flex items-center gap-1.5">
               <Fingerprint className="w-3.5 h-3.5 text-blue-600" /> Presensi FIDO2
             </Link>
-            <Link href="/admin/kader" className="hover:text-blue-600 transition-colors">Portal Admin</Link>
           </div>
 
           <div className="flex items-center gap-2 sm:gap-3">
