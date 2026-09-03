@@ -15,6 +15,7 @@ import {
 } from "@/lib/profileCustomization";
 import { challengesData } from "../challenge/challengesData";
 import { CosmeticAvatar, getThemeClasses, getNameClasses } from "@/components/profile/CosmeticAvatar";
+import DigitalKTA from "../DigitalKTA";
 
 type ProfileData = {
   id: number;
@@ -187,42 +188,42 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
   const isDarkCard = isSuper || previewStyle.themeId !== "default";
 
   return (
-    <div className="max-w-5xl mx-auto space-y-6 animate-in fade-in duration-500 pb-12" suppressHydrationWarning>
+    <div className="max-w-5xl mx-auto space-y-5 sm:space-y-6 animate-in fade-in duration-500 pb-12" suppressHydrationWarning>
       {/* Header with User Level & XP Banner */}
-      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-6 sm:p-7 text-white shadow-xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
+      <div className="bg-gradient-to-r from-slate-900 via-indigo-950 to-slate-900 rounded-3xl p-5 sm:p-7 text-white shadow-xl border border-slate-800 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 sm:gap-6">
         <div>
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-white/10 rounded-full text-xs font-mono font-bold tracking-widest text-cyan-300 mb-3 border border-white/10">
-            <Sparkles className="w-3.5 h-3.5 text-amber-400" /> KARTU KADER HIMASTI
+          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 sm:px-3 sm:py-1 bg-white/10 rounded-full text-[11px] sm:text-xs font-mono font-bold tracking-widest text-cyan-300 mb-2 sm:mb-3 border border-white/10">
+            <Sparkles className="w-3.5 h-3.5 text-amber-400 shrink-0" /> KARTU KADER HIMASTI
           </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-white flex flex-wrap items-center gap-2.5">
+          <h1 className="text-xl sm:text-3xl font-black text-white flex flex-wrap items-center gap-2">
             <span>Profil & Identitas Digital</span>
             {isSuper && (
-              <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-mono font-bold bg-gradient-to-r from-violet-600 via-rose-500 to-amber-500 text-white shadow-sm animate-holo-text">
-                <Crown className="w-3.5 h-3.5" /> ROOT ADMIN
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] sm:text-xs font-mono font-bold bg-gradient-to-r from-violet-600 via-rose-500 to-amber-500 text-white shadow-sm animate-holo-text">
+                <Crown className="w-3 h-3" /> ROOT ADMIN
               </span>
             )}
           </h1>
-          <p className="text-xs sm:text-sm text-slate-300 mt-1">
+          <p className="text-xs sm:text-sm text-slate-300 mt-1 leading-relaxed">
             Kustomisasi gaya avatar, gelar kehormatan, dan kartu anggota dengan XP yang kamu raih!
           </p>
         </div>
 
         {/* XP Point Balance Badge */}
-        <div className="bg-white/10 backdrop-blur-md p-4 rounded-2xl border border-white/15 flex items-center gap-4 shrink-0 w-full sm:w-auto justify-between">
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-lg">
+        <div className="bg-white/10 backdrop-blur-md p-3 sm:p-4 rounded-2xl border border-white/15 flex items-center justify-between gap-3 shrink-0 w-full md:w-auto">
+          <div className="flex items-center gap-2.5 sm:gap-3">
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-amber-400 to-amber-600 flex items-center justify-center text-slate-950 font-black shadow-lg shrink-0">
               <Trophy className="w-5 h-5 text-white" />
             </div>
             <div>
-              <span className="text-[10px] font-mono text-slate-300 uppercase tracking-wider block">Saldo Poin Anda</span>
-              <span className="text-lg font-black text-amber-300 block">{userXp} XP</span>
-              <span className="text-[11px] font-mono text-slate-300">{solvedCount} Tantangan Terselesaikan</span>
+              <span className="text-[9px] sm:text-[10px] font-mono text-slate-300 uppercase tracking-wider block">Saldo Poin</span>
+              <span className="text-base sm:text-lg font-black text-amber-300 block">{userXp} XP</span>
+              <span className="text-[10px] sm:text-[11px] font-mono text-slate-300 block truncate">{solvedCount} Tantangan Selesai</span>
             </div>
           </div>
 
           <Link
             href="/admin/challenge"
-            className="px-3 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-sm active:scale-95"
+            className="px-3 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-sm active:scale-95 shrink-0"
           >
             <span>Cari XP</span>
             <ArrowRight className="w-3.5 h-3.5" />
@@ -230,56 +231,58 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
         </div>
       </div>
 
-      {/* Main Feature Tabs */}
-      <div className="flex overflow-x-auto gap-2 p-1.5 bg-slate-100 rounded-2xl w-fit border border-slate-200">
+      {/* Main Feature Tabs - Full Width Mobile Responsive */}
+      <div className="w-full flex overflow-x-auto no-scrollbar gap-1.5 p-1.5 bg-slate-100 rounded-2xl border border-slate-200">
         <button
           type="button"
           onClick={() => setActiveMainTab("edit")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+          className={`flex-1 min-w-[95px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${
             activeMainTab === "edit" 
               ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
               : "text-slate-500 hover:text-slate-900"
           }`}
         >
-          <User className="w-4 h-4" />
-          <span>Informasi Akun</span>
+          <User className="w-4 h-4 shrink-0 text-slate-700" />
+          <span className="whitespace-nowrap sm:hidden">Akun</span>
+          <span className="whitespace-nowrap hidden sm:inline">Informasi Akun</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveMainTab("studio")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+          className={`flex-1 min-w-[130px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${
             activeMainTab === "studio" 
               ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
               : "text-slate-500 hover:text-slate-900"
           }`}
         >
-          <Palette className="w-4 h-4 text-violet-600" />
-          <span>Studio Gaya & Toko XP</span>
-          <span className="px-2 py-0.5 rounded-full bg-amber-100 text-amber-800 text-[10px] font-mono font-bold tracking-wide">BARU</span>
+          <Palette className="w-4 h-4 shrink-0 text-violet-600" />
+          <span className="whitespace-nowrap sm:hidden">Studio XP</span>
+          <span className="whitespace-nowrap hidden sm:inline">Studio Gaya & Toko XP</span>
+          <span className="px-1.5 py-0.2 rounded-full bg-amber-100 text-amber-800 text-[9px] font-mono font-bold tracking-wide shrink-0">BARU</span>
         </button>
 
         <button
           type="button"
           onClick={() => setActiveMainTab("kta")}
-          className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+          className={`flex-1 min-w-[100px] flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all shrink-0 ${
             activeMainTab === "kta" 
               ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
               : "text-slate-500 hover:text-slate-900"
           }`}
         >
-          <CreditCard className="w-4 h-4 text-emerald-600" />
-          <span>KTA Digital</span>
+          <CreditCard className="w-4 h-4 shrink-0 text-emerald-600" />
+          <span className="whitespace-nowrap">KTA Digital</span>
         </button>
       </div>
 
       {/* MAIN TWO-COLUMN LAYOUT */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 items-start">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 items-start">
         
         {/* LEFT COLUMN: LIVE PREVIEW PROFILE CARD (1 Col) */}
-        <div className="col-span-1 space-y-4">
+        <div className="col-span-1 space-y-3 sm:space-y-4">
           
-          <div className={`p-6 relative overflow-hidden transition-all duration-300 rounded-3xl ${getThemeClasses(previewStyle.themeId, isSuper)}`}>
+          <div className={`p-5 sm:p-6 relative overflow-hidden transition-all duration-300 rounded-3xl ${getThemeClasses(previewStyle.themeId, isSuper)}`}>
             
             {/* Super Admin Ambient Elements if Root */}
             {isSuper && (
@@ -295,22 +298,22 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
               
               <div 
                 onClick={triggerSparks}
-                className="cursor-pointer group/avatar mb-4"
+                className="cursor-pointer group/avatar mb-3 sm:mb-4"
                 title="Klik avatar untuk percikan spark ⚡"
               >
                 <CosmeticAvatar name={initialData.name} frameId={previewStyle.frameId} size="lg" />
               </div>
 
               {/* Name & Custom Title */}
-              <div className="text-center mb-6">
-                <h3 className={`text-lg leading-tight ${getNameClasses(previewStyle.nameEffectId, isSuper, previewStyle.themeId)}`}>
+              <div className="text-center mb-4 sm:mb-6 w-full">
+                <h3 className={`text-base sm:text-lg leading-tight truncate ${getNameClasses(previewStyle.nameEffectId, isSuper, previewStyle.themeId)}`}>
                   {initialData.name}
                 </h3>
                 
                 {/* Custom Title Badge */}
-                <div className="mt-2 inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-[10px] font-mono font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30">
-                  <Star className="w-3 h-3 text-amber-400 fill-amber-400" />
-                  <span>{currentTitle.name}</span>
+                <div className="mt-1.5 sm:mt-2 inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-violet-500/20 text-violet-300 border border-violet-500/30 max-w-full truncate">
+                  <Star className="w-3 h-3 text-amber-400 fill-amber-400 shrink-0" />
+                  <span className="truncate">{currentTitle.name}</span>
                 </div>
 
                 <p className={`text-[11px] font-mono mt-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-500'}`}>
@@ -319,36 +322,36 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
               </div>
             </div>
             
-            {/* Meta Data Grid */}
-            <div className={`space-y-3 text-xs relative z-10 ${isDarkCard ? 'text-slate-300' : 'text-slate-600'}`}>
-              <div>
-                <label className={`block text-[10px] font-bold uppercase tracking-wider mb-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-400'}`}>NIM Mahasiswa</label>
-                <div className={`font-mono px-3 py-1.5 rounded-xl border ${
+            {/* Meta Data Grid - 3 cols on mobile, stacked list on desktop */}
+            <div className={`grid grid-cols-3 md:grid-cols-1 gap-2 md:space-y-3 md:gap-0 text-xs relative z-10 ${isDarkCard ? 'text-slate-300' : 'text-slate-600'}`}>
+              <div className={`p-2 sm:p-2.5 md:p-0 md:bg-transparent rounded-xl border md:border-0 text-center md:text-left ${isDarkCard ? 'bg-slate-900/60 border-slate-800/80' : 'bg-gray-50/80 border-gray-100'}`}>
+                <label className={`block text-[9px] md:text-[10px] font-bold uppercase tracking-wider mb-0.5 md:mb-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-400'}`}>NIM</label>
+                <div className={`font-mono text-[11px] sm:text-xs md:px-3 md:py-1.5 md:rounded-xl md:border truncate ${
                   isDarkCard 
-                    ? 'bg-slate-900/80 border-slate-800 text-cyan-300 font-semibold' 
-                    : 'bg-gray-50 border-gray-100 text-gray-900'
+                    ? 'md:bg-slate-900/80 md:border-slate-800 text-cyan-300 font-semibold' 
+                    : 'md:bg-gray-50 md:border-gray-100 text-gray-900'
                 }`}>
                   {initialData.nim}
                 </div>
               </div>
 
-              <div>
-                <label className={`block text-[10px] font-bold uppercase tracking-wider mb-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-400'}`}>Tahun Angkatan</label>
-                <div className={`font-mono px-3 py-1.5 rounded-xl border ${
+              <div className={`p-2 sm:p-2.5 md:p-0 md:bg-transparent rounded-xl border md:border-0 text-center md:text-left ${isDarkCard ? 'bg-slate-900/60 border-slate-800/80' : 'bg-gray-50/80 border-gray-100'}`}>
+                <label className={`block text-[9px] md:text-[10px] font-bold uppercase tracking-wider mb-0.5 md:mb-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-400'}`}>Angkatan</label>
+                <div className={`font-mono text-[11px] sm:text-xs md:px-3 md:py-1.5 md:rounded-xl md:border truncate ${
                   isDarkCard 
-                    ? 'bg-slate-900/80 border-slate-800 text-slate-200' 
-                    : 'bg-gray-50 border-gray-100 text-gray-900'
+                    ? 'md:bg-slate-900/80 md:border-slate-800 text-slate-200' 
+                    : 'md:bg-gray-50 md:border-gray-100 text-gray-900'
                 }`}>
                   {initialData.angkatan}
                 </div>
               </div>
 
-              <div>
-                <label className={`block text-[10px] font-bold uppercase tracking-wider mb-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-400'}`}>Status Organisasi</label>
-                <div className={`font-mono px-3 py-1.5 rounded-xl border ${
+              <div className={`p-2 sm:p-2.5 md:p-0 md:bg-transparent rounded-xl border md:border-0 text-center md:text-left ${isDarkCard ? 'bg-slate-900/60 border-slate-800/80' : 'bg-gray-50/80 border-gray-100'}`}>
+                <label className={`block text-[9px] md:text-[10px] font-bold uppercase tracking-wider mb-0.5 md:mb-1 ${isDarkCard ? 'text-slate-400' : 'text-gray-400'}`}>Status</label>
+                <div className={`font-mono text-[11px] sm:text-xs md:px-3 md:py-1.5 md:rounded-xl md:border truncate ${
                   isDarkCard 
-                    ? 'bg-slate-900/80 border-slate-800 text-emerald-400 font-semibold' 
-                    : 'bg-gray-50 border-gray-100 text-gray-900'
+                    ? 'md:bg-slate-900/80 md:border-slate-800 text-emerald-400 font-semibold' 
+                    : 'md:bg-gray-50 md:border-gray-100 text-gray-900'
                 }`}>
                   {initialData.status_kaderisasi}
                 </div>
@@ -356,19 +359,19 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
             </div>
 
             {/* Telemetry / XP Bar */}
-            <div className={`mt-6 pt-4 border-t ${isDarkCard ? 'border-slate-800 text-slate-400' : 'border-gray-100 text-slate-500'} relative z-10 flex items-center justify-between text-[11px] font-mono`}>
+            <div className={`mt-4 sm:mt-6 pt-3 sm:pt-4 border-t ${isDarkCard ? 'border-slate-800 text-slate-400' : 'border-gray-100 text-slate-500'} relative z-10 flex items-center justify-between text-[11px] font-mono`}>
               <span className="flex items-center gap-1">
-                <Flame className="w-3.5 h-3.5 text-amber-500" />
-                <span>{userXp} XP TERKUMPUL</span>
+                <Flame className="w-3.5 h-3.5 text-amber-500 shrink-0" />
+                <span>{userXp} XP</span>
               </span>
-              <span className="text-emerald-500 font-bold">AKTIF</span>
+              <span className="text-emerald-500 font-bold text-[10px] tracking-wider">AKTIF</span>
             </div>
 
           </div>
 
-          <div className="p-4 rounded-2xl bg-amber-50 border border-amber-200 text-amber-900 text-xs flex items-start gap-2.5">
+          <div className="p-3.5 rounded-2xl bg-amber-50 border border-amber-200/80 text-amber-900 text-xs flex items-start gap-2">
             <Sparkles className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-            <p>
+            <p className="text-[11px] leading-relaxed">
               Gaya yang kamu pasang di sini akan otomatis tampil di kartu KTA digital dan papan peringkat Dewa Kode!
             </p>
           </div>
@@ -376,16 +379,16 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
         </div>
 
         {/* RIGHT COLUMN: TABBED VIEWS (2 Cols) */}
-        <div className="col-span-1 md:col-span-2 space-y-6">
+        <div className="col-span-1 md:col-span-2 space-y-5 sm:space-y-6">
           
           {/* TAB 1: STUDIO GAYA & TOKO XP */}
           {activeMainTab === "studio" && (
-            <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-7 shadow-sm space-y-6 animate-in slide-in-from-right-4 duration-300">
+            <div className="bg-white border border-gray-200 rounded-3xl p-4 sm:p-7 shadow-sm space-y-5 sm:space-y-6 animate-in slide-in-from-right-4 duration-300">
               
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-gray-100">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 sm:pb-4 border-b border-gray-100">
                 <div>
-                  <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
-                    <Palette className="w-5 h-5 text-violet-600" />
+                  <h3 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
+                    <Palette className="w-5 h-5 text-violet-600 shrink-0" />
                     <span>Studio Kustomisasi Visual</span>
                   </h3>
                   <p className="text-xs text-gray-500 mt-0.5">
@@ -393,37 +396,38 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
                   </p>
                 </div>
 
-                <div className="flex items-center gap-1.5 text-xs font-mono font-bold px-3 py-1 bg-violet-50 text-violet-800 rounded-xl border border-violet-100 w-fit">
+                <div className="flex items-center gap-1.5 text-xs font-mono font-bold px-3 py-1 bg-violet-50 text-violet-800 rounded-xl border border-violet-100 w-fit shrink-0">
                   <Trophy className="w-3.5 h-3.5 text-amber-500" />
                   <span>XP Kamu: {userXp}</span>
                 </div>
               </div>
 
-              {/* Sub Category Tabs */}
-              <div className="flex overflow-x-auto gap-2 p-1 bg-slate-100 rounded-xl w-fit border border-slate-200">
+              {/* Sub Category Tabs - Clean 4-Col Grid on Mobile */}
+              <div className="w-full grid grid-cols-2 sm:grid-cols-4 gap-1.5 p-1 bg-slate-100 rounded-xl border border-slate-200">
                 {[
-                  { id: "frame", label: "Bingkai Avatar" },
-                  { id: "title", label: "Gelar Kehormatan" },
-                  { id: "theme", label: "Tema Kartu" },
-                  { id: "nameEffect", label: "Efek Tipografi Nama" }
+                  { id: "frame", label: "Bingkai", fullLabel: "Bingkai Avatar" },
+                  { id: "title", label: "Gelar", fullLabel: "Gelar Kehormatan" },
+                  { id: "theme", label: "Tema", fullLabel: "Tema Kartu" },
+                  { id: "nameEffect", label: "Efek Nama", fullLabel: "Efek Tipografi" }
                 ].map(cat => (
                   <button
                     key={cat.id}
                     type="button"
                     onClick={() => setCosmeticCategory(cat.id as any)}
-                    className={`px-3.5 py-1.5 rounded-lg text-xs font-bold transition-all ${
+                    className={`py-2 px-2 rounded-lg text-xs font-bold transition-all text-center truncate ${
                       cosmeticCategory === cat.id
                         ? "bg-white text-slate-900 shadow-sm border border-slate-200"
                         : "text-slate-500 hover:text-slate-900"
                     }`}
                   >
-                    {cat.label}
+                    <span className="sm:hidden">{cat.label}</span>
+                    <span className="hidden sm:inline">{cat.fullLabel}</span>
                   </button>
                 ))}
               </div>
 
               {/* Item Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-3.5">
                 {(cosmeticCategory === "frame" ? FRAMES :
                   cosmeticCategory === "title" ? TITLES :
                   cosmeticCategory === "theme" ? THEMES : NAME_EFFECTS
@@ -623,61 +627,34 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
 
           {/* TAB 3: KTA DIGITAL PREVIEW */}
           {activeMainTab === "kta" && (
-            <div className="bg-white border border-gray-200 rounded-3xl p-6 sm:p-8 shadow-sm space-y-6 animate-in zoom-in-95 duration-200">
+            <div className="bg-white border border-gray-200 rounded-3xl p-4 sm:p-7 shadow-sm space-y-5 sm:space-y-6 animate-in zoom-in-95 duration-200">
               <div>
-                <h3 className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                <h3 className="text-base sm:text-lg font-bold text-gray-900 flex items-center gap-2">
                   <CreditCard className="w-5 h-5 text-emerald-600" />
                   <span>Kartu Tanda Anggota (KTA Digital HIMASTI)</span>
                 </h3>
                 <p className="text-xs text-gray-500 mt-1">
-                  KTA ini berlaku sebagai tanda pengenal resmi saat presensi acara, musyawarah, dan peminjaman inventaris.
+                  KTA ini berlaku sebagai tanda pengenal resmi saat presensi acara, musyawarah, dan peminjaman inventaris. Dilengkapi hologram 3D interaktif.
                 </p>
               </div>
 
               {/* Digital Card Preview Canvas */}
-              <div className="max-w-md mx-auto rounded-3xl p-6 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-white shadow-2xl border border-slate-700 relative overflow-hidden">
-                <div className="absolute -right-16 -bottom-16 w-48 h-48 bg-violet-600/20 rounded-full blur-3xl pointer-events-none" />
-                
-                {/* Header */}
-                <div className="flex items-center justify-between pb-4 border-b border-white/10">
-                  <div className="flex items-center gap-2.5">
-                    <div className="w-8 h-8 rounded-lg bg-violet-600 flex items-center justify-center font-black text-white text-xs shadow-md">
-                      H
-                    </div>
-                    <div>
-                      <h4 className="text-xs font-bold tracking-wider uppercase text-white">HIMASTI UMMAT</h4>
-                      <p className="text-[10px] text-slate-400 font-mono">Himpunan Mahasiswa Sistem & Teknologi Informasi</p>
-                    </div>
-                  </div>
-                  <span className="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950 border border-emerald-800 text-emerald-400 font-bold">
-                    RESMI
-                  </span>
-                </div>
-
-                {/* Body with Avatar */}
-                <div className="flex items-center gap-4 py-5">
-                  <CosmeticAvatar name={initialData.name} frameId={previewStyle.frameId} size="md" />
-                  <div>
-                    <h5 className={`text-base font-black leading-tight ${getNameClasses(previewStyle.nameEffectId, isSuper, "dark_obsidian")}`}>{initialData.name}</h5>
-                    <div className="inline-flex items-center gap-1 mt-1 text-[11px] font-mono text-amber-300 font-bold">
-                      <Star className="w-3 h-3 fill-amber-300" />
-                      <span>{currentTitle.name}</span>
-                    </div>
-                    <p className="text-xs font-mono text-slate-400 mt-0.5">NIM: {initialData.nim}</p>
-                  </div>
-                </div>
-
-                {/* Footer Barcode / QR Info */}
-                <div className="pt-3 border-t border-white/10 flex items-center justify-between text-[10px] font-mono text-slate-400">
-                  <span>ANGKATAN: {initialData.angkatan}</span>
-                  <span className="text-cyan-400 font-bold">VALID MEMBERSHIP</span>
-                </div>
+              <div className="max-w-xl mx-auto w-full">
+                <DigitalKTA
+                  name={initialData.name}
+                  nim={initialData.nim || "KADER-GUEST"}
+                  email={initialData.email}
+                  angkatan={initialData.angkatan || new Date().getFullYear().toString()}
+                  frameId={previewStyle.frameId}
+                  title={currentTitle.name}
+                  nameEffectId={previewStyle.nameEffectId}
+                />
               </div>
 
-              <div className="text-center">
+              <div className="text-center pt-2">
                 <Link
                   href="/absen"
-                  className="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm active:scale-95"
+                  className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 text-white text-xs font-bold transition-all shadow-sm active:scale-95 w-full sm:w-auto"
                 >
                   <QrCode className="w-4 h-4" />
                   <span>Buka Scanner Presensi & Biometrik →</span>

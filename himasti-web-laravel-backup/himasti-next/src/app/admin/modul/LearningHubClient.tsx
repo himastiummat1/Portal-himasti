@@ -217,12 +217,12 @@ export default function LearningHubClient({ userName }: { userName: string }) {
       </div>
 
       {/* TABS (Mobile Friendly Scrollable) */}
-      <div className="flex overflow-x-auto gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit max-w-full border border-slate-200 shrink-0 touch-pan-x">
+      <div className="flex overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit max-w-full border border-slate-200 shrink-0 touch-pan-x">
         {[
-          { id: "roadmap", label: "Role Roadmap", icon: <Map className="w-4 h-4" /> },
-          { id: "materi", label: "Bank Modul IT", icon: <BookOpen className="w-4 h-4" /> },
-          { id: "cheat", label: "Cheat Sheets", icon: <Terminal className="w-4 h-4" /> },
-          { id: "vidyax", label: "Vidyax (Karya M N DAFFA)", icon: <Code2 className="w-4 h-4" /> }
+          { id: "roadmap", label: "Roadmap", fullLabel: "Role Roadmap", icon: <Map className="w-4 h-4 shrink-0" /> },
+          { id: "materi", label: "Modul IT", fullLabel: "Bank Modul IT", icon: <BookOpen className="w-4 h-4 shrink-0" /> },
+          { id: "cheat", label: "Cheat Sheet", fullLabel: "Cheat Sheets", icon: <Terminal className="w-4 h-4 shrink-0" /> },
+          { id: "vidyax", label: "Vidyax", fullLabel: "Vidyax (Karya M N DAFFA)", icon: <Code2 className="w-4 h-4 shrink-0" /> }
         ].map(tab => (
           <button
             key={tab.id}
@@ -230,14 +230,15 @@ export default function LearningHubClient({ userName }: { userName: string }) {
               setActiveTab(tab.id as any);
               setActiveCourse(null);
             }}
-            className={`flex items-center gap-2 px-5 py-2.5 rounded-xl text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3.5 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
               activeTab === tab.id 
                 ? "bg-white text-slate-900 shadow-sm border border-slate-200/80" 
                 : "text-slate-500 hover:text-slate-900 hover:bg-slate-200/50"
             }`}
           >
             {tab.icon}
-            <span>{tab.label}</span>
+            <span className="sm:hidden">{tab.label}</span>
+            <span className="hidden sm:inline">{tab.fullLabel}</span>
           </button>
         ))}
       </div>

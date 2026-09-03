@@ -133,54 +133,54 @@ export default function DigitalKTA({
       />
 
       <div className={`flex justify-between items-start w-full relative z-10`} style={{ transform: "translateZ(30px)" }}>
-        <div className="flex items-center gap-2 md:gap-3">
-          <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-8 h-8 rounded-lg'} bg-white flex items-center justify-center shadow-sm p-1 overflow-hidden`}>
+        <div className="flex items-center gap-2 md:gap-3 min-w-0">
+          <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg'} bg-white flex items-center justify-center shadow-sm p-1 overflow-hidden shrink-0`}>
             <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={60} height={60} className="w-full h-full object-contain" />
           </div>
-          <div>
-            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl md:text-3xl' : 'text-base'}`}>HIMASTI UMMAT</div>
-            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[10px] mt-0.5'} text-slate-400 font-mono tracking-widest uppercase`}>Himpunan Mahasiswa Sistem & Teknologi Informasi</div>
+          <div className="min-w-0">
+            <div className={`font-bold text-white tracking-tight leading-none ${zoomed ? 'text-xl md:text-3xl' : 'text-sm sm:text-base'}`}>HIMASTI UMMAT</div>
+            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[8px] sm:text-[10px] mt-0.5'} text-slate-400 font-mono tracking-normal sm:tracking-widest uppercase truncate max-w-[170px] sm:max-w-none`}>Himpunan Mahasiswa Sistem & Teknologi Informasi</div>
           </div>
         </div>
-        <div className={`px-2 py-1 bg-white/10 border border-white/20 rounded-md ${zoomed ? 'text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2' : 'text-[9px] px-2 py-1'} font-mono font-bold text-white backdrop-blur-sm tracking-widest`}>
+        <div className={`px-2 py-1 bg-white/10 border border-white/20 rounded-md ${zoomed ? 'text-[10px] md:text-sm px-3 py-1.5 md:px-4 md:py-2' : 'text-[8px] sm:text-[9px] px-1.5 py-0.5 sm:px-2 sm:py-1'} font-mono font-bold text-white backdrop-blur-sm tracking-widest shrink-0 ml-2`}>
           RESMI
         </div>
       </div>
 
-      <div className={`flex ${zoomed ? 'flex-col md:flex-row mt-8 md:mt-auto md:mb-auto' : 'flex-row mt-6'} gap-6 md:gap-4 items-start md:items-end justify-between w-full relative z-10`} style={{ transform: "translateZ(50px)" }}>
+      <div className={`flex ${zoomed ? 'flex-col md:flex-row mt-8 md:mt-auto md:mb-auto' : 'flex-row mt-3 sm:mt-6'} gap-3 sm:gap-4 items-start md:items-end justify-between w-full relative z-10`} style={{ transform: "translateZ(50px)" }}>
         <div className="flex-1 min-w-0 w-full pr-0 md:pr-4">
-          <div className="mb-4 flex items-center gap-3 md:gap-5">
+          <div className="mb-2 sm:mb-4 flex items-center gap-2.5 sm:gap-3 md:gap-5">
             <CosmeticAvatar name={name} frameId={frameId} size={zoomed ? "lg" : "sm"} />
             <div className="flex-1 min-w-0">
-              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
-              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, "dark_obsidian")} w-full`}>{name}</div>
-              <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[10px] md:text-xs font-mono font-bold">
-                <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-300 text-amber-300" />
-                <span>{title}</span>
+              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>IDENTITAS KADER</div>
+              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-base sm:text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, "dark_obsidian")} w-full`}>{name}</div>
+              <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 sm:px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] sm:text-[10px] md:text-xs font-mono font-bold truncate max-w-full">
+                <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-300 text-amber-300 shrink-0" />
+                <span className="truncate">{title}</span>
               </div>
             </div>
           </div>
           
-          <div className={`flex flex-wrap ${zoomed ? 'gap-8 md:gap-16 mt-6 md:mt-8' : 'gap-4 mt-2'}`}>
+          <div className={`flex flex-wrap ${zoomed ? 'gap-8 md:gap-16 mt-6 md:mt-8' : 'gap-3 sm:gap-4 mt-1 sm:mt-2'}`}>
             <div>
-              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>NIM</div>
-              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-sm'} font-mono font-bold text-slate-200`}>{nim}</div>
+              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>NIM</div>
+              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold text-slate-200 truncate max-w-[120px]`}>{nim}</div>
             </div>
             <div>
-              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>ANGKATAN</div>
-              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-sm'} font-mono font-bold text-slate-200`}>{angkatan}</div>
+              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>ANGKATAN</div>
+              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold text-slate-200`}>{angkatan}</div>
             </div>
           </div>
         </div>
 
-        <div className={`p-2 border border-white/10 bg-white shrink-0 shadow-2xl flex items-center justify-center ${zoomed ? 'p-3 md:p-5 rounded-xl md:rounded-2xl w-24 h-24 md:w-[200px] md:h-[200px] self-start md:self-end' : 'rounded-xl w-16 h-16'}`} style={{ transform: "translateZ(60px)" }}>
+        <div className={`p-1.5 sm:p-2 border border-white/10 bg-white shrink-0 shadow-2xl flex items-center justify-center ${zoomed ? 'p-3 md:p-5 rounded-xl md:rounded-2xl w-24 h-24 md:w-[200px] md:h-[200px] self-start md:self-end' : 'rounded-lg sm:rounded-xl w-14 h-14 sm:w-16 sm:h-16'}`} style={{ transform: "translateZ(60px)" }}>
           <QRCodeSVG value={qrValue} width="100%" height="100%" level="H" />
         </div>
       </div>
 
-      <div className={`w-full flex ${zoomed ? 'flex-col md:flex-row mt-6 md:mt-8 pt-4 md:pt-6 gap-3 md:gap-6' : 'flex-row mt-4 pt-3 gap-2'} justify-between items-start md:items-end border-t border-white/10 relative z-10`} style={{ transform: "translateZ(20px)" }}>
-        <div className={`${zoomed ? 'text-xs md:text-lg whitespace-normal break-all' : 'text-[9px] truncate max-w-[200px]'} text-slate-400 font-mono w-full`}>{email}</div>
-        <div className={`${zoomed ? 'text-xs md:text-lg' : 'text-[9px]'} text-slate-500 font-mono uppercase shrink-0`}>ID-{nim.substring(0,8)}</div>
+      <div className={`w-full flex ${zoomed ? 'flex-col md:flex-row mt-6 md:mt-8 pt-4 md:pt-6 gap-3 md:gap-6' : 'flex-row mt-3 sm:mt-4 pt-2 sm:pt-3 gap-2'} justify-between items-start md:items-end border-t border-white/10 relative z-10`} style={{ transform: "translateZ(20px)" }}>
+        <div className={`${zoomed ? 'text-xs md:text-lg whitespace-normal break-all' : 'text-[8px] sm:text-[9px] truncate max-w-[160px] sm:max-w-[200px]'} text-slate-400 font-mono`}>{email}</div>
+        <div className={`${zoomed ? 'text-xs md:text-lg' : 'text-[8px] sm:text-[9px]'} text-slate-500 font-mono uppercase shrink-0`}>ID-{nim.substring(0,8)}</div>
       </div>
     </>
   );
@@ -203,7 +203,7 @@ export default function DigitalKTA({
             rotateY,
             transformStyle: "preserve-3d",
           }}
-          className="w-full relative aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in border border-slate-800 bg-black p-5 shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all duration-500 flex flex-col justify-between"
+          className="w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in border border-slate-800 bg-black p-4 sm:p-5 shadow-2xl hover:shadow-[0_0_40px_rgba(255,255,255,0.15)] transition-all duration-500 flex flex-col justify-between"
         >
           <CardContent zoomed={false} />
         </motion.div>

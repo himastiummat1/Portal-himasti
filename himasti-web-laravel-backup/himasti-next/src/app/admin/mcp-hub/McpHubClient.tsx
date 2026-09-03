@@ -302,24 +302,25 @@ export default function McpHubClient() {
       </div>
 
       {/* Modern Navigation Tabs */}
-      <div className="flex overflow-x-auto gap-2 p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit border border-slate-200 shrink-0 touch-pan-x">
+      <div className="flex overflow-x-auto no-scrollbar gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit border border-slate-200 shrink-0 touch-pan-x">
         {[
-          { id: "mcp", label: "Katalog Server MCP", icon: <Server className="w-4 h-4" /> },
-          { id: "prompts", label: "Pustaka System Prompts", icon: <Terminal className="w-4 h-4" /> },
-          { id: "optimizer", label: "AI Prompt Studio (Live)", icon: <Sparkles className="w-4 h-4" /> },
-          { id: "tutorial", label: "Edukasi & Cara Pasang", icon: <Layers className="w-4 h-4" /> }
+          { id: "mcp", label: "Server MCP", fullLabel: "Katalog Server MCP", icon: <Server className="w-4 h-4 shrink-0" /> },
+          { id: "prompts", label: "Prompts", fullLabel: "Pustaka System Prompts", icon: <Terminal className="w-4 h-4 shrink-0" /> },
+          { id: "optimizer", label: "Prompt Studio", fullLabel: "AI Prompt Studio (Live)", icon: <Sparkles className="w-4 h-4 shrink-0" /> },
+          { id: "tutorial", label: "Edukasi", fullLabel: "Edukasi & Cara Pasang", icon: <Layers className="w-4 h-4 shrink-0" /> }
         ].map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveTab(tab.id as any)}
-            className={`flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
+            className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-5 py-2 sm:py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all shrink-0 whitespace-nowrap ${
               activeTab === tab.id
                 ? "bg-white text-slate-900 shadow-sm border border-slate-200"
                 : "text-slate-600 hover:text-slate-900 hover:bg-slate-200/60"
             }`}
           >
             {tab.icon}
-            <span>{tab.label}</span>
+            <span className="sm:hidden">{tab.label}</span>
+            <span className="hidden sm:inline">{tab.fullLabel}</span>
           </button>
         ))}
       </div>

@@ -112,7 +112,7 @@ export default function KaderTableClient({
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">
-        <div className="overflow-x-auto">
+        <div className="overflow-x-auto no-scrollbar">
           <table className="w-full text-sm text-left">
             <thead className="bg-gray-50/50 text-gray-500 uppercase text-xs tracking-wider border-b border-gray-200">
               <tr>
@@ -194,12 +194,12 @@ export default function KaderTableClient({
             </div>
 
             {/* Content Modal */}
-            <form onSubmit={handleUpdate} className="p-6 overflow-y-auto max-h-[70vh]">
-              <div className="flex items-start gap-6 mb-8">
-                <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(selectedKader.nama)}`} alt="Avatar" className="w-24 h-24 rounded-2xl border border-gray-200/50 shadow-sm shrink-0 bg-gray-50" />
-                <div className="space-y-1 w-full">
-                  <h2 className="text-2xl font-bold text-gray-900">{selectedKader.nama}</h2>
-                  <div className="flex flex-wrap gap-2 items-center mt-2">
+            <form onSubmit={handleUpdate} className="p-5 sm:p-6 overflow-y-auto max-h-[70vh]">
+              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 mb-6 sm:mb-8 text-center sm:text-left">
+                <img src={`https://api.dicebear.com/9.x/shapes/svg?seed=${encodeURIComponent(selectedKader.nama)}`} alt="Avatar" className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl border border-gray-200/50 shadow-sm shrink-0 bg-gray-50" />
+                <div className="space-y-1 w-full min-w-0">
+                  <h2 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{selectedKader.nama}</h2>
+                  <div className="flex flex-wrap gap-2 items-center justify-center sm:justify-start mt-2">
                     <span className="px-2.5 py-1 bg-gray-50 text-gray-900 text-xs font-bold rounded-md border border-gray-100">
                       NIM. {selectedKader.nim}
                     </span>

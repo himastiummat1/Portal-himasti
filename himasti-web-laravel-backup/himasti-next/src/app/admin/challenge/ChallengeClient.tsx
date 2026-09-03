@@ -245,29 +245,29 @@ console.log("Total penjumlahan:", total);
       </div>
 
       {/* TOP NAVIGATION: TANTANGAN vs SANDBOX */}
-      <div className="flex items-center gap-2 p-1.5 bg-slate-100 rounded-2xl w-fit border border-slate-200">
+      <div className="flex items-center gap-1.5 sm:gap-2 p-1.5 bg-slate-100 rounded-2xl w-full sm:w-fit border border-slate-200">
         <button
           onClick={() => setActiveTab("description")}
-          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+          className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-center ${
             activeTab !== "sandbox" 
               ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
               : "text-slate-500 hover:text-slate-900"
           }`}
         >
-          <Code2 className="w-4 h-4" />
-          <span>Tantangan Algoritma</span>
+          <Code2 className="w-4 h-4 shrink-0" />
+          <span className="truncate">Tantangan Algoritma</span>
         </button>
 
         <button
           onClick={() => setActiveTab("sandbox")}
-          className={`flex items-center gap-2 px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all ${
+          className={`flex-1 sm:flex-initial flex items-center justify-center gap-2 px-3 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-bold transition-all text-center ${
             activeTab === "sandbox" 
               ? "bg-white text-slate-900 shadow-sm border border-slate-200" 
               : "text-slate-500 hover:text-slate-900"
           }`}
         >
-          <Terminal className="w-4 h-4" />
-          <span>Bebas Sandbox</span>
+          <Terminal className="w-4 h-4 shrink-0" />
+          <span className="truncate">Bebas Sandbox</span>
         </button>
       </div>
 
@@ -279,7 +279,7 @@ console.log("Total penjumlahan:", total);
           <div className="lg:col-span-5 space-y-4">
             
             {/* Quick Challenge Selector (Horizontal scroll on mobile) */}
-            <div className="bg-white rounded-2xl p-3 border border-slate-200 shadow-sm overflow-x-auto flex gap-2">
+            <div className="bg-white rounded-2xl p-3 border border-slate-200 shadow-sm overflow-x-auto no-scrollbar flex gap-2">
               {challengesData.map((ch) => {
                 const isSolved = solvedIds.includes(ch.id);
                 const isSelected = selectedChallenge.id === ch.id;
@@ -427,12 +427,12 @@ console.log("Total penjumlahan:", total);
                   Engine: Sandboxed ECMAScript
                 </span>
 
-                <div className="flex items-center gap-2.5">
+                <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 sm:gap-2.5 w-full sm:w-auto">
                   <button
                     type="button"
                     disabled={isRunning}
                     onClick={() => runCode(false)}
-                    className="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center gap-2 disabled:opacity-50 border border-slate-700"
+                    className="px-4 py-2.5 sm:py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center justify-center gap-2 disabled:opacity-50 border border-slate-700 w-full sm:w-auto"
                   >
                     <Play className="w-3.5 h-3.5 text-cyan-400" />
                     <span>Uji Kasus Sampel</span>
@@ -442,7 +442,7 @@ console.log("Total penjumlahan:", total);
                     type="button"
                     disabled={isRunning}
                     onClick={() => runCode(true)}
-                    className="px-5 py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all flex items-center gap-2 shadow-md shadow-emerald-950 active:scale-95 disabled:opacity-50"
+                    className="px-5 py-2.5 sm:py-2 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white text-xs font-bold transition-all flex items-center justify-center gap-2 shadow-md shadow-emerald-950 active:scale-95 disabled:opacity-50 w-full sm:w-auto"
                   >
                     <Zap className="w-3.5 h-3.5 fill-white" />
                     <span>Submit Solusi (Semua Tes)</span>

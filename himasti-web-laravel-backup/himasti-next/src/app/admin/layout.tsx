@@ -97,7 +97,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
         isImpersonating={!!(await cookies()).get("impersonated_user_id")}
       />
 
-      <main className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+      <main className="max-w-7xl mx-auto py-5 sm:py-8 px-3.5 sm:px-6 lg:px-8">
         {children}
       </main>
       <style dangerouslySetInnerHTML={{__html: `

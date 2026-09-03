@@ -25,6 +25,15 @@ body {
   overflow-x: hidden;
 }
 
+/* Mobile Smooth Utilities */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 /* Ultra-smooth Vercel-like Animations */
 .animate-fade-up {
   opacity: 0;

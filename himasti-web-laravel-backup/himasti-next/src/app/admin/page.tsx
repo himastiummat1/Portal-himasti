@@ -131,19 +131,19 @@ export default async function AdminDashboard() {
         </div>
 
         {/* Big Profile Card with Live Theme, Frame, Name Effect, and Title */}
-        <div className={`rounded-3xl p-6 sm:p-8 relative overflow-hidden transition-all ${getThemeClasses(userThemeId, isSuperAdmin)}`}>
+        <div className={`rounded-3xl p-5 sm:p-8 relative overflow-hidden transition-all ${getThemeClasses(userThemeId, isSuperAdmin)}`}>
           <div className="absolute top-0 right-0 w-64 h-64 bg-violet-500/10 rounded-full blur-3xl -mr-20 -mt-20 pointer-events-none"></div>
           
-          <div className="relative z-10 flex flex-col md:flex-row gap-6 sm:gap-8 items-center md:items-start">
+          <div className="relative z-10 flex flex-col md:flex-row gap-5 sm:gap-8 items-center md:items-start">
             <CosmeticAvatar 
               name={userName} 
               frameId={userFrame} 
               size="lg" 
             />
-            <div className="flex-1 text-center md:text-left space-y-4 w-full">
+            <div className="flex-1 text-center md:text-left space-y-4 w-full min-w-0">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
-                <div>
-                  <h2 className={`text-2xl sm:text-3xl font-extrabold ${getNameClasses(userNameEffect, isSuperAdmin, userThemeId)}`}>
+                <div className="min-w-0">
+                  <h2 className={`text-xl sm:text-3xl font-extrabold truncate ${getNameClasses(userNameEffect, isSuperAdmin, userThemeId)}`}>
                     {userName}
                   </h2>
                   <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 mt-2">
@@ -155,13 +155,13 @@ export default async function AdminDashboard() {
                       <Zap className="w-3 h-3 fill-violet-400 text-violet-400" />
                       {userXp} XP
                     </span>
-                    <span className={`text-xs font-mono ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>{session?.user?.email}</span>
+                    <span className={`text-xs font-mono truncate max-w-[200px] sm:max-w-none ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>{session?.user?.email}</span>
                   </div>
                 </div>
 
                 <Link 
                   href="/admin/profil" 
-                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 w-fit mx-auto md:mx-0"
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:py-1.5 rounded-xl bg-violet-600 hover:bg-violet-500 text-white text-xs font-bold transition-all shadow-md active:scale-95 w-full sm:w-fit mx-auto md:mx-0 shrink-0"
                 >
                   <Palette className="w-3.5 h-3.5" />
                   <span>Ubah Gaya & Gelar</span>
@@ -171,11 +171,11 @@ export default async function AdminDashboard() {
               <div className={`grid grid-cols-2 gap-4 pt-4 border-t ${isDarkCard ? 'border-white/10' : 'border-slate-200/60'}`}>
                 <div>
                   <span className={`text-[10px] uppercase font-bold tracking-wider ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>NIM Mahasiswa</span>
-                  <p className={`font-mono font-bold ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>{kaderData?.nim || "Belum Update"}</p>
+                  <p className={`font-mono font-bold truncate ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>{kaderData?.nim || "Belum Update"}</p>
                 </div>
                 <div>
                   <span className={`text-[10px] uppercase font-bold tracking-wider ${isDarkCard ? 'text-slate-400' : 'text-slate-500'}`}>Tahun Angkatan</span>
-                  <p className={`font-mono font-bold ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>{kaderData?.angkatan || "Belum Update"}</p>
+                  <p className={`font-mono font-bold truncate ${isDarkCard ? 'text-white' : 'text-slate-900'}`}>{kaderData?.angkatan || "Belum Update"}</p>
                 </div>
               </div>
             </div>
@@ -184,8 +184,8 @@ export default async function AdminDashboard() {
         
         {/* Digital KTA (Moved to top for mobile visibility) */}
         <div className="mb-6">
-          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-3xl p-6">
-            <h3 className="text-sm font-bold text-slate-800 mb-6 flex items-center gap-2">
+          <div className="bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-3xl p-4 sm:p-6">
+            <h3 className="text-sm font-bold text-slate-800 mb-4 sm:mb-6 flex items-center gap-2">
               <Shield className="w-4 h-4 text-slate-500" /> Kartu Tanda Anggota Digital
             </h3>
             <div className="max-w-2xl mx-auto">
@@ -199,7 +199,7 @@ export default async function AdminDashboard() {
                 nameEffectId={userNameEffect}
               />
             </div>
-            <p className="text-xs text-center text-slate-500 mt-6 font-medium">Klik kartu untuk memperbesar. Arahkan kursor untuk efek 3D hologram.</p>
+            <p className="text-xs text-center text-slate-500 mt-4 sm:mt-6 font-medium">Klik kartu untuk memperbesar. Sentuh / arahkan kursor untuk efek 3D hologram.</p>
           </div>
         </div>
         
