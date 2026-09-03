@@ -18,8 +18,10 @@ export default function SuperAdminPeekModal({ adminData }: SuperAdminPeekProps) 
   const [respectCount, setRespectCount] = useState(1337);
   const [hasRespected, setHasRespected] = useState(false);
   const [respectMessage, setRespectMessage] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const saved = localStorage.getItem("himasti_admin_respect_count");
     if (saved) {
       setRespectCount(parseInt(saved, 10));
@@ -243,7 +245,9 @@ export default function SuperAdminPeekModal({ adminData }: SuperAdminPeekProps) 
                 </div>
                 <div className="flex justify-between">
                   <span>Total Sungkeman:</span>
-                  <span className="text-amber-400 font-bold">{respectCount.toLocaleString()} Kali 🙇‍♂️</span>
+                  <span className="text-amber-400 font-bold" suppressHydrationWarning>
+                    {mounted ? `${respectCount.toLocaleString()} Kali 🙇‍♂️` : "1,337 Kali 🙇‍♂️"}
+                  </span>
                 </div>
               </div>
 
@@ -255,7 +259,9 @@ export default function SuperAdminPeekModal({ adminData }: SuperAdminPeekProps) 
                   className="w-full py-3 px-4 rounded-2xl bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 hover:from-amber-600 hover:to-purple-700 text-white font-bold text-xs sm:text-sm shadow-lg shadow-purple-500/25 transition-all duration-200 transform hover:scale-[1.01] active:scale-95 flex items-center justify-center gap-2"
                 >
                   <ThumbsUp className="w-4 h-4" />
-                  <span>Sungkeman ke Sang Architect! ({respectCount})</span>
+                  <span suppressHydrationWarning>
+                    Sungkeman ke Sang Architect! ({mounted ? respectCount : 1337})
+                  </span>
                 </button>
 
                 {respectMessage && (
