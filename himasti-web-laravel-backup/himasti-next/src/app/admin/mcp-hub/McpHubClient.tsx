@@ -122,9 +122,9 @@ const MCP_PRESETS: McpServerPreset[] = [
   },
   {
     id: "vidyax-swarm",
-    name: "Vidyax Swarm AI MCP (Eksperimental)",
-    category: "himasti",
-    desc: "Server MCP khusus untuk ekosistem riset bahasa pemrograman Vidyax HIMASTI. Menyediakan tool untuk parsing AST dan simulasi multi-agent execution.",
+    name: "Vidyax Swarm AI MCP (Karya M N DAFFA)",
+    category: "karya-mandiri" as any,
+    desc: "Server MCP khusus untuk ekosistem riset bahasa pemrograman Vidyax karya mandiri M N DAFFA. Menyediakan tool untuk parsing AST dan simulasi multi-agent execution.",
     command: "node ./scripts/vidyax-mcp.js",
     envVars: ["VIDYAX_RUNTIME_PATH"],
     bestFor: "Antigravity, Cursor",

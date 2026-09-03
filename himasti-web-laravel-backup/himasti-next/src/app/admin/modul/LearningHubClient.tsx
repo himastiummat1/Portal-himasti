@@ -329,13 +329,13 @@ export default function LearningHubClient({ userName }: { userName: string }) {
 
             <div className="relative z-10 space-y-6">
               <div className="inline-flex items-center gap-2 px-3.5 py-1 bg-rose-500/15 text-rose-400 border border-rose-500/30 rounded-full text-xs font-mono font-bold tracking-widest">
-                <Sparkles className="w-3 h-3" /> PROYEK RISET HIMASTI
+                <Sparkles className="w-3 h-3" /> KARYA MANDIRI • M N DAFFA
               </div>
               
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
                   <h2 className="text-3xl sm:text-4xl md:text-5xl font-black tracking-tight text-white">Vidyax</h2>
-                  <p className="text-xs sm:text-sm font-mono text-rose-400 mt-1">Experimental AI-First Programming Language</p>
+                  <p className="text-xs sm:text-sm font-mono text-rose-400 mt-1">Experimental AI-First Language by M N DAFFA</p>
                 </div>
                 <a 
                   href="https://github.com/Vidyax-Lang/Vidyax" 
@@ -349,7 +349,7 @@ export default function LearningHubClient({ userName }: { userName: string }) {
               </div>
 
               <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-3xl">
-                Sebuah proyek eksperimental <strong className="text-white">AI-first</strong> hasil riset dan rekayasa perangkat lunak mandiri yang dibangun secara kolaboratif bersama Kecerdasan Buatan (AI). Proyek ini mendemonstrasikan kekuatan kolaborasi manusia-mesin dalam menciptakan arsitektur bahasa pemrograman yang mendukung orkestrasi <em>LLM</em>.
+                Sebuah bahasa pemrograman eksperimental <strong className="text-white">AI-first</strong> hasil karya dan rekayasa perangkat lunak mandiri dari <strong className="text-rose-400">M N DAFFA</strong> yang dibangun secara independen bersama Kecerdasan Buatan (AI). Proyek ini mendemonstrasikan kekuatan kolaborasi manusia-mesin dalam menciptakan arsitektur bahasa pemrograman yang mendukung orkestrasi <em>LLM & Multi-Agent Swarm</em>.
               </p>
 
               {/* Architecture Pillars Grid */}
@@ -365,9 +365,9 @@ export default function LearningHubClient({ userName }: { userName: string }) {
                   <p className="text-xs text-slate-400 leading-relaxed">Mendukung eksekusi paralel multi-agent otonom dalam satu runtime terpadu.</p>
                 </div>
                 <div className="p-4 rounded-2xl bg-white/[0.04] border border-white/10 backdrop-blur-sm">
-                  <div className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-1">03 • Open Source</div>
-                  <h4 className="text-sm font-bold text-white mb-1">Karya Mahasiswa</h4>
-                  <p className="text-xs text-slate-400 leading-relaxed">Dikelola secara terbuka untuk pembelajaran kompilator dan perancangan bahasa IT.</p>
+                  <div className="text-xs font-mono font-bold text-emerald-400 uppercase tracking-wider mb-1">03 • Creator</div>
+                  <h4 className="text-sm font-bold text-white mb-1">Karya Mandiri M N DAFFA</h4>
+                  <p className="text-xs text-slate-400 leading-relaxed">Dirancang dan dikembangkan secara independen oleh M N DAFFA sebagai riset kompilator modern.</p>
                 </div>
               </div>
 
