@@ -34,8 +34,17 @@ export async function updateKader(userId: number, formData: FormData) {
       }
     }
 
-    // 3. Update Role
+    // 3. Update Role (Prevent Privilege Escalation)
     if (role_name) {
+      const session = await auth();
+      const currentActorId = parseInt(session?.user?.id || "0");
+      const actorRoles = await prisma.modelHasRole.findMany({ where: { model_id: currentActorId }, include: { role: true } });
+      const isActorSuperAdmin = actorRoles.some(r => r.role.name === "super_admin");
+
+      if (role_name === "super_admin" && !isActorSuperAdmin) {
+        return { success: false, error: "Akses Ditolak: Hanya Super Admin yang dapat menunjuk akun Super Admin." };
+      }
+
       const role = await prisma.role.findFirst({ where: { name: role_name } });
       if (role) {
         await prisma.modelHasRole.deleteMany({ where: { model_id: userId, model_type: "App\\Models\\User" } });

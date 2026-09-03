@@ -7,6 +7,13 @@ export async function POST(req: Request) {
     const session = await auth();
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+    const userId = parseInt(session.user.id as string);
+    const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+    const isBendahara = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("bendahara"));
+    if (!isBendahara) {
+      return NextResponse.json({ error: "Akses ditolak: Hanya Bendahara yang dapat mencatat kas." }, { status: 403 });
+    }
+
     const body = await req.json();
     const { tipe, jumlah, keterangan, tanggal } = body;
 

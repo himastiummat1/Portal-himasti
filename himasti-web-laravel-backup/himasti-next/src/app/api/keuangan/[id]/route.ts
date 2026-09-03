@@ -7,6 +7,13 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const session = await auth();
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
+    const userId = parseInt(session.user.id as string);
+    const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+    const isBendahara = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("bendahara"));
+    if (!isBendahara) {
+      return NextResponse.json({ error: "Akses ditolak: Hanya Bendahara yang dapat mengubah kas." }, { status: 403 });
+    }
+
     const p = await params;
     const id = parseInt(p.id);
     const body = await req.json();
@@ -33,6 +40,13 @@ export async function DELETE(req: Request, { params }: { params: Promise<{ id: s
   try {
     const session = await auth();
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    const userId = parseInt(session.user.id as string);
+    const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
+    const isBendahara = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("bendahara"));
+    if (!isBendahara) {
+      return NextResponse.json({ error: "Akses ditolak: Hanya Bendahara yang dapat menghapus kas." }, { status: 403 });
+    }
 
     const p = await params;
     const id = parseInt(p.id);

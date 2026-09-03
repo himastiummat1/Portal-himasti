@@ -39,21 +39,32 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Email sudah terdaftar" }, { status: 400 });
     }
 
-    const hashedPassword = await bcrypt.hash(password, 10);
-    const user = await prisma.user.create({
-      data: { name, email, password: hashedPassword }
-    });
-
-    await prisma.dataKader.create({
-      data: { user_id: user.id, nim, angkatan, status_kaderisasi: "Aktif" }
-    });
-
-    const role = await prisma.role.findFirst({ where: { name: "kader" } });
-    if (role) {
-      await prisma.modelHasRole.create({
-        data: { role_id: role.id, model_type: "App\\Models\\User", model_id: user.id }
-      });
+    const existingNim = await prisma.dataKader.findUnique({ where: { nim } });
+    if (existingNim) {
+      return NextResponse.json({ error: "NIM sudah terdaftar di sistem kader" }, { status: 400 });
     }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    
+    // Atomic Transaction: Cegah orphaned User jika salah satu mutasi gagal
+    const user = await prisma.$transaction(async (tx) => {
+      const newUser = await tx.user.create({
+        data: { name, email, password: hashedPassword }
+      });
+
+      await tx.dataKader.create({
+        data: { user_id: newUser.id, nim, angkatan, status_kaderisasi: "Aktif" }
+      });
+
+      const role = await tx.role.findFirst({ where: { name: "kader" } });
+      if (role) {
+        await tx.modelHasRole.create({
+          data: { role_id: role.id, model_type: "App\\Models\\User", model_id: newUser.id }
+        });
+      }
+
+      return newUser;
+    });
 
     return NextResponse.json({ success: true, user: { id: user.id, email: user.email } });
   } catch (error: any) {
