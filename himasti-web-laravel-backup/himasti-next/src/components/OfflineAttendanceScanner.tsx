@@ -12,6 +12,7 @@ import {
   saveOfflineAttendance,
   getPendingAttendances,
   deleteSyncedAttendances,
+  setupAutoSyncOnOnline,
   type OfflineAttendanceRecord,
 } from '@/lib/offline-attendance'
 import {
@@ -64,9 +65,29 @@ export default function OfflineAttendanceScanner({
 
     loadPendingRecords()
 
+    // Auto-sync fallback ketika koneksi pulih
+    const cleanupAutoSync = setupAutoSyncOnOnline((count) => {
+      loadPendingRecords()
+    })
+
+    // Tangkap sinyal sinkronisasi sukses dari Service Worker Background Sync
+    const handleSwMessage = (event: MessageEvent) => {
+      if (event.data && event.data.type === 'ATTENDANCE_SYNCED') {
+        loadPendingRecords()
+      }
+    }
+
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.addEventListener('message', handleSwMessage)
+    }
+
     return () => {
       window.removeEventListener('online', handleOnline)
       window.removeEventListener('offline', handleOffline)
+      cleanupAutoSync()
+      if ('serviceWorker' in navigator) {
+        navigator.serviceWorker.removeEventListener('message', handleSwMessage)
+      }
     }
   }, [])
 

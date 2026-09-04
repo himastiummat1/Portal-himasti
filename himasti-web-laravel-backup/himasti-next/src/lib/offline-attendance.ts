@@ -57,7 +57,7 @@ export async function saveOfflineAttendance(
   record: Omit<OfflineAttendanceRecord, 'local_id' | 'is_synced' | 'created_at'>
 ): Promise<number> {
   const db = await openOfflineDB()
-  return new Promise((resolve, reject) => {
+  const id = await new Promise<number>((resolve, reject) => {
     const tx = db.transaction(STORE_NAME, 'readwrite')
     const store = tx.objectStore(STORE_NAME)
     const item: OfflineAttendanceRecord = {
@@ -69,6 +69,11 @@ export async function saveOfflineAttendance(
     request.onsuccess = () => resolve(request.result as number)
     request.onerror = () => reject(request.error)
   })
+
+  // Daftarkan Service Worker Background Sync otomatis jika browser mendukung
+  await requestBackgroundSync()
+
+  return id
 }
 
 export async function getPendingAttendances(): Promise<OfflineAttendanceRecord[]> {
@@ -125,4 +130,53 @@ export async function deleteSyncedAttendances(): Promise<void> {
     }
     request.onerror = () => reject(request.error)
   })
+}
+
+/**
+ * Mendaftarkan event Background Sync ke Service Worker
+ */
+export async function requestBackgroundSync(): Promise<boolean> {
+  if (typeof window === 'undefined') return false
+
+  try {
+    if ('serviceWorker' in navigator && 'SyncManager' in window) {
+      const reg = await navigator.serviceWorker.ready
+      await (reg as any).sync.register('sync-offline-attendance')
+      return true
+    }
+  } catch (err) {
+    console.warn('[Sync] Background sync registration:', err)
+  }
+  return false
+}
+
+/**
+ * Fallback auto-sync saat browser kembali online (untuk browser tanpa Background Sync API, misal Safari/Firefox)
+ */
+export function setupAutoSyncOnOnline(onSyncSuccess?: (count: number) => void): () => void {
+  if (typeof window === 'undefined') return () => {}
+
+  const handleOnline = async () => {
+    try {
+      const pending = await getPendingAttendances()
+      if (pending.length === 0) return
+
+      const response = await fetch('/api/absen/sync', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ records: pending }),
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        await deleteSyncedAttendances()
+        if (onSyncSuccess) onSyncSuccess(data.syncedCount || pending.length)
+      }
+    } catch (err) {
+      console.warn('[AutoSync] Fallback sync error:', err)
+    }
+  }
+
+  window.addEventListener('online', handleOnline)
+  return () => window.removeEventListener('online', handleOnline)
 }
