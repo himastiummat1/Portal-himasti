@@ -132,24 +132,10 @@ export default async function AdminDashboard() {
 
         {/* Big Profile Card with Live Theme, Frame, Name Effect, and Title */}
         <div className={`rounded-3xl p-5 sm:p-8 relative overflow-hidden transition-all ${getThemeClasses(userThemeId, isSuperAdmin)}`}>
-          {/* Animated Cyber & Hologram Background Layers */}
+          {/* Static Subtle Background Accents */}
           {isDarkCard && (
-            <>
-              <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-20 animate-grid-pan" />
-              <div className="pointer-events-none absolute inset-0 opacity-25 animate-holo-foil bg-gradient-to-tr from-transparent via-cyan-500/20 to-transparent" />
-              <div className="pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/80 to-transparent shadow-[0_0_15px_#22d3ee] animate-scan-sweep z-0" />
-              <div className="pointer-events-none absolute top-4 right-1/4 w-1.5 h-1.5 rounded-full bg-cyan-300 shadow-[0_0_8px_#22d3ee] animate-particle-1" />
-              <div className="pointer-events-none absolute bottom-6 left-1/3 w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_10px_#e879f9] animate-particle-2" />
-            </>
+            <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-10" />
           )}
-          <div 
-            className="absolute top-0 right-0 w-72 h-72 rounded-full animate-cyber-pulse pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%)" }}
-          />
-          <div 
-            className="absolute bottom-0 left-0 w-72 h-72 rounded-full animate-cyber-pulse [animation-delay:2s] pointer-events-none"
-            style={{ background: "radial-gradient(circle, rgba(6,182,212,0.18) 0%, transparent 70%)" }}
-          />
           
           <div className="relative z-10 flex flex-col md:flex-row gap-5 sm:gap-8 items-center md:items-start">
             <CosmeticAvatar 
