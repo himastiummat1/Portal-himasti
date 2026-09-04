@@ -5,7 +5,7 @@ import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import { 
   X, Download, ExternalLink, Printer, Check, Copy, 
-  Smartphone, ShieldCheck, Sparkles, QrCode, ArrowRight
+  Smartphone, ShieldCheck, Sparkles, QrCode, ArrowRight, Info
 } from "lucide-react";
 
 interface WalletPassModalProps {
@@ -29,7 +29,6 @@ export default function WalletPassModal({
 }: WalletPassModalProps) {
   const [activeTab, setActiveTab] = useState<"apple" | "google" | "print">("apple");
   const [copied, setCopied] = useState(false);
-  const [downloading, setDownloading] = useState(false);
 
   if (!isOpen) return null;
 
@@ -55,44 +54,41 @@ export default function WalletPassModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
-      <div className="relative w-full max-w-xl bg-slate-950 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden text-white my-auto animate-in zoom-in-95 duration-200">
+    <div className="fixed inset-0 z-[100] flex items-center justify-center p-3 sm:p-6 bg-slate-900/60 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+      <div className="relative w-full max-w-xl bg-white border border-slate-200/80 rounded-3xl shadow-2xl overflow-hidden text-slate-900 my-auto animate-in zoom-in-95 duration-200">
         
-        {/* Glowing Ambient Top Bar */}
-        <div className="absolute top-0 inset-x-0 h-1 bg-gradient-to-r from-cyan-400 via-violet-500 to-rose-500" />
-
         {/* Modal Header */}
-        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-800/80 bg-slate-900/50">
-          <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-xl bg-gradient-to-br from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-cyan-500/20">
-              <Smartphone className="w-4 h-4 text-white" />
+        <div className="flex items-center justify-between px-5 sm:px-6 py-4 border-b border-slate-100 bg-slate-50/70">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-blue-50 border border-blue-100 flex items-center justify-center text-blue-600 shadow-xs">
+              <Smartphone className="w-5 h-5" />
             </div>
             <div>
-              <h3 className="text-base font-bold text-white flex items-center gap-1.5">
-                Dompet Digital Resmi
-                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                Simpan ke Dompet Digital
+                <span className="text-[10px] font-mono px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-200 font-semibold">
                   SMART PASS
                 </span>
               </h3>
-              <p className="text-xs text-slate-400">Simpan KTA HIMASTI langsung ke Apple Wallet & Google Wallet</p>
+              <p className="text-xs text-slate-500">Apple Wallet (.pkpass) & Google Wallet Resmi</p>
             </div>
           </div>
           <button 
             onClick={onClose}
-            className="p-1.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
+            className="p-1.5 rounded-xl text-slate-400 hover:text-slate-700 hover:bg-slate-100 transition-colors"
           >
             <X className="w-5 h-5" />
           </button>
         </div>
 
         {/* Tab Selection */}
-        <div className="flex border-b border-slate-800 bg-slate-900/30 px-5 sm:px-6 pt-3 gap-2">
+        <div className="flex border-b border-slate-100 bg-white px-5 sm:px-6 pt-2 gap-2">
           <button
             onClick={() => setActiveTab("apple")}
             className={`pb-3 px-3 text-xs sm:text-sm font-semibold transition-all border-b-2 flex items-center gap-2 ${
               activeTab === "apple"
-                ? "border-cyan-400 text-cyan-300"
-                : "border-transparent text-slate-400 hover:text-slate-200"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
             <svg className="w-4 h-4 fill-current" viewBox="0 0 170 170">
@@ -105,11 +101,11 @@ export default function WalletPassModal({
             onClick={() => setActiveTab("google")}
             className={`pb-3 px-3 text-xs sm:text-sm font-semibold transition-all border-b-2 flex items-center gap-2 ${
               activeTab === "google"
-                ? "border-cyan-400 text-cyan-300"
-                : "border-transparent text-slate-400 hover:text-slate-200"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
-            <span className="w-2 h-2 rounded-full bg-blue-500" />
+            <span className="w-2.5 h-2.5 rounded-full bg-blue-500 shadow-[0_0_6px_#3b82f6]" />
             Google Wallet
           </button>
 
@@ -117,8 +113,8 @@ export default function WalletPassModal({
             onClick={() => setActiveTab("print")}
             className={`pb-3 px-3 text-xs sm:text-sm font-semibold transition-all border-b-2 flex items-center gap-2 ${
               activeTab === "print"
-                ? "border-cyan-400 text-cyan-300"
-                : "border-transparent text-slate-400 hover:text-slate-200"
+                ? "border-blue-600 text-blue-600"
+                : "border-transparent text-slate-500 hover:text-slate-800"
             }`}
           >
             <Printer className="w-3.5 h-3.5" />
@@ -129,13 +125,13 @@ export default function WalletPassModal({
         {/* Tab Contents */}
         <div className="p-5 sm:p-6 space-y-6">
           
-          {/* PASS VISUAL PREVIEW (Card Replica) */}
-          <div className="relative mx-auto max-w-sm rounded-2xl p-4 bg-slate-900 border border-cyan-500/30 shadow-[0_0_30px_rgba(6,182,212,0.15)] overflow-hidden">
-            {/* Wallet Cutout Notch Visual */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-2 bg-slate-950 rounded-b-xl border-b border-slate-800" />
+          {/* REALISTIC WALLET PASS PREVIEW (Black Pass Card inside light modal) */}
+          <div className="relative mx-auto max-w-sm rounded-2xl p-4 bg-slate-950 border border-slate-800 shadow-xl overflow-hidden text-white">
+            {/* Wallet Notch Cutout */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-16 h-2 bg-white rounded-b-xl border-b border-slate-200" />
 
             {/* Top Pass Header */}
-            <div className="flex items-center justify-between pb-3 border-b border-slate-800/80 mt-1">
+            <div className="flex items-center justify-between pb-3 border-b border-slate-800 mt-1">
               <div className="flex items-center gap-2">
                 <div className="w-6 h-6 rounded-md bg-white p-0.5 overflow-hidden">
                   <Image src="/images/logo_himasti.jpg" alt="Logo" width={24} height={24} className="w-full h-full object-contain" />
@@ -147,7 +143,7 @@ export default function WalletPassModal({
               </div>
             </div>
 
-            {/* Main Pass Info */}
+            {/* Pass Fields */}
             <div className="py-3.5 space-y-3">
               <div>
                 <div className="text-[9px] font-mono uppercase text-slate-400">NAMA KADER</div>
@@ -177,13 +173,13 @@ export default function WalletPassModal({
               </div>
             </div>
 
-            {/* Pass QR Barcode Area */}
+            {/* Pass Barcode */}
             <div className="pt-3 border-t border-dashed border-slate-800 flex flex-col items-center justify-center">
-              <div className="bg-white p-2.5 rounded-xl shadow-inner border border-slate-700">
+              <div className="bg-white p-2.5 rounded-xl shadow-inner">
                 <QRCodeSVG value={qrPayload} size={110} level="M" />
               </div>
               <div className="text-[9px] font-mono text-slate-400 mt-2 tracking-widest uppercase">
-                ID-{nim.substring(0, 8)} • OFFICIAL PASS
+                ID-{nim.substring(0, 8)} • VERIFIED PASS
               </div>
             </div>
           </div>
@@ -191,21 +187,21 @@ export default function WalletPassModal({
           {/* TAB 1: APPLE WALLET ACTIONS */}
           {activeTab === "apple" && (
             <div className="space-y-4">
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 space-y-1.5">
-                <div className="flex items-center gap-1.5 text-cyan-300 font-bold">
-                  <Sparkles className="w-3.5 h-3.5" />
+              <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-100 text-xs text-blue-900 space-y-1.5">
+                <div className="flex items-center gap-1.5 text-blue-950 font-bold">
+                  <Sparkles className="w-3.5 h-3.5 text-blue-600" />
                   Petunjuk Penggunaan iPhone & Apple Watch:
                 </div>
-                <p>1. Klik tombol <b>Download .pkpass</b> di bawah ini menggunakan browser Safari di iPhone.</p>
-                <p>2. iOS akan otomatis memunculkan sheet pratinjau Apple Wallet dengan tombol <b>Tambah / Add</b> di kanan atas.</p>
-                <p>3. KTA Anda langsung tersimpan di aplikasi Apple Wallet resmi dan siap digunakan untuk tap/scan presensi!</p>
+                <p>1. Buka halaman ini menggunakan browser Safari di iPhone.</p>
+                <p>2. Klik tombol <b>Download .pkpass</b> di bawah ini.</p>
+                <p>3. Safari akan otomatis memunculkan sheet pratinjau Apple Wallet dengan tombol <b>Tambah / Add</b> di pojok kanan atas.</p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <a
                   href={pkpassDownloadUrl}
                   download={`HIMASTI-KTA-${nim}.pkpass`}
-                  className="flex-1 py-3 px-4 bg-white text-slate-950 hover:bg-slate-100 font-bold rounded-2xl flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98]"
+                  className="flex-1 py-3 px-4 bg-slate-900 hover:bg-black text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] text-xs sm:text-sm"
                 >
                   <Download className="w-4 h-4" />
                   <span>Download .pkpass (Apple Wallet)</span>
@@ -213,10 +209,10 @@ export default function WalletPassModal({
 
                 <button
                   onClick={handleCopyQr}
-                  className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-2xl flex items-center justify-center gap-2 transition-all"
+                  className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-2xl flex items-center justify-center gap-2 transition-all text-xs sm:text-sm"
                 >
-                  {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
-                  <span>{copied ? "Tersalin!" : "Salin QR"}</span>
+                  {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
+                  <span>{copied ? "Tersalin!" : "Salin Data QR"}</span>
                 </button>
               </div>
             </div>
@@ -225,21 +221,21 @@ export default function WalletPassModal({
           {/* TAB 2: GOOGLE WALLET ACTIONS */}
           {activeTab === "google" && (
             <div className="space-y-4">
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 space-y-1.5">
-                <div className="flex items-center gap-1.5 text-blue-400 font-bold">
-                  <Smartphone className="w-3.5 h-3.5" />
+              <div className="p-4 rounded-2xl bg-blue-50/60 border border-blue-100 text-xs text-blue-900 space-y-1.5">
+                <div className="flex items-center gap-1.5 text-blue-950 font-bold">
+                  <Smartphone className="w-3.5 h-3.5 text-blue-600" />
                   Petunjuk Penggunaan Android & Google Wallet:
                 </div>
-                <p>1. Unduh paket pass KTA dengan format standar <b>.pkpass</b> atau <b>Pass Data</b>.</p>
-                <p>2. Di Android, file ini dapat dibuka langsung menggunakan aplikasi <b>Google Wallet</b>, <b>WalletPasses</b>, atau <b>PassAndroid</b>.</p>
-                <p>3. Kartu digital akan tersimpan offline di HP tanpa perlu membuka browser tiap rapat.</p>
+                <p>1. Unduh paket pass KTA dengan format standar <b>.pkpass</b>.</p>
+                <p>2. Di Android, file ini dapat dibuka langsung oleh aplikasi <b>Google Wallet</b>, <b>WalletPasses</b>, atau <b>PassAndroid</b>.</p>
+                <p>3. Kartu identitas Anda tersimpan secara offline di smartphone.</p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-3">
+              <div className="flex flex-col sm:flex-row gap-2.5">
                 <a
                   href={pkpassDownloadUrl}
                   download={`HIMASTI-KTA-${nim}.pkpass`}
-                  className="flex-1 py-3 px-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-xl transition-all active:scale-[0.98]"
+                  className="flex-1 py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all active:scale-[0.98] text-xs sm:text-sm"
                 >
                   <Download className="w-4 h-4" />
                   <span>Simpan ke Google Wallet / Android</span>
@@ -249,7 +245,7 @@ export default function WalletPassModal({
                   href={jsonPassUrl}
                   target="_blank"
                   rel="noreferrer"
-                  className="py-3 px-4 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-2xl flex items-center justify-center gap-2 transition-all"
+                  className="py-3 px-4 bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-2xl flex items-center justify-center gap-2 transition-all text-xs sm:text-sm"
                 >
                   <ExternalLink className="w-4 h-4" />
                   <span>Pass Data (JSON)</span>
@@ -261,33 +257,33 @@ export default function WalletPassModal({
           {/* TAB 3: CETAK FISIK */}
           {activeTab === "print" && (
             <div className="space-y-4">
-              <div className="p-3.5 rounded-xl bg-slate-900/60 border border-slate-800 text-xs text-slate-300 space-y-1.5">
-                <div className="flex items-center gap-1.5 text-emerald-400 font-bold">
-                  <Printer className="w-3.5 h-3.5" />
+              <div className="p-4 rounded-2xl bg-emerald-50/70 border border-emerald-100 text-xs text-emerald-900 space-y-1.5">
+                <div className="flex items-center gap-1.5 text-emerald-950 font-bold">
+                  <Printer className="w-3.5 h-3.5 text-emerald-600" />
                   Cetak Fisik Standar Kartu PVC / Laminasi:
                 </div>
-                <p>Fitur ini menyusun tata letak KTA dalam rasio standar kartu identitas ISO ID-1 (85.60 × 53.98 mm) siap cetak.</p>
+                <p>Tata letak telah disesuaikan dengan rasio kartu identitas resmi ISO ID-1 (85.60 × 53.98 mm) resolusi tinggi.</p>
               </div>
 
               <button
                 onClick={handlePrint}
-                className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-xl transition-all"
+                className="w-full py-3 px-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-2xl flex items-center justify-center gap-2 shadow-sm transition-all text-xs sm:text-sm"
               >
                 <Printer className="w-4 h-4" />
-                <span>Cetak / Simpan PDF Resolusi Tinggi</span>
+                <span>Cetak / Simpan Dokumen PDF</span>
               </button>
             </div>
           )}
 
         </div>
 
-        {/* Modal Footer Note */}
-        <div className="px-6 py-3.5 bg-slate-900/80 border-t border-slate-800/80 flex items-center justify-between text-[11px] text-slate-400">
+        {/* Modal Footer */}
+        <div className="px-6 py-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500">
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-            <span>Terotentikasi Database HIMASTI UMMAT</span>
+            <ShieldCheck className="w-3.5 h-3.5 text-emerald-600" />
+            <span>Terotentikasi Server Resmi HIMASTI UMMAT</span>
           </div>
-          <span className="font-mono text-slate-500">v2.5 WALLET ENGINE</span>
+          <span className="font-mono text-slate-400">SMART PASS v2.5</span>
         </div>
 
       </div>
