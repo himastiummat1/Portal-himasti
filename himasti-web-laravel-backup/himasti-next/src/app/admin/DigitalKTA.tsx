@@ -120,9 +120,21 @@ export default function DigitalKTA({
     };
   }, [isZoomed]);
 
-  const isMinimalist = themeId === "default";
+  const isMinimalist = !themeId || themeId === "default" || !["dark_obsidian", "cyber_city", "emerald_matrix", "cosmic_violet"].includes(themeId);
 
-  const getThemeGlows = (tId: string) => {
+  const getThemeGlows = (tId?: string | null) => {
+    if (!tId || tId === "default" || !["dark_obsidian", "cyber_city", "emerald_matrix", "cosmic_violet"].includes(tId)) {
+      // Clean Minimalist: Elegan & Berstandar Korporat HIMASTI
+      return {
+        radial1: "none",
+        radial2: "none",
+        radial3: "none",
+        laser: "none",
+        border: "border-slate-200/90 dark:border-slate-800 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_35px_-5px_rgba(0,0,0,0.1)]",
+        accentColor: "text-blue-600 dark:text-blue-400",
+        sparkColor: "transparent"
+      };
+    }
     switch (tId) {
       case "emerald_matrix":
         return {
@@ -165,7 +177,6 @@ export default function DigitalKTA({
           sparkColor: "bg-slate-200 shadow-[0_0_6px_#e2e8f0]"
         };
       default:
-        // Clean Minimalist: Elegan & Berstandar Korporat HIMASTI
         return {
           radial1: "none",
           radial2: "none",
@@ -382,7 +393,7 @@ export default function DigitalKTA({
             rotateY,
             transformStyle: "preserve-3d",
           }}
-          className={`w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in ${isMinimalist ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900' : 'bg-slate-950'} p-4 sm:p-5 transition-all duration-500 flex flex-col justify-between select-none ${currentTheme.border}`}
+          className={`w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in ${isMinimalist ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 text-slate-900 dark:text-white' : 'bg-slate-950 text-white'} p-4 sm:p-5 transition-all duration-500 flex flex-col justify-between select-none ${currentTheme.border}`}
         >
           <CardContent zoomed={false} />
         </motion.div>
@@ -484,7 +495,7 @@ export default function DigitalKTA({
                     rotateY,
                     transformStyle: "preserve-3d",
                   }}
-                  className={`w-full relative h-full md:h-auto aspect-auto md:aspect-[2/1] lg:aspect-[2.2/1] ${isMinimalist ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900' : 'bg-slate-950'} rounded-[2rem] p-6 md:p-14 transition-all duration-500 flex flex-col justify-between overflow-y-auto overflow-x-hidden md:overflow-visible select-none ${currentTheme.border}`}
+                  className={`w-full relative h-full md:h-auto aspect-auto md:aspect-[2/1] lg:aspect-[2.2/1] ${isMinimalist ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900 text-slate-900 dark:text-white' : 'bg-slate-950 text-white'} rounded-[2rem] p-6 md:p-14 transition-all duration-500 flex flex-col justify-between overflow-y-auto overflow-x-hidden md:overflow-visible select-none ${currentTheme.border}`}
                 >
                   <CardContent zoomed={true} />
                 </motion.div>

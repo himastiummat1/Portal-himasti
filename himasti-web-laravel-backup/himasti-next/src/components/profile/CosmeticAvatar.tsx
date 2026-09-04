@@ -115,12 +115,12 @@ export function CosmeticAvatar({
       <img
         src={avatarUrl}
         alt={name}
-        className={`relative z-10 w-full h-full object-cover rounded-full bg-slate-950 transition-all border-2 ${
+        className={`relative z-10 w-full h-full object-cover rounded-full ${frameId === "none" ? "bg-slate-100 dark:bg-slate-800" : "bg-slate-950"} transition-all border-2 ${
           frameId === "matrix_emerald" ? "border-emerald-400" :
           frameId === "royal_gold" ? "border-yellow-200" :
           frameId === "cyber_neon" ? "border-cyan-300" :
           frameId === "cosmic_nebula" ? "border-purple-300" :
-          frameId === "flame_phoenix" ? "border-amber-300" : "border-slate-200"
+          frameId === "flame_phoenix" ? "border-amber-300" : "border-slate-200 dark:border-slate-700"
         } shadow-md`}
       />
     </div>

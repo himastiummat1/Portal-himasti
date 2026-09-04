@@ -60,7 +60,18 @@ export async function POST(req: Request) {
       });
 
       await tx.dataKader.create({
-        data: { user_id: newUser.id, nim, angkatan, status_kaderisasi: "Aktif" }
+        data: { 
+          user_id: newUser.id, 
+          nim, 
+          angkatan, 
+          status_kaderisasi: "Aktif",
+          custom_theme: "default",
+          custom_frame: "none",
+          custom_title: "kader",
+          custom_name_effect: "plain",
+          owned_cosmetics: JSON.stringify(["none", "kader", "default", "plain"]),
+          solved_challenges: "[]"
+        }
       });
 
       const role = await tx.role.findFirst({ where: { name: "kader" } });

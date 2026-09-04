@@ -246,7 +246,7 @@ export default function OfflineAttendanceScanner({
   }
 
   return (
-    <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-6 shadow-md max-w-lg mx-auto">
+    <div className="bg-white dark:bg-slate-800 rounded-3xl border border-slate-200 dark:border-slate-700 p-5 sm:p-6 shadow-md max-w-lg mx-auto w-full overflow-hidden">
       <div className="flex items-center justify-between pb-4 mb-5 border-b border-slate-100 dark:border-slate-700">
         <div>
           <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Status Jaringan Aula</span>
@@ -362,7 +362,7 @@ export default function OfflineAttendanceScanner({
 
       {/* Bantuan Tautkan Perangkat (Kelola Passkey) - Berada di DALAM container kartu */}
       <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700">
-        <div className="p-3.5 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-blue-900 dark:text-blue-200">
+        <div className="p-3.5 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-blue-900 dark:text-blue-200 w-full">
           <div className="flex items-start gap-2.5 min-w-0">
             <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
             <p className="leading-relaxed">

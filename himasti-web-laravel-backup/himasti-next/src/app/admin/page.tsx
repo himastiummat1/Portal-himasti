@@ -116,7 +116,7 @@ export default async function AdminDashboard() {
   const userNameEffect = kaderData?.custom_name_effect || "plain";
   const userXp = kaderData?.xp ?? 50;
   const userTitle = TITLES.find(t => t.id === userTitleId) || TITLES[0];
-  const isDarkCard = userThemeId !== "default";
+  const isDarkCard = !!userThemeId && userThemeId !== "default" && ["dark_obsidian", "cyber_city", "emerald_matrix", "cosmic_violet"].includes(userThemeId);
 
   if (!isPengurus) {
     return (
