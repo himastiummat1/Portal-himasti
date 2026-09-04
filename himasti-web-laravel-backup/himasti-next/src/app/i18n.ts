@@ -17,7 +17,7 @@ export const dictionaries = {
     noAccount: "Belum memiliki akun kader?",
     registerNow: "Daftar Sekarang",
     menu: {
-      overview: "Overview",
+      overview: "Beranda",
       org: "Profil & Organisasi",
       adart: "AD/ART & Konstitusi",
       main: "Manajemen Utama",
