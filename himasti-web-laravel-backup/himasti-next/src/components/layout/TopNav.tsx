@@ -58,32 +58,22 @@ export default function TopNav({
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-14">
             
-            <div className="flex items-center h-full min-w-0" ref={navRef}>
-              <div className="shrink-0 flex items-center gap-2 sm:gap-2.5 mr-3 sm:mr-5 lg:mr-8">
-                <Link href="/admin" className="shrink-0 font-bold text-base sm:text-lg text-slate-900 tracking-tight flex items-center gap-2 select-none hover:opacity-90 transition-opacity">
-                  <Image 
-                    src="/images/logo_himasti.jpg" 
-                    alt="Logo HIMASTI" 
-                    width={26} 
-                    height={26} 
-                    className="w-6 h-6 sm:w-6.5 sm:h-6.5 object-contain rounded-md shrink-0 shadow-2xs" 
-                    priority
-                  />
-                  <span className="whitespace-nowrap shrink-0">HIMASTI</span>
-                </Link>
-                <Link
-                  href="/updates"
-                  className="shrink-0 px-2 py-0.5 text-[10px] font-mono font-bold rounded-full bg-cyan-50 text-cyan-700 border border-cyan-200/80 hover:bg-cyan-100 transition-colors inline-flex items-center gap-1 shadow-xs whitespace-nowrap"
-                  title="Lihat Catatan Rilis & Pembaruan Sistem"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse shrink-0" />
-                  <span className="shrink-0">v2.5</span>
-                </Link>
-              </div>
+            <div className="flex items-center h-full" ref={navRef}>
+              <Link href="/admin" className="font-bold text-lg text-slate-900 mr-6 lg:mr-8 tracking-tight flex items-center gap-2.5 shrink-0 select-none hover:opacity-90 transition-opacity">
+                <Image 
+                  src="/images/logo_himasti.jpg" 
+                  alt="Logo HIMASTI" 
+                  width={24} 
+                  height={24} 
+                  className="w-6 h-6 object-contain rounded-md shrink-0" 
+                  priority
+                />
+                <span className="font-bold tracking-tight">HIMASTI</span>
+              </Link>
               
               {/* Desktop Menu */}
-              <div className="hidden md:flex h-full space-x-0.5 lg:space-x-1">
-                <Link href="/admin" className={`inline-flex items-center px-2.5 lg:px-3 text-xs lg:text-sm transition-colors rounded-md my-2 whitespace-nowrap shrink-0 ${pathname === "/admin" ? "bg-slate-100 text-slate-900 font-medium" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}>
+              <div className="hidden md:flex h-full space-x-1">
+                <Link href="/admin" className={`inline-flex items-center px-3 text-sm transition-colors rounded-md my-2 ${pathname === "/admin" ? "bg-slate-100 text-slate-900 font-medium" : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"}`}>
                   {dict.menu.overview}
                 </Link>
 
@@ -95,7 +85,7 @@ export default function TopNav({
                     <div key={group.title} className="relative flex items-center h-full my-2">
                       <button 
                         onClick={() => setOpenGroup(isOpen ? null : group.title)}
-                        className={`inline-flex items-center px-2 lg:px-2.5 xl:px-3 py-1.5 text-xs lg:text-sm transition-colors rounded-md gap-1 whitespace-nowrap shrink-0 ${
+                        className={`inline-flex items-center px-3 py-1.5 text-sm transition-colors rounded-md gap-1 ${
                           isActive || isOpen
                             ? "bg-slate-100 text-slate-900 font-medium" 
                             : "text-slate-500 hover:text-slate-900 hover:bg-slate-50"
@@ -133,16 +123,16 @@ export default function TopNav({
             </div>
 
             {/* Right side Profile & Search */}
-            <div className="hidden md:flex items-center gap-2 lg:gap-3 shrink-0">
+            <div className="hidden md:flex items-center gap-3">
               
               {/* Command Palette Trigger */}
               <button 
                 onClick={() => setIsCmdOpen(true)}
-                className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-lg text-xs lg:text-sm text-slate-400 transition-colors mr-1 lg:mr-2 w-32 md:w-36 lg:w-48 xl:w-56 shrink-0"
+                className="flex items-center gap-2 px-3 py-1.5 bg-slate-50 border border-slate-200 hover:border-slate-300 rounded-lg text-sm text-slate-400 transition-colors mr-2 w-44 lg:w-56"
               >
-                <Search className="w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0" />
+                <Search className="w-4 h-4" />
                 <span className="flex-1 text-left truncate">Search...</span>
-                <span className="flex items-center gap-0.5 text-[10px] font-mono font-medium border border-slate-200 bg-white px-1.5 py-0.5 rounded text-slate-500 shrink-0">
+                <span className="flex items-center gap-0.5 text-[10px] font-mono font-medium border border-slate-200 bg-white px-1.5 py-0.5 rounded text-slate-500">
                   <Command className="w-3 h-3" />K
                 </span>
               </button>

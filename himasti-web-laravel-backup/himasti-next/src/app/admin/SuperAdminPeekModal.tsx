@@ -81,19 +81,16 @@ export default function SuperAdminPeekModal({ adminData }: SuperAdminPeekProps) 
 
   return (
     <>
-      {/* Trigger Button to flex on Cadres */}
+      {/* Trigger Button to match web portal standard */}
       <button
         type="button"
         onClick={() => setIsOpen(true)}
-        className="group relative inline-flex items-center gap-2 px-3.5 sm:px-4 py-2 sm:py-2.5 rounded-2xl bg-gradient-to-r from-slate-900 via-purple-950 to-slate-900 text-white text-xs font-bold shadow-md hover:shadow-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 border border-purple-500/30 overflow-hidden shrink-0"
+        className="px-4 py-2 bg-white/90 backdrop-blur-sm shadow-[0_8px_30px_-4px_rgba(14,165,233,0.03)] border border-slate-200/60 rounded-xl text-sm font-medium text-slate-700 hover:text-slate-900 hover:bg-slate-50/50 transition-colors inline-flex items-center gap-2 shrink-0 group"
       >
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/20 via-rose-500/20 to-amber-500/20 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-        <span className="relative z-10 flex items-center gap-1.5">
-          <Eye className="w-3.5 h-3.5 text-cyan-400 group-hover:scale-110 transition-transform" />
-          <span>Intip Akun Architect</span>
-          <span className="px-1.5 py-0.5 rounded-full bg-amber-400/20 text-amber-300 text-[10px] font-mono border border-amber-400/30">
-            👑 VIP
-          </span>
+        <Eye className="w-4 h-4 text-slate-400 group-hover:text-slate-600 transition-colors" />
+        <span>Intip Akun Architect</span>
+        <span className="px-1.5 py-0.5 rounded-md bg-amber-50 text-amber-700 border border-amber-200/80 text-[10px] font-mono font-bold">
+          VIP
         </span>
       </button>
 
