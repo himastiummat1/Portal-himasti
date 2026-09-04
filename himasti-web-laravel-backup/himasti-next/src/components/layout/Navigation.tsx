@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 
@@ -39,8 +40,15 @@ export function Navigation() {
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="shrink-0 flex items-center">
-              <Link href="/" className="font-bold text-xl ">
-                HIMASTI (Publik)
+              <Link href="/" className="font-bold text-lg text-slate-900 tracking-tight flex items-center gap-2.5">
+                <Image 
+                  src="/images/logo_himasti.jpg" 
+                  alt="Logo HIMASTI" 
+                  width={28} 
+                  height={28} 
+                  className="w-7 h-7 object-contain rounded-md shadow-2xs" 
+                />
+                <span>HIMASTI</span>
               </Link>
             </div>
             <div className="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">

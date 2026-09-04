@@ -5,6 +5,7 @@ import AbsenClient from "./AbsenClient";
 import AbsenTabs from "./AbsenTabs";
 import { ShieldCheck, Calendar, ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 
 export const dynamic = "force-dynamic";
 
@@ -60,13 +61,22 @@ export default async function AbsenPage({
             </div>
           </div>
 
-          <div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white">
-              Presensi Biometrik & Aula Offline
-            </h1>
-            <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
-              Sistem presensi anti-joki dengan chip fisik perangkat HP dan penyimpanan tangguh saat aula tanpa internet.
-            </p>
+          <div className="flex items-center gap-3.5">
+            <Image 
+              src="/images/logo_himasti.jpg" 
+              alt="Logo HIMASTI" 
+              width={48} 
+              height={48} 
+              className="w-11 h-11 object-contain rounded-2xl border border-slate-200 dark:border-slate-800 shadow-2xs shrink-0 bg-white" 
+            />
+            <div>
+              <h1 className="text-2xl sm:text-3xl font-extrabold text-slate-900 dark:text-white leading-tight">
+                Presensi Biometrik & Aula Offline
+              </h1>
+              <p className="text-sm text-slate-500 dark:text-slate-400 mt-0.5">
+                Sistem presensi anti-joki dengan chip fisik perangkat HP dan penyimpanan tangguh saat aula tanpa internet.
+              </p>
+            </div>
           </div>
 
           <AbsenTabs

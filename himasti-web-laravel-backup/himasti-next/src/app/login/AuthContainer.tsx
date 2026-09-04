@@ -1,15 +1,17 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft, CheckCircle2, Eye, EyeOff, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import LoginForm from "./LoginForm";
 
-export default function AuthContainer({ dict }: { dict: any }) {
-  const [isLoginMode, setIsLoginMode] = useState(true);
+export default function AuthContainer({ dict, initialMode = "login" }: { dict: any, initialMode?: "login" | "register" }) {
+  const [isLoginMode, setIsLoginMode] = useState(initialMode === "login");
   const [registerLoading, setRegisterLoading] = useState(false);
   const [registerError, setRegisterError] = useState("");
   const [registerSuccess, setRegisterSuccess] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
@@ -18,6 +20,12 @@ export default function AuthContainer({ dict }: { dict: any }) {
     e.preventDefault();
     setRegisterLoading(true);
     setRegisterError("");
+
+    if (!agreedToTerms) {
+      setRegisterError("Pendaftaran ditolak: Anda wajib mencentang persetujuan Ketentuan Layanan & Kebijakan Privasi.");
+      setRegisterLoading(false);
+      return;
+    }
 
     const formData = new FormData(e.currentTarget);
     const password = formData.get("password") as string;
@@ -30,9 +38,13 @@ export default function AuthContainer({ dict }: { dict: any }) {
     }
 
     try {
+      const payload = {
+        ...Object.fromEntries(formData),
+        consent: agreedToTerms
+      };
       const res = await fetch("/api/auth/register", {
         method: "POST",
-        body: JSON.stringify(Object.fromEntries(formData)),
+        body: JSON.stringify(payload),
         headers: { "Content-Type": "application/json" }
       });
       let data;
@@ -76,8 +88,15 @@ export default function AuthContainer({ dict }: { dict: any }) {
 
       <div className="w-full max-w-sm mx-auto mt-12 md:mt-0 relative">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold text-2xl shadow-sm mb-4">
-            H
+          <div className="w-14 h-14 relative mb-3 rounded-2xl overflow-hidden shadow-md border border-slate-200/80 bg-white p-1 flex items-center justify-center">
+            <Image 
+              src="/images/logo_himasti.jpg" 
+              alt="Logo HIMASTI" 
+              width={52} 
+              height={52} 
+              className="w-full h-full object-contain rounded-xl"
+              priority
+            />
           </div>
           <div className="text-2xl font-black text-slate-900 tracking-tighter">HIMASTI</div>
         </div>
@@ -164,22 +183,49 @@ export default function AuthContainer({ dict }: { dict: any }) {
                               <input name="secret_code" type="text" required className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-sm font-medium outline-none bg-white transition-all placeholder-slate-400" placeholder="Kode Rahasia Registrasi 🔒" />
                             </div>
 
-                            <div className="pt-1 pb-1">
-                              <label className="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer select-none text-left">
-                                <input 
-                                  type="checkbox" 
-                                  name="consent"
-                                  required 
-                                  className="mt-0.5 w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer shrink-0" 
-                                />
-                                <span className="leading-snug">
-                                  Saya menyetujui <Link href="/terms" target="_blank" className="text-blue-600 font-semibold hover:underline">Ketentuan Layanan</Link> & <Link href="/privacy" target="_blank" className="text-blue-600 font-semibold hover:underline">Kebijakan Privasi</Link> pemrosesan data kemahasiswaan HIMASTI UMMAT.
-                                </span>
-                              </label>
+                            <div className="pt-1">
+                              <div className={`p-3 rounded-xl border transition-all ${
+                                agreedToTerms 
+                                  ? 'bg-emerald-50/80 border-emerald-300 text-slate-800 shadow-2xs' 
+                                  : 'bg-slate-50 border-slate-200 text-slate-600'
+                              }`}>
+                                <label className="flex items-start gap-2.5 text-xs cursor-pointer select-none text-left">
+                                  <input 
+                                    type="checkbox" 
+                                    name="consent"
+                                    id="register-consent"
+                                    checked={agreedToTerms}
+                                    onChange={(e) => {
+                                      setAgreedToTerms(e.target.checked);
+                                      if (registerError) setRegisterError("");
+                                    }}
+                                    required 
+                                    className="mt-0.5 w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer shrink-0 accent-slate-900" 
+                                  />
+                                  <span className="leading-snug">
+                                    Saya telah membaca dan menyetujui <Link href="/terms" target="_blank" className="text-blue-600 font-bold underline underline-offset-2 hover:text-blue-800">Ketentuan Layanan</Link> & <Link href="/privacy" target="_blank" className="text-blue-600 font-bold underline underline-offset-2 hover:text-blue-800">Kebijakan Privasi</Link> pemrosesan data kemahasiswaan HIMASTI UMMAT.
+                                  </span>
+                                </label>
+                              </div>
+                              {!agreedToTerms && (
+                                <p className="text-[11px] text-amber-600 font-medium mt-1.5 flex items-center gap-1">
+                                  <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0 animate-pulse" />
+                                  Centang kotak persetujuan untuk membuka akses pendaftaran.
+                                </p>
+                              )}
                             </div>
 
-                            <button disabled={registerLoading} className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition-colors mt-2 disabled:opacity-50 flex justify-center items-center shadow-sm">
-                              {registerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Daftar Akun"}
+                            <button 
+                              type="submit"
+                              disabled={registerLoading || !agreedToTerms} 
+                              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition-all mt-2 disabled:opacity-40 disabled:cursor-not-allowed flex justify-center items-center shadow-sm"
+                              title={!agreedToTerms ? "Wajib centang persetujuan terlebih dahulu" : "Daftar Akun Sekarang"}
+                            >
+                              {registerLoading ? (
+                                <Loader2 className="w-5 h-5 animate-spin" />
+                              ) : (
+                                agreedToTerms ? "Daftar Akun Sekarang" : "Centang Persetujuan untuk Masuk"
+                              )}
                             </button>
                          </form>
 

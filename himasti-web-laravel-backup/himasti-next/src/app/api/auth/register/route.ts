@@ -5,10 +5,17 @@ import bcrypt from "bcryptjs";
 export async function POST(req: Request) {
   try {
     const body = await req.json();
-    const { name, email, password, nim, angkatan, secret_code } = body;
+    const { name, email, password, nim, angkatan, secret_code, consent } = body;
 
     if (!name || !email || !password || !nim || !angkatan || !secret_code) {
       return NextResponse.json({ error: "Semua kolom wajib diisi" }, { status: 400 });
+    }
+
+    // Validasi Persetujuan Ketentuan Layanan & Kebijakan Privasi
+    if (!consent || consent === "false") {
+      return NextResponse.json({ 
+        error: "Pendaftaran ditolak: Anda wajib menyetujui Ketentuan Layanan dan Kebijakan Privasi." 
+      }, { status: 400 });
     }
 
     // Validasi Kode Rahasia (Diambil dari environment variable aman)

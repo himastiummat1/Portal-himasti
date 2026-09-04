@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import Image from "next/image";
 import { QRCodeSVG } from "qrcode.react";
 import { getQrToken } from "./actions";
 import { Shield, RefreshCw, MapPin } from "lucide-react";
@@ -74,8 +75,9 @@ export default function QrClient({ meeting, appUrl }: { meeting: any, appUrl: st
 
         {/* Right Side: Meeting Info Area */}
         <div className="flex flex-col gap-6">
-          <div className="inline-block px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-full text-slate-300 text-sm w-fit font-mono tracking-widest backdrop-blur-md">
-            HIMASTI CORE SYSTEM
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-full text-slate-300 text-sm w-fit font-mono tracking-widest backdrop-blur-md">
+            <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={20} height={20} className="w-5 h-5 object-contain rounded-md shrink-0 shadow-2xs" />
+            <span>HIMASTI CORE SYSTEM</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold leading-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">

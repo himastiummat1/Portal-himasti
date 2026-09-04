@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
+import Image from "next/image";
 import { Html5QrcodeScanner, Html5Qrcode } from "html5-qrcode";
 import { ArrowLeft, Camera, CheckCircle2, ShieldAlert, XCircle, Search } from "lucide-react";
 import Link from "next/link";
@@ -89,11 +90,22 @@ export default function ScannerClient({ meetings }: { meetings: any[] }) {
         <Link href="/admin" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-4">
           <ArrowLeft className="w-4 h-4" /> Kembali
         </Link>
-        <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-          <Camera className="w-6 h-6 text-gray-900" />
-          Live KTA Scanner
-        </h1>
-        <p className="text-gray-500 mt-1">Gunakan kamera untuk men-scan Digital ID Card Kader saat Rapat atau Event.</p>
+        <div className="flex items-center gap-3">
+          <Image 
+            src="/images/logo_himasti.jpg" 
+            alt="Logo HIMASTI" 
+            width={40} 
+            height={40} 
+            className="w-10 h-10 object-contain rounded-xl border border-slate-200 shadow-2xs shrink-0" 
+          />
+          <div>
+            <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
+              <Camera className="w-5 h-5 text-gray-700" />
+              Live KTA Scanner
+            </h1>
+            <p className="text-gray-500 text-sm mt-0.5">Gunakan kamera untuk men-scan Digital ID Card Kader saat Rapat atau Event.</p>
+          </div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

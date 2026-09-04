@@ -1,5 +1,6 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import LoginForm from "./LoginForm";
 
@@ -14,8 +15,15 @@ export default function LoginContainer({ dict }: { dict: any }) {
 
       <div className="w-full max-w-sm mx-auto mt-12 md:mt-0">
         <div className="flex flex-col items-center mb-8">
-          <div className="w-12 h-12 bg-slate-900 text-white rounded-xl flex items-center justify-center font-bold text-2xl shadow-sm mb-4">
-            H
+          <div className="w-14 h-14 relative mb-3 rounded-2xl overflow-hidden shadow-md border border-slate-200/80 bg-white p-1 flex items-center justify-center">
+            <Image 
+              src="/images/logo_himasti.jpg" 
+              alt="Logo HIMASTI" 
+              width={52} 
+              height={52} 
+              className="w-full h-full object-contain rounded-xl"
+              priority
+            />
           </div>
           <div className="text-2xl font-black text-slate-900 tracking-tighter">HIMASTI</div>
         </div>
