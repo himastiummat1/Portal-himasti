@@ -32,6 +32,7 @@ interface OfflineAttendanceScannerProps {
   title?: string
   currentUserId: number
   currentUserName: string
+  onSwitchToPasskey?: () => void
 }
 
 export default function OfflineAttendanceScanner({
@@ -40,6 +41,7 @@ export default function OfflineAttendanceScanner({
   title = 'Presensi HIMASTI',
   currentUserId,
   currentUserName,
+  onSwitchToPasskey,
 }: OfflineAttendanceScannerProps) {
   const [isOnline, setIsOnline] = useState(true)
   const [loading, setLoading] = useState(false)
@@ -295,7 +297,13 @@ export default function OfflineAttendanceScanner({
             {!result.success && result.message.includes('belum mendaftarkan') && (
               <button
                 type="button"
-                onClick={() => document.getElementById('passkey-enrollment')?.scrollIntoView({ behavior: 'smooth' })}
+                onClick={() => {
+                  if (onSwitchToPasskey) {
+                    onSwitchToPasskey()
+                  } else {
+                    document.getElementById('passkey-enrollment')?.scrollIntoView({ behavior: 'smooth' })
+                  }
+                }}
                 className="mt-2.5 px-3 py-1.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold inline-flex items-center gap-1.5 shadow-sm transition"
               >
                 <span>👇 Klik di Sini untuk Tautkan Perangkat</span>

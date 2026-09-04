@@ -24,7 +24,7 @@ export default function AbsenTabs({
   return (
     <div className="space-y-6">
       {/* Navigation Tabs */}
-      <div className="bg-white dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex overflow-x-auto no-scrollbar gap-1.5">
+      <div className="bg-white dark:bg-slate-800 p-1.5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm flex overflow-x-auto no-scrollbar gap-1.5 max-w-lg mx-auto w-full">
         <button
           type="button"
           onClick={() => setActiveTab('biometric')}
@@ -70,23 +70,28 @@ export default function AbsenTabs({
 
       {/* Tab 1: Biometrik & Offline Aula */}
       {activeTab === 'biometric' && (
-        <div className="space-y-6">
+        <div className="space-y-4 max-w-lg mx-auto w-full">
           <OfflineAttendanceScanner
             meetingId={meetingId}
             title={meetingTitle}
             currentUserId={currentUserId}
             currentUserName={currentUserName}
+            onSwitchToPasskey={() => setActiveTab('passkey_manage')}
           />
-          <div className="p-4 rounded-2xl bg-blue-50 dark:bg-blue-950/30 border border-blue-200 dark:border-blue-800 text-xs text-blue-800 dark:text-blue-300 flex items-center justify-between">
-            <span className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-blue-600 shrink-0" />
-              Perangkat belum didaftarkan? Buka tab <strong>Kelola Passkey</strong> untuk mendaftarkan HP.
-            </span>
+          <div className="p-4 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
+            <div className="flex items-start gap-2.5 min-w-0">
+              <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+              <p className="text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
+                Perangkat belum didaftarkan? Buka tab <strong>Kelola Passkey</strong> untuk mendaftarkan HP.
+              </p>
+            </div>
             <button
+              type="button"
               onClick={() => setActiveTab('passkey_manage')}
-              className="font-bold underline ml-2 shrink-0"
+              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition shrink-0 shadow-xs active:scale-95 whitespace-nowrap self-stretch sm:self-auto"
             >
-              Daftar Sekarang →
+              <span>Daftar Sekarang</span>
+              <span aria-hidden="true">&rarr;</span>
             </button>
           </div>
         </div>
@@ -94,12 +99,14 @@ export default function AbsenTabs({
 
       {/* Tab 2: Scan QR Kamera HP */}
       {activeTab === 'camera_qr' && (
-        <CameraQRScanner currentUserId={currentUserId} />
+        <div className="max-w-lg mx-auto w-full">
+          <CameraQRScanner currentUserId={currentUserId} />
+        </div>
       )}
 
       {/* Tab 3: Kelola Passkey Perangkat Kader */}
       {activeTab === 'passkey_manage' && (
-        <div className="space-y-4">
+        <div className="space-y-4 max-w-lg mx-auto w-full">
           <PasskeyEnrollment />
         </div>
       )}
