@@ -236,6 +236,20 @@ export default function PrivacyPolicyPage() {
                 Anda dapat mengunduh salinan data KTA Anda dalam format standar (`.pkpass`, JSON, PDF) untuk dipergunakan di platform lain.
               </div>
             </div>
+
+            {/* Explicit Right to be Forgotten Procedure */}
+            <div className="mt-4 p-5 rounded-2xl bg-red-50/70 border border-red-200 text-xs sm:text-sm text-red-950 space-y-2">
+              <div className="font-bold flex items-center gap-2 text-red-900">
+                <AlertTriangle className="w-4 h-4 text-red-600" />
+                Prosedur Pencabutan Persetujuan & Permohonan Hapus Data:
+              </div>
+              <p>
+                Sesuai Pasal 8 UU No. 27/2022 tentang Pelindungan Data Pribadi dan Pasal 17 GDPR, apabila Anda sebagai mahasiswa/alumni <b>berkeberatan data Anda tercatat di portal ini</b>, Anda berhak mencabut persetujuan kapan saja.
+              </p>
+              <p>
+                Kirimkan permohonan ke email resmi <b>himasti@ummat.ac.id</b> dengan subjek <code className="bg-red-100 px-1 py-0.5 rounded text-red-900">[HAPUS DATA] - Nama - NIM</code>. Tim pengurus akan memverifikasi dan menghapus/menyamarkan data keanggotaan Anda dari sistem dalam waktu maksimal <b>3×24 jam kerja</b> tanpa syarat yang memberatkan.
+              </p>
+            </div>
           </section>
 
           {/* Section 5 */}

@@ -654,6 +654,9 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             <Link href="/privacy" className="hover:text-blue-600 transition-colors font-medium">
               Kebijakan Privasi
             </Link>
+            <Link href="/terms" className="hover:text-blue-600 transition-colors font-medium">
+              Ketentuan Layanan
+            </Link>
             <Link href="/absen" className="hover:text-blue-600 transition-colors font-medium">{t.fidoNav}</Link>
             <Link href="/login" className="hover:text-slate-900 transition-colors">{t.footerLogin}</Link>
             <a href="https://github.com/himastiummat1/Portal-himasti" target="_blank" rel="noreferrer" className="hover:text-slate-900 transition flex items-center gap-1">

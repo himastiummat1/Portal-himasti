@@ -17,7 +17,10 @@ export function Navigation() {
     pathname?.startsWith("/privacy") ||
     pathname?.startsWith("/kebijakan-privasi") ||
     pathname?.startsWith("/updates") ||
-    pathname?.startsWith("/changelog")
+    pathname?.startsWith("/changelog") ||
+    pathname?.startsWith("/terms") ||
+    pathname?.startsWith("/syarat-ketentuan") ||
+    pathname?.startsWith("/ketentuan-layanan")
   ) {
     return null;
   }
@@ -26,6 +29,7 @@ export function Navigation() {
     { name: "Presensi & Scanner", href: "/absen" },
     { name: "Catatan Rilis", href: "/updates" },
     { name: "Kebijakan Privasi", href: "/privacy" },
+    { name: "Ketentuan Layanan", href: "/terms" },
     { name: "Beranda", href: "/" },
   ];
 

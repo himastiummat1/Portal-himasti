@@ -45,6 +45,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   groupOrganisasi.links.push({ href: "/admin/adart", label: "AD/ART & Konstitusi" });
   groupOrganisasi.links.push({ href: "/updates", label: "Catatan Rilis (v2.5)" });
   groupOrganisasi.links.push({ href: "/privacy", label: "Kebijakan Privasi" });
+  groupOrganisasi.links.push({ href: "/terms", label: "Ketentuan Layanan" });
   groups.push(groupOrganisasi);
 
   // Group Utama

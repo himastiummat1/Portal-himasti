@@ -164,6 +164,20 @@ export default function AuthContainer({ dict }: { dict: any }) {
                               <input name="secret_code" type="text" required className="w-full px-4 py-3 rounded-xl border border-slate-300 focus:ring-2 focus:ring-slate-900 focus:border-slate-900 text-sm font-medium outline-none bg-white transition-all placeholder-slate-400" placeholder="Kode Rahasia Registrasi 🔒" />
                             </div>
 
+                            <div className="pt-1 pb-1">
+                              <label className="flex items-start gap-2.5 text-xs text-slate-600 cursor-pointer select-none text-left">
+                                <input 
+                                  type="checkbox" 
+                                  name="consent"
+                                  required 
+                                  className="mt-0.5 w-4 h-4 rounded border-slate-300 text-slate-900 focus:ring-slate-900 cursor-pointer shrink-0" 
+                                />
+                                <span className="leading-snug">
+                                  Saya menyetujui <Link href="/terms" target="_blank" className="text-blue-600 font-semibold hover:underline">Ketentuan Layanan</Link> & <Link href="/privacy" target="_blank" className="text-blue-600 font-semibold hover:underline">Kebijakan Privasi</Link> pemrosesan data kemahasiswaan HIMASTI UMMAT.
+                                </span>
+                              </label>
+                            </div>
+
                             <button disabled={registerLoading} className="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-xl transition-colors mt-2 disabled:opacity-50 flex justify-center items-center shadow-sm">
                               {registerLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : "Daftar Akun"}
                             </button>
