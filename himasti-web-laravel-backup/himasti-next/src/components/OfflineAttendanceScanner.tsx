@@ -25,6 +25,7 @@ import {
   Loader2,
   Radio,
   Clock,
+  ShieldCheck,
 } from 'lucide-react'
 
 interface OfflineAttendanceScannerProps {
@@ -358,6 +359,26 @@ export default function OfflineAttendanceScanner({
           </button>
         </div>
       )}
+
+      {/* Bantuan Tautkan Perangkat (Kelola Passkey) - Berada di DALAM container kartu */}
+      <div className="mt-6 pt-5 border-t border-slate-100 dark:border-slate-700">
+        <div className="p-3.5 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-blue-900 dark:text-blue-200">
+          <div className="flex items-start gap-2.5 min-w-0">
+            <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
+            <p className="leading-relaxed">
+              Perangkat belum didaftarkan? Buka tab <strong>Kelola Passkey</strong> untuk mendaftarkan sensor HP.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={onSwitchToPasskey}
+            className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold transition shrink-0 shadow-xs active:scale-95 whitespace-nowrap self-stretch sm:self-auto"
+          >
+            <span>Daftar Sekarang</span>
+            <span aria-hidden="true">&rarr;</span>
+          </button>
+        </div>
+      </div>
     </div>
   )
 }

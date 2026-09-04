@@ -116,7 +116,7 @@ export default async function AdminDashboard() {
   const userNameEffect = kaderData?.custom_name_effect || "plain";
   const userXp = kaderData?.xp ?? 50;
   const userTitle = TITLES.find(t => t.id === userTitleId) || TITLES[0];
-  const isDarkCard = isSuperAdmin || userThemeId !== "default";
+  const isDarkCard = userThemeId !== "default";
 
   if (!isPengurus) {
     return (

@@ -195,9 +195,6 @@ export const NAME_EFFECTS: CosmeticItem[] = [
  * Card theme CSS classes based on themeId
  */
 export function getThemeClasses(themeId: string = "default", isSuper: boolean = false): string {
-  if (isSuper && themeId === "default") {
-    return "bg-slate-950 text-white border-2 border-violet-500/40 shadow-2xl ring-1 ring-violet-500/20";
-  }
   switch (themeId) {
     case "dark_obsidian":
       return "bg-gradient-to-br from-slate-950 via-slate-900 to-black text-white border border-slate-700/80 shadow-2xl";
@@ -208,7 +205,7 @@ export function getThemeClasses(themeId: string = "default", isSuper: boolean = 
     case "cosmic_violet":
       return "bg-gradient-to-br from-slate-950 via-purple-950/80 to-slate-950 text-purple-100 border-2 border-purple-500/50 shadow-[0_0_30px_rgba(168,85,247,0.15)] ring-1 ring-purple-500/30";
     default:
-      return "bg-white border border-slate-200/80 text-slate-900 shadow-sm";
+      return "bg-white dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80 text-slate-900 dark:text-white shadow-sm";
   }
 }
 
@@ -224,7 +221,7 @@ export function getNameClasses(effectId: string = "plain", isSuper: boolean = fa
     case "neon_blue":
       return "text-cyan-300 font-extrabold animate-neon-pulse-text";
     default:
-      return (isSuper || themeId !== "default") ? "text-white font-extrabold" : "text-slate-900 font-bold";
+      return themeId !== "default" ? "text-white font-extrabold" : "text-slate-900 dark:text-white font-bold";
   }
 }
 

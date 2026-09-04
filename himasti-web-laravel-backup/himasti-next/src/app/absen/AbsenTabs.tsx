@@ -70,7 +70,7 @@ export default function AbsenTabs({
 
       {/* Tab 1: Biometrik & Offline Aula */}
       {activeTab === 'biometric' && (
-        <div className="space-y-4 max-w-lg mx-auto w-full">
+        <div className="max-w-lg mx-auto w-full">
           <OfflineAttendanceScanner
             meetingId={meetingId}
             title={meetingTitle}
@@ -78,22 +78,6 @@ export default function AbsenTabs({
             currentUserName={currentUserName}
             onSwitchToPasskey={() => setActiveTab('passkey_manage')}
           />
-          <div className="p-4 rounded-2xl bg-blue-50/90 dark:bg-blue-950/40 border border-blue-200/80 dark:border-blue-800/60 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-xs">
-            <div className="flex items-start gap-2.5 min-w-0">
-              <ShieldCheck className="w-4 h-4 text-blue-600 dark:text-blue-400 shrink-0 mt-0.5" />
-              <p className="text-xs text-blue-900 dark:text-blue-200 leading-relaxed">
-                Perangkat belum didaftarkan? Buka tab <strong>Kelola Passkey</strong> untuk mendaftarkan HP.
-              </p>
-            </div>
-            <button
-              type="button"
-              onClick={() => setActiveTab('passkey_manage')}
-              className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-semibold text-xs transition shrink-0 shadow-xs active:scale-95 whitespace-nowrap self-stretch sm:self-auto"
-            >
-              <span>Daftar Sekarang</span>
-              <span aria-hidden="true">&rarr;</span>
-            </button>
-          </div>
         </div>
       )}
 

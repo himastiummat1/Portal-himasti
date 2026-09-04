@@ -120,6 +120,8 @@ export default function DigitalKTA({
     };
   }, [isZoomed]);
 
+  const isMinimalist = themeId === "default";
+
   const getThemeGlows = (tId: string) => {
     switch (tId) {
       case "emerald_matrix":
@@ -163,14 +165,15 @@ export default function DigitalKTA({
           sparkColor: "bg-slate-200 shadow-[0_0_6px_#e2e8f0]"
         };
       default:
+        // Clean Minimalist: Elegan & Berstandar Korporat HIMASTI
         return {
-          radial1: "radial-gradient(circle, rgba(6,182,212,0.25) 0%, rgba(6,182,212,0.08) 40%, transparent 70%)",
-          radial2: "radial-gradient(circle, rgba(139,92,246,0.25) 0%, transparent 70%)",
-          radial3: "radial-gradient(circle, rgba(245,158,11,0.15) 0%, transparent 70%)",
-          laser: "via-cyan-400 shadow-[0_0_12px_#22d3ee]",
-          border: "border-cyan-500/40 shadow-[0_0_30px_rgba(6,182,212,0.2)] hover:shadow-[0_0_45px_rgba(6,182,212,0.35)]",
-          accentColor: "text-cyan-300",
-          sparkColor: "bg-cyan-300 shadow-[0_0_6px_#22d3ee]"
+          radial1: "none",
+          radial2: "none",
+          radial3: "none",
+          laser: "none",
+          border: "border-slate-200/90 dark:border-slate-800 shadow-[0_10px_30px_-5px_rgba(0,0,0,0.06)] hover:shadow-[0_20px_35px_-5px_rgba(0,0,0,0.1)]",
+          accentColor: "text-blue-600 dark:text-blue-400",
+          sparkColor: "transparent"
         };
     }
   };
@@ -179,49 +182,56 @@ export default function DigitalKTA({
 
   const CardContent = ({ zoomed = false }) => (
     <>
-      {/* 1. ANIMATED CYBER GRID PATTERN */}
-      <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-30 animate-grid-pan z-0" />
+      {/* Background layer */}
+      {!isMinimalist ? (
+        <>
+          {/* 1. ANIMATED CYBER GRID PATTERN */}
+          <div className="pointer-events-none absolute inset-0 bg-grid-pattern opacity-30 animate-grid-pan z-0" />
 
-      {/* 2. HOLOGRAPHIC IRIDESCENT FOIL SHIMMER (HARDWARE ACCELERATED) */}
-      <div 
-        className="pointer-events-none absolute inset-0 opacity-30 animate-holo-foil z-0"
-        style={{
-          background: "linear-gradient(135deg, rgba(6,182,212,0.25) 0%, rgba(168,85,247,0.2) 25%, rgba(244,63,94,0.2) 50%, rgba(251,191,36,0.25) 75%, rgba(16,185,129,0.25) 100%)"
-        }}
-      />
+          {/* 2. HOLOGRAPHIC IRIDESCENT FOIL SHIMMER */}
+          <div 
+            className="pointer-events-none absolute inset-0 opacity-30 animate-holo-foil z-0"
+            style={{
+              background: "linear-gradient(135deg, rgba(6,182,212,0.25) 0%, rgba(168,85,247,0.2) 25%, rgba(244,63,94,0.2) 50%, rgba(251,191,36,0.25) 75%, rgba(16,185,129,0.25) 100%)"
+            }}
+          />
 
-      {/* 3. LIGHTWEIGHT LIVING NEBULA & PLASMA AMBIENT GLOWS (0px Gaussian Blur - Pure GPU Radial Gradient) */}
-      <div 
-        className="pointer-events-none absolute -top-14 -right-14 w-52 h-52 rounded-full animate-cyber-pulse z-0" 
-        style={{ background: currentTheme.radial1 }}
-      />
-      <div 
-        className="pointer-events-none absolute -bottom-14 -left-14 w-52 h-52 rounded-full animate-cyber-pulse [animation-delay:1.8s] z-0" 
-        style={{ background: currentTheme.radial2 }}
-      />
-      <div 
-        className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full animate-cyber-pulse [animation-delay:3s] z-0" 
-        style={{ background: currentTheme.radial3 }}
-      />
+          {/* 3. LIGHTWEIGHT LIVING NEBULA & PLASMA GLOWS */}
+          <div className="pointer-events-none absolute -top-14 -right-14 w-52 h-52 rounded-full animate-cyber-pulse z-0" style={{ background: currentTheme.radial1 }} />
+          <div className="pointer-events-none absolute -bottom-14 -left-14 w-52 h-52 rounded-full animate-cyber-pulse [animation-delay:1.8s] z-0" style={{ background: currentTheme.radial2 }} />
+          <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-40 h-40 rounded-full animate-cyber-pulse [animation-delay:3s] z-0" style={{ background: currentTheme.radial3 }} />
 
-      {/* 4. CONTINUOUS LASER SCANNER SWEEP BEAM */}
-      <div className={`pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent ${currentTheme.laser} to-transparent animate-scan-sweep z-10`} />
+          {/* 4. CONTINUOUS LASER SCANNER */}
+          <div className={`pointer-events-none absolute inset-x-0 h-[2px] bg-gradient-to-r from-transparent ${currentTheme.laser} to-transparent animate-scan-sweep z-10`} />
 
-      {/* 5. FLOATING CYBER PARTICLES / ENERGY SPARKS */}
-      <div className={`pointer-events-none absolute top-6 right-1/4 w-1.5 h-1.5 rounded-full ${currentTheme.sparkColor} animate-particle-1 z-1`} />
-      <div className="pointer-events-none absolute bottom-12 left-1/3 w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_8px_#e879f9] animate-particle-2 z-1" />
-      <div className="pointer-events-none absolute top-1/2 right-12 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#f59e0b] animate-particle-3 z-1" />
+          {/* 5. FLOATING CYBER PARTICLES */}
+          <div className={`pointer-events-none absolute top-6 right-1/4 w-1.5 h-1.5 rounded-full ${currentTheme.sparkColor} animate-particle-1 z-1`} />
+          <div className="pointer-events-none absolute bottom-12 left-1/3 w-2 h-2 rounded-full bg-fuchsia-400 shadow-[0_0_8px_#e879f9] animate-particle-2 z-1" />
+          <div className="pointer-events-none absolute top-1/2 right-12 w-1.5 h-1.5 rounded-full bg-amber-300 shadow-[0_0_6px_#f59e0b] animate-particle-3 z-1" />
 
-      {/* 6. ROTATING HOLOGRAM WATERMARK EMBLEM */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 w-56 h-56 border border-cyan-400/10 rounded-full animate-holo-watermark flex items-center justify-center z-0">
-        <div className="w-44 h-44 border border-dashed border-violet-400/15 rounded-full" />
-      </div>
+          {/* 6. ROTATING HOLOGRAM WATERMARK */}
+          <div className="pointer-events-none absolute top-1/2 left-1/2 w-56 h-56 border border-cyan-400/10 rounded-full animate-holo-watermark flex items-center justify-center z-0">
+            <div className="w-44 h-44 border border-dashed border-violet-400/15 rounded-full" />
+          </div>
+        </>
+      ) : (
+        <>
+          {/* Minimalist Watermark & Subtle Corner Accent */}
+          <div className="pointer-events-none absolute -right-12 -bottom-12 w-64 h-64 rounded-full bg-gradient-to-tl from-blue-500/5 via-indigo-500/5 to-transparent z-0" />
+          <div className="pointer-events-none absolute -left-12 -top-12 w-48 h-48 rounded-full bg-gradient-to-br from-slate-200/40 dark:from-slate-700/20 to-transparent z-0" />
+          <div className="pointer-events-none absolute right-6 top-1/2 -translate-y-1/2 opacity-[0.04] dark:opacity-[0.07] select-none z-0">
+            <Image src="/images/logo_himasti.jpg" alt="" width={160} height={160} className="grayscale object-contain" />
+          </div>
+        </>
+      )}
 
-      {/* 7. INTERACTIVE MOUSE / GYROSCOPE GLARE */}
+      {/* INTERACTIVE MOUSE / GYROSCOPE GLARE */}
       <motion.div
         className="pointer-events-none absolute inset-0 z-0 rounded-[inherit]"
         style={{
-          background: "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 60%)",
+          background: isMinimalist
+            ? "radial-gradient(circle at 50% 50%, rgba(59,130,246,0.06) 0%, transparent 60%)"
+            : "radial-gradient(circle at 50% 50%, rgba(255,255,255,0.12) 0%, transparent 60%)",
           left: glareX,
           top: glareY,
           transform: "translate(-50%, -50%)",
@@ -231,30 +241,37 @@ export default function DigitalKTA({
       />
 
       {/* CARD CONTENT HEADER */}
-      <div className={`flex justify-between items-start w-full relative z-10`} style={{ transform: "translateZ(30px)" }}>
+      <div className="flex justify-between items-start w-full relative z-10" style={{ transform: "translateZ(30px)" }}>
         <div className="flex items-center gap-2 md:gap-3 min-w-0">
-          <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg'} bg-white flex items-center justify-center shadow-md p-1 overflow-hidden shrink-0 border border-cyan-400/40`}>
+          <div className={`${zoomed ? 'w-10 h-10 md:w-14 md:h-14 rounded-lg md:rounded-xl' : 'w-7 h-7 sm:w-8 sm:h-8 rounded-lg'} bg-white flex items-center justify-center shadow-md p-1 overflow-hidden shrink-0 ${isMinimalist ? 'border border-slate-200 dark:border-slate-700' : 'border border-cyan-400/40'}`}>
             <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={60} height={60} className="w-full h-full object-contain" />
           </div>
           <div className="min-w-0">
-            <div className={`font-black text-white tracking-tight leading-none flex items-center gap-1.5 ${zoomed ? 'text-xl md:text-3xl' : 'text-sm sm:text-base'}`}>
+            <div className={`font-black tracking-tight leading-none flex items-center gap-1.5 ${isMinimalist ? 'text-slate-900 dark:text-white' : 'text-white'} ${zoomed ? 'text-xl md:text-3xl' : 'text-sm sm:text-base'}`}>
               <span>HIMASTI UMMAT</span>
-              <span className="inline-block w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_6px_#22d3ee]" />
+              <span className={`inline-block w-1.5 h-1.5 rounded-full ${isMinimalist ? 'bg-blue-600 dark:bg-blue-400' : 'bg-cyan-400 animate-pulse shadow-[0_0_6px_#22d3ee]'}`} />
             </div>
-            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[8px] sm:text-[10px] mt-0.5'} text-slate-400 font-mono tracking-normal sm:tracking-widest uppercase truncate max-w-[170px] sm:max-w-none`}>
+            <div className={`${zoomed ? 'text-[10px] md:text-sm mt-1 md:mt-1.5' : 'text-[8px] sm:text-[10px] mt-0.5'} ${isMinimalist ? 'text-slate-500 dark:text-slate-400 font-medium' : 'text-slate-400 font-mono tracking-normal sm:tracking-widest uppercase'} truncate max-w-[170px] sm:max-w-none`}>
               Himpunan Mahasiswa Sistem & Teknologi Informasi
             </div>
           </div>
         </div>
 
-        {/* Live Animated Security Badge */}
-        <div className={`flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-emerald-950/90 border border-emerald-400/40 rounded-full ${zoomed ? 'text-xs md:text-sm px-3.5 py-1.5' : 'text-[8px] sm:text-[9px]'} font-mono font-bold text-emerald-300 tracking-wider shadow-[0_0_12px_rgba(16,185,129,0.25)] shrink-0 ml-2`}>
-          <span className="relative flex h-1.5 w-1.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
-          </span>
-          <span>RESMI • VERIFIED</span>
-        </div>
+        {/* Live Security Badge */}
+        {isMinimalist ? (
+          <div className={`flex items-center gap-1.5 px-2.5 py-1 bg-emerald-50 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 rounded-full ${zoomed ? 'text-xs md:text-sm px-3.5 py-1.5' : 'text-[8px] sm:text-[9px]'} font-semibold text-emerald-700 dark:text-emerald-300 shadow-2xs shrink-0 ml-2`}>
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+            <span>KADER RESMI</span>
+          </div>
+        ) : (
+          <div className={`flex items-center gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 bg-emerald-950/90 border border-emerald-400/40 rounded-full ${zoomed ? 'text-xs md:text-sm px-3.5 py-1.5' : 'text-[8px] sm:text-[9px]'} font-mono font-bold text-emerald-300 tracking-wider shadow-[0_0_12px_rgba(16,185,129,0.25)] shrink-0 ml-2`}>
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-emerald-400"></span>
+            </span>
+            <span>RESMI • VERIFIED</span>
+          </div>
+        )}
       </div>
 
       {/* CARD CONTENT BODY */}
@@ -280,57 +297,68 @@ export default function DigitalKTA({
             </div>
 
             <div className="flex-1 min-w-0">
-              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-cyan-300/80 font-mono uppercase tracking-widest flex items-center gap-1`}>
-                <Sparkles className="w-2.5 h-2.5 text-cyan-400" />
+              <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} ${isMinimalist ? 'text-blue-600 dark:text-blue-400 font-bold tracking-wider' : 'text-cyan-300/80 font-mono uppercase tracking-widest'} flex items-center gap-1`}>
+                <Sparkles className={`w-2.5 h-2.5 ${isMinimalist ? 'text-blue-600 dark:text-blue-400' : 'text-cyan-400'}`} />
                 <span>IDENTITAS KADER</span>
               </div>
-              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-base sm:text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, "dark_obsidian")} w-full`}>
+              <div className={`${zoomed ? 'text-2xl md:text-5xl lg:text-7xl whitespace-normal break-words leading-tight' : 'text-base sm:text-lg truncate leading-tight'} ${getNameClasses(nameEffectId, false, themeId)} ${isMinimalist ? 'text-slate-900 dark:text-white font-extrabold' : ''} w-full`}>
                 {name}
               </div>
-              <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 sm:px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] sm:text-[10px] md:text-xs font-mono font-bold truncate max-w-full shadow-[0_0_8px_rgba(245,158,11,0.2)]">
-                <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-300 text-amber-300 shrink-0" />
-                <span className="truncate">{title}</span>
-              </div>
+              {isMinimalist ? (
+                <div className="inline-flex items-center gap-1 mt-1 px-2 py-0.5 rounded-lg bg-blue-50 dark:bg-blue-950/50 text-blue-700 dark:text-blue-300 border border-blue-200/80 dark:border-blue-800/80 text-[9px] sm:text-[10px] md:text-xs font-semibold truncate max-w-full">
+                  <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-blue-600 text-blue-600 dark:fill-blue-400 dark:text-blue-400 shrink-0" />
+                  <span className="truncate">{title}</span>
+                </div>
+              ) : (
+                <div className="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 sm:px-2 rounded bg-amber-500/20 text-amber-300 border border-amber-500/30 text-[9px] sm:text-[10px] md:text-xs font-mono font-bold truncate max-w-full shadow-[0_0_8px_rgba(245,158,11,0.2)]">
+                  <Star className="w-2.5 h-2.5 md:w-3 md:h-3 fill-amber-300 text-amber-300 shrink-0" />
+                  <span className="truncate">{title}</span>
+                </div>
+              )}
             </div>
           </div>
           
           <div className={`flex flex-wrap ${zoomed ? 'gap-8 md:gap-16 mt-6 md:mt-8' : 'gap-3 sm:gap-4 mt-1 sm:mt-2'}`}>
             <div>
               <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>NIM</div>
-              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold text-cyan-200 truncate max-w-[120px]`}>{nim}</div>
+              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold ${isMinimalist ? 'text-slate-900 dark:text-white' : 'text-cyan-200'} truncate max-w-[120px]`}>{nim}</div>
             </div>
             <div>
               <div className={`${zoomed ? 'text-[10px] md:text-sm mb-1 md:mb-2' : 'text-[8px] sm:text-[9px] mb-0.5'} text-slate-400 font-mono uppercase tracking-widest`}>ANGKATAN</div>
-              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold text-slate-200`}>{angkatan}</div>
+              <div className={`${zoomed ? 'text-lg md:text-3xl' : 'text-xs sm:text-sm'} font-mono font-bold ${isMinimalist ? 'text-slate-700 dark:text-slate-300' : 'text-slate-200'}`}>{angkatan}</div>
             </div>
           </div>
         </div>
 
-        {/* QR Code with High-Tech Corner Reticles & Scanning Laser */}
-        <div className={`relative p-1.5 sm:p-2 border border-cyan-400/40 bg-white shrink-0 shadow-2xl flex items-center justify-center rounded-lg sm:rounded-xl overflow-hidden ${zoomed ? 'p-3 md:p-5 rounded-xl md:rounded-2xl w-24 h-24 md:w-[200px] md:h-[200px] self-start md:self-end' : 'w-14 h-14 sm:w-16 sm:h-16'}`} style={{ transform: "translateZ(60px)" }}>
-          {/* Cyber Corner Reticles */}
-          <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-600 z-20 pointer-events-none" />
-          <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-600 z-20 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-600 z-20 pointer-events-none" />
-          <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-600 z-20 pointer-events-none" />
-          {/* Micro QR Scan Laser */}
-          <div className="absolute inset-x-0 h-[1.5px] bg-cyan-500 shadow-[0_0_8px_#06b6d4] animate-scan-sweep pointer-events-none z-10 opacity-70" />
-          <QRCodeSVG value={qrValue} width="100%" height="100%" level="H" />
+        {/* QR Code */}
+        <div className={`relative p-1.5 sm:p-2 ${isMinimalist ? 'border border-slate-200 dark:border-slate-700 bg-white shadow-sm' : 'border border-cyan-400/40 bg-white shadow-2xl'} shrink-0 flex items-center justify-center rounded-lg sm:rounded-xl overflow-hidden ${zoomed ? 'p-3 md:p-5 rounded-xl md:rounded-2xl w-24 h-24 md:w-[200px] md:h-[200px] self-start md:self-end' : 'w-14 h-14 sm:w-16 sm:h-16'}`} style={{ transform: "translateZ(60px)" }}>
+          {!isMinimalist && (
+            <>
+              {/* Cyber Corner Reticles */}
+              <div className="absolute top-0 left-0 w-2 h-2 border-t-2 border-l-2 border-cyan-600 z-20 pointer-events-none" />
+              <div className="absolute top-0 right-0 w-2 h-2 border-t-2 border-r-2 border-cyan-600 z-20 pointer-events-none" />
+              <div className="absolute bottom-0 left-0 w-2 h-2 border-b-2 border-l-2 border-cyan-600 z-20 pointer-events-none" />
+              <div className="absolute bottom-0 right-0 w-2 h-2 border-b-2 border-r-2 border-cyan-600 z-20 pointer-events-none" />
+              {/* Micro QR Scan Laser */}
+              <div className="absolute inset-x-0 h-[1.5px] bg-cyan-500 shadow-[0_0_8px_#06b6d4] animate-scan-sweep pointer-events-none z-10 opacity-70" />
+            </>
+          )}
+          <QRCodeSVG value={qrValue} width="100%" height="100%" level="H" fgColor="#0f172a" />
         </div>
       </div>
 
       {/* CARD CONTENT FOOTER */}
-      <div className={`w-full flex ${zoomed ? 'flex-col md:flex-row mt-6 md:mt-8 pt-4 md:pt-6 gap-3 md:gap-6' : 'flex-row mt-3 sm:mt-4 pt-2 sm:pt-3 gap-2'} justify-between items-start md:items-end border-t border-cyan-500/20 relative z-10`} style={{ transform: "translateZ(20px)" }}>
+      <div className={`w-full flex ${zoomed ? 'flex-col md:flex-row mt-6 md:mt-8 pt-4 md:pt-6 gap-3 md:gap-6' : 'flex-row mt-3 sm:mt-4 pt-2 sm:pt-3 gap-2'} justify-between items-start md:items-end ${isMinimalist ? 'border-t border-slate-100 dark:border-slate-800' : 'border-t border-cyan-500/20'} relative z-10`} style={{ transform: "translateZ(20px)" }}>
         <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
-          <div className="flex items-center gap-1 text-[7px] sm:text-[8px] text-cyan-400 font-mono bg-cyan-950/60 border border-cyan-500/40 px-1.5 py-0.5 rounded shrink-0">
-            <Wifi className="w-2.5 h-2.5 text-cyan-400 animate-pulse shrink-0" />
+          <div className={`flex items-center gap-1 text-[7px] sm:text-[8px] ${isMinimalist ? 'text-slate-600 dark:text-slate-400 font-medium bg-slate-100 dark:bg-slate-800 border border-slate-200/80 dark:border-slate-700/80' : 'text-cyan-400 font-mono bg-cyan-950/60 border border-cyan-500/40'} px-1.5 py-0.5 rounded shrink-0`}>
+            <Wifi className={`w-2.5 h-2.5 ${isMinimalist ? 'text-slate-500' : 'text-cyan-400 animate-pulse'} shrink-0`} />
             <span>NFC</span>
           </div>
-          <div className={`${zoomed ? 'text-xs md:text-lg whitespace-normal break-all' : 'text-[8px] sm:text-[9px] truncate max-w-[130px] sm:max-w-[200px]'} text-slate-400 font-mono`}>{email}</div>
+          <div className={`${zoomed ? 'text-xs md:text-lg whitespace-normal break-all' : 'text-[8px] sm:text-[9px] truncate max-w-[130px] sm:max-w-[200px]'} ${isMinimalist ? 'text-slate-500 dark:text-slate-400 font-medium' : 'text-slate-400 font-mono'}`}>{email}</div>
         </div>
         <div className="flex items-center gap-1.5 shrink-0">
-          <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping" />
-          <div className={`${zoomed ? 'text-xs md:text-lg' : 'text-[8px] sm:text-[9px]'} text-cyan-300 font-mono uppercase font-bold tracking-wider`}>ID-{nim.substring(0,8)}</div>
+          <span className={`w-1.5 h-1.5 rounded-full ${isMinimalist ? 'bg-blue-600 dark:bg-blue-400' : 'bg-cyan-400 animate-ping'}`} />
+          <div className={`${zoomed ? 'text-xs md:text-lg' : 'text-[8px] sm:text-[9px]'} ${isMinimalist ? 'text-slate-700 dark:text-slate-300 font-mono font-bold' : 'text-cyan-300 font-mono uppercase font-bold tracking-wider'}`}>ID-{nim.substring(0,8)}</div>
         </div>
       </div>
     </>
@@ -354,7 +382,7 @@ export default function DigitalKTA({
             rotateY,
             transformStyle: "preserve-3d",
           }}
-          className={`w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in bg-slate-950 p-4 sm:p-5 transition-all duration-500 flex flex-col justify-between select-none ${currentTheme.border}`}
+          className={`w-full relative min-h-[220px] sm:aspect-[1.6/1] rounded-2xl overflow-hidden cursor-zoom-in ${isMinimalist ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900' : 'bg-slate-950'} p-4 sm:p-5 transition-all duration-500 flex flex-col justify-between select-none ${currentTheme.border}`}
         >
           <CardContent zoomed={false} />
         </motion.div>
@@ -456,7 +484,7 @@ export default function DigitalKTA({
                     rotateY,
                     transformStyle: "preserve-3d",
                   }}
-                  className={`w-full relative h-full md:h-auto aspect-auto md:aspect-[2/1] lg:aspect-[2.2/1] bg-slate-950 rounded-[2rem] p-6 md:p-14 transition-all duration-500 flex flex-col justify-between overflow-y-auto overflow-x-hidden md:overflow-visible select-none ${currentTheme.border}`}
+                  className={`w-full relative h-full md:h-auto aspect-auto md:aspect-[2/1] lg:aspect-[2.2/1] ${isMinimalist ? 'bg-gradient-to-br from-white via-slate-50 to-slate-100 dark:from-slate-900 dark:via-slate-850 dark:to-slate-900' : 'bg-slate-950'} rounded-[2rem] p-6 md:p-14 transition-all duration-500 flex flex-col justify-between overflow-y-auto overflow-x-hidden md:overflow-visible select-none ${currentTheme.border}`}
                 >
                   <CardContent zoomed={true} />
                 </motion.div>
