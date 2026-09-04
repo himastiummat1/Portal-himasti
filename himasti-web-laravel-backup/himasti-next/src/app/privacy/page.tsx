@@ -293,12 +293,13 @@ export default function PrivacyPolicyPage() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
-                <Link 
-                  href="/admin" 
-                  className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors"
+                <a 
+                  href="mailto:himasti@ummat.ac.id" 
+                  className="px-4 py-2 bg-slate-900 text-white rounded-xl text-xs font-semibold hover:bg-slate-800 transition-colors inline-flex items-center gap-1.5"
                 >
-                  Buka Portal Kader
-                </Link>
+                  <Mail className="w-3.5 h-3.5" />
+                  <span>Hubungi DPO</span>
+                </a>
                 <Link 
                   href="/updates" 
                   className="px-4 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl text-xs font-semibold hover:bg-slate-50 transition-colors"

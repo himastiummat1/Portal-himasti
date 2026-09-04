@@ -8,15 +8,25 @@ export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
 
-  // Hide global navigation on admin and login pages
-  if (pathname === "/" || pathname?.startsWith("/register") || pathname?.startsWith("/admin") || pathname?.startsWith("/login")) {
+  // Hide global navigation on admin, login, register, and dedicated landing/policy pages
+  if (
+    pathname === "/" || 
+    pathname?.startsWith("/register") || 
+    pathname?.startsWith("/admin") || 
+    pathname?.startsWith("/login") ||
+    pathname?.startsWith("/privacy") ||
+    pathname?.startsWith("/kebijakan-privasi") ||
+    pathname?.startsWith("/updates") ||
+    pathname?.startsWith("/changelog")
+  ) {
     return null;
   }
 
   const navLinks = [
     { name: "Presensi & Scanner", href: "/absen" },
-    { name: "Portal Admin", href: "/admin/kader" },
-    { name: "Beranda Publik", href: "/" },
+    { name: "Catatan Rilis", href: "/updates" },
+    { name: "Kebijakan Privasi", href: "/privacy" },
+    { name: "Beranda", href: "/" },
   ];
 
   return (
