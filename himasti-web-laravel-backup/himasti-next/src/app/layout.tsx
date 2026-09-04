@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Inter } from "next/font/google";
+import Script from "next/script";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import FloatingChatbot from "@/components/chat/FloatingChatbot";
@@ -48,7 +49,9 @@ export default function RootLayout({
           <main>{children}</main>
           <FloatingChatbot />
         </div>
-        <script
+        <Script
+          id="sw-register"
+          strategy="afterInteractive"
           dangerouslySetInnerHTML={{
             __html: `
               if ('serviceWorker' in navigator) {
