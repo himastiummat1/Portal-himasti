@@ -120,7 +120,7 @@ fun MainHubScreen(
                     )
                 )
                 NavigationBarItem(
-                    icon = { Icon(Icons.Default.Code, contentDescription = "Modul") },
+                    icon = { Icon(Icons.Default.List, contentDescription = "Modul") },
                     label = { Text("Modul", fontSize = 11.sp) },
                     selected = selectedTab == 1,
                     onClick = { selectedTab = 1 },
@@ -133,7 +133,7 @@ fun MainHubScreen(
                     )
                 )
                 NavigationBarItem(
-                    icon = { Icon(Icons.Default.EmojiEvents, contentDescription = "Lomba") },
+                    icon = { Icon(Icons.Default.Star, contentDescription = "Lomba") },
                     label = { Text("Lomba", fontSize = 11.sp) },
                     selected = selectedTab == 2,
                     onClick = { selectedTab = 2 },

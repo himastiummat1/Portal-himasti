@@ -45,7 +45,13 @@ jobs:
       - name: Build APK with Gradle
         working-directory: himasti-android
         run: |
-          ./gradlew :app:assembleDebug --stacktrace --info > gradle-output.txt 2>&1 || (echo "=== GRADLE FAILED ===" && cat gradle-output.txt | tail -n 80 && exit 1)
+          ./gradlew :app:assembleDebug --stacktrace --info > gradle-output.txt 2>&1 || (
+            echo "=== GRADLE COMPILER ERRORS ==="
+            grep -E "e: |CompilationErrorException|Unresolved reference|FAILURE:" gradle-output.txt -B 2 -A 4 || true
+            echo "=== GRADLE TAIL ==="
+            tail -n 120 gradle-output.txt
+            exit 1
+          )
 
       - name: Prepare APK Output
         working-directory: himasti-android

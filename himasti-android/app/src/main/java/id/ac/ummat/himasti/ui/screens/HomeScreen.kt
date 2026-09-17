@@ -12,10 +12,10 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Code
-import androidx.compose.material.icons.filled.Event
-import androidx.compose.material.icons.filled.Launch
-import androidx.compose.material.icons.filled.QrCodeScanner
+import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -70,7 +70,7 @@ fun HomeScreen(
                 horizontalArrangement = Arrangement.spacedBy(12.dp)
             ) {
                 QuickActionItem(
-                    icon = Icons.Default.QrCodeScanner,
+                    icon = Icons.Default.Check,
                     label = "Presensi",
                     color = PrimaryBlue,
                     modifier = Modifier.weight(1f),
@@ -79,14 +79,14 @@ fun HomeScreen(
                     }
                 )
                 QuickActionItem(
-                    icon = Icons.Default.Code,
+                    icon = Icons.Default.List,
                     label = "Modul IT",
                     color = AccentCyan,
                     modifier = Modifier.weight(1f),
                     onClick = onNavigateToModul
                 )
                 QuickActionItem(
-                    icon = Icons.Default.Launch,
+                    icon = Icons.Default.Share,
                     label = "Web Portal",
                     color = SuccessGreen,
                     modifier = Modifier.weight(1f),
@@ -141,7 +141,7 @@ fun HomeScreen(
                         modifier = Modifier.padding(20.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Icon(Icons.Default.Event, contentDescription = null, tint = TextMuted, modifier = Modifier.size(28.dp))
+                        Icon(Icons.Default.DateRange, contentDescription = null, tint = TextMuted, modifier = Modifier.size(28.dp))
                         Spacer(modifier = Modifier.height(8.dp))
                         Text("Belum ada jadwal rapat aktif.", color = TextSecondary, fontSize = 13.sp)
                     }

@@ -7,9 +7,8 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarMonth
-import androidx.compose.material.icons.filled.EmojiEvents
-import androidx.compose.material.icons.filled.OpenInNew
+import androidx.compose.material.icons.filled.DateRange
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -106,7 +105,7 @@ fun CompetitionCardItem(item: CompetitionItem, context: Context) {
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
                         Icon(
-                            imageVector = Icons.Default.CalendarMonth,
+                            imageVector = Icons.Default.DateRange,
                             contentDescription = null,
                             tint = WarningAmber,
                             modifier = Modifier.size(13.dp)
@@ -160,7 +159,7 @@ fun CompetitionCardItem(item: CompetitionItem, context: Context) {
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Icon(
-                        imageVector = Icons.Default.OpenInNew,
+                        imageVector = Icons.Default.Share,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp)
                     )

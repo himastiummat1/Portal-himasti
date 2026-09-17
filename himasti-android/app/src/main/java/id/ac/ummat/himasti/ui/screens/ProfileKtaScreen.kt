@@ -10,10 +10,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Badge
-import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Language
-import androidx.compose.material.icons.filled.Shield
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -43,9 +41,8 @@ fun ProfileKtaScreen(
         modifier = Modifier
             .fillMaxSize()
             .background(BgDark)
-            .padding(horizontal = 16.dp)
-            .verticalScroll(rememberScrollState()),
-        contentPadding = PaddingValues(top = 16.dp, bottom = 80.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(start = 16.dp, end = 16.dp, top = 16.dp, bottom = 80.dp)
     ) {
         Text(
             text = "PROFIL & KTA DIGITAL",
@@ -159,7 +156,7 @@ fun ProfileKtaScreen(
 
                 Spacer(modifier = Modifier.height(20.dp))
 
-                Divider(color = BorderSubtle, thickness = 1.dp)
+                HorizontalDivider(color = BorderSubtle, thickness = 1.dp)
 
                 Spacer(modifier = Modifier.height(16.dp))
 
@@ -225,7 +222,7 @@ fun ProfileKtaScreen(
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
-            Icon(Icons.Default.Language, contentDescription = null, tint = PrimaryLight)
+            Icon(Icons.Default.Share, contentDescription = null, tint = PrimaryLight)
             Spacer(modifier = Modifier.width(10.dp))
             Text("Buka Portal Web Lengkap (SSO)", fontWeight = FontWeight.Medium, fontSize = 14.sp)
         }
@@ -247,7 +244,7 @@ fun ProfileKtaScreen(
                 .fillMaxWidth()
                 .height(50.dp)
         ) {
-            Icon(Icons.Default.ExitToApp, contentDescription = null, tint = DangerRed)
+            Icon(Icons.Default.Close, contentDescription = null, tint = DangerRed)
             Spacer(modifier = Modifier.width(10.dp))
             Text("Keluar dari Akun", fontWeight = FontWeight.SemiBold, fontSize = 14.sp)
         }
