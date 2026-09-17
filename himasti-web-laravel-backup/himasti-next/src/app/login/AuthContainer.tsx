@@ -90,7 +90,7 @@ export default function AuthContainer({ dict, initialMode = "login" }: { dict: a
         <div className="flex flex-col items-center mb-8">
           <div className="w-14 h-14 relative mb-3 rounded-2xl overflow-hidden shadow-md border border-slate-200/80 bg-white p-1 flex items-center justify-center">
             <Image 
-              src="/images/logo_himasti.jpg" 
+              src="/icons/icon-192x192.png" 
               alt="Logo HIMASTI" 
               width={52} 
               height={52} 

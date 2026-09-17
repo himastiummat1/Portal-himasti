@@ -61,11 +61,11 @@ export default function TopNav({
             <div className="flex items-center h-full" ref={navRef}>
               <Link href="/admin" className="font-bold text-lg text-slate-900 mr-6 lg:mr-8 tracking-tight flex items-center gap-2.5 shrink-0 select-none hover:opacity-90 transition-opacity">
                 <Image 
-                  src="/images/logo_himasti.jpg" 
+                  src="/icons/icon-192x192.png" 
                   alt="Logo HIMASTI" 
                   width={24} 
                   height={24} 
-                  className="w-6 h-6 object-contain rounded-md shrink-0" 
+                  className="w-6 h-6 object-contain rounded-full shrink-0 border border-slate-200 shadow-2xs" 
                   priority
                 />
                 <span className="font-bold tracking-tight">HIMASTI</span>
