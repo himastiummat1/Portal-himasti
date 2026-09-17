@@ -1,5 +1,5 @@
-// HIMASTI Enterprise Service Worker v4.0.0 (Offline Mesh & Boot Animation)
-const CACHE_NAME = 'himasti-enterprise-cache-v4';
+// HIMASTI Enterprise Service Worker v3.0.0 (Offline Mesh & Background Sync)
+const CACHE_NAME = 'himasti-enterprise-cache-v3';
 const PRECACHE_ASSETS = [
   '/',
   '/admin',
