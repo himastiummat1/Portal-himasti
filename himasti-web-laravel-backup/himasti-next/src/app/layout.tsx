@@ -4,6 +4,7 @@ import Script from "next/script";
 import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import FloatingChatbot from "@/components/chat/FloatingChatbot";
+import PwaInstallBanner from "@/components/ui/PwaInstallBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -48,6 +49,7 @@ export default function RootLayout({
           <Navigation />
           <main>{children}</main>
           <FloatingChatbot />
+          <PwaInstallBanner />
         </div>
         <Script
           id="sw-register"
