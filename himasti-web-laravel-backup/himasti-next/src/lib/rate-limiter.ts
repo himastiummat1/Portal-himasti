@@ -9,27 +9,27 @@ export interface RateLimitPolicy {
   maxRequests: number // Maksimum permintaan yang diizinkan dalam jendela waktu tersebut
 }
 
-// Preset kebijakan keamanan
+// Preset kebijakan keamanan (dioptimalkan untuk NAT Wi-Fi kampus UMMAT & multi-device)
 export const RATE_LIMIT_POLICIES = {
-  // Rute sensitif login / register / webauthn: 10 request / menit
+  // Rute sensitif login / register / webauthn: 60 request / menit
   AUTH: {
     windowMs: 60 * 1000,
-    maxRequests: 10,
+    maxRequests: 60,
   },
-  // Rute AI (Groq & Gemini Chatbot / Prompt Optimizer): 20 request / menit
+  // Rute AI (Groq & Gemini Chatbot / Prompt Optimizer): 40 request / menit
   AI: {
     windowMs: 60 * 1000,
-    maxRequests: 20,
+    maxRequests: 40,
   },
-  // API endpoints umum (Data fetching / mutation): 80 request / menit
+  // API endpoints umum (Data fetching / mutation): 200 request / menit
   API: {
     windowMs: 60 * 1000,
-    maxRequests: 80,
+    maxRequests: 200,
   },
-  // Global browsing: 240 request / menit
+  // Global browsing: 600 request / menit
   GLOBAL: {
     windowMs: 60 * 1000,
-    maxRequests: 240,
+    maxRequests: 600,
   },
 } as const
 

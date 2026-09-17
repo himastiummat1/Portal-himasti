@@ -16,10 +16,14 @@ export default auth((req) => {
   const forwardedFor = req.headers.get('x-forwarded-for');
   const clientIp = forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1';
 
+  // Hanya hitung ke kuota AUTH jika melakukan aksi POST (submit login/register)
+  // Kunjungan GET halaman login/register tetap menggunakan kuota browsing umum agar user tidak mudah terkena 429
+  const isAuthAction = (req.method === 'POST') && (isAuthRoute || isApiAuthRoute);
+
   let policy: RateLimitPolicy = RATE_LIMIT_POLICIES.GLOBAL;
   let category = 'global';
 
-  if (isAuthRoute || isApiAuthRoute) {
+  if (isAuthAction) {
     policy = RATE_LIMIT_POLICIES.AUTH;
     category = 'auth';
   } else if (isAiRoute) {
