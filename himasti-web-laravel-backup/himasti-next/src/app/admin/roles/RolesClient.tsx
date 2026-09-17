@@ -28,7 +28,6 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
 
   return (
     <div className="space-y-6">
-      <div><a href="/admin" className="inline-flex items-center gap-2 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-2"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg> Kembali</a></div>
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="relative w-full sm:w-96">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -42,7 +41,7 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
         </div>
 
         {message && (
-          <div className={`flex items-center gap-2 text-sm px-4 py-2 rounded-lg border \${message.type === 'success' ? 'bg-gray-50 text-gray-900 border-gray-200' : 'bg-red-50 text-red-700 border-red-200'} animate-in fade-in slide-in-from-top-2`}>
+          <div className={`flex items-center gap-2 text-sm px-4 py-2 rounded-lg border ${message.type === 'success' ? 'bg-gray-50 text-gray-900 border-gray-200' : 'bg-red-50 text-red-700 border-red-200'} animate-in fade-in slide-in-from-top-2`}>
             {message.type === 'success' ? <CheckCircle2 className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}
             {message.text}
           </div>
@@ -93,7 +92,7 @@ export default function RolesClient({ users, roles }: { users: any[], roles: any
                       )}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border \${currentRoleName.includes('admin') || currentRoleName.includes('ketua') ? 'bg-red-50 text-red-600 border-red-100' : currentRoleName.includes('kabid') ? 'bg-gray-50 text-gray-900 border-gray-100' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
+                      <span className={`inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider border ${currentRoleName.includes('admin') || currentRoleName.includes('ketua') ? 'bg-red-50 text-red-600 border-red-100' : currentRoleName.includes('kabid') ? 'bg-gray-50 text-gray-900 border-gray-100' : 'bg-gray-100 text-gray-600 border-gray-200'}`}>
                         {(currentRoleName.includes('admin') || currentRoleName.includes('ketua') || currentRoleName.includes('kabid')) && <Shield className="w-3 h-3" />}
                         {currentRoleName.replace(/_/g, ' ')}
                       </span>
