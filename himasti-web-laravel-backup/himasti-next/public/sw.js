@@ -1,8 +1,14 @@
-// HIMASTI Enterprise Service Worker v2.0.0 (Offline Mesh & Background Sync)
-const CACHE_NAME = 'himasti-enterprise-cache-v2';
+// HIMASTI Enterprise Service Worker v3.0.0 (Offline Mesh & Background Sync)
+const CACHE_NAME = 'himasti-enterprise-cache-v3';
 const PRECACHE_ASSETS = [
   '/',
+  '/admin',
   '/absen',
+  '/icons/icon-192x192.png',
+  '/icons/icon-512x512.png',
+  '/icons/icon-maskable-192x192.png',
+  '/icons/icon-maskable-512x512.png',
+  '/icons/apple-touch-icon.png',
   '/images/logo_himasti.jpg',
   '/manifest.json'
 ];

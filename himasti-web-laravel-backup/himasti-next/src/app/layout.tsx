@@ -20,8 +20,8 @@ export const metadata: Metadata = {
   description: "Sistem Informasi, Presensi Biometrik FIDO2, dan Modul IT HIMASTI",
   manifest: "/manifest.json",
   icons: {
-    icon: "/images/logo_himasti.jpg",
-    apple: "/images/logo_himasti.jpg",
+    icon: "/icons/icon-192x192.png",
+    apple: "/icons/apple-touch-icon.png",
   },
   appleWebApp: {
     capable: true,
