@@ -41,28 +41,21 @@ jobs:
 
       - name: Build APK with Gradle
         working-directory: himasti-android
-        run: |
-          ./gradlew assembleDebug --stacktrace --no-daemon 2>&1 | tee gradle-build.log
-
-      - name: Upload Build Log on Failure
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: gradle-build-failure-log
-          path: himasti-android/gradle-build.log
+        run: ./gradlew :app:assembleDebug --stacktrace
 
       - name: Prepare APK Output
         working-directory: himasti-android
         run: |
           mkdir -p build-output
-          echo "Locating built APK files in project:"
-          APK_FILE=$(find . -type f -name "*.apk" | head -n 1)
+          echo "Searching for built APK files:"
+          find . -name "*.apk"
+          APK_FILE=$(find . -name "*.apk" | head -n 1)
           if [ -n "$APK_FILE" ]; then
             echo "Found APK at: $APK_FILE"
             cp "$APK_FILE" build-output/HIMASTI-HUB-Kotlin-v1.0.apk
           else
-            echo "No APK found. Inspecting build directories:"
-            find . -maxdepth 4 -type d || true
+            echo "No APK found. Listing build directories:"
+            find app/build -maxdepth 4 || true
             exit 1
           fi
           ls -lh build-output/
