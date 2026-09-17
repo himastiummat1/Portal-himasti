@@ -39,11 +39,11 @@ export default function LoginForm({ dict, onSwitchToRegister }: { dict: any, onS
       )}
 
       <div className="space-y-1">
-        <label className="block text-sm font-medium text-slate-700">{dict.email}</label>
+        <label className="block text-sm font-medium text-slate-700">Email atau NIM</label>
         <input
-          type="email" required value={email} onChange={(e) => setEmail(e.target.value)}
+          type="text" required value={email} onChange={(e) => setEmail(e.target.value)}
           className="block w-full text-slate-900 bg-slate-50 hover:bg-white focus:bg-white appearance-none rounded-lg border border-slate-200 px-4 py-3 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 sm:text-sm transition-all"
-          placeholder="admin@email.com"
+          placeholder="Email atau NIM..."
         />
       </div>
 

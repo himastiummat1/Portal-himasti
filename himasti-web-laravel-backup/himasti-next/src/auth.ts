@@ -25,14 +25,26 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) return null;
 
+        const rawIdentifier = (credentials.email as string).trim();
+        const rawPassword = credentials.password as string;
+
+        // Mendukung login fleksibel dengan Email atau NIM (case-insensitive & auto-trimmed)
         const user = await prisma.user.findFirst({
-          where: { email: credentials.email as string },
+          where: {
+            OR: [
+              { email: { equals: rawIdentifier, mode: "insensitive" } },
+              { data_kader: { nim: { equals: rawIdentifier, mode: "insensitive" } } }
+            ]
+          },
+          include: {
+            data_kader: true
+          }
         });
 
         if (!user || !user.password) return null;
 
         const passwordsMatch = await bcrypt.compare(
-          credentials.password as string,
+          rawPassword,
           user.password
         );
 
