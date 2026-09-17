@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">HIMASTI UMMAT</string>
+    <string name="title_activity_main">HIMASTI UMMAT</string>
+    <string name="package_name">id.ac.ummat.himasti</string>
+    <string name="custom_url_scheme">id.ac.ummat.himasti</string>
+</resources>

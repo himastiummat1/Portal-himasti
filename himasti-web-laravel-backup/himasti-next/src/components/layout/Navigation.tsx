@@ -21,7 +21,8 @@ export function Navigation() {
     pathname?.startsWith("/changelog") ||
     pathname?.startsWith("/terms") ||
     pathname?.startsWith("/syarat-ketentuan") ||
-    pathname?.startsWith("/ketentuan-layanan")
+    pathname?.startsWith("/ketentuan-layanan") ||
+    pathname?.startsWith("/download")
   ) {
     return null;
   }
