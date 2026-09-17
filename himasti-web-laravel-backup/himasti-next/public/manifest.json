@@ -2,12 +2,14 @@
   "name": "Portal Digital HIMASTI UMMAT",
   "short_name": "HIMASTI",
   "description": "Sistem Informasi, Presensi Hardware FIDO2, dan Bank Modul IT HIMASTI",
-  "start_url": "/admin",
-  "id": "/admin",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#0f172a",
   "theme_color": "#0f172a",
   "orientation": "portrait-primary",
+  "prefer_related_applications": false,
   "icons": [
     {
       "src": "/icons/icon-192x192.png",
@@ -35,6 +37,11 @@
     }
   ],
   "shortcuts": [
+    {
+      "name": "Dashboard Admin",
+      "url": "/admin",
+      "description": "Buka dashboard utama HIMASTI"
+    },
     {
       "name": "Presensi Kegiatan",
       "url": "/absen",
