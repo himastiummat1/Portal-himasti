@@ -1,8 +1,4 @@
-<p align="center">
-  <img src="public/images/logo-himasti.png" width="130" alt="Logo HIMASTI UMMAT" />
-</p>
-
-<h1 align="center">Portal HIMASTI — Next.js Core Application</h1>
+# Portal HIMASTI — Next.js Core Application
 
 <p align="center">
   <strong>Satu Ekosistem. Tanpa Batas.</strong><br>
