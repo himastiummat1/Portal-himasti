@@ -16,6 +16,7 @@ import {
 import { challengesData } from "../challenge/challengesData";
 import { CosmeticAvatar, getThemeClasses, getNameClasses } from "@/components/profile/CosmeticAvatar";
 import DigitalKTA from "../DigitalKTA";
+import AppUpdateChecker from "@/components/ui/AppUpdateChecker";
 
 type ProfileData = {
   id: number;
@@ -632,6 +633,9 @@ export default function ProfilClient({ initialData }: { initialData: ProfileData
                   </div>
                 </form>
               </div>
+
+              {/* Status Pembaruan Sistem & OTA */}
+              <AppUpdateChecker />
 
             </div>
           )}
