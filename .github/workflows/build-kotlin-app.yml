@@ -13,10 +13,14 @@ jobs:
   build:
     name: Build Native Kotlin Android APK
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java JDK 17
         uses: actions/setup-java@v4
@@ -51,14 +55,35 @@ jobs:
         working-directory: himasti-android
         run: |
           mkdir -p build-output
-          echo "Locating built APK files:"
-          find app/build/outputs/apk -type f -name "*.apk"
-          find app/build/outputs/apk -type f -name "*.apk" -exec cp {} build-output/HIMASTI-HUB-Kotlin-v1.0.apk \;
-          ls -la build-output/
+          echo "Locating built APK files in project:"
+          APK_FILE=$(find . -type f -name "*.apk" | head -n 1)
+          if [ -n "$APK_FILE" ]; then
+            echo "Found APK at: $APK_FILE"
+            cp "$APK_FILE" build-output/HIMASTI-HUB-Kotlin-v1.0.apk
+          else
+            echo "No APK found. Inspecting build directories:"
+            find . -maxdepth 4 -type d || true
+            exit 1
+          fi
+          ls -lh build-output/
 
-      - name: Upload APK Artifact
+      - name: Upload APK Artifact to GitHub
         uses: actions/upload-artifact@v4
         with:
           name: HIMASTI-HUB-Kotlin-v1.0-APK
           path: himasti-android/build-output/*.apk
           retention-days: 30
+
+      - name: Auto-Publish APK Directly to Web Portal
+        run: |
+          mkdir -p himasti-web-laravel-backup/himasti-next/public/downloads
+          cp himasti-android/build-output/HIMASTI-HUB-Kotlin-v1.0.apk himasti-web-laravel-backup/himasti-next/public/downloads/himasti.apk
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add himasti-web-laravel-backup/himasti-next/public/downloads/himasti.apk
+          if ! git diff --staged --quiet; then
+            git commit -m "chore(release): auto-publish latest Kotlin APK to web portal [skip ci]"
+            git push origin main || echo "Direct push restricted; artifact available via releases"
+          else
+            echo "APK is already up to date on web portal."
+          fi
