@@ -5,7 +5,6 @@ import "./globals.css";
 import { Navigation } from "@/components/layout/Navigation";
 import FloatingChatbot from "@/components/chat/FloatingChatbot";
 import PwaInstallBanner from "@/components/ui/PwaInstallBanner";
-import AppLaunchSplash from "@/components/ui/AppLaunchSplash";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -46,7 +45,6 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-capable" content="yes" />
       </head>
       <body className={`${inter.className} font-sans antialiased text-gray-900 bg-gray-100`}>
-        <AppLaunchSplash />
         <div className="min-h-screen">
           <Navigation />
           <main>{children}</main>

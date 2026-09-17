@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Theme used while launching the app (Official Android 12+ SplashScreen API - ala X & Instagram) -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <!-- Solid dark background -->
+        <item name="windowSplashScreenBackground">@color/splash_background</item>
+        <!-- Sharp high-res centered HIMASTI logo -->
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_himasti_logo</item>
+        <!-- Theme to transition to immediately once UI mounts -->
+        <item name="postSplashScreenTheme">@style/Theme.HimastiApp</item>
+    </style>
+
+    <!-- Main Application Theme -->
+    <style name="Theme.HimastiApp" parent="android:Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/window_background</item>
+        <item name="android:statusBarColor">@color/window_background</item>
+        <item name="android:navigationBarColor">@color/window_background</item>
+    </style>
+</resources>
