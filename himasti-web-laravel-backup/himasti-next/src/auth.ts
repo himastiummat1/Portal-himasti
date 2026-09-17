@@ -44,10 +44,29 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (!user || !user.password) return null;
 
-        const passwordsMatch = await bcrypt.compare(
-          rawPassword,
-          user.password
-        );
+        // 1. Exact match test
+        let passwordsMatch = await bcrypt.compare(rawPassword, user.password);
+
+        // 2. Mobile keyboard tolerance: auto-trim trailing space
+        if (!passwordsMatch && rawPassword.trim() !== rawPassword) {
+          passwordsMatch = await bcrypt.compare(rawPassword.trim(), user.password);
+        }
+
+        // 3. Mobile keyboard tolerance: auto-capitalized first letter
+        if (!passwordsMatch) {
+          const lowerFirst = rawPassword.charAt(0).toLowerCase() + rawPassword.slice(1).trim();
+          if (lowerFirst !== rawPassword.trim()) {
+            passwordsMatch = await bcrypt.compare(lowerFirst, user.password);
+          }
+        }
+
+        // 4. Mobile keyboard tolerance: all lowercase
+        if (!passwordsMatch) {
+          const lowerAll = rawPassword.toLowerCase().trim();
+          if (lowerAll !== rawPassword.trim()) {
+            passwordsMatch = await bcrypt.compare(lowerAll, user.password);
+          }
+        }
 
         if (passwordsMatch) return user as any;
         return null;

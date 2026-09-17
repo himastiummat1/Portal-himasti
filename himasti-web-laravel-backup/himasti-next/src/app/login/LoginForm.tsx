@@ -19,9 +19,15 @@ export default function LoginForm({ dict, onSwitchToRegister }: { dict: any, onS
     setError("");
 
     try {
-      const res = await signIn("credentials", { email, password, redirect: false });
-      if (res?.error) setError("Kredensial tidak valid.");
-      else {
+      const cleanEmail = email.trim();
+      const res = await signIn("credentials", { email: cleanEmail, password, redirect: false });
+      if (res?.error) {
+        if (res.error === "CredentialsSignin") {
+          setError("Email/NIM atau password salah. Pastikan password yang dimasukkan sesuai.");
+        } else {
+          setError(`Login gagal: ${res.error}. Silakan coba lagi.`);
+        }
+      } else {
         router.push("/admin");
         router.refresh();
       }
@@ -42,6 +48,7 @@ export default function LoginForm({ dict, onSwitchToRegister }: { dict: any, onS
         <label className="block text-sm font-medium text-slate-700">Email atau NIM</label>
         <input
           type="text" required value={email} onChange={(e) => setEmail(e.target.value)}
+          autoCapitalize="none" autoCorrect="off" spellCheck={false}
           className="block w-full text-slate-900 bg-slate-50 hover:bg-white focus:bg-white appearance-none rounded-lg border border-slate-200 px-4 py-3 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 sm:text-sm transition-all"
           placeholder="Email atau NIM..."
         />
@@ -55,6 +62,7 @@ export default function LoginForm({ dict, onSwitchToRegister }: { dict: any, onS
         <div className="relative">
           <input
             type={showPassword ? "text" : "password"} required value={password} onChange={(e) => setPassword(e.target.value)}
+            autoCapitalize="none" autoCorrect="off" spellCheck={false}
             className="block w-full text-slate-900 bg-slate-50 hover:bg-white focus:bg-white appearance-none rounded-lg border border-slate-200 pl-4 pr-12 py-3 placeholder-slate-400 focus:border-slate-900 focus:outline-none focus:ring-1 focus:ring-slate-900 sm:text-sm transition-all"
             placeholder="••••••••"
           />
