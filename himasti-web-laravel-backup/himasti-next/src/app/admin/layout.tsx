@@ -29,14 +29,31 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   }
 
   const isSuperAdmin = userRoles.includes('super_admin');
-  
-  const canAccessKader = isSuperAdmin || userRoles.some(r => r.includes('kaderisasi') || r.includes('pengkaderan'));
-  const canAccessKeuangan = isSuperAdmin || userRoles.includes('bendahara') || userRoles.includes('bendahara_umum');
-  const canAccessSurat = isSuperAdmin || userRoles.includes('sekretaris_umum');
-  const canAccessArtikel = isSuperAdmin || userRoles.some(r => r.includes('metkom') || r.includes('humas'));
-  const canAccessRapat = isSuperAdmin || userRoles.some(r => r.includes('ketua') || r.includes('sekretaris') || r.includes('bendahara') || r.includes('kabid'));
-  const canAccessAkademik = true; // Everyone can access these
-  const canAccessDivisi = isSuperAdmin || userRoles.some(r => r.includes('kabid') || r.includes('wakil'));
+  const isKetuaOrWakil = userRoles.some(r => r === 'ketua_himpunan' || r === 'wakil_ketua' || r === 'wakil_ketua_himpunan' || (r.includes('ketua') && !r.includes('bidang')));
+  const isSekretaris = userRoles.some(r => r.includes('sekretaris'));
+  const isBendahara = userRoles.some(r => r.includes('bendahara'));
+
+  // Semua Ketua Bidang (kabid_*) dan Anggota Bidang (anggota_*) diberikan HAK AKSES YANG SETARA
+  const isKabid = userRoles.some(r => r.includes('kabid') || r.includes('ketua_bidang'));
+  const isAnggotaBidang = userRoles.some(r => r.includes('anggota') || r.includes('panitia'));
+  const isStaffBidang = isKabid || isAnggotaBidang;
+
+  // Tingkatan Pengurus
+  const isBPHKhusus = isSuperAdmin || isKetuaOrWakil || isSekretaris || isBendahara;
+  const isAllPengurus = isBPHKhusus || isStaffBidang;
+
+  // 1. Hak Akses Khusus Keuangan (Super Admin, Bendahara, Ketua/Wakil Himpunan)
+  const canAccessKeuangan = isSuperAdmin || isBendahara || isKetuaOrWakil;
+
+  // 2. Hak Akses Khusus Surat (Super Admin, Sekretaris, Ketua/Wakil Himpunan)
+  const canAccessSurat = isSuperAdmin || isSekretaris || isKetuaOrWakil;
+
+  // 3. Hak Akses Setara untuk Semua Ketua Bidang & Anggota Bidang (termasuk BPH)
+  const canAccessKader = isAllPengurus;
+  const canAccessRapat = isAllPengurus;
+  const canAccessDivisi = isAllPengurus;
+  const canAccessArtikel = isAllPengurus;
+  const canAccessAkademik = true; // Terbuka untuk seluruh civitas mahasiswa & pengurus
 
   const groups = [];
   

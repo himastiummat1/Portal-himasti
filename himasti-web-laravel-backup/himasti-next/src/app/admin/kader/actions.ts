@@ -56,10 +56,10 @@ export async function updateKader(userId: number, formData: FormData) {
       await prisma.dataKader.update({ where: { id: kader.id }, data: updateData });
     }
 
-    // 3. Update Role (Prevent Privilege Escalation)
+    // 3. Update Role (Strictly Super Admin Only)
     if (role_name) {
-      if (role_name === "super_admin" && !isActorSuperAdmin) {
-        return { success: false, error: "Akses Ditolak: Hanya Super Admin yang dapat menunjuk akun Super Admin." };
+      if (!isActorSuperAdmin) {
+        return { success: false, error: "Akses Ditolak: Hanya Super Admin yang memiliki wewenang mengubah role/jabatan kader." };
       }
 
       const role = await prisma.role.findFirst({ where: { name: role_name } });

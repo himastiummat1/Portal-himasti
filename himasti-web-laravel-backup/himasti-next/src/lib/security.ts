@@ -15,12 +15,62 @@ export async function isUserAdminOrPanitia(userId: number): Promise<boolean> {
 
     if (userRoles.length === 0) return false
 
-    const privilegedNames = ['admin', 'superadmin', 'panitia', 'pengurus', 'sekretaris', 'ketua']
-    return userRoles.some((ur) => privilegedNames.includes(ur.role.name.toLowerCase()))
+    const privilegedNames = ['admin', 'superadmin', 'panitia', 'pengurus', 'sekretaris', 'ketua', 'bendahara', 'kabid', 'anggota']
+    return userRoles.some((ur) => privilegedNames.some(p => ur.role.name.toLowerCase().includes(p)))
   } catch (err) {
     console.error('Role check error:', err)
     return false
   }
+}
+
+/**
+ * RBAC Permission Helpers
+ * 1. Super Admin: Root access (RBAC, Audit Logs, change roles)
+ * 2. BPH Khusus:
+ *    - Ketua & Wakil: Executive oversight
+ *    - Sekretaris: Persuratan & Notulensi Rapat
+ *    - Bendahara: Keuangan & Kas
+ * 3. Bidang (Semua Ketua Bidang & Anggota Bidang memiliki HAK AKSES YANG SETARA):
+ *    - Rapat & Presensi, Divisi, Artikel, Akademik, Kader
+ *    - Di bawah hak akses khusus (tidak dapat mengakses/mengubah Keuangan kas utama, Surat resmi, dan RBAC)
+ */
+export function isSuperAdminRole(roles: string[]): boolean {
+  return roles.some(r => r === 'super_admin' || r === 'superadmin');
+}
+
+export function isKetuaOrWakilRole(roles: string[]): boolean {
+  return roles.some(r => r === 'ketua_himpunan' || r === 'wakil_ketua' || r === 'wakil_ketua_himpunan' || (r.includes('ketua') && !r.includes('bidang')));
+}
+
+export function isSekretarisRole(roles: string[]): boolean {
+  return roles.some(r => r.includes('sekretaris'));
+}
+
+export function isBendaharaRole(roles: string[]): boolean {
+  return roles.some(r => r.includes('bendahara'));
+}
+
+export function isKabidRole(roles: string[]): boolean {
+  return roles.some(r => r.includes('kabid') || r.includes('ketua_bidang'));
+}
+
+export function isAnggotaBidangRole(roles: string[]): boolean {
+  return roles.some(r => r.includes('anggota') || r.includes('panitia'));
+}
+
+// Hak akses yang SAMA untuk semua Ketua Bidang dan Anggota Bidang
+export function isStaffBidangRole(roles: string[]): boolean {
+  return isKabidRole(roles) || isAnggotaBidangRole(roles);
+}
+
+// Pengurus Inti Khusus (BPH + Super Admin)
+export function isBPHKhususRole(roles: string[]): boolean {
+  return isSuperAdminRole(roles) || isKetuaOrWakilRole(roles) || isSekretarisRole(roles) || isBendaharaRole(roles);
+}
+
+// Seluruh Pengurus (BPH + Semua Ketua Bidang + Semua Anggota Bidang)
+export function isAllPengurusRole(roles: string[]): boolean {
+  return isBPHKhususRole(roles) || isStaffBidangRole(roles);
 }
 
 /**

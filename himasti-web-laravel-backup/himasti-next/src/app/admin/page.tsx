@@ -73,6 +73,11 @@ export default async function AdminDashboard() {
   });
 
   const isSuperAdmin = userRoles.includes('super_admin');
+  const isKetuaOrWakil = userRoles.some(r => r === 'ketua_himpunan' || r === 'wakil_ketua' || r === 'wakil_ketua_himpunan' || (r.includes('ketua') && !r.includes('bidang')));
+  const isSekretaris = userRoles.some(r => r.includes('sekretaris'));
+  const isBendahara = userRoles.some(r => r.includes('bendahara'));
+  const canAccessKeuangan = isSuperAdmin || isBendahara || isKetuaOrWakil;
+  const canAccessSurat = isSuperAdmin || isSekretaris || isKetuaOrWakil;
   
   // Dashboard Metrics
   const totalKader = await prisma.dataKader.count();
@@ -381,25 +386,25 @@ export default async function AdminDashboard() {
             </div>
             <div className="divide-y divide-gray-100">
               {[
-                { title: "Master Data Kader", desc: "Kelola database mahasiswa, demografi, dan role akses", href: "/admin/kader", reqSuper: false },
-                { title: "Administrasi Persuratan", desc: "Sistem penomoran surat otomatis & arsip digital", href: "/admin/surat", reqSuper: false },
-                { title: "Manajemen Keuangan", desc: "Laporan kas, donasi, dan transparansi anggaran", href: "/admin/keuangan", reqSuper: false },
-                { title: "Bank Modul IT", desc: "Akses materi perkuliahan dan kurikulum himpunan", href: "/admin/modul", reqSuper: false },
-                { title: "MCP & Prompt Engineering Hub", desc: "Katalog Model Context Protocol dan System Prompts untuk AI Agents", href: "/admin/mcp-hub", reqSuper: false },
-                { title: "Manajemen Hak Akses (RBAC)", desc: "Pengaturan permissions dan delegasi peran", href: "/admin/roles", reqSuper: true },
-                { title: "Developer Tools", desc: "Utilitas ringan (JSON, Base64, Hash) untuk mempermudah coding", href: "/admin/devtools", reqSuper: false },
-              ].map((mod, i) => {
-                if (mod.reqSuper && !isSuperAdmin) return null;
-                return (
-                  <Link key={i} href={mod.href} className="flex items-center justify-between p-5 hover:bg-slate-50/50 transition-colors group">
-                    <div>
-                      <h3 className="text-sm font-semibold text-slate-800 group-hover:text-gray-900 transition-colors">{mod.title}</h3>
-                      <p className="text-xs text-slate-500 mt-0.5">{mod.desc}</p>
-                    </div>
-                    <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-gray-900 transition-colors" />
-                  </Link>
-                );
-              })}
+                { title: "Master Data Kader", desc: "Kelola database mahasiswa, demografi, dan profil anggota", href: "/admin/kader", visible: true },
+                { title: "Administrasi Persuratan", desc: "Sistem penomoran surat otomatis & arsip digital", href: "/admin/surat", visible: canAccessSurat },
+                { title: "Manajemen Keuangan", desc: "Laporan kas, donasi, dan transparansi anggaran", href: "/admin/keuangan", visible: canAccessKeuangan },
+                { title: "Rapat & Presensi", desc: "Agenda pertemuan, notulensi digital, dan scanner presensi", href: "/admin/rapat", visible: true },
+                { title: "Kepanitiaan & Divisi", desc: "Klub IT, riset survei, dan merchandise kewirausahaan", href: "/admin/klub", visible: true },
+                { title: "Artikel & Publikasi Web", desc: "Kelola artikel, liputan kegiatan, dan dokumentasi", href: "/admin/artikel", visible: true },
+                { title: "Bank Modul IT", desc: "Akses materi perkuliahan dan kurikulum himpunan", href: "/admin/modul", visible: true },
+                { title: "MCP & Prompt Engineering Hub", desc: "Katalog Model Context Protocol dan System Prompts untuk AI Agents", href: "/admin/mcp-hub", visible: true },
+                { title: "Manajemen Hak Akses (RBAC)", desc: "Pengaturan permissions dan delegasi peran", href: "/admin/roles", visible: isSuperAdmin },
+                { title: "Developer Tools", desc: "Utilitas ringan (JSON, Base64, Hash) untuk mempermudah coding", href: "/admin/devtools", visible: true },
+              ].filter(mod => mod.visible).map((mod, i) => (
+                <Link key={i} href={mod.href} className="flex items-center justify-between p-5 hover:bg-slate-50/50 transition-colors group">
+                  <div>
+                    <h3 className="text-sm font-semibold text-slate-800 group-hover:text-gray-900 transition-colors">{mod.title}</h3>
+                    <p className="text-xs text-slate-500 mt-0.5">{mod.desc}</p>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-gray-900 transition-colors" />
+                </Link>
+              ))}
             </div>
           </div>
 

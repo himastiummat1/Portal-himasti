@@ -18,7 +18,7 @@ export default async function KaryaPage() {
 
   const userId = parseInt(session.user?.id || "0");
   const userRoles = await prisma.modelHasRole.findMany({ where: { model_id: userId }, include: { role: true } });
-  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid"));
+  const isExecutive = userRoles.some(r => r.role.name === "super_admin" || r.role.name.includes("ketua") || r.role.name.includes("kabid") || r.role.name.includes("anggota"));
 
   return <KatalogKaryaClient records={projects} isExecutive={isExecutive} userName={session.user.name || ""} />;
 }

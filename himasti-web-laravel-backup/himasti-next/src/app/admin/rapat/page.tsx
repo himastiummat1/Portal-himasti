@@ -20,7 +20,9 @@ export default async function RapatPage() {
     r.role.name.includes("ketua") || 
     r.role.name.includes("sekretaris") || 
     r.role.name.includes("bendahara") || 
-    r.role.name.includes("kabid")
+    r.role.name.includes("kabid") || 
+    r.role.name.includes("anggota") || 
+    r.role.name.includes("panitia")
   );
 
   if (!isExecutive) {

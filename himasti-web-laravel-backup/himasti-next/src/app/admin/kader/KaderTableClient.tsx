@@ -370,19 +370,24 @@ export default function KaderTableClient({
                 </div>
               )}
 
-              {isEditing && (
+              {isEditing && isSuperAdmin && (
                 <div className="bg-gray-50 border border-gray-100 rounded-xl p-4 mt-8">
-                  <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-3">Ubah Role / Jabatan</h4>
+                  <div className="flex items-center justify-between mb-3">
+                    <h4 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Ubah Role / Jabatan (Khusus Super Admin)</h4>
+                    <span className="text-[10px] font-mono bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-bold">ROOT ACCESS</span>
+                  </div>
                   <select 
                     name="role_name"
                     defaultValue={selectedKader.role}
                     className="w-full border border-gray-200 p-2.5 rounded-lg text-sm focus:ring-2 focus:ring-gray-900 outline-none bg-white text-gray-900 font-medium"
                   >
                     <option value="kader">Kader Biasa</option>
-                    <option value="ketua_himpunan">Ketua Himpunan</option>
-                    <option value="wakil_ketua">Wakil Ketua</option>
-                    <option value="sekretaris_umum">Sekretaris Umum</option>
-                    <option value="bendahara_umum">Bendahara Umum</option>
+                    <optgroup label="Pengurus Inti (BPH Khusus)">
+                      <option value="ketua_himpunan">Ketua Himpunan</option>
+                      <option value="wakil_ketua">Wakil Ketua Himpunan</option>
+                      <option value="sekretaris_umum">Sekretaris Umum</option>
+                      <option value="bendahara_umum">Bendahara Umum</option>
+                    </optgroup>
                     <optgroup label="Bidang Pengkaderan (Kaderisasi)">
                       <option value="kabid_pengkaderan">Kabid Pengkaderan</option>
                       <option value="anggota_pengkaderan">Anggota Pengkaderan</option>
@@ -399,12 +404,18 @@ export default function KaderTableClient({
                       <option value="kabid_humas">Kabid Humas</option>
                       <option value="anggota_humas">Anggota Humas</option>
                     </optgroup>
-                    <optgroup label="Bidang Lainnya">
+                    <optgroup label="Bidang Lainnya (Kabid & Anggota)">
                       <option value="kabid_kemuhammadiyahan">Kabid Kemuhammadiyahan</option>
+                      <option value="anggota_kemuhammadiyahan">Anggota Kemuhammadiyahan</option>
                       <option value="kabid_keorganisasian">Kabid Keorganisasian</option>
+                      <option value="anggota_keorganisasian">Anggota Keorganisasian</option>
                       <option value="kabid_kewirausahaan">Kabid Kewirausahaan</option>
+                      <option value="anggota_kewirausahaan">Anggota Kewirausahaan</option>
                       <option value="kabid_mikat">Kabid Minat Bakat (Mikat)</option>
+                      <option value="anggota_mikat">Anggota Minat Bakat (Mikat)</option>
                       <option value="kabid_aksi_advokasi">Kabid Aksi & Advokasi</option>
+                      <option value="anggota_aksi_advokasi">Anggota Aksi & Advokasi</option>
+                      <option value="anggota_bidang">Anggota Bidang (Umum)</option>
                     </optgroup>
                     <optgroup label="Lain-lain">
                       <option value="panitia_sementara">Panitia Sementara</option>
