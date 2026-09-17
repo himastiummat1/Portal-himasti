@@ -132,7 +132,7 @@ export default function HackerMode() {
             </p>
             <div className="bg-slate-950 p-4 rounded-xl border border-slate-800 mb-6">
               <p className="text-emerald-400 font-mono text-sm leading-relaxed">
-                "Saya lahir dari pemikiran kolaboratif. Saya adalah bahasa pemrograman AI-first dengan eksekusi Swarm. Siapakah saya?"
+                &quot;Saya lahir dari pemikiran kolaboratif. Saya adalah bahasa pemrograman AI-first dengan eksekusi Swarm. Siapakah saya?&quot;
               </p>
             </div>
             <form onSubmit={(e) => {

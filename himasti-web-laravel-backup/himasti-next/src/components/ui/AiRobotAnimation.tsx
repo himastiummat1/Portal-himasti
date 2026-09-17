@@ -47,28 +47,28 @@ export default function AiRobotAnimation() {
       }
 
       update() {
-        let dx = mouseX - this.x;
-        let dy = mouseY - this.y;
-        let distance = Math.sqrt(dx * dx + dy * dy);
-        let forceDirectionX = dx / distance;
-        let forceDirectionY = dy / distance;
+        const dx = mouseX - this.x;
+        const dy = mouseY - this.y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const forceDirectionX = dx / distance;
+        const forceDirectionY = dy / distance;
         
         // Repel distance smaller on mobile
         const maxDistance = isMobile ? 60 : 100;
-        let force = (maxDistance - distance) / maxDistance;
-        let directionX = forceDirectionX * force * this.density;
-        let directionY = forceDirectionY * force * this.density;
+        const force = (maxDistance - distance) / maxDistance;
+        const directionX = forceDirectionX * force * this.density;
+        const directionY = forceDirectionY * force * this.density;
 
         if (distance < maxDistance) {
           this.x -= directionX;
           this.y -= directionY;
         } else {
           if (this.x !== this.baseX) {
-            let dxBase = this.x - this.baseX;
+            const dxBase = this.x - this.baseX;
             this.x -= dxBase / 10;
           }
           if (this.y !== this.baseY) {
-            let dyBase = this.y - this.baseY;
+            const dyBase = this.y - this.baseY;
             this.y -= dyBase / 10;
           }
         }
@@ -87,7 +87,7 @@ export default function AiRobotAnimation() {
       // Determine size based on container
       logicalWidth = container.clientWidth || window.innerWidth;
       isMobile = logicalWidth < 640;
-      logicalHeight = isMobile ? 200 : 350;
+      logicalHeight = isMobile ? 130 : 200;
 
       canvas.width = logicalWidth * dpr;
       canvas.height = logicalHeight * dpr;
@@ -99,7 +99,7 @@ export default function AiRobotAnimation() {
       ctx.scale(dpr, dpr);
 
       // Re-init background nodes
-      const numBgNodes = isMobile ? 20 : 40;
+      const numBgNodes = isMobile ? 18 : 32;
       bgNodes = Array.from({length: numBgNodes}, () => ({
           x: Math.random() * logicalWidth,
           y: Math.random() * logicalHeight,
@@ -113,8 +113,8 @@ export default function AiRobotAnimation() {
       ctx.fillStyle = 'white';
       
       // Dynamic font size
-      let fontSize = isMobile ? Math.min(logicalWidth * 0.18, 50) : 110; 
-      let letterSpacing = isMobile ? '2px' : '8px';
+      const fontSize = isMobile ? Math.min(logicalWidth * 0.15, 38) : 76; 
+      const letterSpacing = isMobile ? '3px' : '7px';
       
       ctx.font = `900 ${fontSize}px sans-serif`;
       ctx.textAlign = 'center';
@@ -122,7 +122,7 @@ export default function AiRobotAnimation() {
       ctx.letterSpacing = letterSpacing;
       
       // Draw text to center
-      ctx.fillText('HIMASTI', logicalWidth / 2, logicalHeight / 2 - (isMobile ? 10 : 20));
+      ctx.fillText('HIMASTI', logicalWidth / 2, (logicalHeight / 2) - (isMobile ? 6 : 10));
 
       const textCoordinates = ctx.getImageData(0, 0, logicalWidth * dpr, logicalHeight * dpr);
       const step = (isMobile ? 3 : 6) * dpr; // denser scanning for smaller text
@@ -199,9 +199,9 @@ export default function AiRobotAnimation() {
         const connDist = isMobile ? 4000 : 10000;
         for(let i=0; i<bgNodes.length; i++){
             for(let j=i+1; j<bgNodes.length; j++){
-                let dx = bgNodes[i].x - bgNodes[j].x;
-                let dy = bgNodes[i].y - bgNodes[j].y;
-                let dist = dx*dx + dy*dy;
+                const dx = bgNodes[i].x - bgNodes[j].x;
+                const dy = bgNodes[i].y - bgNodes[j].y;
+                const dist = dx*dx + dy*dy;
                 if(dist < connDist) {
                     ctx.beginPath();
                     ctx.moveTo(bgNodes[i].x, bgNodes[i].y);
@@ -316,7 +316,7 @@ export default function AiRobotAnimation() {
   }, []);
 
   return (
-    <div ref={containerRef} className="flex flex-col items-center justify-center mb-0 relative w-full overflow-hidden min-h-[200px]">
+    <div ref={containerRef} className="flex flex-col items-center justify-center mb-0 relative w-full overflow-hidden min-h-[130px] sm:min-h-[200px]">
       <canvas 
         ref={canvasRef} 
         className="cursor-crosshair max-w-full touch-none"

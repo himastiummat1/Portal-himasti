@@ -258,7 +258,7 @@ export default function TopNav({
             <div className="max-h-[60vh] overflow-y-auto p-2">
               {filteredLinks.length === 0 ? (
                 <div className="text-center py-10 text-sm text-slate-500">
-                  No modules found matching "{searchQuery}"
+                  No modules found matching &quot;{searchQuery}&quot;
                 </div>
               ) : (
                 filteredLinks.map((link, idx) => (

@@ -673,7 +673,7 @@ export default function McpHubClient() {
                   <div>
                     <strong className="text-slate-900">Salin Konfigurasi dari Tab MCP Hub Ini:</strong>
                     <p className="text-slate-500 mt-0.5">
-                      Pilih server yang Anda butuhkan (misal PostgreSQL atau GitHub MCP), klik tombol <strong>"Salin JSON"</strong>, dan tempelkan ke file konfigurasi Anda.
+                      Pilih server yang Anda butuhkan (misal PostgreSQL atau GitHub MCP), klik tombol <strong>&quot;Salin JSON&quot;</strong>, dan tempelkan ke file konfigurasi Anda.
                     </p>
                   </div>
                 </div>

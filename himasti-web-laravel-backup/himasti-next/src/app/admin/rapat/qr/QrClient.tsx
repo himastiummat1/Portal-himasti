@@ -5,36 +5,48 @@ import { QRCodeSVG } from "qrcode.react";
 import { getQrToken } from "./actions";
 import { Shield, RefreshCw, MapPin } from "lucide-react";
 
-export default function QrClient({ meeting, appUrl }: { meeting: any, appUrl: string }) {
+interface MeetingData {
+  id: number;
+  title: string;
+}
+
+export default function QrClient({ meeting, appUrl }: { meeting: MeetingData; appUrl: string }) {
   const [token, setToken] = useState("");
-  const [countdown, setCountdown] = useState(10);
+  const [countdown, setCountdown] = useState(30);
   const [error, setError] = useState("");
 
-  const refreshQr = async () => {
-    try {
-      const data = await getQrToken(meeting.id);
-      setToken(data.token);
-      setCountdown(10);
-    } catch (e: any) {
-      setError("Gagal memuat QR Code. Hubungi tim teknis.");
-    }
-  };
-
   useEffect(() => {
-    refreshQr(); // Initial fetch
+    let mounted = true;
+
+    async function loadToken() {
+      try {
+        const data = await getQrToken(meeting.id);
+        if (mounted) {
+          setToken(data.token);
+          setCountdown(30);
+        }
+      } catch {
+        if (mounted) setError("Gagal memuat QR Code. Hubungi tim panitia.");
+      }
+    }
+
+    void loadToken();
 
     const timer = setInterval(() => {
       setCountdown((prev) => {
         if (prev <= 1) {
-          refreshQr();
-          return 10;
+          void loadToken();
+          return 30;
         }
         return prev - 1;
       });
     }, 1000);
 
-    return () => clearInterval(timer);
-  }, []);
+    return () => {
+      mounted = false;
+      clearInterval(timer);
+    };
+  }, [meeting.id]);
 
   const qrUrl = `${appUrl}/absen?m=${meeting.id}&t=${token}`;
 
@@ -62,14 +74,14 @@ export default function QrClient({ meeting, appUrl }: { meeting: any, appUrl: st
               </div>
             ) : (
               <div className="w-[200px] sm:w-[280px] h-[200px] sm:h-[280px] flex items-center justify-center text-slate-400 bg-slate-50 rounded-2xl text-xs sm:text-sm text-center px-4">
-                Memuat QR Cerdas...
+                Membuat QR Presensi...
               </div>
             )}
           </div>
           
           <div className="flex items-center gap-2 text-slate-500 font-mono text-xs">
-            <Shield className="w-4 h-4 text-green-500" />
-            Anti-Cheat Protection Active
+            <Shield className="w-4 h-4 text-emerald-500" />
+            Presensi Resmi & Otomatis
           </div>
         </div>
 
@@ -77,7 +89,7 @@ export default function QrClient({ meeting, appUrl }: { meeting: any, appUrl: st
         <div className="flex flex-col gap-6">
           <div className="inline-flex items-center gap-2 px-4 py-2 bg-slate-900/50 border border-slate-700 rounded-full text-slate-300 text-sm w-fit font-mono tracking-widest backdrop-blur-md">
             <Image src="/images/logo_himasti.jpg" alt="Logo HIMASTI" width={20} height={20} className="w-5 h-5 object-contain rounded-md shrink-0 shadow-2xs" />
-            <span>HIMASTI CORE SYSTEM</span>
+            <span>HIMASTI UMMAT</span>
           </div>
           
           <h1 className="text-4xl md:text-5xl font-bold leading-tight bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">
@@ -85,23 +97,23 @@ export default function QrClient({ meeting, appUrl }: { meeting: any, appUrl: st
           </h1>
           
           <p className="text-slate-400 text-lg leading-relaxed">
-            Silakan buka kamera HP atau aplikasi Barcode Scanner, lalu arahkan ke QR Code di samping. Pastikan GPS (Lokasi) Anda aktif.
+            Buka kamera HP atau menu <span className="text-white font-semibold">Presensi Rapat</span> di Portal HIMASTI, lalu arahkan ke QR Code di layar.
           </p>
           
           <div className="bg-slate-900/50 border border-slate-800 p-5 rounded-2xl backdrop-blur-md mt-4">
-            <h4 className="text-sm text-slate-400 mb-4 uppercase tracking-wider font-semibold">Persyaratan Sistem</h4>
+            <h4 className="text-sm text-slate-400 mb-4 uppercase tracking-wider font-semibold">Petunjuk Kehadiran</h4>
             <ul className="space-y-3">
               <li className="flex items-center gap-3 text-slate-200">
                 <div className="w-8 h-8 rounded-full bg-blue-500/10 flex items-center justify-center border border-blue-500/20">
                   <MapPin className="w-4 h-4 text-blue-400" />
                 </div>
-                Lokasi HP wajib cocok dengan lokasi rapat (Geofence).
+                Pastikan HP berada di area ruangan rapat kampus.
               </li>
               <li className="flex items-center gap-3 text-slate-200">
-                <div className="w-8 h-8 rounded-full bg-red-500/10 flex items-center justify-center border border-red-500/20">
-                  <Shield className="w-4 h-4 text-red-400" />
+                <div className="w-8 h-8 rounded-full bg-amber-500/10 flex items-center justify-center border border-amber-500/20">
+                  <Shield className="w-4 h-4 text-amber-400" />
                 </div>
-                Foto QR dari teman tidak akan berfungsi (Dynamic TOTP).
+                Foto QR dari kiriman teman tidak akan berlaku (kode berganti otomatis).
               </li>
             </ul>
           </div>

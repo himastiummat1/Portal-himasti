@@ -13,11 +13,45 @@ export const metadata = {
 
 const updates = [
   {
+    version: "v2.6",
+    date: "17 September 2026",
+    title: "Presensi Rapat Cerdas, Ekspor Excel Berstandar, & Kotak Aspirasi",
+    badge: "LATEST RELEASE",
+    isLatest: true,
+    summary: "Kemudahan akses presensi 1-klik untuk seluruh kader, deteksi rapat aktif cerdas, format ekspor Excel presensi/kader/keuangan anti-corrupt (UTF-8 BOM), dan sistem aspirasi anonim.",
+    highlights: [
+      {
+        type: "FEATURE",
+        color: "bg-emerald-50 text-emerald-700 border-emerald-200",
+        title: "Pusat Presensi Rapat & Deteksi Cerdas",
+        desc: "Akses presensi 1-klik di dasbor anggota, kamera pemindai QR responsif dengan panduan browser WhatsApp/Chrome, dan auto-binding rapat aktif."
+      },
+      {
+        type: "FEATURE",
+        color: "bg-blue-50 text-blue-700 border-blue-200",
+        title: "Ekspor Excel Resmi Berstandar Microsoft Office",
+        desc: "Ekspor presensi rapat, buku kas keuangan, dan master data kader dengan format UTF-8 BOM, text-formula NIM & No HP agar tidak berubah menjadi notasi ilmiah atau kehilangan angka 0."
+      },
+      {
+        type: "SECURITY",
+        color: "bg-rose-50 text-rose-700 border-rose-200",
+        title: "Kotak Aspirasi Anonim & Tracking Publik",
+        desc: "Kanal whistleblowing mahasiswa aman tanpa login dengan kode pelacakan unik dan perlindungan privasi penuh."
+      },
+      {
+        type: "UI/UX",
+        color: "bg-violet-50 text-violet-700 border-violet-200",
+        title: "Penyempurnaan Bahasa & Antarmuka Jargon-Free",
+        desc: "Menyederhanakan seluruh label teknis di bilah navigasi dan layar proyektor acara agar ramah dipahami oleh seluruh mahasiswa."
+      }
+    ]
+  },
+  {
     version: "v2.5",
     date: "4 September 2026",
     title: "Wallet Integration & Mobile GPU Performance Engine",
-    badge: "LATEST RELEASE",
-    isLatest: true,
+    badge: "STABLE",
+    isLatest: false,
     summary: "Integrasi resmi Apple Wallet (.pkpass) & Google Wallet untuk KTA Digital serta akselerasi grafis 60 FPS pada kartu 3D holografik di smartphone.",
     highlights: [
       {
@@ -180,7 +214,7 @@ export default function UpdatesPage() {
 
           <div className="flex flex-wrap items-center justify-center gap-2 pt-2 text-xs font-medium text-slate-500">
             <span className="inline-flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-md text-slate-700">
-              <Clock className="w-3.5 h-3.5 text-slate-500" /> Rilis Aktif: v2.5 Stable
+              <Clock className="w-3.5 h-3.5 text-slate-500" /> Rilis Aktif: v2.6 Stable
             </span>
             <span className="inline-flex items-center gap-1 bg-slate-100 px-2.5 py-1 rounded-md text-slate-700">
               Arsitektur: Next.js 16 (Turbopack) & Prisma ORM
@@ -297,7 +331,7 @@ export default function UpdatesPage() {
 
       {/* Clean Footer */}
       <footer className="border-t border-slate-200/80 bg-white py-10 px-4 text-center text-xs text-slate-500">
-        <p>© 2026 HIMASTI Universitas Muhammadiyah Mataram. Changelog Engine v2.5.</p>
+        <p>© 2026 HIMASTI Universitas Muhammadiyah Mataram. Changelog Engine v2.6.</p>
       </footer>
 
     </div>

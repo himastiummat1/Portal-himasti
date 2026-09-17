@@ -40,7 +40,7 @@ export async function updateKader(userId: number, formData: FormData) {
     // 2. Update DataKader table (No HP, Gender, and Super Admin Customization)
     const kader = await prisma.dataKader.findFirst({ where: { user_id: userId } });
     if (kader) {
-      const updateData: any = {
+      const updateData: Record<string, unknown> = {
         ...(no_hp ? { no_hp } : {}),
         ...(jenis_kelamin ? { jenis_kelamin } : {})
       };
@@ -71,8 +71,9 @@ export async function updateKader(userId: number, formData: FormData) {
 
     revalidatePath("/admin/kader");
     return { success: true };
-  } catch (err: any) {
-    return { success: false, error: err.message || "Gagal menyimpan data" };
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : "Gagal menyimpan data";
+    return { success: false, error: errorMsg };
   }
 }
 
@@ -91,8 +92,9 @@ export async function deleteKader(userId: number) {
     await prisma.user.delete({ where: { id: userId } });
     revalidatePath("/admin/kader");
     return { success: true };
-  } catch (err: any) {
-    return { success: false, error: "Gagal menghapus akun: " + err.message };
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : "Gagal menghapus akun";
+    return { success: false, error: "Gagal menghapus akun: " + errorMsg };
   }
 }
 

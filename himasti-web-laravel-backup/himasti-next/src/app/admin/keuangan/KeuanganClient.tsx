@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
-import { Plus, Wallet, TrendingUp, TrendingDown, Calendar, FileText } from "lucide-react";
+import { Plus, Wallet, TrendingUp, TrendingDown, Calendar, FileText, FileSpreadsheet } from "lucide-react";
 import { useRouter } from "next/navigation";
 import {
   LineChart,
@@ -60,6 +60,66 @@ export default function KeuanganClient({ records, isExecutive }: { records: Reco
     return Array.from(grouped.values());
   }, [records]);
 
+  const exportKeuanganExcel = () => {
+    if (records.length === 0) {
+      alert("Belum ada data transaksi keuangan untuk diekspor.");
+      return;
+    }
+
+    const headers = ["No", "Tanggal", "Tipe Transaksi", "Keterangan", "Pemasukan (Rp)", "Pengeluaran (Rp)", "Saldo Berjalan (Rp)"];
+
+    const formatCell = (val: unknown) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/\r?\n/g, " ").trim();
+      const escaped = str.replace(/"/g, '""');
+      return `"${escaped}"`;
+    };
+
+    // Sort ascending for cumulative balance calculation
+    const sorted = [...records].sort((a, b) => new Date(a.tanggal).getTime() - new Date(b.tanggal).getTime());
+    let cumulative = 0;
+
+    const rows = sorted.map((r, idx) => {
+      const pemasukan = r.tipe === "pemasukan" ? r.jumlah : 0;
+      const pengeluaran = r.tipe === "pengeluaran" ? r.jumlah : 0;
+      cumulative += (pemasukan - pengeluaran);
+      const dateStr = new Date(r.tanggal).toLocaleDateString("id-ID", {
+        day: "2-digit",
+        month: "2-digit",
+        year: "numeric"
+      });
+
+      return [
+        formatCell(idx + 1),
+        formatCell(dateStr),
+        formatCell(r.tipe.toUpperCase()),
+        formatCell(r.keterangan || "-"),
+        formatCell(pemasukan),
+        formatCell(pengeluaran),
+        formatCell(cumulative)
+      ].join(";");
+    });
+
+    const summaryHeader = ["", "", "", "TOTAL", totalPemasukan, totalPengeluaran, saldo].map(formatCell).join(";");
+
+    const csvContent = "\uFEFF" + [
+      headers.map(formatCell).join(";"),
+      ...rows,
+      "",
+      summaryHeader
+    ].join("\r\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const dateFile = new Date().toISOString().split("T")[0];
+    link.download = `Laporan_Keuangan_Kas_HIMASTI_${dateFile}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   // (Keep the existing API handler logic for add/edit/delete)
   const handleAddSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -121,11 +181,21 @@ export default function KeuanganClient({ records, isExecutive }: { records: Reco
           <h1 className="text-2xl font-bold text-slate-800 tracking-tight">Kas & Keuangan</h1>
           <p className="text-sm text-slate-500 mt-1">Sistem Pemantauan Aliran Dana Organisasi HIMASTI.</p>
         </div>
-        {isExecutive && (
-          <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-sm font-medium text-sm">
-            <Plus className="w-4 h-4" /> Catat Transaksi
+        <div className="flex flex-wrap items-center gap-2 w-full sm:w-auto">
+          <button 
+            onClick={exportKeuanganExcel} 
+            className="flex items-center gap-2 px-3.5 py-2 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 transition-colors shadow-xs font-medium text-xs sm:text-sm"
+            title="Download buku kas laporan keuangan ke format Excel"
+          >
+            <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+            <span>Export Excel</span>
           </button>
-        )}
+          {isExecutive && (
+            <button onClick={() => setIsAddModalOpen(true)} className="flex items-center gap-2 px-4 py-2 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-colors shadow-xs font-medium text-xs sm:text-sm">
+              <Plus className="w-4 h-4" /> Catat Transaksi
+            </button>
+          )}
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

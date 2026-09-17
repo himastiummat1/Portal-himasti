@@ -398,4 +398,24 @@ model AuditLog {
   @@map("audit_logs")
 }
 
+model Pengaduan {
+  id            Int       @id @default(autoincrement())
+  tracking_code String    @unique @db.VarChar(32)
+  kategori      String    @default("Umum") @db.VarChar(50)
+  judul         String    @db.VarChar(255)
+  isi           String    @db.Text
+  status        String    @default("menunggu") @db.VarChar(30)
+  tanggapan     String?   @db.Text
+  responded_by  String?   @db.VarChar(100)
+  responded_at  DateTime?
+  created_at    DateTime? @default(now())
+  updated_at    DateTime? @updatedAt
+
+  @@index([tracking_code], map: "idx_pengaduans_tracking_code")
+  @@index([status], map: "idx_pengaduans_status")
+  @@index([kategori], map: "idx_pengaduans_kategori")
+  @@index([created_at(sort: Desc)], map: "idx_pengaduans_created_at")
+  @@map("pengaduans")
+}
+
 

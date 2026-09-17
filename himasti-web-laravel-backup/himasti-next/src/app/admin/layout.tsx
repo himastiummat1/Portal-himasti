@@ -60,7 +60,11 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   // Group Organisasi (Global)
   const groupOrganisasi = { title: "Profil & Organisasi", links: [] as any[] };
   groupOrganisasi.links.push({ href: "/admin/adart", label: "AD/ART & Konstitusi" });
-  groupOrganisasi.links.push({ href: "/updates", label: "Catatan Rilis (v2.5)" });
+  if (!canAccessRapat) {
+    groupOrganisasi.links.push({ href: "/absen", label: "Presensi Rapat & QR" });
+  }
+  groupOrganisasi.links.push({ href: "/pengaduan", label: "Aspirasi Anonim" });
+  groupOrganisasi.links.push({ href: "/updates", label: "Catatan Rilis (v2.6)" });
   groupOrganisasi.links.push({ href: "/privacy", label: "Kebijakan Privasi" });
   groupOrganisasi.links.push({ href: "/terms", label: "Ketentuan Layanan" });
   groups.push(groupOrganisasi);
@@ -72,7 +76,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
   if (canAccessSurat) groupUtama.links.push({ href: "/admin/surat", label: "Surat" });
   if (canAccessRapat) {
     groupUtama.links.push({ href: "/admin/rapat", label: "Rapat & Notulensi" });
-    groupUtama.links.push({ href: "/absen", label: "Presensi & Biometrik" });
+    groupUtama.links.push({ href: "/absen", label: "Presensi Rapat & QR" });
     groupUtama.links.push({ href: "/admin/scanner", label: "Scanner KTA Panitia" });
   }
   if (groupUtama.links.length > 0) groups.push(groupUtama);
@@ -96,6 +100,7 @@ export default async function AdminLayout({ children }: { children: ReactNode })
     groupDivisi.links.push({ href: "/admin/survey", label: "Survey & Riset" });
     groupDivisi.links.push({ href: "/admin/klub", label: "Klub IT" });
     groupDivisi.links.push({ href: "/admin/merchandise", label: "Merchandise / Danus" });
+    groupDivisi.links.push({ href: "/admin/pengaduan", label: "Kotak Aspirasi" });
   }
   if (groupDivisi.links.length > 0) groups.push(groupDivisi);
 

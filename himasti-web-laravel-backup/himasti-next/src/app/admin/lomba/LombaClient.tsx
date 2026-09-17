@@ -3,13 +3,26 @@ import { useState, useTransition } from "react";
 import { addLomba, deleteLomba, syncMockLomba } from "./actions";
 import { RefreshCw, Plus, Trash2, ExternalLink } from "lucide-react";
 
-export default function LombaClient({ records }: { records: any[] }) {
+export interface LombaRecord {
+  id: number;
+  title: string;
+  organizer: string;
+  deadline: Date | string | null;
+  link: string | null;
+  type: string;
+  description: string | null;
+  poster?: string | null;
+  created_at?: Date | string;
+  updated_at?: Date | string;
+}
+
+export default function LombaClient({ records }: { records: LombaRecord[] }) {
   const [isOpen, setIsOpen] = useState(false);
   const [isPending, startTransition] = useTransition();
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const result = await addLomba(new FormData(e.target));
+    const result = await addLomba(new FormData(e.currentTarget));
     if (result.success) setIsOpen(false);
     else alert(result.error);
   }
@@ -62,7 +75,7 @@ export default function LombaClient({ records }: { records: any[] }) {
               {records.length === 0 ? (
                 <tr>
                   <td colSpan={4} className="px-6 py-12 text-center text-gray-400">
-                    Belum ada data lomba. Klik tombol "Sync Devpost API" untuk menarik data otomatis.
+                    Belum ada data lomba. Klik tombol &quot;Sync Devpost API&quot; untuk menarik data otomatis.
                   </td>
                 </tr>
               ) : records.map(r => (
@@ -73,7 +86,7 @@ export default function LombaClient({ records }: { records: any[] }) {
                         {r.type}
                       </span>
                       <div>
-                        <a href={r.link} target="_blank" className="font-semibold text-gray-900 hover:text-gray-600 flex items-center gap-1.5">
+                        <a href={r.link || "#"} target="_blank" className="font-semibold text-gray-900 hover:text-gray-600 flex items-center gap-1.5">
                           {r.title} <ExternalLink className="w-3 h-3" />
                         </a>
                         <p className="text-xs text-gray-500 mt-1 line-clamp-1">{r.description}</p>

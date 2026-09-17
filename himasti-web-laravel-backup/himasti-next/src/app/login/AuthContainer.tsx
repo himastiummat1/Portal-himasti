@@ -159,7 +159,7 @@ export default function AuthContainer({ dict, initialMode = "login" }: { dict: a
                               <input name="name" type="text" required className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Nama Lengkap" />
                             </div>
                             <div>
-                              <input name="email" type="email" required className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Email / NIM" />
+                              <input name="email" type="email" required className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="Alamat Email (cth: nama@gmail.com)" />
                             </div>
                             <div className="grid grid-cols-2 gap-3">
                               <input name="nim" type="text" required className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-1 focus:ring-slate-900 focus:border-slate-900 text-sm outline-none bg-slate-50 hover:bg-white focus:bg-white transition-all" placeholder="NIM" />

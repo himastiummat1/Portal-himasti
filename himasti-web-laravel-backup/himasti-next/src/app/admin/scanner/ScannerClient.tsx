@@ -155,7 +155,7 @@ export default function ScannerClient({ meetings }: { meetings: any[] }) {
               <div className="text-center text-slate-500 flex flex-col items-center">
                 <Camera className="w-16 h-16 mb-4 text-slate-700" />
                 <p>Scanner belum aktif.</p>
-                <p className="text-sm mt-2 max-w-xs">Pilih event di samping dan klik "Mulai Scanner" untuk mengaktifkan kamera.</p>
+                <p className="text-sm mt-2 max-w-xs">Pilih event di samping dan klik &quot;Mulai Scanner&quot; untuk mengaktifkan kamera.</p>
               </div>
             ) : (
               <div className="w-full relative">

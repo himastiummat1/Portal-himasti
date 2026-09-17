@@ -14,8 +14,8 @@ export async function getQrToken(meetingId: number) {
     await prisma.meeting.update({ where: { id: meetingId }, data: { qr_secret: secret } });
   }
 
-  // The time window is the current time divided by 10000ms (10 seconds)
-  const timeWindow = Math.floor(Date.now() / 10000);
+  // The time window is the current time divided by 30000ms (30 seconds)
+  const timeWindow = Math.floor(Date.now() / 30000);
   
   // Create HMAC signature of meeting_id + timeWindow using the secret
   const hmac = crypto.createHmac("sha256", secret);

@@ -18,5 +18,5 @@ export default async function QrPage({ searchParams }: { searchParams: Promise<{
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : "http://localhost:3000";
 
-  return <QrClient meeting={{ id: meeting.id, title: meeting.title, latitude: meeting.latitude, longitude: meeting.longitude, radius_meter: meeting.radius_meter }} appUrl={appUrl} />;
+  return <QrClient meeting={{ id: meeting.id, title: meeting.title }} appUrl={appUrl} />;
 }

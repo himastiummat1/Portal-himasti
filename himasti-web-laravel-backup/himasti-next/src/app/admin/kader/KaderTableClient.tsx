@@ -1,58 +1,152 @@
 "use client";
-import { useState, useTransition } from "react";
-import { Search, FileSpreadsheet, Eye, X, Download, Edit2, Trash2, CheckCircle2, Crown, Star, Palette, Zap, Sparkles } from "lucide-react";
+import { useState, useTransition, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { Search, FileSpreadsheet, Eye, X, Download, Edit2, Trash2, CheckCircle2, Crown, Star, Sparkles, ChevronDown, Check } from "lucide-react";
 import { updateKader, deleteKader, impersonateUser } from "./actions";
 import { LogIn } from "lucide-react";
 import { FRAMES, TITLES, THEMES, NAME_EFFECTS } from "@/lib/profileCustomization";
+
+export interface KaderItem {
+  id: number;
+  user_id: number;
+  nama: string;
+  email: string;
+  nim: string | null;
+  angkatan: string;
+  no_hp: string;
+  jenis_kelamin: string;
+  role: string;
+  asal_sekolah?: string | null;
+  hobi?: string | null;
+  alamat?: string | null;
+  xp: number;
+  custom_frame?: string;
+  custom_title?: string;
+  custom_theme?: string;
+  custom_name_effect?: string;
+}
 
 export default function KaderTableClient({ 
   kaders,
   isSuperAdmin = false
 }: { 
-  kaders: any[];
+  kaders: KaderItem[];
   isSuperAdmin?: boolean;
 }) {
+  const router = useRouter();
   const [search, setSearch] = useState("");
-  const [selectedKader, setSelectedKader] = useState<any | null>(null);
+  const [selectedKader, setSelectedKader] = useState<KaderItem | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isPending, startTransition] = useTransition();
+  const [showExportMenu, setShowExportMenu] = useState(false);
+  const [exportSuccessMsg, setExportSuccessMsg] = useState<string | null>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const filtered = kaders.filter(k => 
-    k.nama.toLowerCase().includes(search.toLowerCase()) || 
-    k.nim.toLowerCase().includes(search.toLowerCase()) ||
-    k.angkatan.toLowerCase().includes(search.toLowerCase())
-  );
+  // Close dropdown on click outside
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setShowExportMenu(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
 
-  const exportCSV = () => {
-    const headers = ["ID", "Nama Lengkap", "NIM", "Email", "Angkatan", "No HP", "Jenis Kelamin", "Role", "Asal Sekolah", "Hobi"];
-    const rows = filtered.map(k => [
-      k.id,
-      k.nama,
-      k.nim,
-      k.email,
-      k.angkatan,
-      k.no_hp,
-      k.jenis_kelamin,
-      k.role,
-      k.asal_sekolah || "-",
-      k.hobi || "-"
-    ]);
+  const filtered = kaders.filter(k => {
+    const s = search.toLowerCase();
+    const nama = (k.nama || "").toLowerCase();
+    const nim = (k.nim || "").toLowerCase();
+    const angkatan = (k.angkatan || "").toLowerCase();
+    const email = (k.email || "").toLowerCase();
+    return nama.includes(s) || nim.includes(s) || angkatan.includes(s) || email.includes(s);
+  });
+
+  const exportData = (type: "excel" | "csv") => {
+    // delimiter: ';' for Indonesian Windows Excel (avoids Column A collapse), ',' for universal CSV
+    const delimiter = type === "excel" ? ";" : ",";
     
-    const csvContent = "data:text/csv;charset=utf-8," 
-      + [headers.join(","), ...rows.map(e => e.map(cell => `"${cell}"`).join(","))].join("\n");
+    const headers = [
+      "No",
+      "ID",
+      "Nama Lengkap",
+      "NIM",
+      "Email",
+      "Angkatan",
+      "No HP",
+      "Jenis Kelamin",
+      "Role",
+      "Gelar",
+      "XP",
+      "Alamat",
+      "Asal Sekolah",
+      "Hobi"
+    ];
+
+    const formatCell = (val: unknown, isTextFormula = false) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/\r?\n/g, " ").trim();
+      const escaped = str.replace(/"/g, '""');
       
-    const encodedUri = encodeURI(csvContent);
+      // Khusus NIM dan Nomor HP:
+      // Di Microsoft Excel, format ="value" memvalidasi cell sebagai teks formula
+      // sehingga angka 0 di depan (08...) TIDAK hilang dan NIM 14-digit TIDAK menjadi notasi ilmiah
+      if (isTextFormula && /^[0-9+]+$/.test(str)) {
+        return `"=""${escaped}"""`;
+      }
+      return `"${escaped}"`;
+    };
+
+    const rows = filtered.map((k, idx) => {
+      const titleObj = TITLES.find(t => t.id === k.custom_title) || TITLES[0];
+      return [
+        formatCell(idx + 1),
+        formatCell(k.id),
+        formatCell(k.nama),
+        formatCell(k.nim, true),
+        formatCell(k.email),
+        formatCell(k.angkatan),
+        formatCell(k.no_hp, true),
+        formatCell(k.jenis_kelamin),
+        formatCell(k.role),
+        formatCell(titleObj.name),
+        formatCell(k.xp ?? 50),
+        formatCell(k.alamat || "-"),
+        formatCell(k.asal_sekolah || "-"),
+        formatCell(k.hobi || "-")
+      ].join(delimiter);
+    });
+
+    // \uFEFF adalah UTF-8 Byte Order Mark (BOM) agar Microsoft Excel di Windows
+    // otomatis mendeteksi encoding UTF-8 (mencegah karakter rusak/mojibake)
+    const csvContent = "\uFEFF" + [
+      headers.map(h => formatCell(h)).join(delimiter),
+      ...rows
+    ].join("\r\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `Data_Kader_HIMASTI_${new Date().toISOString().split('T')[0]}.csv`);
+    link.href = url;
+    
+    const dateStr = new Date().toISOString().split("T")[0];
+    const fileSuffix = type === "excel" ? "Excel_Windows" : "Universal_CSV";
+    link.download = `Data_Kader_HIMASTI_${fileSuffix}_${dateStr}.csv`;
+    
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+
+    setShowExportMenu(false);
+    setExportSuccessMsg(type === "excel" ? `Berhasil unduh Excel (${filtered.length} Kader)` : `Berhasil unduh CSV (${filtered.length} Kader)`);
+    setTimeout(() => setExportSuccessMsg(null), 3000);
   };
 
-  const handleUpdate = async (e: any) => {
+  const handleUpdate = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    if (!selectedKader) return;
+    const formData = new FormData(e.currentTarget);
     startTransition(async () => {
       const res = await updateKader(selectedKader.user_id, formData);
       if (res.success) {
@@ -69,7 +163,8 @@ export default function KaderTableClient({
     startTransition(async () => {
       const res = await impersonateUser(userId);
       if (res.success) {
-        window.location.href = "/admin"; // Redirect to dashboard to reload session
+        router.push("/admin");
+        router.refresh();
       } else {
         alert(res.error);
       }
@@ -96,19 +191,82 @@ export default function KaderTableClient({
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 w-4 h-4" />
           <input 
             type="text" 
-            placeholder="Cari berdasarkan Nama, NIM, atau Angkatan..." 
+            placeholder="Cari Nama, NIM, Email, atau Angkatan..." 
             className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-gray-900/20 focus:border-gray-900 transition-all text-sm"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
           />
         </div>
 
-        <button 
-          onClick={exportCSV}
-          className="flex items-center gap-2 bg-gray-50 text-gray-900 border border-gray-200 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors text-sm font-medium w-full sm:w-auto justify-center"
-        >
-          <FileSpreadsheet className="w-4 h-4" /> Export Excel
-        </button>
+        <div className="relative w-full sm:w-auto flex items-center gap-2" ref={dropdownRef}>
+          {exportSuccessMsg ? (
+            <div className="inline-flex items-center gap-2 bg-emerald-50 text-emerald-700 border border-emerald-200 px-3.5 py-2 rounded-lg text-xs font-semibold animate-in fade-in">
+              <Check className="w-4 h-4 text-emerald-600" />
+              {exportSuccessMsg}
+            </div>
+          ) : (
+            <div className="inline-flex rounded-lg shadow-sm border border-gray-200 bg-white w-full sm:w-auto">
+              <button 
+                onClick={() => exportData("excel")}
+                title="Download langsung dalam format siap buka Microsoft Excel"
+                className="flex items-center gap-2 px-3.5 py-2 text-xs font-semibold text-gray-700 hover:bg-gray-50 transition-colors rounded-l-lg border-r border-gray-200 flex-1 sm:flex-initial justify-center"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-600" />
+                <span>Export Excel</span>
+                <span className="bg-gray-100 text-gray-600 text-[10px] font-mono px-1.5 py-0.5 rounded">
+                  {filtered.length}
+                </span>
+              </button>
+              <button
+                onClick={() => setShowExportMenu(!showExportMenu)}
+                className="px-2 py-2 text-gray-500 hover:bg-gray-50 hover:text-gray-900 transition-colors rounded-r-lg"
+                title="Pilihan format ekspor"
+              >
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+            </div>
+          )}
+
+          {showExportMenu && (
+            <div className="absolute right-0 top-full mt-2 w-72 bg-white border border-gray-200 rounded-xl shadow-xl z-50 p-1.5 text-xs animate-in fade-in zoom-in-95">
+              <div className="px-2.5 py-1.5 text-[11px] font-semibold text-gray-400 uppercase tracking-wider">
+                Pilih Format Ekspor
+              </div>
+              <button
+                onClick={() => exportData("excel")}
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 flex items-start gap-2.5 transition-colors group"
+              >
+                <FileSpreadsheet className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-900 flex items-center gap-1.5">
+                    Excel Windows (.csv)
+                    <span className="text-[10px] font-medium bg-emerald-50 text-emerald-700 px-1.5 py-0.2 rounded border border-emerald-200">
+                      Rekomendasi
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-gray-500 mt-0.5 leading-normal">
+                    Pemisah titik-koma (;). Langsung rapi terbagi kolom saat dibuka di MS Excel Indonesia.
+                  </p>
+                </div>
+              </button>
+
+              <button
+                onClick={() => exportData("csv")}
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-gray-50 flex items-start gap-2.5 transition-colors group mt-1"
+              >
+                <Download className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                <div>
+                  <div className="font-semibold text-gray-900">
+                    Universal CSV (.csv)
+                  </div>
+                  <p className="text-[11px] text-gray-500 mt-0.5 leading-normal">
+                    Pemisah koma (,). Standar RFC-4180 untuk Google Sheets, Mac Numbers, & script database.
+                  </p>
+                </div>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className="bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm">

@@ -1,19 +1,37 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { Camera, RefreshCw, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react'
+import { Camera, CheckCircle2, AlertCircle, ArrowRight } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
-export default function CameraQRScanner({ currentUserId }: { currentUserId: number }) {
+interface CameraQRScannerProps {
+  currentUserId?: number
+  defaultMeetingId?: number
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export default function CameraQRScanner({ currentUserId: _currentUserId, defaultMeetingId }: CameraQRScannerProps = {}) {
   const router = useRouter()
   const [scanning, setScanning] = useState(false)
   const [manualInput, setManualInput] = useState('')
   const [scanMessage, setScanMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
-  const html5QrCodeRef = useRef<any>(null)
+  const html5QrCodeRef = useRef<{ stop: () => Promise<void> } | null>(null)
+
+  const stopCamera = async () => {
+    if (html5QrCodeRef.current) {
+      try {
+        await html5QrCodeRef.current.stop()
+        html5QrCodeRef.current = null
+      } catch {
+        // ignore
+      }
+    }
+    setScanning(false)
+  }
 
   useEffect(() => {
     return () => {
-      stopCamera()
+      void stopCamera()
     }
   }, [])
 
@@ -31,32 +49,20 @@ export default function CameraQRScanner({ currentUserId }: { currentUserId: numb
         { fps: 10, qrbox: { width: 250, height: 250 } },
         (decodedText) => {
           handleDetectedCode(decodedText)
-          stopCamera()
+          void stopCamera()
         },
         () => {
           // ignore scan frame errors
         }
       )
-    } catch (err: any) {
+    } catch (err: unknown) {
       console.error('Camera error:', err)
       setScanning(false)
       setScanMessage({
         type: 'error',
-        text: 'Tidak dapat mengakses kamera. Pastikan izin kamera aktif atau gunakan input kode di bawah.',
+        text: 'Tidak dapat mengakses kamera. Pastikan izin kamera telah diizinkan atau masukkan token rapat di bawah.',
       })
     }
-  }
-
-  const stopCamera = async () => {
-    if (html5QrCodeRef.current) {
-      try {
-        await html5QrCodeRef.current.stop()
-        html5QrCodeRef.current = null
-      } catch {
-        // ignore
-      }
-    }
-    setScanning(false)
   }
 
   const handleDetectedCode = (rawText: string) => {
@@ -64,13 +70,13 @@ export default function CameraQRScanner({ currentUserId }: { currentUserId: numb
       // Jika hasil scan berupa URL lengkap (/absen?m=...&t=...)
       if (rawText.includes('/absen') || rawText.startsWith('http')) {
         const url = new URL(rawText, window.location.origin)
-        const m = url.searchParams.get('m')
+        const m = url.searchParams.get('m') || (defaultMeetingId ? String(defaultMeetingId) : null)
         const t = url.searchParams.get('t')
 
         if (m && t) {
           setScanMessage({
             type: 'success',
-            text: 'QR Rapat Valid! Memproses absensi geofencing...',
+            text: 'QR Rapat Valid! Memverifikasi kehadiran Anda...',
           })
           router.push(`/absen?m=${m}&t=${t}`)
           return
@@ -78,11 +84,20 @@ export default function CameraQRScanner({ currentUserId }: { currentUserId: numb
       }
 
       // Jika format teks biasa / token
-      setScanMessage({
-        type: 'success',
-        text: `Kode terdeteksi: ${rawText.slice(0, 30)}. Membuka halaman absensi...`,
-      })
-      router.push(`/absen?t=${encodeURIComponent(rawText)}`)
+      const cleanToken = rawText.trim()
+      if (defaultMeetingId) {
+        setScanMessage({
+          type: 'success',
+          text: 'Kode token terdeteksi. Memverifikasi kehadiran...',
+        })
+        router.push(`/absen?m=${defaultMeetingId}&t=${encodeURIComponent(cleanToken)}`)
+      } else {
+        setScanMessage({
+          type: 'success',
+          text: `Kode terdeteksi: ${cleanToken.slice(0, 30)}. Membuka halaman absensi...`,
+        })
+        router.push(`/absen?t=${encodeURIComponent(cleanToken)}`)
+      }
     } catch {
       setScanMessage({
         type: 'error',
@@ -181,6 +196,9 @@ export default function CameraQRScanner({ currentUserId }: { currentUserId: numb
             <ArrowRight className="w-3.5 h-3.5" />
           </button>
         </form>
+        <p className="text-[11px] text-slate-400 mt-3 text-center leading-relaxed">
+          💡 <span className="font-semibold text-slate-600 dark:text-slate-300">Tips:</span> Jika kamera tidak terbuka saat mengakses link dari WhatsApp, pilih menu titik tiga lalu <span className="font-medium text-slate-700 dark:text-slate-200">Buka di Browser Utama (Chrome / Safari)</span>.
+        </p>
       </div>
     </div>
   )

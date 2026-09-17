@@ -18,18 +18,12 @@ export default function BrutalistCore() {
       `}</style>
 
       {/* Subtle Ambient Radial Glow */}
-      <div className="absolute w-[450px] h-[450px] rounded-full bg-blue-100/40 blur-[90px] pointer-events-none" />
+      <div className="absolute w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-blue-100/30 via-slate-100/40 to-transparent blur-[100px] pointer-events-none" />
 
-      {/* Clean Ripple Rings */}
-      <div className="absolute w-[320px] h-[320px] border border-slate-200/80 rounded-full animate-subtle-ripple" style={{ animationDelay: '0s' }} />
-      <div className="absolute w-[320px] h-[320px] border border-slate-200/60 rounded-full animate-subtle-ripple" style={{ animationDelay: '2.5s' }} />
-      <div className="absolute w-[320px] h-[320px] border border-slate-200/40 rounded-full animate-subtle-ripple" style={{ animationDelay: '5s' }} />
-      <div className="absolute w-[320px] h-[320px] border border-slate-100 rounded-full animate-subtle-ripple" style={{ animationDelay: '7.5s' }} />
-      
-      {/* Central Core Reactor */}
-      <div className="absolute w-[90px] h-[90px] bg-white border border-slate-200 rounded-full shadow-md flex items-center justify-center z-10">
-         <div className="w-[10px] h-[10px] bg-blue-600 rounded-full shadow-sm animate-pulse" />
-      </div>
+      {/* Subtle Concentric Rings */}
+      <div className="absolute w-[340px] h-[340px] border border-slate-200/50 rounded-full animate-subtle-ripple pointer-events-none" style={{ animationDelay: '0s' }} />
+      <div className="absolute w-[340px] h-[340px] border border-slate-200/35 rounded-full animate-subtle-ripple pointer-events-none" style={{ animationDelay: '3.3s' }} />
+      <div className="absolute w-[340px] h-[340px] border border-slate-200/20 rounded-full animate-subtle-ripple pointer-events-none" style={{ animationDelay: '6.6s' }} />
     </div>
   );
 }

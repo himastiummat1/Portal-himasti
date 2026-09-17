@@ -1,9 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { addRapat, deleteRapat, uploadNotulensi, getAttendance } from "./actions";
+import { 
+  addRapat, 
+  deleteRapat, 
+  uploadNotulensi, 
+  getAttendance,
+  manualCheckIn,
+  deleteAttendanceRecord,
+  getKadersForAttendance
+} from "./actions";
 import { tutupAbsensiDanRekap } from "./telegram";
-import { Users, X, CheckCircle2, Clock } from "lucide-react";
+import { Users, X, CheckCircle2, Clock, UserPlus, Trash2, UserCheck, FileSpreadsheet } from "lucide-react";
 
 type RapatRecord = {
   id: number;
@@ -17,6 +25,25 @@ type RapatRecord = {
   is_active?: boolean | null;
 };
 
+interface AttendanceRecord {
+  id: number;
+  userName: string;
+  userEmail: string;
+  userNim?: string;
+  userAngkatan?: string;
+  waktuHadir: string;
+  status: string;
+  method?: string;
+}
+
+interface KaderItem {
+  id: number;
+  name: string;
+  email: string;
+  nim: string;
+  angkatan: string;
+}
+
 export default function RapatClient({ records }: { records: RapatRecord[] }) {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -24,8 +51,13 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
   const [uploadMeetingId, setUploadMeetingId] = useState<number | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [attendanceModal, setAttendanceModal] = useState<{ meetingId: number; title: string } | null>(null);
-  const [attendanceList, setAttendanceList] = useState<any[]>([]);
+  const [attendanceList, setAttendanceList] = useState<AttendanceRecord[]>([]);
   const [isLoadingAttendance, setIsLoadingAttendance] = useState(false);
+  const [allKaders, setAllKaders] = useState<KaderItem[]>([]);
+  const [selectedKaderId, setSelectedKaderId] = useState<string>("");
+  const [isAddingManual, setIsAddingManual] = useState(false);
+  const [showManualForm, setShowManualForm] = useState(false);
+  const [manualError, setManualError] = useState("");
 
   const formatDate = (isoString: string) => {
     return new Intl.DateTimeFormat("id-ID", { 
@@ -50,7 +82,6 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
     setIsSubmitting(false);
   }
 
-  
   async function handleUploadNotulensi(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setIsUploading(true);
@@ -73,10 +104,96 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
   async function handleShowAttendance(meetingId: number, title: string) {
     setAttendanceModal({ meetingId, title });
     setIsLoadingAttendance(true);
-    const data = await getAttendance(meetingId);
+    setShowManualForm(false);
+    setSelectedKaderId("");
+    setManualError("");
+    const [data, kaders] = await Promise.all([
+      getAttendance(meetingId),
+      getKadersForAttendance()
+    ]);
     setAttendanceList(data);
+    setAllKaders(kaders);
     setIsLoadingAttendance(false);
   }
+
+  async function handleManualSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!attendanceModal || !selectedKaderId) return;
+    setIsAddingManual(true);
+    setManualError("");
+    const result = await manualCheckIn(attendanceModal.meetingId, parseInt(selectedKaderId));
+    setIsAddingManual(false);
+    if (result.success) {
+      const refreshed = await getAttendance(attendanceModal.meetingId);
+      setAttendanceList(refreshed);
+      setSelectedKaderId("");
+      setShowManualForm(false);
+    } else {
+      setManualError(result.error || "Gagal mencatat kehadiran manual.");
+    }
+  }
+
+  async function handleDeleteAttendance(id: number) {
+    if (!confirm("Hapus catatan kehadiran ini?")) return;
+    const result = await deleteAttendanceRecord(id);
+    if (result.success && attendanceModal) {
+      const refreshed = await getAttendance(attendanceModal.meetingId);
+      setAttendanceList(refreshed);
+    } else {
+      alert(result.error || "Gagal menghapus data.");
+    }
+  }
+
+  const exportAttendanceExcel = () => {
+    if (!attendanceModal || attendanceList.length === 0) return;
+
+    const headers = ["No", "Nama Mahasiswa", "NIM", "Angkatan", "Email", "Waktu Hadir", "Metode Presensi", "Status Kehadiran"];
+
+    const formatCell = (val: unknown, isTextFormula = false) => {
+      if (val === null || val === undefined) return '""';
+      const str = String(val).replace(/\r?\n/g, " ").trim();
+      const escaped = str.replace(/"/g, '""');
+      if (isTextFormula && /^[0-9+]+$/.test(str)) {
+        return `"=""${escaped}"""`;
+      }
+      return `"${escaped}"`;
+    };
+
+    const rows = attendanceList.map((a, idx) => {
+      const dateStr = new Date(a.waktuHadir).toLocaleString("id-ID", {
+        dateStyle: "medium",
+        timeStyle: "short",
+      });
+      const methodLabel = a.method === "manual_panitia" ? "Manual Panitia" : a.method === "biometric_fingerprint" ? "Biometrik" : "Scan QR";
+      return [
+        formatCell(idx + 1),
+        formatCell(a.userName),
+        formatCell(a.userNim || "-", true),
+        formatCell(a.userAngkatan || "-"),
+        formatCell(a.userEmail),
+        formatCell(dateStr),
+        formatCell(methodLabel),
+        formatCell(a.status.toUpperCase())
+      ].join(";");
+    });
+
+    const csvContent = "\uFEFF" + [
+      headers.map(h => formatCell(h)).join(";"),
+      ...rows
+    ].join("\r\n");
+
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    const sanitizedTitle = attendanceModal.title.replace(/[^a-zA-Z0-9_-]/g, "_").slice(0, 30);
+    const dateFile = new Date().toISOString().split("T")[0];
+    link.download = `Presensi_${sanitizedTitle}_${dateFile}.csv`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  };
 
   async function handleDelete(id: number) {
     if (!confirm("Hapus jadwal rapat ini?")) return;
@@ -233,10 +350,56 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                   <h3 className="text-lg font-bold text-slate-900">Daftar Hadir</h3>
                   <p className="text-sm text-slate-500 mt-0.5">{attendanceModal.title}</p>
                 </div>
-                <button onClick={() => setAttendanceModal(null)} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
-                  <X className="w-5 h-5 text-slate-600" />
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowManualForm(!showManualForm)}
+                    className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-colors border border-blue-200"
+                  >
+                    <UserPlus className="w-3.5 h-3.5" />
+                    <span>{showManualForm ? "Tutup Form" : "+ Hadir Manual"}</span>
+                  </button>
+                  <button onClick={() => setAttendanceModal(null)} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                    <X className="w-5 h-5 text-slate-600" />
+                  </button>
+                </div>
               </div>
+
+              {/* Manual Check-in Dropdown Form */}
+              {showManualForm && (
+                <form onSubmit={handleManualSubmit} className="p-4 bg-blue-50/50 border-b border-blue-200/60 flex flex-col sm:flex-row gap-3 items-center">
+                  <div className="flex-1 w-full">
+                    <select
+                      value={selectedKaderId}
+                      onChange={(e) => setSelectedKaderId(e.target.value)}
+                      required
+                      className="w-full px-3 py-2 text-xs bg-white rounded-xl border border-slate-200 text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="">-- Pilih Mahasiswa / Kader --</option>
+                      {allKaders
+                        .filter(k => !attendanceList.some(a => a.userEmail === k.email))
+                        .map(k => (
+                          <option key={k.id} value={k.id}>
+                            {k.name} ({k.nim}) - Angkatan {k.angkatan}
+                          </option>
+                        ))}
+                    </select>
+                  </div>
+                  <button
+                    type="submit"
+                    disabled={isAddingManual || !selectedKaderId}
+                    className="w-full sm:w-auto px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-semibold flex items-center justify-center gap-1.5 shrink-0 disabled:opacity-50 transition-colors"
+                  >
+                    {isAddingManual ? <Clock className="w-3.5 h-3.5 animate-spin" /> : <UserCheck className="w-3.5 h-3.5" />}
+                    <span>Tandai Hadir</span>
+                  </button>
+                </form>
+              )}
+
+              {manualError && (
+                <div className="p-3 bg-rose-50 text-rose-700 text-xs border-b border-rose-200 px-6">
+                  {manualError}
+                </div>
+              )}
               
               <div className="p-6">
                 {isLoadingAttendance ? (
@@ -247,32 +410,70 @@ export default function RapatClient({ records }: { records: RapatRecord[] }) {
                   <div className="text-center py-8 text-slate-500">
                     <Users className="w-12 h-12 text-slate-300 mx-auto mb-3" />
                     <p className="font-medium">Belum ada yang absen</p>
-                    <p className="text-sm mt-1">Tampilkan QR Code di layar proyektor agar anggota bisa melakukan scan absensi.</p>
+                    <p className="text-sm mt-1">Tampilkan QR Code di layar proyektor atau gunakan tombol &quot;+ Hadir Manual&quot; jika HP anggota terkendala.</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <div className="flex items-center gap-2 px-4 py-2 bg-green-50 border border-green-200 rounded-xl text-green-700 text-sm font-medium">
-                      <CheckCircle2 className="w-4 h-4" />
-                      Total Hadir: {attendanceList.length} Orang
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 px-4 py-2.5 bg-emerald-50 border border-emerald-200 rounded-xl text-emerald-800 text-sm font-medium">
+                      <div className="flex items-center gap-2">
+                        <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                        <span>Total Hadir: <strong>{attendanceList.length}</strong> Orang</span>
+                        <span className="text-[10px] text-emerald-700 bg-emerald-100/80 px-2 py-0.5 rounded-full font-mono">Realtime</span>
+                      </div>
+                      <button
+                        onClick={exportAttendanceExcel}
+                        className="inline-flex items-center gap-1.5 px-3 py-1 bg-white hover:bg-emerald-100/50 text-emerald-900 border border-emerald-300 rounded-lg text-xs font-semibold shadow-xs transition-colors self-end sm:self-auto"
+                        title="Download daftar hadir rapat ini ke format Excel"
+                      >
+                        <FileSpreadsheet className="w-3.5 h-3.5 text-emerald-600" />
+                        <span>Export Excel Presensi</span>
+                      </button>
                     </div>
                     <div className="overflow-x-auto">
                       <table className="w-full text-sm">
                         <thead>
-                          <tr className="border-b border-slate-200 text-left text-slate-500">
-                            <th className="py-3 px-4 font-medium">No</th>
-                            <th className="py-3 px-4 font-medium">Nama</th>
-                            <th className="py-3 px-4 font-medium hidden sm:table-cell">Email</th>
-                            <th className="py-3 px-4 font-medium">Waktu</th>
+                          <tr className="border-b border-slate-200 text-left text-slate-500 text-xs">
+                            <th className="py-3 px-3 font-medium">No</th>
+                            <th className="py-3 px-3 font-medium">Nama Anggota</th>
+                            <th className="py-3 px-3 font-medium hidden md:table-cell">NIM / Angkatan</th>
+                            <th className="py-3 px-3 font-medium hidden sm:table-cell">Metode</th>
+                            <th className="py-3 px-3 font-medium">Waktu</th>
+                            <th className="py-3 px-3 text-right font-medium">Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
                           {attendanceList.map((a, i) => (
-                            <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors">
-                              <td className="py-3 px-4 text-slate-500 font-mono text-xs">{i + 1}</td>
-                              <td className="py-3 px-4 font-medium text-slate-900">{a.userName}</td>
-                              <td className="py-3 px-4 text-slate-500 font-mono text-xs hidden sm:table-cell truncate max-w-[200px]">{a.userEmail}</td>
-                              <td className="py-3 px-4 text-slate-500 text-xs font-mono">
-                                {new Date(a.waktuHadir).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                            <tr key={a.id} className="border-b border-slate-100 hover:bg-slate-50 transition-colors text-xs">
+                              <td className="py-3 px-3 text-slate-500 font-mono">{i + 1}</td>
+                              <td className="py-3 px-3 font-semibold text-slate-900">
+                                <div>{a.userName}</div>
+                                <div className="text-[11px] text-slate-400 font-normal sm:hidden">{a.userNim || a.userEmail}</div>
+                              </td>
+                              <td className="py-3 px-3 hidden md:table-cell font-mono text-[11px] text-slate-600">
+                                {a.userNim || "-"} {a.userAngkatan ? `(${a.userAngkatan})` : ""}
+                              </td>
+                              <td className="py-3 px-3 hidden sm:table-cell">
+                                <span className={`px-2 py-0.5 rounded text-[10px] font-medium ${
+                                  a.method === "manual_panitia"
+                                    ? "bg-amber-100 text-amber-800"
+                                    : a.method === "biometric_fingerprint"
+                                    ? "bg-purple-100 text-purple-800"
+                                    : "bg-blue-100 text-blue-800"
+                                }`}>
+                                  {a.method === "manual_panitia" ? "Manual Panitia" : a.method === "biometric_fingerprint" ? "Biometrik" : "Scan QR"}
+                                </span>
+                              </td>
+                              <td className="py-3 px-3 text-slate-500 font-mono">
+                                {new Date(a.waktuHadir).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })}
+                              </td>
+                              <td className="py-3 px-3 text-right">
+                                <button
+                                  onClick={() => handleDeleteAttendance(a.id)}
+                                  className="p-1 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded transition-colors"
+                                  title="Hapus Kehadiran"
+                                >
+                                  <Trash2 className="w-3.5 h-3.5" />
+                                </button>
                               </td>
                             </tr>
                           ))}

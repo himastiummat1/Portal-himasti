@@ -190,7 +190,7 @@ export default function TermsPage() {
               </h2>
             </div>
             <p className="text-sm sm:text-base text-slate-600 leading-relaxed">
-              Layanan disediakan secara *"apa adanya"* (*as-is*) dan *"sebagaimana tersedia"* (*as-available*). Pengurus HIMASTI berupaya sebaik mungkin menjaga ketersediaan sistem dan keamanan data, namun tidak bertanggung jawab atas gangguan koneksi jaringan internet kampus, kegagalan perangkat keras pengguna, atau kehilangan data akibat kelalaian kata sandi oleh pengguna sendiri.
+              Layanan disediakan secara *&quot;apa adanya&quot;* (*as-is*) dan *&quot;sebagaimana tersedia&quot;* (*as-available*). Pengurus HIMASTI berupaya sebaik mungkin menjaga ketersediaan sistem dan keamanan data, namun tidak bertanggung jawab atas gangguan koneksi jaringan internet kampus, kegagalan perangkat keras pengguna, atau kehilangan data akibat kelalaian kata sandi oleh pengguna sendiri.
             </p>
           </section>
 

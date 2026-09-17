@@ -14,7 +14,8 @@ import {
   ArrowRight,
   ExternalLink,
   ChevronRight,
-  Fingerprint
+  Fingerprint,
+  QrCode
 } from 'lucide-react';
 import Link from 'next/link';
 import CompetitionMarquee from './CompetitionMarquee';
@@ -27,11 +28,12 @@ type Lang = 'id' | 'en' | 'ar';
 const translations = {
   id: {
     login: "Masuk Portal",
-    heroBadge: "Ekosistem Otonom • HIMASTI UMMAT",
-    heroTitle: "Satu Ekosistem. Tanpa Batas.",
-    heroDesc: "Platform digital terpadu untuk orkestrasi 18 modul divisi, presensi hardware anti-joki FIDO2, bank modul IT, dan asisten cerdas mahasiswa Sistem & Teknologi Informasi.",
+    heroBadge: "Platform Terpadu • HIMASTI UMMAT",
+    heroTitle: "Satu Portal. Segala Akses.",
+    heroDesc: "Pusat layanan digital civitas akademika HIMASTI UMMAT. Bank materi kuliah terbuka, direktori karya mahasiswa, repositori kurikulum, dan asisten cerdas AI.",
     startBtn: "Mulai Akses Portal",
-    presensiBtn: "Presensi Biometrik",
+    exploreBtn: "Jelajahi Divisi",
+    presensiBtn: "Presensi Rapat & QR",
     aiPrompt: "Tanyakan sesuatu tentang kurikulum, divisi, atau kampus...",
     demoLimit: "Batas percakapan demo (5/5) tercapai. Silakan login untuk akses tanpa batas.",
     demoLeft: "Sisa Kuota Demo",
@@ -43,17 +45,17 @@ const translations = {
     divBadge: "Struktur Organisasi",
     divTitle: "Modul Divisi & Kepanitiaan",
     divDesc: "Infrastruktur utama yang menggerakkan seluruh program kerja, riset, dan kaderisasi himpunan.",
-    statsHeader: "Ekosistem Digital HIMASTI • Statistik Terkini",
-    statsBadge: "Presensi Biometrik & Sinkronisasi Aula",
+    statsHeader: "Statistik Ekosistem Digital HIMASTI",
+    statsBadge: "Ekosistem Kolaboratif & Terbuka",
     statsKader: "Kader Aktif",
-    statsKaderSub: "Terverifikasi Sistem",
+    statsKaderSub: "Mahasiswa & Alumni",
     statsDivisi: "Divisi Kerja",
-    statsDivisiSub: "Paralel & Otonom",
+    statsDivisiSub: "Bidang & Biro Kerja",
     statsModul: "Modul IT",
-    statsModulSub: "Bank Materi Terbuka",
-    statsUptime: "Uptime Presensi",
-    statsUptimeSub: "Anti-Joki Hardware",
-    fidoNav: "Presensi FIDO2",
+    statsModulSub: "Materi Kuliah & Praktikum",
+    statsUptime: "Program Kerja",
+    statsUptimeSub: "Riset & Kaderisasi",
+    fidoNav: "Presensi Rapat",
     navDivisions: "Divisi",
     footerRights: "© 2026 HIMASTI Universitas Muhammadiyah Mataram. Hak cipta dilindungi.",
     footerLogin: "Masuk",
@@ -72,11 +74,12 @@ const translations = {
   },
   en: {
     login: "Sign In",
-    heroBadge: "Autonomous Ecosystem • HIMASTI UMMAT",
-    heroTitle: "One Ecosystem. Zero Limits.",
-    heroDesc: "A unified digital platform for 18 division modules, hardware-grade FIDO2 attendance, IT module bank, and intelligent AI assistant for Information Systems & Technology students.",
+    heroBadge: "Official Portal • HIMASTI UMMAT",
+    heroTitle: "One Portal. Full Access.",
+    heroDesc: "Unified digital services for HIMASTI UMMAT. Open IT courseware, student showcase, curriculum directory, and intelligent AI assistant.",
     startBtn: "Launch Ecosystem",
-    presensiBtn: "Biometric Attendance",
+    exploreBtn: "Explore Divisions",
+    presensiBtn: "Meeting Attendance",
     aiPrompt: "Ask anything about curriculum, divisions, or campus...",
     demoLimit: "Demo conversation limit (5/5) reached. Please sign in for full access.",
     demoLeft: "Demo Queries Remaining",
@@ -88,17 +91,17 @@ const translations = {
     divBadge: "Organization Structure",
     divTitle: "Division Modules",
     divDesc: "Core infrastructure driving work programs, research, and cadre development.",
-    statsHeader: "HIMASTI Digital Ecosystem • Live Statistics",
-    statsBadge: "Biometric Attendance & Hall Sync",
+    statsHeader: "HIMASTI Digital System • Live Statistics",
+    statsBadge: "Open & Collaborative System",
     statsKader: "Active Cadres",
-    statsKaderSub: "System Verified",
+    statsKaderSub: "Students & Alumni",
     statsDivisi: "Divisions",
-    statsDivisiSub: "Parallel & Autonomous",
+    statsDivisiSub: "Divisions & Units",
     statsModul: "IT Modules",
-    statsModulSub: "Open Courseware",
-    statsUptime: "Attendance Uptime",
-    statsUptimeSub: "Anti-Fraud Hardware",
-    fidoNav: "FIDO2 Presence",
+    statsModulSub: "Courseware & Labs",
+    statsUptime: "Work Programs",
+    statsUptimeSub: "Research & Cadres",
+    fidoNav: "Meeting Attendance",
     navDivisions: "Divisions",
     footerRights: "© 2026 HIMASTI Universitas Muhammadiyah Mataram. All rights reserved.",
     footerLogin: "Sign In",
@@ -117,11 +120,12 @@ const translations = {
   },
   ar: {
     login: "تسجيل الدخول",
-    heroBadge: "المنظومة الرقمية المستقلة • هيمساتي",
-    heroTitle: "نظام بيئي واحد. بلا حدود.",
-    heroDesc: "منصة رقمية موحدة لإدارة 18 وحدة تنظيمية، وحضور بيومتري آمن ضد التزوير، وبنك المعرفة التقنية، ومساعد ذكاء اصطناعي تفاعلي متقدم.",
+    heroBadge: "البوابة الرسمية • هيمساتي",
+    heroTitle: "بوابة واحدة. وصول شامل.",
+    heroDesc: "المنصة الرقمية الموحدة لطلاب نظم وتكنولوجيا المعلومات. بنك المقررات المفتوحة، مشاريع الطلاب، ومساعد الذكاء الاصطناعي.",
     startBtn: "دخول النظام",
-    presensiBtn: "تسجيل الحضور البيومتري",
+    exploreBtn: "استكشف الأقسام",
+    presensiBtn: "تسجيل الحضور (QR)",
     aiPrompt: "اسأل عن المناهج أو الأنشطة أو المنظمة...",
     demoLimit: "تم الوصول إلى الحد الأقصى للمحادثات (٥/٥). يرجى تسجيل الدخول للوصول الكامل.",
     demoLeft: "المحادثات المتبقية",
@@ -134,16 +138,16 @@ const translations = {
     divTitle: "الوحدات التنظيمية",
     divDesc: "البنية التحتية الأساسية التي تقود برامج العمل وإعداد الكوادر.",
     statsHeader: "المنظومة الرقمية لهيمساتي • إحصائيات حية",
-    statsBadge: "حضور بيومتري ومزامنة القاعة",
+    statsBadge: "منظومة تعاونية ومفتوحة",
     statsKader: "الكوادر النشطة",
-    statsKaderSub: "تم التحقق من النظام",
+    statsKaderSub: "الطلاب والخريجون",
     statsDivisi: "وحدات العمل",
-    statsDivisiSub: "متوازية ومستقلة",
+    statsDivisiSub: "الوحدات واللجان التنظيمية",
     statsModul: "وحدات تقنية",
-    statsModulSub: "مناهج تعليمية مفتوحة",
-    statsUptime: "استمرارية الحضور",
-    statsUptimeSub: "حماية الأجهزة ضد التزوير",
-    fidoNav: "حضور FIDO2",
+    statsModulSub: "المناهج والمعامل التقنية",
+    statsUptime: "برامج العمل",
+    statsUptimeSub: "البحث وبناء الكوادر",
+    fidoNav: "تسجيل الحضور",
     navDivisions: "الأقسام",
     footerRights: "© 2026 هيمساتي - جامعة محمدية ماتارام. جميع الحقوق محفوظة.",
     footerLogin: "تسجيل الدخول",
@@ -307,9 +311,10 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
 
           <div className="hidden md:flex items-center gap-7 text-xs font-semibold text-slate-600">
             <a href="#divisions" className="hover:text-blue-600 transition-colors">{t.navDivisions}</a>
+            <Link href="/pengaduan" className="hover:text-blue-600 transition-colors">Aspirasi Anonim</Link>
             <Link href="/updates" className="hover:text-blue-600 transition-colors">Catatan Rilis</Link>
             <Link href="/absen" className="hover:text-blue-600 transition-colors flex items-center gap-1.5">
-              <Fingerprint className="w-3.5 h-3.5 text-blue-600" /> {t.fidoNav}
+              <QrCode className="w-3.5 h-3.5 text-blue-600" /> {t.fidoNav}
             </Link>
           </div>
 
@@ -344,7 +349,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
       </header>
 
       {/* Hero Section */}
-      <section className="relative w-full min-h-[90dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-36 pb-16 max-w-5xl mx-auto gap-8">
+      <section className="relative w-full min-h-[90dvh] flex flex-col items-center justify-center text-center px-4 sm:px-6 pt-32 sm:pt-36 pb-16 max-w-5xl mx-auto gap-7">
         
         {/* Soft Ripple Reactor */}
         <BrutalistCore />
@@ -357,11 +362,11 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.35 }}
-            className="mb-6"
+            className="mb-4 sm:mb-5"
           >
             <Link
               href="/updates"
-              className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full animate-shimmer-badge border border-blue-200/80 text-blue-700 hover:text-blue-900 text-xs font-semibold tracking-wide shadow-xs transition-all hover:scale-[1.02] group"
+              className="inline-flex items-center gap-2 px-3.5 sm:px-4 py-1.5 rounded-full animate-shimmer-badge border border-blue-200/80 text-blue-700 hover:text-blue-900 text-xs font-semibold tracking-wide shadow-xs transition-all hover:scale-[1.02] group"
               title="Lihat Catatan Rilis & Pembaruan Sistem"
             >
               <Sparkles className="w-3.5 h-3.5 text-blue-600 shrink-0" />
@@ -378,7 +383,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4 }}
-            className="text-4xl sm:text-6xl md:text-7xl font-extrabold tracking-tight leading-[1.08] text-slate-900 max-w-4xl mt-2 mb-5"
+            className="text-3xl sm:text-5xl md:text-6xl font-extrabold tracking-tight leading-[1.12] text-slate-900 max-w-4xl mt-3 mb-4"
           >
             {t.heroTitle}
           </motion.h1>
@@ -387,7 +392,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.05 }}
-            className="text-base sm:text-lg md:text-xl text-slate-600 max-w-2xl mb-8 leading-relaxed mx-auto font-normal"
+            className="text-sm sm:text-base md:text-lg text-slate-600 max-w-2xl mb-7 leading-relaxed mx-auto font-normal"
           >
             {t.heroDesc}
           </motion.p>
@@ -397,29 +402,29 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, delay: 0.1 }}
-            className="flex flex-col sm:flex-row items-center gap-3.5 z-20"
+            className="flex flex-col sm:flex-row items-center gap-3 z-20 w-full sm:w-auto"
           >
             <Link 
               href="/login" 
-              className="w-full sm:w-auto px-8 py-3.5 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-sm sm:text-base shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 group active:scale-95"
+              className="w-full sm:w-auto px-7 py-3 bg-slate-900 hover:bg-slate-800 text-white rounded-full font-bold text-sm shadow-sm hover:shadow transition-all flex items-center justify-center gap-2 group active:scale-95"
             >
               <span>{t.startBtn}</span>
               <ArrowRight className={`w-4 h-4 transition-transform ${isRTL ? 'rotate-180 group-hover:-translate-x-1' : 'group-hover:translate-x-1'}`} />
             </Link>
 
-            <Link 
-              href="/absen" 
-              className="w-full sm:w-auto px-7 py-3.5 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm sm:text-base font-semibold shadow-sm hover:shadow transition flex items-center justify-center gap-2 active:scale-95"
+            <a 
+              href="#divisions" 
+              className="w-full sm:w-auto px-6 py-3 rounded-full bg-white hover:bg-slate-50 border border-slate-200 text-slate-700 text-sm font-semibold shadow-sm hover:shadow transition flex items-center justify-center gap-2 active:scale-95 scroll-smooth"
             >
-              <Fingerprint className="w-4 h-4 text-blue-600" />
-              <span>{t.presensiBtn}</span>
-            </Link>
+              <Users className="w-4 h-4 text-blue-600" />
+              <span>{t.exploreBtn}</span>
+            </a>
           </motion.div>
         </div>
 
-        {/* Floating AI Assistant Terminal */}
-        <div className="w-full max-w-2xl relative z-40 mt-4 animate-gentle-float">
-          <div className="bg-white border border-slate-200 rounded-3xl shadow-xl overflow-hidden flex flex-col h-[400px] sm:h-[460px] w-full text-left">
+        {/* Grounded AI Assistant Terminal */}
+        <div className="w-full max-w-2xl relative z-40 mt-4 sm:mt-6">
+          <div className="bg-white border border-slate-200/90 rounded-2xl sm:rounded-3xl shadow-[0_16px_50px_-12px_rgba(15,23,42,0.08)] overflow-hidden flex flex-col h-[400px] sm:h-[460px] w-full text-left">
              
              {/* Window Bar */}
              <div className="bg-slate-50 px-5 py-3 border-b border-slate-200 flex items-center justify-between shrink-0">
@@ -521,10 +526,10 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 <AnimatedCounter end={33} suffix="+" />
               </div>
-              <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-700 mt-2 uppercase tracking-wider">
                 {t.statsKader}
               </div>
-              <div className="text-[11px] text-slate-400 mt-0.5">
+              <div className="text-xs text-slate-500 mt-1 font-medium">
                 {t.statsKaderSub}
               </div>
             </div>
@@ -533,10 +538,10 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 <AnimatedCounter end={8} />
               </div>
-              <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-700 mt-2 uppercase tracking-wider">
                 {t.statsDivisi}
               </div>
-              <div className="text-[11px] text-slate-400 mt-0.5">
+              <div className="text-xs text-slate-500 mt-1 font-medium">
                 {t.statsDivisiSub}
               </div>
             </div>
@@ -545,22 +550,22 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
                 <AnimatedCounter end={124} suffix="+" />
               </div>
-              <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-700 mt-2 uppercase tracking-wider">
                 {t.statsModul}
               </div>
-              <div className="text-[11px] text-slate-400 mt-0.5">
+              <div className="text-xs text-slate-500 mt-1 font-medium">
                 {t.statsModulSub}
               </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-emerald-600">
-                <AnimatedCounter end={99.9} decimals={1} suffix="%" />
+              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
+                <AnimatedCounter end={18} suffix="+" />
               </div>
-              <div className="text-xs font-bold text-slate-500 mt-1.5 uppercase tracking-wider">
+              <div className="text-xs font-bold text-slate-700 mt-2 uppercase tracking-wider">
                 {t.statsUptime}
               </div>
-              <div className="text-[11px] text-slate-400 mt-0.5">
+              <div className="text-xs text-slate-500 mt-1 font-medium">
                 {t.statsUptimeSub}
               </div>
             </div>
@@ -647,6 +652,9 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
             <span>{t.footerRights}</span>
           </div>
           <div className="flex flex-wrap items-center justify-center gap-5 text-slate-600">
+            <Link href="/pengaduan" className="hover:text-blue-600 transition-colors font-medium">
+              Kotak Aspirasi
+            </Link>
             <Link href="/updates" className="hover:text-blue-600 transition-colors flex items-center gap-1.5 font-medium">
               <span className="w-1.5 h-1.5 rounded-full bg-blue-600" />
               <span>Catatan Rilis</span>
