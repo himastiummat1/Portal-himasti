@@ -129,6 +129,13 @@ export async function submitWebAuthnAttendanceAction(payload: {
 
     // 1. Jika presensi Rapat (MeetingAttendance)
     if (payload.meetingId) {
+      const meeting = await prisma.meeting.findUnique({ where: { id: payload.meetingId } });
+      if (!meeting) return { error: 'Rapat tidak ditemukan.' };
+      if (!meeting.is_active) return { error: 'Sesi absensi untuk rapat ini sudah ditutup.' };
+      if (meeting.end_date && new Date() > new Date(meeting.end_date)) {
+        return { error: 'Sesi absensi untuk rapat ini telah melewati batas waktu dan telah ditutup.' };
+      }
+
       const existing = await prisma.meetingAttendance.findUnique({
         where: {
           meeting_id_user_id: {

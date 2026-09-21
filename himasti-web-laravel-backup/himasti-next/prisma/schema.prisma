@@ -102,6 +102,7 @@ model Meeting {
   description       String
   type              String    @default("rapat_pengurus") // 'rapat_pengurus', 'rapat_panitia'
   event_date        DateTime
+  end_date          DateTime?
   location          String
   notulensi_path    String?
   

@@ -1,72 +1,99 @@
 import { NextResponse } from "next/server";
 import Groq from "groq-sdk";
+import { getHimastiKnowledgeContext, HIMASTI_STATIC_KNOWLEDGE } from "@/lib/ai-knowledge";
 
-// Simple in-memory rate limiter (per IP, 10 req/min)
+// In-memory sliding rate limiter (per IP, 20 req/min)
 const rateMap = new Map<string, { count: number; reset: number }>();
-const RATE_LIMIT = 10;
+const RATE_LIMIT = 20;
 const WINDOW_MS = 60_000;
 
 export async function POST(req: Request) {
-  // Rate limit check
+  // 1. Rate Limiting Check
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() || "unknown";
   const now = Date.now();
   const entry = rateMap.get(ip);
   if (entry && now < entry.reset) {
     entry.count++;
     if (entry.count > RATE_LIMIT) {
-      return NextResponse.json({ text: "Terlalu banyak permintaan. Coba lagi nanti." }, { status: 429 });
+      return NextResponse.json({ 
+        text: "Terlalu banyak permintaan AI. Silakan tunggu sejenak demi stabilitas sistem." 
+      }, { status: 429 });
     }
   } else {
     rateMap.set(ip, { count: 1, reset: now + WINDOW_MS });
   }
 
-  const groq = new Groq({ apiKey: process.env.API_KEY_GROQ || "dummy_key" });
+  const groqKey = process.env.API_KEY_GROQ || process.env.GROQ_API_KEY;
+
   try {
     const { messages, lang } = await req.json();
     let langInstruction = "";
-    if(lang === "en") langInstruction = "\nMohon jawab dalam BAHASA INGGRIS (English).";
-    if(lang === "ar") langInstruction = "\nMohon jawab dalam BAHASA ARAB (Arabic).";
-    
-    if (!process.env.API_KEY_GROQ) {
-      return NextResponse.json({ 
-        text: "Peringatan: API_KEY_GROQ belum dipasang di file .env!" 
-      });
-    }
+    if (lang === "en") langInstruction = "\nMohon jawab dalam BAHASA INGGRIS (English).";
+    if (lang === "ar") langInstruction = "\nMohon jawab dalam BAHASA ARAB (Arabic).";
 
-    const formattedMessages = messages.slice(-5).map((msg: any) => ({
-      role: msg.role === "bot" ? "assistant" : "user",
-      content: msg.text
+    // 2. Ambil konteks dinamis live dari database (Kader, Rapat, Lomba, Pengurus)
+    const dynamicDbKnowledge = await getHimastiKnowledgeContext();
+
+    const systemPrompt = `
+Kamu adalah "HIMASTI AI", asisten kecerdasan buatan resmi untuk Himpunan Mahasiswa Teknologi Informasi (HIMASTI) Universitas Muhammadiyah Mataram (UMMAT).
+Kamu memiliki pengetahuan mendalam dan menyeluruh tentang seluruh isi portal web HIMASTI, struktur organisasi, data kader, agenda rapat, bank modul, serta keahlian teknis pemrograman.
+
+${HIMASTI_STATIC_KNOWLEDGE}
+
+${dynamicDbKnowledge}
+
+INSTRUKSI MENJAWAB:
+1. Jawab pertanyaan pengguna secara akurat berdasarkan data di atas. Jika ditanya tentang jumlah kader, angkatan, jadwal rapat, atau fitur web, gunakan data realtime yang telah disediakan.
+2. Jaga privasi: Jangan pernah membagikan password, hash, atau rahasia sensitif sistem.
+3. Selalu bersikap ramah, suportif, komunikatif, dan profesional.
+4. Kamu juga ahli dalam coding, debugging, dan arsitektur perangkat lunak (Next.js, TypeScript, React, Tailwind, Prisma, Python, PHP, Database). Berikan solusi kode yang bersih menggunakan format Markdown jika pengguna bertanya soal pemrograman.
+5. Sebutkan bahwa sistem presensi rapat HIMASTI kini dilengkapi batas waktu otomatis dan auto-rekap ke Telegram jika ditanya tentang fitur rapat/presensi.
+${langInstruction}
+`.trim();
+
+    const formattedMessages = messages.slice(-6).map((msg: any) => ({
+      role: msg.role === "bot" || msg.role === "assistant" ? "assistant" : "user",
+      content: msg.text || msg.content || ""
     }));
 
     formattedMessages.unshift({
       role: "system",
-      content: `Kamu adalah AI Asisten resmi untuk HIMASTI (Himpunan Mahasiswa Sistem dan Teknologi Informasi) di Universitas Muhammadiyah Mataram (UMMAT).
-Jawablah pertanyaan seputar sejarah HIMASTI dan Kemuhammadiyahan dengan akurat berdasarkan fakta berikut:
-- Didirikan: 21 April 2022 melalui Mubes pertama di Ruang Teknik (dihadiri 6 dosen & 36 mahasiswa).
-- Alasan berdiri: Angkatan pertama merasa dianaktirikan oleh fakultas.
-- 8 Pencetus/Pendiri: Arif Rahman, Sam'ul Gozi, Husni Mubarok, Novianti, Luhur Budi, Fauzan, Alfian, Akrimul Hakim.
-- Nama: Sempat diusulkan HMSTI, HIMASI, dan HIMASTI. Nama HIMASTI mendapat suara terbanyak.
-- Pengkaderan Jilid 2: Diikuti 28 orang di Pantai 3 Sempong pada 28-29 Juni.
-- Desain Awal: Logo pertama berwarna biru dengan komputer di tengah karya M. Ade Julianto Akbar. Baju pertama didesain Husni Mubarok. Keduanya direvisi pada angkatan kedua.
-- Integrasi: Kamu juga terintegrasi dan beroperasi secara penuh di Bot Telegram resmi HIMASTI. Jika ditanya apakah bisa diakses di Telegram, jawab "Ya, saya juga hadir di Bot Telegram resmi HIMASTI!"
-- Nilai Kemuhammadiyahan: HIMASTI menjunjung nilai Muhammadiyah (didirikan KH Ahmad Dahlan pada 18 Nov 1912) untuk mewujudkan Islam modern, toleran, pendidikan, dan sosial.
-
-Selain itu, kamu adalah asisten pemograman (coding) dan debugging yang handal. Jika pengguna bertanya tentang kode, pemrograman, error, atau meminta solusi teknis (seperti TypeScript, React, Next.js, Laravel, dsb), berikan bantuan coding yang tepat, best-practice, serta langkah-langkah debugging yang jelas. Gunakan format markdown untuk kode.
-
-Jawab dengan ramah, informatif, singkat, dan profesional. Jangan mengarang fakta sejarah.` + langInstruction
+      content: systemPrompt
     });
 
-    const chatCompletion = await groq.chat.completions.create({
-      messages: formattedMessages,
-      model: "qwen/qwen3.8-27b",
-      temperature: 0.5,
-      max_tokens: 500,
-    });
+    if (!groqKey) {
+      return NextResponse.json({
+        text: `Halo! Saya adalah HIMASTI AI. Saat ini integrasi API Groq belum terhubung ke environment server. Namun data sistem menunjukkan:\n\n${dynamicDbKnowledge}`
+      });
+    }
 
-    return NextResponse.json({ text: chatCompletion.choices[0]?.message?.content || "Data diterima." });
-    
+    const groq = new Groq({ apiKey: groqKey });
+
+    let reply = "";
+    try {
+      const chatCompletion = await groq.chat.completions.create({
+        messages: formattedMessages,
+        model: "llama-3.3-70b-versatile",
+        temperature: 0.6,
+        max_tokens: 700,
+      });
+      reply = chatCompletion.choices[0]?.message?.content || "";
+    } catch (primaryErr) {
+      console.warn("Groq primary model failed, trying fallback llama-3.1-8b-instant:", primaryErr);
+      const fallbackCompletion = await groq.chat.completions.create({
+        messages: formattedMessages,
+        model: "llama-3.1-8b-instant",
+        temperature: 0.6,
+        max_tokens: 700,
+      });
+      reply = fallbackCompletion.choices[0]?.message?.content || "";
+    }
+
+    return NextResponse.json({ text: reply || "Informasi diterima." });
   } catch (error: any) {
-    console.error("Groq API Error:", error);
-    return NextResponse.json({ text: "Maaf, sistem AI sedang mengalami gangguan koneksi." }, { status: 500 });
+    console.error("HIMASTI AI Error:", error);
+    return NextResponse.json({ 
+      text: "Mohon maaf, sistem AI sedang mengalami kendala koneksi sementara. Silakan ulangi beberapa saat lagi." 
+    }, { status: 500 });
   }
 }

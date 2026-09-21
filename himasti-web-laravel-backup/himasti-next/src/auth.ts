@@ -5,6 +5,8 @@ import bcrypt from "bcryptjs";
 import { prisma } from "@/lib/prisma";
 import { cookies } from "next/headers";
 
+import { is18VerifiedKader, resolveNim } from "@/lib/kaderValidation";
+
 export const { handlers, auth, signIn, signOut } = NextAuth({
   trustHost: true,
   session: { strategy: "jwt" },
@@ -27,16 +29,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!credentials?.email || !credentials?.password) return null;
 
         const rawIdentifier = (credentials.email as string).trim();
+        const cleanIdentifier = resolveNim(rawIdentifier);
         const rawPassword = credentials.password as string;
 
         // Mendukung login fleksibel dengan Email atau NIM (case-insensitive & auto-trimmed)
+        const orConditions: any[] = [
+          { email: { equals: cleanIdentifier, mode: "insensitive" } },
+          { data_kader: { nim: { equals: cleanIdentifier, mode: "insensitive" } } },
+        ];
+        if (cleanIdentifier.toLowerCase() !== rawIdentifier.toLowerCase()) {
+          orConditions.push(
+            { email: { equals: rawIdentifier, mode: "insensitive" } },
+            { data_kader: { nim: { equals: rawIdentifier, mode: "insensitive" } } }
+          );
+        }
+
         const user = await prisma.user.findFirst({
-          where: {
-            OR: [
-              { email: { equals: rawIdentifier, mode: "insensitive" } },
-              { data_kader: { nim: { equals: rawIdentifier, mode: "insensitive" } } }
-            ]
-          },
+          where: { OR: orConditions },
           include: {
             data_kader: true
           }

@@ -7,6 +7,10 @@ export async function getQrToken(meetingId: number) {
   const meeting = await prisma.meeting.findUnique({ where: { id: meetingId } });
   if (!meeting) throw new Error("Meeting not found");
   
+  if (!meeting.is_active || (meeting.end_date && new Date() > new Date(meeting.end_date))) {
+    throw new Error("Sesi presensi untuk rapat ini sudah berakhir atau ditutup.");
+  }
+  
   // If no secret exists, generate one
   let secret = meeting.qr_secret;
   if (!secret) {

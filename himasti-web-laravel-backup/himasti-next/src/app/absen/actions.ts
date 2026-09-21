@@ -2,6 +2,7 @@
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 import crypto from "crypto";
+import { autoCloseExpiredMeetings } from "@/app/admin/rapat/telegram";
 
 export async function submitAbsensi(meetingId: number, token: string, lat: number | null, lng: number | null) {
   const session = await auth();
@@ -11,6 +12,17 @@ export async function submitAbsensi(meetingId: number, token: string, lat: numbe
   const meeting = await prisma.meeting.findUnique({ where: { id: meetingId } });
   if (!meeting) return { success: false, error: "Rapat tidak ditemukan." };
   if (!meeting.is_active) return { success: false, error: "Sesi absensi untuk rapat ini sudah ditutup." };
+
+  // Validasi Batas Waktu Rapat (Otomatis ditutup & direkap ke Telegram jika waktu habis)
+  if (meeting.end_date && new Date() > new Date(meeting.end_date)) {
+    void autoCloseExpiredMeetings();
+    const formattedEndTime = new Intl.DateTimeFormat("id-ID", { hour: "2-digit", minute: "2-digit" }).format(new Date(meeting.end_date));
+    return { 
+      success: false, 
+      error: `Sesi absensi rapat ini telah berakhir pada pukul ${formattedEndTime} WITA dan telah ditutup secara otomatis oleh sistem.` 
+    };
+  }
+
   if (!meeting.qr_secret) return { success: false, error: "Sistem QR belum diinisialisasi." };
 
   // 1. Verify TOTP Token (30 seconds per window with 4-window backward tolerance ~120s buffer)

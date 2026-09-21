@@ -6,6 +6,7 @@ import AbsenTabs from "./AbsenTabs";
 import { ShieldCheck, ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { autoCloseExpiredMeetings } from "@/app/admin/rapat/telegram";
 
 export const dynamic = "force-dynamic";
 
@@ -33,6 +34,9 @@ export default async function AbsenPage({
     const dest = qs ? `/absen?${qs}` : "/absen";
     redirect(`/login?callbackUrl=${encodeURIComponent(dest)}`);
   }
+
+  // Sinkronisasi otomatis: Tutup rapat yang telah melewati batas waktu & kirim rekap ke Telegram
+  await autoCloseExpiredMeetings();
 
   const userId = parseInt(session.user.id);
   let meetingId = parseInt(params.m || "0");

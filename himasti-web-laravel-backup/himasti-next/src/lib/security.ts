@@ -74,6 +74,18 @@ export function isAllPengurusRole(roles: string[]): boolean {
 }
 
 /**
+ * Memastikan hak akses rapat organisasi:
+ * - Penyelenggara/pembuat rapat (creator) selalu berhak mengelola rapatnya sendiri.
+ * - Pimpinan tertinggi (Super Admin, Ketua Himpunan, Wakil Ketua, Sekretaris Umum) memiliki wewenang supervisi ke seluruh rapat.
+ * - Ketua bidang lain, anggota lain, dan kader biasa TIDAK BERHAK menghapus, menutup, atau mengubah rapat milik orang lain.
+ */
+export function canUserManageMeeting(currentUserId: number, roles: string[], meetingCreatorId: number): boolean {
+  if (currentUserId === meetingCreatorId) return true;
+  if (isSuperAdminRole(roles) || isKetuaOrWakilRole(roles) || isSekretarisRole(roles)) return true;
+  return false;
+}
+
+/**
  * Tanda tangani challenge WebAuthn dengan HMAC-SHA256 yang terikat ke User ID & Waktu
  * Mencegah pemalsuan challenge antar-user, replay attack, dan tamper sesi
  */

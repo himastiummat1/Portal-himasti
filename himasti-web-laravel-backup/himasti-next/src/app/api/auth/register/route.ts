@@ -18,8 +18,8 @@ export async function POST(req: Request) {
       }, { status: 400 });
     }
 
-    // Validasi Kode Rahasia (Diambil dari environment variable aman)
-    const VALID_CODE = process.env.REGISTRATION_CODE;
+    // Validasi Kode Rahasia (Diambil dari environment variable aman atau fallback standar himpunan)
+    const VALID_CODE = process.env.REGISTRATION_CODE || "JIWA AKTIF JIWA KREATIF LUAR BIASA";
     if (!VALID_CODE) {
       return NextResponse.json({ error: "Pendaftaran sedang ditutup sementara oleh pengurus." }, { status: 503 });
     }
