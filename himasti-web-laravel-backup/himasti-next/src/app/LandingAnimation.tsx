@@ -499,7 +499,7 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
                  </form>
                )}
                <div className="text-center mt-2 text-[10px] text-slate-400 font-medium">
-                 {t.demoLeft}: {5 - chatCount}/5 • Didukung oleh Llama-3 AI Engine
+                 {t.demoLeft}: {5 - chatCount}/5 • Didukung oleh Groq AI Engine
                </div>
              </div>
           </div>

@@ -306,21 +306,21 @@ INSTRUKSI:
                 { role: "system", content: systemPrompt },
                 { role: "user", content: prompt }
               ],
-              model: "llama-3.3-70b-versatile",
+              model: "qwen/qwen3.8-27b",
               temperature: 0.6,
-              max_tokens: 450,
+              max_tokens: 600,
             });
             reply = chatCompletion.choices[0]?.message?.content || "";
           } catch (modelErr) {
-            console.warn("Telegram AI primary model error, falling back to llama-3.1-8b-instant:", modelErr);
+            console.warn("Telegram AI primary model error, falling back to openai/gpt-oss-120b:", modelErr);
             const fallback = await groq.chat.completions.create({
               messages: [
                 { role: "system", content: systemPrompt },
                 { role: "user", content: prompt }
               ],
-              model: "llama-3.1-8b-instant",
+              model: "openai/gpt-oss-120b",
               temperature: 0.6,
-              max_tokens: 450,
+              max_tokens: 600,
             });
             reply = fallback.choices[0]?.message?.content || "";
           }

@@ -73,18 +73,18 @@ ${langInstruction}
     try {
       const chatCompletion = await groq.chat.completions.create({
         messages: formattedMessages,
-        model: "llama-3.3-70b-versatile",
+        model: "qwen/qwen3.8-27b",
         temperature: 0.6,
-        max_tokens: 700,
+        max_tokens: 800,
       });
       reply = chatCompletion.choices[0]?.message?.content || "";
     } catch (primaryErr) {
-      console.warn("Groq primary model failed, trying fallback llama-3.1-8b-instant:", primaryErr);
+      console.warn("Groq primary model failed, trying fallback openai/gpt-oss-120b:", primaryErr);
       const fallbackCompletion = await groq.chat.completions.create({
         messages: formattedMessages,
-        model: "llama-3.1-8b-instant",
+        model: "openai/gpt-oss-120b",
         temperature: 0.6,
-        max_tokens: 700,
+        max_tokens: 800,
       });
       reply = fallbackCompletion.choices[0]?.message?.content || "";
     }

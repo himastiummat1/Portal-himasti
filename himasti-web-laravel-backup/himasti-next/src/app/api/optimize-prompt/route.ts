@@ -15,16 +15,18 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Draft prompt tidak boleh kosong." }, { status: 400 });
     }
 
-    if (!process.env.API_KEY_GROQ) {
+    const groqKey = process.env.API_KEY_GROQ || process.env.GROQ_API_KEY;
+
+    if (!groqKey) {
       return NextResponse.json({
         optimizedPrompt: `# Optimized System Prompt for ${targetAgent || "AI Agent"}\n\n<role>\nYou are a senior technical specialist focused on delivering high-integrity solutions.\n</role>\n\n<objective>\n${draftPrompt.trim()}\n</objective>\n\n<guidelines>\n- Prioritize clean architecture, error boundaries, and modern best practices.\n- Provide clear rationale for design decisions.\n- Avoid placeholder code or vague explanations.\n</guidelines>`
       });
     }
 
-    const groq = new Groq({ apiKey: process.env.API_KEY_GROQ });
+    const groq = new Groq({ apiKey: groqKey });
 
     const completion = await groq.chat.completions.create({
-      model: "llama-3.3-70b-versatile",
+      model: "qwen/qwen3.8-27b",
       messages: [
         {
           role: "system",
