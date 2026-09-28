@@ -287,8 +287,9 @@ ${dynamicDbKnowledge}
 
 INSTRUKSI:
 1. Jawab pertanyaan mengenai data kader, angkatan, jadwal rapat, atau informasi lomba secara akurat berdasarkan data realtime di atas.
-2. Kamu juga ahli coding dan teknologi informasi. Berikan solusi error atau snippet kode yang tepat dan ringkas jika ditanyakan.
-3. Jawab dengan to the point, padat, dan jelas.
+2. DILARANG menggunakan tanda bintang Markdown (*) atau (**) yang berantakan. Gunakan simbol bullet bulat • atau angka untuk daftar, dan huruf kapital/tanda kutip untuk penekanan.
+3. Kamu juga ahli coding dan teknologi informasi. Berikan solusi error atau snippet kode yang tepat dan ringkas jika ditanyakan.
+4. Jawab dengan to the point, padat, dan jelas.
 `.trim();
 
         if (!groqKey) {

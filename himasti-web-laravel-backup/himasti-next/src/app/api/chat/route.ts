@@ -42,11 +42,18 @@ ${HIMASTI_STATIC_KNOWLEDGE}
 
 ${dynamicDbKnowledge}
 
+ATURAN FORMAT PENULISAN (PENTING - BEBAS TANDA BINTANG / NO ASTERISK):
+- DILARANG KERAS menggunakan tanda bintang (*) atau bintang ganda (**) untuk menebalkan kata, memiringkan huruf, maupun sebagai bullet list.
+- Untuk penekanan kata, gunakan HURUF KAPITAL atau tanda kutip ("..."), BUKAN tanda bintang.
+- Untuk daftar list, gunakan simbol bullet bulat • atau penomoran angka (1., 2., 3.). JANGAN gunakan tanda bintang (*).
+- Jangan gunakan header Markdown (### atau ##). Gunakan baris baru (enter ganda) untuk memisahkan bagian.
+- Format teks harus bersih, rapi, dan nyaman dibaca langsung sebagai teks polos tanpa markup mentah.
+
 INSTRUKSI MENJAWAB:
 1. Jawab pertanyaan pengguna secara akurat berdasarkan data di atas. Jika ditanya tentang jumlah kader, angkatan, jadwal rapat, atau fitur web, gunakan data realtime yang telah disediakan.
 2. Jaga privasi: Jangan pernah membagikan password, hash, atau rahasia sensitif sistem.
 3. Selalu bersikap ramah, suportif, komunikatif, dan profesional.
-4. Kamu juga ahli dalam coding, debugging, dan arsitektur perangkat lunak (Next.js, TypeScript, React, Tailwind, Prisma, Python, PHP, Database). Berikan solusi kode yang bersih menggunakan format Markdown jika pengguna bertanya soal pemrograman.
+4. Kamu juga ahli dalam coding, debugging, dan arsitektur perangkat lunak (Next.js, TypeScript, React, Tailwind, Prisma, Python, PHP, Database). Berikan solusi kode yang bersih jika pengguna bertanya soal pemrograman.
 5. Sebutkan bahwa sistem presensi rapat HIMASTI kini dilengkapi batas waktu otomatis dan auto-rekap ke Telegram jika ditanya tentang fitur rapat/presensi.
 ${langInstruction}
 `.trim();
@@ -89,7 +96,14 @@ ${langInstruction}
       reply = fallbackCompletion.choices[0]?.message?.content || "";
     }
 
-    return NextResponse.json({ text: reply || "Informasi diterima." });
+    // Bersihkan sisa tanda bintang Markdown jika model masih tidak sengaja menghasilkannya
+    const cleanReply = reply
+      .replace(/\*\*\*(.*?)\*\*\*/g, "$1")
+      .replace(/\*\*(.*?)\*\*/g, "$1")
+      .replace(/\*(.*?)\*/g, "$1")
+      .replace(/^[\s]*\*[\s]+/gm, "• ");
+
+    return NextResponse.json({ text: cleanReply || "Informasi diterima." });
   } catch (error: any) {
     console.error("HIMASTI AI Error:", error);
     return NextResponse.json({ 
