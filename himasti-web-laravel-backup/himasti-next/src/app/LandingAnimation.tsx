@@ -177,7 +177,20 @@ const divIcons = [
   'M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z'
 ];
 
-export default function LandingAnimation({ competitions }: { competitions?: any[] }) {
+export interface LandingStats {
+  totalKader: number;
+  totalUsers: number;
+  totalLomba: number;
+  totalDivisi: number;
+}
+
+export default function LandingAnimation({ 
+  competitions,
+  stats
+}: { 
+  competitions?: any[];
+  stats?: LandingStats;
+}) {
   const [lang, setLang] = useState<Lang>('id');
   const [langOpen, setLangOpen] = useState(false);
 
@@ -524,19 +537,19 @@ export default function LandingAnimation({ competitions }: { competitions?: any[
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-                <AnimatedCounter end={33} suffix="+" />
+                <AnimatedCounter end={stats?.totalKader ?? 51} suffix="+" />
               </div>
               <div className="text-xs font-bold text-slate-700 mt-2 uppercase tracking-wider">
                 {t.statsKader}
               </div>
               <div className="text-xs text-slate-500 mt-1 font-medium">
-                {t.statsKaderSub}
+                {stats?.totalUsers ? `${stats.totalUsers} ${lang === 'en' ? 'Registered Accounts' : lang === 'ar' ? 'حساب مسجل' : 'Akun Terdaftar'}` : t.statsKaderSub}
               </div>
             </div>
 
             <div className="p-6 rounded-2xl bg-white border border-slate-200/80 shadow-sm hover:shadow transition-all group hover:-translate-y-1">
               <div className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 group-hover:text-blue-600 transition-colors">
-                <AnimatedCounter end={8} />
+                <AnimatedCounter end={stats?.totalDivisi ?? 8} />
               </div>
               <div className="text-xs font-bold text-slate-700 mt-2 uppercase tracking-wider">
                 {t.statsDivisi}
