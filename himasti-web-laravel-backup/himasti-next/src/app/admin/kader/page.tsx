@@ -40,38 +40,35 @@ export default async function DataKaderPage() {
     );
   }
 
-  // Fetch full data kader
-  const rawData = await prisma.dataKader.findMany({
+  // Fetch full data kader based on Users to ensure 100% sync with Hak Akses (RBAC)
+  const rawData = await prisma.user.findMany({
     include: {
-      user: {
-        include: {
-          roles: { include: { role: true } }
-        }
-      }
+      data_kader: true,
+      roles: { include: { role: true } }
     },
     orderBy: { created_at: 'desc' }
   });
 
   const isSuperAdmin = userRoles.some(r => r.role.name === "super_admin");
 
-  const kaders = rawData.map(k => ({
-    id: k.id,
-    user_id: k.user_id,
-    nama: k.user.name,
-    email: k.user.email,
-    nim: k.nim,
-    angkatan: k.angkatan || "-",
-    no_hp: k.no_hp || "-",
-    jenis_kelamin: k.jenis_kelamin || "-",
-    role: k.user.roles[0]?.role.name || "kader",
-    asal_sekolah: (k as Record<string, unknown>).asal_sekolah as string | null | undefined,
-    hobi: (k as Record<string, unknown>).hobi as string | null | undefined,
-    alamat: (k as Record<string, unknown>).alamat_sekarang as string | null | undefined,
-    xp: k.xp ?? 50,
-    custom_frame: k.custom_frame || "none",
-    custom_title: k.custom_title || "kader",
-    custom_theme: k.custom_theme || "default",
-    custom_name_effect: k.custom_name_effect || "plain"
+  const kaders = rawData.map(u => ({
+    id: u.data_kader?.id || u.id,
+    user_id: u.id,
+    nama: u.name,
+    email: u.email,
+    nim: u.data_kader?.nim || "-",
+    angkatan: u.data_kader?.angkatan || "-",
+    no_hp: u.data_kader?.no_hp || "-",
+    jenis_kelamin: u.data_kader?.jenis_kelamin || "-",
+    role: u.roles[0]?.role.name || "kader",
+    asal_sekolah: (u.data_kader as Record<string, unknown> | null)?.asal_sekolah as string | null | undefined,
+    hobi: (u.data_kader as Record<string, unknown> | null)?.hobi as string | null | undefined,
+    alamat: (u.data_kader as Record<string, unknown> | null)?.alamat_sekarang as string | null | undefined,
+    xp: u.data_kader?.xp ?? 50,
+    custom_frame: u.data_kader?.custom_frame || "none",
+    custom_title: u.data_kader?.custom_title || "kader",
+    custom_theme: u.data_kader?.custom_theme || "default",
+    custom_name_effect: u.data_kader?.custom_name_effect || "plain"
   }));
 
   return (
